@@ -1,5 +1,9 @@
+import { Container } from "@workspace/ui/components/layouts";
+
 export default function Home() {
   return (
-    <div>Portfolio Page</div>
+    <>
+      <Container>halo</Container>
+    </>
   );
 }
