@@ -144,6 +144,9 @@
 }
 
 @layer base {
+  body {
+    @apply font-sans antialiased w-full bg-background overflow-x-hidden;
+  }
   button {
     @apply cursor-pointer;
   }

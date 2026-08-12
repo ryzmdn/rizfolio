@@ -1,18 +1,8 @@
 import type { Metadata } from "next"
-import { Google_Sans, Google_Sans_Code } from "next/font/google"
 import "@workspace/ui/styles/globals.css"
+import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
-
-const googleSans = Google_Sans({
-  variable: "--font-google-sans",
-  subsets: ["latin"],
-})
-
-const googleSansCode = Google_Sans_Code({
-  variable: "--font-google-sans-code",
-  subsets: ["latin"],
-})
 
 export const metadata: Metadata = {
   title: "Personal Blog",
@@ -28,8 +18,7 @@ export default function RootLayout({
     <html lang="en" className="h-full overflow-y-auto scroll-smooth" suppressHydrationWarning>
       <body
         className={cn(
-          googleSans.variable,
-          googleSansCode.variable,
+          fontVariables,
           "font-sans antialiased w-full bg-background overflow-x-hidden"
         )}
       >
