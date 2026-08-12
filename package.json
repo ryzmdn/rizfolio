@@ -11,8 +11,10 @@
     "clean": "turbo clean"
   },
   "devDependencies": {
+    "@base-ui/react": "^1.7.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "lucide-react": "^1.31.0",
     "next-themes": "^0.4.6",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
