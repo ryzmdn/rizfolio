@@ -73,7 +73,7 @@ export default function Home() {
           </div>
         </hgroup>
 
-        <div className="grid gap-y-6 w-full sm:grid-cols-2 sm:gap-x-5 sm:py-16">
+        <div className="grid w-full gap-y-6 sm:grid-cols-2 sm:gap-x-5 sm:py-16">
           {[1, 2, 3, 4, 5, 6].map((_) => (
             <div key={_} className="relative overflow-hidden rounded-2xl">
               <img
@@ -81,6 +81,40 @@ export default function Home() {
                 alt=""
                 loading="lazy"
               />
+            </div>
+          ))}
+        </div>
+      </Container>
+
+      <Container>
+        <hgroup className="flex w-full justify-between">
+          <h2 className="text-3xl font-medium">What I do?</h2>
+
+          <div className="max-w-xl text-2xl/snug text-muted-foreground">
+            <p>
+              A selection of projects focused on clarity, usability, and
+              meaningful, lasting positive impact worldwide.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="flow-root space-y-10 divide-y divide-border sm:py-16">
+          {[1, 2, 3, 4, 5].map((_, index) => (
+            <div key={_} className="grid pb-10 lg:grid-cols-2">
+              <div className="shrink-0">
+                <h3 className="relative w-max text-3xl text-accent-foreground">
+                  Web Development{" "}
+                  <span className="absolute top-0 -right-5 text-xs text-muted-foreground">
+                    0{index + 1}
+                  </span>
+                </h3>
+              </div>
+              <div className="leading-7 text-muted-foreground">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Dolorem, nihil iure? Laboriosam at, dignissimos assumenda
+                aliquam beatae a maxime fugit? Ea soluta corporis nisi
+                reprehenderit est ab modi reiciendis adipisci!
+              </div>
             </div>
           ))}
         </div>
