@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <Container
         padded={false}
-        className="grid lg:grid-cols-3 lg:gap-x-10 lg:py-28"
+        className="grid lg:grid-cols-3 lg:gap-x-10 lg:py-36"
       >
         <div className="flex flex-col justify-center gap-y-6 px-4 sm:px-6 lg:px-8">
           <p className="text-2xl text-muted-foreground">Hey there! I&apos;m</p>
