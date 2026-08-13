@@ -24,8 +24,8 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col justify-center px-4 sm:px-6 lg:px-8">
-          <div className="max-w-72 mx-auto p-2 border border-border rounded-xl">
-            <div className="mx-auto size-full aspect-3/4 overflow-hidden rounded-lg shadow-2xl">
+          <div className="mx-auto max-w-72 rounded-xl border border-border p-2">
+            <div className="mx-auto aspect-3/4 size-full overflow-hidden rounded-lg shadow-2xl">
               <img
                 src="https://i.pinimg.com/736x/71/48/75/714875f90b8a3226ac11c6ed09dc1715.jpg"
                 alt="Rizky Ramadhan"
@@ -46,6 +46,19 @@ export default function Home() {
             Software <span className="text-muted-foreground">Engineer</span>
           </p>
         </div>
+      </Container>
+
+      <Container className="max-w-4xl space-y-5 py-10 text-center">
+        <div>About Me</div>
+
+        <p className="text-2xl/snug font-medium text-primary md:text-3xl/snug">
+          As a Software Engineer, I help teams architect structured, detailed,
+          and highly functional digital products. I am passionate about{" "}
+          <span className="text-muted-foreground">
+            crafting meaningful user experiences where great design isn&apos;t
+            just something you look at, but something you feel with every click.
+          </span>
+        </p>
       </Container>
     </>
   )
