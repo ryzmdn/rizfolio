@@ -156,4 +156,7 @@
   section, article {
     content-visibility: auto !important;
   }
+  img {
+    @apply select-none pointer-events-none;
+  }
 }
