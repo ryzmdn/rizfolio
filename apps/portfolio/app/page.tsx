@@ -60,6 +60,31 @@ export default function Home() {
           </span>
         </p>
       </Container>
+
+      <Container className="py-32">
+        <hgroup className="flex w-full justify-between">
+          <h2 className="text-2xl font-medium">All My Projects</h2>
+
+          <div className="max-w-xl text-2xl/snug text-muted-foreground">
+            <p>
+              A selection of projects focused on clarity, usability, and
+              meaningful, lasting positive impact worldwide.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="grid gap-y-6 w-full sm:grid-cols-2 sm:gap-x-5 sm:py-16">
+          {[1, 2, 3, 4, 5, 6].map((_) => (
+            <div key={_} className="relative overflow-hidden rounded-2xl">
+              <img
+                src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg"
+                alt=""
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </Container>
     </>
   )
 }
