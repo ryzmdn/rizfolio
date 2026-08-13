@@ -23,7 +23,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <dl className="flow-root space-y-5 w-full mt-6">
+          <dl className="mt-6 flow-root w-full space-y-5">
             {stats.map((stat) => (
               <div
                 key={stat.id}
@@ -80,6 +80,42 @@ export default function AboutPage() {
             Let&apos;s connect, collaborate, and create products that are far
             smarter and future-proof!
           </p>
+        </div>
+      </Container>
+
+      <Container className="flow-root space-y-10 py-32">
+        <hgroup className="flex w-full justify-between">
+          <h2 className="text-2xl font-medium">echnical Foundation & Ethos</h2>
+
+          <div className="max-w-xl text-2xl/snug text-muted-foreground">
+            <p>
+              Rooted in a deep interest in data structures, network
+              architecture, and AI-driven workflows, I view programming not
+              merely as writing lines of code, but as a process of solving
+              real-world problems through scalable solutions.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="flow-root space-y-10 divide-y divide-border sm:py-16">
+          {[1, 2, 3, 4, 5].map((_, index) => (
+            <div key={_} className="grid items-center pb-10 lg:grid-cols-4">
+              <div className="shrink-0">
+                <h3 className="relative w-max text-3xl text-accent-foreground">
+                  Project Manager{" "}
+                  <span className="absolute top-0 -right-5 text-xs text-muted-foreground">
+                    0{index + 1}
+                  </span>
+                </h3>
+              </div>
+              <div className="lg:col-span-2 leading-7 text-muted-foreground text-center lg:text-lg">
+                <p>Pamulang University</p>
+              </div>
+              <div className="leading-7 text-muted-foreground text-end lg:text-lg">
+                <p>2021 - Present</p>
+              </div>
+            </div>
+          ))}
         </div>
       </Container>
     </>
