@@ -1,5 +1,9 @@
 import ButtonSwiper from "@workspace/ui/components/animate/button-swiper"
+import { Button, buttonVariants } from "@workspace/ui/components/button"
 import { Container } from "@workspace/ui/components/layouts"
+import { cn } from "@workspace/ui/lib/utils"
+import { User } from "lucide-react"
+import React from "react"
 
 export default function Home() {
   return (
@@ -67,17 +71,58 @@ export default function Home() {
         </div>
       </Container>
 
-      <Container className="max-w-4xl space-y-5 py-10 text-center">
-        <div>About Me</div>
+      <Container className="space-y-6 py-24">
+        <h2 className="text-lg text-muted-foreground">About My self</h2>
 
-        <p className="text-2xl/snug font-medium text-primary md:text-3xl/snug">
-          As a Software Engineer, I help teams architect structured, detailed,
-          and highly functional digital products. I am passionate about{" "}
-          <span className="text-muted-foreground">
-            crafting meaningful user experiences where great design isn&apos;t
-            just something you look at, but something you feel with every click.
-          </span>
-        </p>
+        <div className="space-y-5">
+          <p className="text-lg/7">
+            I am a software engineer focused on building robust, scalable web
+            ecosystems and cloud-native applications. I operate at the
+            intersection of performant frontend engineering, distributed cloud
+            infrastructure, and practical AI integrations.
+          </p>
+          <p className="leading-7 text-muted-foreground">
+            Rather than treating code merely as syntax, I approach development
+            as product architecture: every abstraction must serve business
+            viability, every interface must respect user attention, and every
+            database query must be intentional. When I am not orchestrating
+            deployments or optimizing render cycles, I advocate for developer
+            communities, experiment with open-source tools, and explore how
+            emerging AI models can enhance everyday software workflows.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-x-4">
+          {[1, 2, 3].map((item, index, array) => (
+            <React.Fragment key={item}>
+              <a
+                href="#"
+                className={cn(
+                  buttonVariants({ variant: "link" }),
+                  "font-normal"
+                )}
+              >
+                <User className="size-4" />
+                <span>test@email.com</span>
+              </a>
+
+              {index !== array.length - 1 && (
+                <span className="text-muted-foreground">&bull;</span>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+
+        <dl className="grid grid-cols-1 gap-x-8 gap-y-16 mt-12 lg:grid-cols-4">
+          {[1, 2, 3, 4].map((_) => (
+            <div key={_} className="flex flex-col">
+              <dt className="text-muted-foreground text-sm/7">Lorem Isum Dolor</dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-accent-foreground">
+                60+
+              </dd>
+            </div>
+          ))}
+        </dl>
       </Container>
 
       <Container className="py-32">
