@@ -265,6 +265,51 @@ export default function Home() {
           </div>
         </div>
       </Container>
+
+      <Container className="py-20">
+        <hgroup className="w-full space-y-2">
+          <h2 className="text-2xl font-medium">Activities</h2>
+
+          <div className="leading-7 text-muted-foreground">
+            <p>
+              Helping businesses build intuitive products that drive growth.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="grid gap-x-10 gap-y-12 py-14 sm:grid-cols-2">
+          {[1, 2, 3, 4].map((_) => (
+            <div key={_} className="w-full space-y-8 bg-transparent">
+              <hgroup className="flex justify-between">
+                <div className="flex items-center gap-x-5">
+                  <div className="shrink-0 size-14 overflow-hidden rounded-full">
+                    <img
+                      src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
+                      alt=""
+                      className="size-full object-cover"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <h3 className="text-lg font-medium">John Doe</h3>
+                    <a href="http://" className="text-sm/6 text-muted-foreground">@johndoe</a>
+                  </div>
+                </div>
+
+                <User className="text-muted-foreground size-5" />
+              </hgroup>
+
+              <div className="w-full">
+                <p className="leading-7 text-muted-foreground">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam
+                  ut architecto magnam, fuga quidem inventore, earum obcaecati
+                  soluta labore consequatur quod amet doloribus ea ipsum iure
+                  accusamus veritatis aut excepturi.
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
     </>
   )
 }
