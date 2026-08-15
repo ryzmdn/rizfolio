@@ -141,10 +141,10 @@ export default function Home() {
           </div>
         </hgroup>
 
-        <div className="grid w-full gap-y-10 sm:grid-cols-2 sm:gap-x-5 py-10">
+        <div className="grid w-full gap-y-10 py-10 sm:grid-cols-2 sm:gap-x-5">
           {[1, 2, 3, 4, 5, 6].map((_) => (
             <div key={_} className="relative overflow-hidden">
-              <div className="overflow-hidden aspect-3/2 rounded-xl shadow-xl">
+              <div className="aspect-3/2 overflow-hidden rounded-xl shadow-xl">
                 <img
                   src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg"
                   alt=""
@@ -153,9 +153,13 @@ export default function Home() {
                 />
               </div>
 
-              <div className="mt-4 space-y-1 w-full">
-                <p className="text-sm/6 text-muted-foreground">Personal Branding</p>
-                <h3 className="text-xl text-primary font-medium">Orbit - SaaS Brand Experience</h3>
+              <div className="mt-4 w-full space-y-1">
+                <p className="text-sm/6 text-muted-foreground">
+                  Personal Branding
+                </p>
+                <h3 className="text-xl font-medium text-primary">
+                  Orbit - SaaS Brand Experience
+                </h3>
               </div>
             </div>
           ))}
@@ -163,36 +167,102 @@ export default function Home() {
       </Container>
 
       <Container>
-        <hgroup className="flex w-full justify-between">
-          <h2 className="text-3xl font-medium">What I do?</h2>
+        <hgroup className="w-full space-y-2">
+          <h2 className="text-2xl font-medium">Activities</h2>
 
-          <div className="max-w-xl text-2xl/snug text-muted-foreground">
+          <div className="leading-7 text-muted-foreground">
             <p>
-              A selection of projects focused on clarity, usability, and
-              meaningful, lasting positive impact worldwide.
+              Helping businesses build intuitive products that drive growth.
             </p>
           </div>
         </hgroup>
 
-        <div className="flow-root space-y-10 divide-y divide-border sm:py-16">
-          {[1, 2, 3, 4, 5].map((_, index) => (
-            <div key={_} className="grid pb-10 lg:grid-cols-2">
-              <div className="shrink-0">
-                <h3 className="relative w-max text-3xl text-accent-foreground">
-                  Web Development{" "}
-                  <span className="absolute top-0 -right-5 text-xs text-muted-foreground">
-                    0{index + 1}
-                  </span>
-                </h3>
-              </div>
-              <div className="leading-7 text-muted-foreground">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Dolorem, nihil iure? Laboriosam at, dignissimos assumenda
-                aliquam beatae a maxime fugit? Ea soluta corporis nisi
-                reprehenderit est ab modi reiciendis adipisci!
-              </div>
+        <div className="grid grid-cols-2 gap-1.5 py-10 md:grid-cols-4">
+          <div className="grid gap-1.5">
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1432462770865-65b70566d673?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80"
+                alt="gallery-photo"
+              />
             </div>
-          ))}
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
+                alt="gallery-photo"
+              />
+            </div>
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=2940&amp;q=80"
+                alt="gallery-photo"
+              />
+            </div>
+          </div>
+          <div className="grid gap-2">
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=687&amp;q=80"
+                alt="gallery-photo"
+              />
+            </div>
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80"
+                alt="gallery-photo"
+              />
+            </div>
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://docs.material-tailwind.com/img/team-3.jpg"
+                alt="gallery-photo"
+              />
+            </div>
+          </div>
+          <div className="grid gap-2">
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=2940&amp;q=80"
+                alt="gallery-photo"
+              />
+            </div>
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://docs.material-tailwind.com/img/team-3.jpg"
+                alt="gallery-photo"
+              />
+            </div>
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=687&amp;q=80"
+                alt="gallery-photo"
+              />
+            </div>
+          </div>
+          <div className="grid gap-2">
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=687&amp;q=80"
+                alt="gallery-photo"
+              />
+            </div>
+            <div>
+              <img
+                className="size-full object-cover object-center"
+                src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
+                alt="gallery-photo"
+              />
+            </div>
+          </div>
         </div>
       </Container>
     </>
