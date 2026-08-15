@@ -2,8 +2,15 @@ import { Badge } from "@workspace/ui/components/badge"
 import { buttonVariants } from "@workspace/ui/components/button"
 import { Container } from "@workspace/ui/components/layouts"
 import { cn } from "@workspace/ui/lib/utils"
-import { Star, User } from "lucide-react"
+import { Check, Star, User } from "lucide-react"
 import React from "react"
+
+const includedFeatures = [
+  "Private forum access",
+  "Member resources",
+  "Entry to annual conference",
+  "Official member t-shirt",
+]
 
 const engineeringProcess = [
   {
@@ -201,6 +208,56 @@ export default function Home() {
         </div>
       </Container>
 
+      <Container className="py-20">
+        <hgroup className="w-full space-y-2">
+          <h2 className="text-2xl font-medium">Services</h2>
+
+          <div className="leading-7 text-muted-foreground">
+            <p>
+              A selection of projects focused on clarity, usability, and
+              meaningful, lasting positive impact worldwide.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="flow-root w-full space-y-10 divide-y divide-border py-10">
+          {[1, 2, 3, 4, 5].map((_, idx) => (
+            <div key={_} className="pb-10 lg:flex">
+              <div className="lg:flex-auto">
+                <h3 className="relative w-max text-2xl font-medium tracking-tight text-primary">
+                  Web Development{" "}
+                  <small className="absolute -right-5 text-xs opacity-50">
+                    0{idx + 1}
+                  </small>
+                </h3>
+                <p className="mt-4 text-base/7 text-muted-foreground">
+                  Lorem ipsum dolor sit amet consect etur adipisicing elit.
+                  Itaque amet indis perferendis blanditiis repellendus etur
+                  quidem assumenda.
+                </p>
+                <div className="mt-8 flex items-center gap-x-4">
+                  <h4 className="flex-none text-sm/6 font-semibold text-accent-foreground">
+                    What&apos;s included
+                  </h4>
+                  <div className="h-px flex-auto bg-gray-100" />
+                </div>
+                <ul
+                  role="list"
+                  className="mt-8 grid grid-cols-1 gap-4 text-sm/6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+                >
+                  {includedFeatures.map((feature) => (
+                    <li key={feature} className="flex items-center gap-x-3">
+                      <Check className="size-4" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
+
       <Container className="py-32">
         <hgroup className="w-full space-y-2">
           <h2 className="text-2xl font-medium">
@@ -351,20 +408,24 @@ export default function Home() {
           </div>
         </hgroup>
 
-        <div className="flow-root w-full space-y-10 py-10 divide-y divide-border">
+        <div className="flow-root w-full space-y-10 divide-y divide-border py-10">
           {[1, 2, 3, 4, 5].map((_) => (
-            <div key={_} className="space-y-5 w-full bg-transparent pb-10">
+            <div key={_} className="w-full space-y-5 bg-transparent pb-10">
               <hgroup className="flex items-center justify-between">
-                <div className="text-sm/6 w-full">
-                  <h3 className="text-lg font-medium text-primary">Freelance Web Designer</h3>
+                <div className="w-full text-sm/6">
+                  <h3 className="text-lg font-medium text-primary">
+                    Freelance Web Designer
+                  </h3>
                   <div className="flex items-center gap-x-2 text-muted-foreground">
                     <p>Acme, Inc.</p>
                     <span className="text-xs">&bull;</span>
                     <p>Freelance</p>
                   </div>
-                  <p className="text-muted-foreground">Kota Tangerang Selatan, Banten, Indonesia</p>
+                  <p className="text-muted-foreground">
+                    Kota Tangerang Selatan, Banten, Indonesia
+                  </p>
                 </div>
-                <div className="text-sm/6 text-end text-muted-foreground">
+                <div className="text-end text-sm/6 text-muted-foreground">
                   <div className="flex items-center gap-x-1.5">
                     <p>2024</p>
                     <span>&ndash;</span>
@@ -374,7 +435,7 @@ export default function Home() {
                 </div>
               </hgroup>
 
-              <div className="leading-7 w-full">
+              <div className="w-full leading-7">
                 <p>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo
                   voluptatum consectetur, animi, quam suscipit iste placeat quod
@@ -384,7 +445,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {[1,2,3,4,5,6,7,8].map(_ => (
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((_) => (
                   <Badge key={_} variant="secondary">
                     Coding
                   </Badge>
