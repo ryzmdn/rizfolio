@@ -24,7 +24,10 @@ export default function RootLayout({
       <body className={cn(fontVariables)}>
         <AppProvider>
           <AppHeader />
-          {children}</AppProvider>
+          <main id="layout-main" className="w-full max-w-4xl mx-auto bg-transparent">
+            {children}
+          </main>
+        </AppProvider>
       </body>
     </html>
   )
