@@ -342,6 +342,61 @@ export default function Home() {
 
       <Container className="py-20">
         <hgroup className="w-full space-y-2">
+          <h2 className="text-2xl font-medium">Experience</h2>
+
+          <div className="leading-7 text-muted-foreground">
+            <p>
+              Helping businesses build intuitive products that drive growth.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="flow-root w-full space-y-10 py-10 divide-y divide-border">
+          {[1, 2, 3, 4, 5].map((_) => (
+            <div key={_} className="space-y-5 w-full bg-transparent pb-10">
+              <hgroup className="flex items-center justify-between">
+                <div className="text-sm/6 w-full">
+                  <h3 className="text-lg font-medium text-primary">Freelance Web Designer</h3>
+                  <div className="flex items-center gap-x-2 text-muted-foreground">
+                    <p>Acme, Inc.</p>
+                    <span className="text-xs">&bull;</span>
+                    <p>Freelance</p>
+                  </div>
+                  <p className="text-muted-foreground">Kota Tangerang Selatan, Banten, Indonesia</p>
+                </div>
+                <div className="text-sm/6 text-end text-muted-foreground">
+                  <div className="flex items-center gap-x-1.5">
+                    <p>2024</p>
+                    <span>&ndash;</span>
+                    <p>2025</p>
+                  </div>
+                  <p>Remote</p>
+                </div>
+              </hgroup>
+
+              <div className="leading-7 w-full">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo
+                  voluptatum consectetur, animi, quam suscipit iste placeat quod
+                  repellat sed explicabo dolorem delectus libero. Iste debitis
+                  dolorem quasi alias beatae animi?
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {[1,2,3,4,5,6,7,8].map(_ => (
+                  <Badge key={_} variant="secondary">
+                    Coding
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
+
+      <Container className="py-20">
+        <hgroup className="w-full space-y-2">
           <h2 className="text-2xl font-medium">
             Open-source experiments & tools.
           </h2>
@@ -368,7 +423,7 @@ export default function Home() {
                 </div>
               </hgroup>
 
-              <div className="space-y-3 my-5 w-full">
+              <div className="my-5 w-full space-y-3">
                 <p className="text-sm/6 text-muted-foreground">
                   Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                   Quisquam eaque sit nulla voluptas voluptatem, libero
@@ -379,10 +434,16 @@ export default function Home() {
               </div>
 
               <div className="flex items-center gap-x-5">
-                <a href="http://" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                <a
+                  href="http://"
+                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                >
                   GitHub
                 </a>
-                <a href="http://" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                <a
+                  href="http://"
+                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                >
                   Live Demo
                 </a>
               </div>
