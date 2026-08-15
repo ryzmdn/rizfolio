@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <Container className="flow-root space-y-8 py-32">
         <div className="flex items-center gap-x-6">
-          <div className="size-28 p-1.5 rounded-full bg-foreground/10 ring-1 ring-border ring-inset">
+          <div className="size-28 rounded-full bg-foreground/10 p-1.5 ring-1 ring-border ring-inset">
             <div className="size-full overflow-hidden rounded-full">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Cha_Eun-woo%2C_March_31%2C_2025.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original"
@@ -23,8 +23,47 @@ export default function Home() {
         </div>
 
         <div className="w-full max-w-xl space-y-4">
-          <h2 className="text-3xl/snug font-medium">I design premium, high-converting digital experiences that drive growth.</h2>
-          <p className="leading-7 text-muted-foreground">Helping brands grow through thoughtful design and user experiences that drive engagement, build trust, and deliver results.</p>
+          <h2 className="text-3xl/snug font-medium">
+            I design premium, high-converting digital experiences that drive
+            growth.
+          </h2>
+          <p className="leading-7 text-muted-foreground">
+            Helping brands grow through thoughtful design and user experiences
+            that drive engagement, build trust, and deliver results.
+          </p>
+        </div>
+      </Container>
+
+      <Container>
+        <h2 className="leading-7 text-accent-foreground">
+          Trusted by the world&apos;s most innovative teams
+        </h2>
+        <div className="grid grid-cols-2 py-8 sm:grid-cols-3 lg:grid-cols-5">
+          <img
+            alt="Transistor"
+            src="https://tailwindui.com/plus-assets/img/logos/transistor-logo-gray-900.svg"
+            className="max-h-10"
+          />
+          <img
+            alt="Reform"
+            src="https://tailwindui.com/plus-assets/img/logos/reform-logo-gray-900.svg"
+            className="max-h-10"
+          />
+          <img
+            alt="Tuple"
+            src="https://tailwindui.com/plus-assets/img/logos/tuple-logo-gray-900.svg"
+            className="max-h-10"
+          />
+          <img
+            alt="SavvyCal"
+            src="https://tailwindui.com/plus-assets/img/logos/savvycal-logo-gray-900.svg"
+            className="max-h-10"
+          />
+          <img
+            alt="Statamic"
+            src="https://tailwindui.com/plus-assets/img/logos/statamic-logo-gray-900.svg"
+            className="max-h-10"
+          />
         </div>
       </Container>
 
