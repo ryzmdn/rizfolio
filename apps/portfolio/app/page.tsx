@@ -113,10 +113,12 @@ export default function Home() {
           ))}
         </div>
 
-        <dl className="grid grid-cols-1 gap-x-8 gap-y-16 mt-12 lg:grid-cols-4">
+        <dl className="mt-12 grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-4">
           {[1, 2, 3, 4].map((_) => (
             <div key={_} className="flex flex-col">
-              <dt className="text-muted-foreground text-sm/7">Lorem Isum Dolor</dt>
+              <dt className="text-sm/7 text-muted-foreground">
+                Lorem Isum Dolor
+              </dt>
               <dd className="order-first text-3xl font-semibold tracking-tight text-accent-foreground">
                 60+
               </dd>
@@ -126,10 +128,12 @@ export default function Home() {
       </Container>
 
       <Container className="py-32">
-        <hgroup className="flex w-full justify-between">
-          <h2 className="text-2xl font-medium">All My Projects</h2>
+        <hgroup className="w-full space-y-2">
+          <h2 className="text-2xl font-medium">
+            Problem-Solution-Impact Case Studies
+          </h2>
 
-          <div className="max-w-xl text-2xl/snug text-muted-foreground">
+          <div className="leading-7 text-muted-foreground">
             <p>
               A selection of projects focused on clarity, usability, and
               meaningful, lasting positive impact worldwide.
@@ -137,14 +141,22 @@ export default function Home() {
           </div>
         </hgroup>
 
-        <div className="grid w-full gap-y-6 sm:grid-cols-2 sm:gap-x-5 sm:py-16">
+        <div className="grid w-full gap-y-10 sm:grid-cols-2 sm:gap-x-5 py-10">
           {[1, 2, 3, 4, 5, 6].map((_) => (
-            <div key={_} className="relative overflow-hidden rounded-2xl">
-              <img
-                src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg"
-                alt=""
-                loading="lazy"
-              />
+            <div key={_} className="relative overflow-hidden">
+              <div className="overflow-hidden aspect-3/2 rounded-xl shadow-xl">
+                <img
+                  src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg"
+                  alt=""
+                  loading="lazy"
+                  className="size-full object-cover"
+                />
+              </div>
+
+              <div className="mt-4 space-y-1 w-full">
+                <p className="text-sm/6 text-muted-foreground">Personal Branding</p>
+                <h3 className="text-xl text-primary font-medium">Orbit - SaaS Brand Experience</h3>
+              </div>
             </div>
           ))}
         </div>
