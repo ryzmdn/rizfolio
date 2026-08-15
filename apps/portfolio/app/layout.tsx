@@ -4,6 +4,7 @@ import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 import { AppHeader } from "@workspace/ui/components/apps/portfolio/header"
+import { ProgressiveBlur } from '../../../packages/ui/src/components/progressive-blur';
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -27,6 +28,7 @@ export default function RootLayout({
           <main id="layout-main" className="w-full max-w-4xl mx-auto bg-transparent">
             {children}
           </main>
+          <ProgressiveBlur height="40px" />
         </AppProvider>
       </body>
     </html>
