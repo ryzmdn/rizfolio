@@ -3,6 +3,7 @@ import "@workspace/ui/styles/globals.css"
 import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
+import { AppHeader } from "@workspace/ui/components/apps/portfolio/header"
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -21,7 +22,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={cn(fontVariables)}>
-        <AppProvider>{children}</AppProvider>
+        <AppProvider>
+          <AppHeader />
+          {children}</AppProvider>
       </body>
     </html>
   )
