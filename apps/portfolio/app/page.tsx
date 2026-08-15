@@ -1,9 +1,39 @@
-import ButtonSwiper from "@workspace/ui/components/animate/button-swiper"
-import { Button, buttonVariants } from "@workspace/ui/components/button"
+import { buttonVariants } from "@workspace/ui/components/button"
 import { Container } from "@workspace/ui/components/layouts"
 import { cn } from "@workspace/ui/lib/utils"
 import { User } from "lucide-react"
 import React from "react"
+
+const engineeringProcess = [
+  {
+    name: "Discovery & System Architecture",
+    description:
+      "Analyzing business requirements, defining data domain boundaries, and architecting robust API and database schemas for long-term scalability.",
+    date: "Phase 01",
+    dateTime: "01",
+  },
+  {
+    name: "Deterministic Engineering",
+    description:
+      "Building reactive interfaces and modular backend logic using modern TypeScript standards, clean component patterns, and strict type safety.",
+    date: "Phase 02",
+    dateTime: "02",
+  },
+  {
+    name: "Optimization & AI Integration",
+    description:
+      "Implementing serverless cloud infrastructure, connecting applied AI models, and profiling performance to ensure sub-second response times.",
+    date: "Phase 03",
+    dateTime: "03",
+  },
+  {
+    name: "Edge Deployment & Handoff",
+    description:
+      "Shipping through automated CI/CD pipelines to edge infrastructure, configuring observability, and delivering comprehensive system documentation.",
+    date: "Phase 04",
+    dateTime: "04",
+  },
+]
 
 export default function Home() {
   return (
@@ -113,7 +143,7 @@ export default function Home() {
           ))}
         </div>
 
-        <dl className="mt-12 grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-4">
+        <dl className="mt-12 flex flex-wrap items-center justify-between gap-x-8 gap-y-16 lg:grid lg:grid-cols-4">
           {[1, 2, 3, 4].map((_) => (
             <div key={_} className="flex flex-col">
               <dt className="text-sm/7 text-muted-foreground">
@@ -125,6 +155,49 @@ export default function Home() {
             </div>
           ))}
         </dl>
+      </Container>
+
+      <Container className="bg-foreground space-y-16 py-16 md:rounded-4xl">
+        <hgroup className="w-full space-y-2">
+          <h2 className="text-2xl font-medium text-secondary">My Process</h2>
+
+          <div className="leading-7 text-muted">
+            <p>
+              Your compass to innovation and design excellence. From exploration
+              to execution, this dynamic framework fuels creativity and
+              precision, ensuring your product journey aligns seamlessly with
+              user desires.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="flow-root gap-8 space-y-20 overflow-hidden">
+          {engineeringProcess.map((item) => (
+            <div key={item.name}>
+              <time
+                dateTime={item.dateTime}
+                className="flex items-center text-sm/6 font-semibold text-muted"
+              >
+                <svg
+                  viewBox="0 0 4 4"
+                  aria-hidden="true"
+                  className="mr-4 size-1 flex-none"
+                >
+                  <circle r={2} cx={2} cy={2} fill="currentColor" />
+                </svg>
+                {item.date}
+                <div
+                  aria-hidden="true"
+                  className="absolute -ml-2 h-px w-screen -translate-x-full bg-background/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
+                />
+              </time>
+              <p className="mt-6 text-xl/8 font-medium tracking-tight text-secondary">
+                {item.name}
+              </p>
+              <p className="mt-3.5 leading-7 text-muted">{item.description}</p>
+            </div>
+          ))}
+        </div>
       </Container>
 
       <Container className="py-32">
@@ -282,7 +355,7 @@ export default function Home() {
             <div key={_} className="w-full space-y-8 bg-transparent">
               <hgroup className="flex justify-between">
                 <div className="flex items-center gap-x-5">
-                  <div className="shrink-0 size-14 overflow-hidden rounded-full">
+                  <div className="size-14 shrink-0 overflow-hidden rounded-full">
                     <img
                       src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
                       alt=""
@@ -291,11 +364,16 @@ export default function Home() {
                   </div>
                   <div className="w-full">
                     <h3 className="text-lg font-medium">John Doe</h3>
-                    <a href="http://" className="text-sm/6 text-muted-foreground">@johndoe</a>
+                    <a
+                      href="http://"
+                      className="text-sm/6 text-muted-foreground"
+                    >
+                      @johndoe
+                    </a>
                   </div>
                 </div>
 
-                <User className="text-muted-foreground size-5" />
+                <User className="size-5 text-muted-foreground" />
               </hgroup>
 
               <div className="w-full">
