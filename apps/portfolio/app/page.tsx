@@ -1,7 +1,8 @@
+import { Badge } from "@workspace/ui/components/badge"
 import { buttonVariants } from "@workspace/ui/components/button"
 import { Container } from "@workspace/ui/components/layouts"
 import { cn } from "@workspace/ui/lib/utils"
-import { User } from "lucide-react"
+import { Star, User } from "lucide-react"
 import React from "react"
 
 const engineeringProcess = [
@@ -157,7 +158,7 @@ export default function Home() {
         </dl>
       </Container>
 
-      <Container className="bg-foreground space-y-16 py-16 md:rounded-4xl">
+      <Container className="space-y-16 bg-foreground py-16 md:rounded-4xl">
         <hgroup className="w-full space-y-2">
           <h2 className="text-2xl font-medium text-secondary">My Process</h2>
 
@@ -336,6 +337,57 @@ export default function Home() {
               />
             </div>
           </div>
+        </div>
+      </Container>
+
+      <Container className="py-20">
+        <hgroup className="w-full space-y-2">
+          <h2 className="text-2xl font-medium">
+            Open-source experiments & tools.
+          </h2>
+
+          <div className="leading-7 text-muted-foreground">
+            <p>
+              Helping businesses build intuitive products that drive growth.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="grid w-full gap-x-10 gap-y-14 py-10 sm:grid-cols-2">
+          {[1, 2, 3, 4, 5, 6].map((_) => (
+            <div key={_}>
+              <hgroup className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-primary">OpenAI Code</h3>
+                </div>
+                <div>
+                  <Badge variant="secondary">
+                    <Star data-icon="inline-start" />
+                    1000
+                  </Badge>
+                </div>
+              </hgroup>
+
+              <div className="space-y-3 my-5 w-full">
+                <p className="text-sm/6 text-muted-foreground">
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  Quisquam eaque sit nulla voluptas voluptatem, libero
+                  necessitatibus voluptates velit magni incidunt illo veritatis
+                  officiis vel qui excepturi pariatur facere distinctio. Beatae?
+                </p>
+                <Badge variant="secondary">TypeScript</Badge>
+              </div>
+
+              <div className="flex items-center gap-x-5">
+                <a href="http://" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                  GitHub
+                </a>
+                <a href="http://" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                  Live Demo
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       </Container>
 
