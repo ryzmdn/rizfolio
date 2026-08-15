@@ -42,33 +42,43 @@ export function AppHeader() {
   }, [])
 
   return (
-    <Header className="mx-auto flex w-full max-w-4xl items-center justify-between px-4 py-5">
-      <div className="flex items-center gap-x-2 text-sm/6">
-        <div className="flex items-center text-accent-foreground">
-          <p className="w-14.5">{timeData?.time}</p>
-          <span className="ml-1 uppercase">{timeData?.ampm}</span>
+    <Header className="fixed top-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-4xl backdrop-blur-lg">
+      <div className="flex justify-between items-center px-4 py-6">
+        <div className="flex items-center gap-x-2 text-sm/6">
+          <div className="flex items-center text-accent-foreground">
+            <p className="w-14.5">{timeData?.time}</p>
+            <span className="ml-1 uppercase">{timeData?.ampm}</span>
+          </div>
+          <p className="text-xs text-muted-foreground/90">Jakarta (GMT+7)</p>
         </div>
-        <p className="text-xs text-muted-foreground/90">Jakarta (GMT+7)</p>
-      </div>
 
-      <nav className="flex items-center justify-center gap-x-6 text-sm/6">
-        <NavLink href="/" first={"Overview"} last={"Overview"} />
-        <NavLink href="/#journey" first={"Journey"} last={"Journey"} />
-        <NavLink href="/#case-studies" first={"Case Studies"} last={"Case Studies"} />
-        <NavLink href="/#capabilities" first={"Capabilities"} last={"Capabilities"} />
-        <NavLink href="/#solutions" first={"Solutions"} last={"Solutions"} />
-      </nav>
+        <nav className="flex items-center justify-center gap-x-6 text-sm/6">
+          <NavLink href="/" first={"Overview"} last={"Overview"} />
+          <NavLink href="/#journey" first={"Journey"} last={"Journey"} />
+          <NavLink
+            href="/#case-studies"
+            first={"Case Studies"}
+            last={"Case Studies"}
+          />
+          <NavLink
+            href="/#capabilities"
+            first={"Capabilities"}
+            last={"Capabilities"}
+          />
+          <NavLink href="/#solutions" first={"Solutions"} last={"Solutions"} />
+        </nav>
 
-      <div className="flex items-center gap-x-3">
-        <Button size="icon-sm" variant="secondary">
-          <Info />
-        </Button>
-        <Button size="icon-sm" variant="secondary">
-          <User />
-        </Button>
-        <Button size="icon-sm" variant="secondary">
-          <Moon />
-        </Button>
+        <div className="flex items-center gap-x-3">
+          <Button size="icon-sm" variant="secondary">
+            <Info />
+          </Button>
+          <Button size="icon-sm" variant="secondary">
+            <User />
+          </Button>
+          <Button size="icon-sm" variant="secondary">
+            <Moon />
+          </Button>
+        </div>
       </div>
     </Header>
   )

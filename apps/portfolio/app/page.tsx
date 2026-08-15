@@ -4,47 +4,27 @@ import { Container } from "@workspace/ui/components/layouts"
 export default function Home() {
   return (
     <>
-      <Container
-        padded={false}
-        className="grid lg:grid-cols-3 lg:gap-x-10 lg:py-36"
-      >
-        <div className="flex flex-col justify-center gap-y-6 px-4 sm:px-6 lg:px-8">
-          <p className="text-2xl text-muted-foreground">Hey there! I&apos;m</p>
-
-          <h1 className="text-5xl font-semibold text-primary lg:text-6xl">
-            Rizky <br /> <span className="text-muted-foreground">Ramadhan</span>
-          </h1>
-
-          <p className="leading-6 text-muted-foreground">
-            Helping brands stand out with thoughtful and compelling design
-            solutions Helping brands stand out.
-          </p>
-
-          <ButtonSwiper text="Let's Connect" className="mt-3" />
-        </div>
-
-        <div className="flex flex-col justify-center px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-72 rounded-xl border border-border p-2">
-            <div className="mx-auto aspect-3/4 size-full overflow-hidden rounded-lg shadow-2xl">
+      <Container className="flow-root space-y-8 py-32">
+        <div className="flex items-center gap-x-6">
+          <div className="size-28 p-1.5 rounded-full bg-foreground/10 ring-1 ring-border ring-inset">
+            <div className="size-full overflow-hidden rounded-full">
               <img
-                src="https://i.pinimg.com/736x/71/48/75/714875f90b8a3226ac11c6ed09dc1715.jpg"
-                alt="Rizky Ramadhan"
-                loading="lazy"
-                decoding="async"
-                className="size-full object-cover"
+                src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Cha_Eun-woo%2C_March_31%2C_2025.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original"
+                alt=""
+                className="size-full object-cover shadow-xl ring-1 ring-border"
               />
             </div>
           </div>
+
+          <div>
+            <h1 className="text-2xl/relaxed font-medium">Rizky Ramadhan</h1>
+            <p className="text-muted-foreground">Software Engineer</p>
+          </div>
         </div>
 
-        <div className="flex flex-col justify-center gap-y-6 px-4 sm:px-6 lg:px-8">
-          <div className="border-l border-ring pl-4 text-lg text-muted-foreground italic">
-            Firm of the Year 2025 Font-end Developer
-          </div>
-
-          <p className="text-4xl font-semibold text-primary lg:text-5xl">
-            Software <span className="text-muted-foreground">Engineer</span>
-          </p>
+        <div className="w-full max-w-xl space-y-4">
+          <h2 className="text-3xl/snug font-medium">I design premium, high-converting digital experiences that drive growth.</h2>
+          <p className="leading-7 text-muted-foreground">Helping brands grow through thoughtful design and user experiences that drive engagement, build trust, and deliver results.</p>
         </div>
       </Container>
 
