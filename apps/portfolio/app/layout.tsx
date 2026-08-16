@@ -18,15 +18,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      className="antialiased scroll-smooth"
-      suppressHydrationWarning
-    >
+    <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
       <body className={cn(fontVariables)}>
         <AppProvider>
           <AppHeader />
-          <main id="layout-main" className="w-full max-w-4xl mx-auto bg-transparent">
+          <main
+            id="layout-main"
+            className="mx-auto w-full max-w-4xl bg-transparent"
+          >
             {children}
           </main>
           <ProgressiveBlur position="top" height="32px" />

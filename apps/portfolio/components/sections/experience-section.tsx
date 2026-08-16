@@ -4,7 +4,7 @@ import { experienceList } from "@/data"
 
 export function ExperienceSection() {
   return (
-    <Container className="py-20">
+    <Container id="experience" className="py-20">
       <hgroup className="w-full space-y-2">
         <h2 className="text-2xl font-medium">Professional Experience</h2>
 

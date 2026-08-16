@@ -7,7 +7,7 @@ import { openSourceProjects } from "@/data"
 
 export function OpenSourceSection() {
   return (
-    <Container className="py-20">
+    <Container id="experiments" className="py-20">
       <hgroup className="w-full space-y-2">
         <h2 className="text-2xl font-medium">
           Open-Source Toolkits & Experiments

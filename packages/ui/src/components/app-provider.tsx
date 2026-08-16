@@ -11,9 +11,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      <SmoothScrollProvider>
-        {children}
-      </SmoothScrollProvider>
+      <SmoothScrollProvider>{children}</SmoothScrollProvider>
     </ThemeProvider>
   )
 }

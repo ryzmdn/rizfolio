@@ -3,7 +3,7 @@ import { trustedLogos } from "@/data"
 
 export function TrustedBySection() {
   return (
-    <Container>
+    <Container id="logos">
       <h2 className="leading-7 text-accent-foreground">
         Trusted by the world&apos;s most innovative teams
       </h2>
