@@ -2,7 +2,16 @@ import { Badge } from "@workspace/ui/components/badge"
 import { buttonVariants } from "@workspace/ui/components/button"
 import { Container } from "@workspace/ui/components/layouts"
 import { cn } from "@workspace/ui/lib/utils"
-import { BriefcaseBusiness, Check, Star, User } from "lucide-react"
+import {
+  Brain,
+  BrainCircuit,
+  BriefcaseBusiness,
+  Check,
+  Handshake,
+  Sparkles,
+  Star,
+  User,
+} from "lucide-react"
 import React from "react"
 import { Marquee } from "../../../packages/ui/src/components/marquee"
 
@@ -496,6 +505,129 @@ export default function Home() {
         </div>
       </Container>
 
+      <Container className="w-full space-y-12 py-20">
+        <hgroup className="grid w-full space-y-2 lg:grid-cols-2">
+          <h2 className="text-2xl font-medium">Core Infrastructure</h2>
+
+          <div className="text-2xl/snug">
+            <p>
+              Design solutions that elevate brands and create seamless user
+              experiences.{" "}
+              <span className="text-muted-foreground">
+                I help bring ideas to life with strategy and creativity
+              </span>
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="grid w-full min-w-0 gap-4 lg:grid-cols-3">
+          <div className="relative w-full min-w-0 space-y-1.5 overflow-hidden rounded-2xl p-1.5">
+            <hgroup className="flex items-center justify-between rounded-xl bg-background px-3 py-2 shadow-2xl">
+              <h2 className="font-medium">Soft Skills</h2>
+              <div className="flex size-8 items-center justify-center rounded-md">
+                <Handshake className="size-5" />
+              </div>
+            </hgroup>
+            <div className="rounded-xl p-4">
+              <p className="text-sm/6 text-muted-foreground">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Et
+                facilis praesentium aliquam ea perspiciatis laboriosam. At
+                excepturi assumenda alias a! Praesentium omnis ducimus
+                perferendis aut, modi provident hic repellendus iure.
+              </p>
+
+              <div className="relative w-full min-w-0 overflow-hidden py-10">
+                <Marquee pauseOnHover className="[--gap:8px]">
+                  {[1, 2, 3, 4, 5, 6].map((_) => (
+                    <Badge key={_}>Communication</Badge>
+                  ))}
+                </Marquee>
+                <Marquee pauseOnHover reverse className="[--gap:8px]">
+                  {[1, 2, 3, 4, 5, 6].map((_) => (
+                    <Badge key={_}>Problem Solving</Badge>
+                  ))}
+                </Marquee>
+
+                <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-background/90 to-transparent sm:w-16" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-background/90 to-transparent sm:w-16" />
+              </div>
+            </div>
+          </div>
+          <div className="w-full min-w-0 space-y-1.5 overflow-hidden rounded-2xl bg-foreground p-1 shadow-2xl lg:h-max">
+            <hgroup className="flex items-center justify-between rounded-xl bg-brand px-3 py-2 text-secondary shadow">
+              <h2 className="font-medium">Hard Skills</h2>
+              <div className="flex size-8 items-center justify-center rounded-md bg-background">
+                <BrainCircuit className="size-5 text-primary" />
+              </div>
+            </hgroup>
+            <div className="rounded-xl bg-brand p-4">
+              <p className="text-sm/6 text-secondary">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Et
+                facilis praesentium aliquam ea perspiciatis laboriosam. At
+                excepturi assumenda alias a! Praesentium omnis ducimus
+                perferendis aut, modi provident hic repellendus iure.
+              </p>
+
+              <div className="relative w-full min-w-0 overflow-hidden py-10">
+                <Marquee pauseOnHover className="[--gap:8px]">
+                  {[1, 2, 3, 4, 5, 6].map((_) => (
+                    <Badge key={_} variant="outline" className="text-secondary">
+                      Communication
+                    </Badge>
+                  ))}
+                </Marquee>
+                <Marquee pauseOnHover reverse className="[--gap:8px]">
+                  {[1, 2, 3, 4, 5, 6].map((_) => (
+                    <Badge key={_} variant="outline" className="text-secondary">
+                      Problem Solving
+                    </Badge>
+                  ))}
+                </Marquee>
+
+                <div className="pointer-events-none absolute inset-y-0 left-0 z-10 h-full w-12 bg-linear-to-r from-brand/90 to-transparent sm:w-16" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 z-10 h-full w-12 bg-linear-to-l from-brand/90 to-transparent sm:w-16" />
+              </div>
+            </div>
+          </div>
+          <div className="w-full min-w-0 space-y-1.5 overflow-hidden rounded-2xl p-1.5">
+            <hgroup className="flex items-center justify-between rounded-xl bg-background px-3 py-2 shadow-2xl">
+              <h2 className="font-medium">Knowledge Skills</h2>
+              <div className="flex size-8 items-center justify-center rounded-md bg-background">
+                <Brain className="size-5 text-primary" />
+              </div>
+            </hgroup>
+            <div className="rounded-xl p-4">
+              <p className="text-sm/6 text-muted-foreground">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Et
+                facilis praesentium aliquam ea perspiciatis laboriosam. At
+                excepturi assumenda alias a! Praesentium omnis ducimus
+                perferendis aut, modi provident hic repellendus iure.
+              </p>
+
+              <div className="relative w-full min-w-0 overflow-hidden py-10">
+                <Marquee pauseOnHover className="[--gap:8px]">
+                  {[1, 2, 3, 4, 5, 6].map((_) => (
+                    <Badge key={_} variant="secondary">
+                      Communication
+                    </Badge>
+                  ))}
+                </Marquee>
+                <Marquee pauseOnHover reverse className="[--gap:8px]">
+                  {[1, 2, 3, 4, 5, 6].map((_) => (
+                    <Badge key={_} variant="secondary">
+                      Problem Solving
+                    </Badge>
+                  ))}
+                </Marquee>
+
+                <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-background/90 to-transparent sm:w-16" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-background/90 to-transparent sm:w-16" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+
       <Container className="py-20">
         <hgroup className="w-full space-y-2">
           <h2 className="text-2xl font-medium">
@@ -617,7 +749,10 @@ export default function Home() {
         <div className="relative flow-root w-full space-y-5 py-10">
           <Marquee pauseOnHover className="[--duration:55s] [--gap:32px]">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_) => (
-              <div key={_} className="aspect-4/3 max-h-64">
+              <div
+                key={_}
+                className="aspect-4/3 max-h-40 w-auto sm:max-h-52 lg:max-h-64"
+              >
                 <img
                   src="https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp"
                   alt=""
@@ -632,7 +767,10 @@ export default function Home() {
             className="[--duration:55s] [--gap:32px]"
           >
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_) => (
-              <div key={_} className="aspect-4/3 max-h-64 w-auto">
+              <div
+                key={_}
+                className="aspect-4/3 max-h-40 w-auto sm:max-h-52 lg:max-h-64"
+              >
                 <img
                   src="https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp"
                   alt=""
@@ -648,7 +786,7 @@ export default function Home() {
 
       <Container className="my-20 w-full bg-foreground shadow-xl md:rounded-4xl">
         <div className="px-6 py-24 text-center shadow-2xl sm:px-16">
-          <div className="flex justify-center items-center gap-x-3 text-secondary mb-8">
+          <div className="mb-8 flex items-center justify-center gap-x-3 text-secondary">
             <BriefcaseBusiness className="size-4" />
             <p>Let&apos;s Work Together!</p>
           </div>
