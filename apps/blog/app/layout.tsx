@@ -25,8 +25,6 @@ export default function RootLayout({
           >
             {children}
           </main>
-          <ProgressiveBlur position="top" height="32px" />
-          <ProgressiveBlur height="40px" />
         </AppProvider>
       </body>
     </html>
