@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { Header } from "@workspace/ui/components/layouts"
-import { Button } from "@workspace/ui/components/button"
-import { Info, Moon, User } from "lucide-react"
+import { buttonVariants } from "@workspace/ui/components/button"
 import { NavLink } from "./nav-link"
+import { Behance, Dribbble } from "@workspace/ui/constants/icons"
+import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 
 export function AppHeader() {
   const [timeData, setTimeData] = useState<{
@@ -41,8 +42,8 @@ export function AppHeader() {
   }, [])
 
   return (
-    <Header className="absolute top-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-4xl">
-      <div className="flex justify-between items-center px-4 py-6">
+    <Header className="absolute top-0 left-1/2 z-40 w-full max-w-4xl -translate-x-1/2">
+      <div className="flex items-center justify-between px-4 py-6">
         <div className="flex items-center gap-x-2 text-sm/6">
           <div className="flex items-center text-accent-foreground">
             <p className="w-14.5">{timeData?.time}</p>
@@ -68,15 +69,24 @@ export function AppHeader() {
         </nav>
 
         <div className="flex items-center gap-x-3">
-          <Button size="icon-sm" variant="secondary">
-            <Info />
-          </Button>
-          <Button size="icon-sm" variant="secondary">
-            <User />
-          </Button>
-          <Button size="icon-sm" variant="secondary">
-            <Moon />
-          </Button>
+          <a
+            href="https://behance.net/ryzmdn"
+            className={buttonVariants({ variant: "ghost", size: "icon-sm" })}
+          >
+            <Behance />
+          </a>
+          <a
+            href="https://dribbble.com/ryzmdn"
+            className={buttonVariants({ variant: "ghost", size: "icon-sm" })}
+          >
+            <Dribbble />
+          </a>
+          <ThemeToggle
+            className={buttonVariants({
+              variant: "secondary",
+              size: "icon-sm",
+            })}
+          />
         </div>
       </div>
     </Header>
