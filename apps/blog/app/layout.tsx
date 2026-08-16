@@ -3,6 +3,7 @@ import "@workspace/ui/styles/globals.css"
 import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
+import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 
 export const metadata: Metadata = {
   title: "Personal Blog",
@@ -15,14 +16,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="h-full overflow-y-auto scroll-smooth" suppressHydrationWarning>
-      <body
-        className={cn(
-          fontVariables,
-          "font-sans antialiased w-full bg-background overflow-x-hidden"
-        )}
-      >
-        <AppProvider>{children}</AppProvider>
+    <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
+      <body className={cn(fontVariables)}>
+        <AppProvider>
+          <main
+            id="layout-main"
+            className="mx-auto w-full max-w-7xl bg-transparent"
+          >
+            {children}
+          </main>
+          <ProgressiveBlur position="top" height="32px" />
+          <ProgressiveBlur height="40px" />
+        </AppProvider>
       </body>
     </html>
   )
