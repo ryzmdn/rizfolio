@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="h-full overflow-y-auto scroll-smooth"
+      className="antialiased scroll-smooth"
       suppressHydrationWarning
     >
       <body className={cn(fontVariables)}>
