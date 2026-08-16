@@ -1,4 +1,7 @@
-import { ThemeProvider } from "./providers"
+"use client"
+
+import * as React from "react"
+import { ThemeProvider, SmoothScrollProvider } from "./providers"
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +11,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      {children}
+      <SmoothScrollProvider>
+        {children}
+      </SmoothScrollProvider>
     </ThemeProvider>
   )
 }

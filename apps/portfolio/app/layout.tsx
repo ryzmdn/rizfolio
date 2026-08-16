@@ -3,7 +3,9 @@ import "@workspace/ui/styles/globals.css"
 import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
-import { AppHeader } from "@workspace/ui/components/apps/portfolio/header"
+import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
+import { AppHeader } from "@/components/app-header"
+import { AppFooter } from "@/components/app-footer"
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -18,7 +20,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="h-full overflow-y-auto scroll-smooth"
+      className="antialiased scroll-smooth"
       suppressHydrationWarning
     >
       <body className={cn(fontVariables)}>
@@ -27,6 +29,9 @@ export default function RootLayout({
           <main id="layout-main" className="w-full max-w-4xl mx-auto bg-transparent">
             {children}
           </main>
+          <ProgressiveBlur position="top" height="32px" />
+          <ProgressiveBlur height="40px" />
+          <AppFooter />
         </AppProvider>
       </body>
     </html>
