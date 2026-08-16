@@ -152,10 +152,7 @@
     @apply bg-background rounded-sm;
   }
   html::-webkit-scrollbar-thumb {
-    @apply bg-secondary border border-secondary rounded-sm;
-  }
-  html::-webkit-scrollbar-thumb:hover {
-    @apply bg-secondary;
+    @apply bg-muted-foreground hover:bg-ring border border-secondary rounded-sm;
   }
   * {
     @apply selection:bg-primary/90 selection:text-accent;
