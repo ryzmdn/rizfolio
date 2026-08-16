@@ -60,9 +60,9 @@ export function AppHeader() {
 
   return (
     <Header className="absolute top-0 left-1/2 z-50 w-full max-w-4xl -translate-x-1/2 px-4 sm:px-6">
-      <div className="flex h-16 sm:h-20 items-center justify-between">
-        <div className="flex items-center gap-x-2.5 text-xs sm:text-sm">
-          <div className="flex items-center text-foreground">
+      <div className="flex items-center justify-between w-full h-20">
+        <div className="flex items-center gap-x-2.5 text-sm">
+          <div className="flex items-center text-foreground font-medium">
             <span className="tabular-nums">
               {timeData?.time ?? "--:--:--"}
             </span>
@@ -70,7 +70,7 @@ export function AppHeader() {
               {timeData?.ampm}
             </span>
           </div>
-          <span className="hidden text-xs text-muted-foreground sm:inline">
+          <span className="text-xs text-muted-foreground">
             Jakarta (GMT+7)
           </span>
         </div>

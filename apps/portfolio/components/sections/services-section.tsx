@@ -21,9 +21,9 @@ export function ServicesSection() {
         {services.map((service, idx) => (
           <div key={idx} className="pb-10 lg:flex">
             <div className="lg:flex-auto">
-              <h3 className="relative w-max text-2xl font-medium tracking-tight text-primary">
+              <h3 className="relative w-max text-2xl font-medium tracking-tight text-primary max-w-full">
                 {service.title}{" "}
-                <small className="absolute -right-7 text-xs font-normal opacity-50">
+                <small className="absolute -right-7 hidden text-xs font-normal opacity-50 sm:inline">
                   0{idx + 1}
                 </small>
               </h3>
