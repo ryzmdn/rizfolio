@@ -19,12 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
-      <body
-        className={cn(
-          fontVariables,
-          "font-sans antialiased w-full max-w-none min-w-xs overflow-x-hidden"
-        )}
-      >
+      <body className={cn(fontVariables)}>
         <AppProvider>
           <AppHeader />
           <main
