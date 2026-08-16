@@ -8,12 +8,11 @@ import {
   BriefcaseBusiness,
   Check,
   Handshake,
-  Sparkles,
   Star,
   User,
 } from "lucide-react"
 import React from "react"
-import { Marquee } from "../../../packages/ui/src/components/marquee"
+import { Marquee } from "@workspace/ui/components/marquee"
 
 const includedFeatures = [
   "Private forum access",
@@ -119,7 +118,7 @@ export default function Home() {
         </div>
       </Container>
 
-      <Container className="space-y-6 py-24">
+      <Container id="journey" className="space-y-6 py-24">
         <h2 className="text-lg text-muted-foreground">About My self</h2>
 
         <div className="space-y-5">
@@ -218,7 +217,7 @@ export default function Home() {
         </div>
       </Container>
 
-      <Container className="py-20">
+      <Container id="solutions" className="py-20">
         <hgroup className="w-full space-y-2">
           <h2 className="text-2xl font-medium">Services</h2>
 
@@ -268,7 +267,7 @@ export default function Home() {
         </div>
       </Container>
 
-      <Container className="py-32">
+      <Container id="case-studies" className="py-32">
         <hgroup className="w-full space-y-2">
           <h2 className="text-2xl font-medium">
             Problem-Solution-Impact Case Studies
@@ -409,7 +408,7 @@ export default function Home() {
 
       <Container className="py-20">
         <hgroup className="w-full space-y-2">
-          <h2 className="text-2xl font-medium">Edducation</h2>
+          <h2 className="text-2xl font-medium">Education</h2>
 
           <div className="leading-7 text-muted-foreground">
             <p>
@@ -505,7 +504,7 @@ export default function Home() {
         </div>
       </Container>
 
-      <Container className="w-full space-y-12 py-20">
+      <Container id="capabilities" className="w-full space-y-12 py-20">
         <hgroup className="grid w-full space-y-2 lg:grid-cols-2">
           <h2 className="text-2xl font-medium">Core Infrastructure</h2>
 
