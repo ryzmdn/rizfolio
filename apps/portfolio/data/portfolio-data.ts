@@ -1,26 +1,30 @@
 export const personalInfo = {
   name: "Rizky Ramadhan",
-  role: "Software Engineer",
+  role: "Full-Stack Engineer & Product Builder",
   avatar:
     "https://upload.wikimedia.org/wikipedia/commons/d/d8/Cha_Eun-woo%2C_March_31%2C_2025.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
   headline:
-    "I design premium, high-converting digital experiences that drive growth.",
+    "Engineering robust full-stack systems & high-impact digital experiences.",
   subheadline:
-    "Helping brands grow through thoughtful design and user experiences that drive engagement, build trust, and deliver results.",
+    "Bridging the gap between deterministic software architecture, refined interface design, and scalable cloud performance to turn complex product ideas into reality.",
   bio: [
-    "I am a software engineer focused on building robust, scalable web ecosystems and cloud-native applications. I operate at the intersection of performant frontend engineering, distributed cloud infrastructure, and practical AI integrations.",
-    "Rather than treating code merely as syntax, I approach development as product architecture: every abstraction must serve business viability, every interface must respect user attention, and every database query must be intentional. When I am not orchestrating deployments or optimizing render cycles, I advocate for developer communities, experiment with open-source tools, and explore how emerging AI models can enhance everyday software workflows.",
+    "I am a Software Engineer specialized in building high-performance web applications, resilient backend architectures, and developer-friendly toolkits. I work across the full lifecycle—from database modeling and serverless deployments to pixel-perfect, accessible user interfaces.",
+    "I view engineering through the lens of product viability: every abstraction should deliver measurable value, every interface should reduce user friction, and every query must be optimized for scale. When I'm not shipping production systems, I contribute to open source, explore applied AI models, and share technical insights with the developer community.",
   ],
-  emails: ["test@email.com", "test@email.com", "test@email.com"],
+  emails: [
+    "rizky@devmail.com",
+    "github.com/ryzmdn",
+    "linkedin.com/in/ryzmdn",
+  ],
   stats: [
-    { label: "Lorem Ipsum Dolor", value: "60+" },
-    { label: "Lorem Ipsum Dolor", value: "60+" },
-    { label: "Lorem Ipsum Dolor", value: "60+" },
-    { label: "Lorem Ipsum Dolor", value: "60+" },
+    { label: "Production Uptime", value: "99.9%" },
+    { label: "Projects Delivered", value: "40+" },
+    { label: "Open-Source Downloads", value: "100k+" },
+    { label: "Client Satisfaction", value: "100%" },
   ],
   contactEmails: [
-    { label: "Let's Connect", email: "ryzmdn@contact.com" },
-    { label: "Let's Connect", email: "ryzmdn@contact.com" },
+    { label: "Primary Work Inquiries", email: "hello@rizkyramadhan.dev" },
+    { label: "Engineering Collaborations", email: "contact@rizfolio.dev" },
   ],
 }
 
@@ -51,28 +55,28 @@ export const engineeringProcess = [
   {
     name: "Discovery & System Architecture",
     description:
-      "Analyzing business requirements, defining data domain boundaries, and architecting robust API and database schemas for long-term scalability.",
+      "Deconstructing business goals, mapping domain boundaries, and establishing strict API contracts and database schemas for sustainable scalability.",
     date: "Phase 01",
     dateTime: "01",
   },
   {
     name: "Deterministic Engineering",
     description:
-      "Building reactive interfaces and modular backend logic using modern TypeScript standards, clean component patterns, and strict type safety.",
+      "Crafting modular backend logic and reactive user interfaces using modern TypeScript standards, reusable component tokens, and high test coverage.",
     date: "Phase 02",
     dateTime: "02",
   },
   {
-    name: "Optimization & AI Integration",
+    name: "Performance & AI Integration",
     description:
-      "Implementing serverless cloud infrastructure, connecting applied AI models, and profiling performance to ensure sub-second response times.",
+      "Optimizing runtime execution, implementing edge caching layers, and integrating applied AI models to automate workflows with sub-second response times.",
     date: "Phase 03",
     dateTime: "03",
   },
   {
-    name: "Edge Deployment & Handoff",
+    name: "Edge Deployment & Observability",
     description:
-      "Shipping through automated CI/CD pipelines to edge infrastructure, configuring observability, and delivering comprehensive system documentation.",
+      "Shipping through automated CI/CD pipelines to global edge infrastructure, configuring real-time telemetry, and delivering full technical documentation.",
     date: "Phase 04",
     dateTime: "04",
   },
@@ -80,58 +84,58 @@ export const engineeringProcess = [
 
 export const services = [
   {
-    title: "Web Development",
+    title: "Full-Stack Web Applications",
     description:
-      "Lorem ipsum dolor sit amet consect etur adipisicing elit. Itaque amet indis perferendis blanditiis repellendus etur quidem assumenda.",
+      "End-to-end web applications engineered with Next.js, React, Node.js, and PostgreSQL. Built with strict type-safety, modular patterns, and high-concurrency resilience.",
     features: [
-      "Private forum access",
-      "Member resources",
-      "Entry to annual conference",
-      "Official member t-shirt",
+      "Server-side rendering & edge compute",
+      "Robust relational & document database modeling",
+      "Type-safe REST & tRPC/GraphQL APIs",
+      "Comprehensive unit & integration tests",
     ],
   },
   {
-    title: "Web Development",
+    title: "Cloud Architecture & DevOps",
     description:
-      "Lorem ipsum dolor sit amet consect etur adipisicing elit. Itaque amet indis perferendis blanditiis repellendus etur quidem assumenda.",
+      "Scalable infrastructure automation and deployment pipelines designed for zero-downtime releases, sub-second latency, and observable telemetry.",
     features: [
-      "Private forum access",
-      "Member resources",
-      "Entry to annual conference",
-      "Official member t-shirt",
+      "Automated GitHub Actions CI/CD workflows",
+      "Docker containerization & orchestration",
+      "Serverless edge functions & CDN caching",
+      "Real-time monitoring, metrics & alerting",
     ],
   },
   {
-    title: "Web Development",
+    title: "UI/UX & Enterprise Design Systems",
     description:
-      "Lorem ipsum dolor sit amet consect etur adipisicing elit. Itaque amet indis perferendis blanditiis repellendus etur quidem assumenda.",
+      "Component libraries and design tokens built for consistency, WCAG accessibility, fluid animations, and developer ergonomics across multiple apps.",
     features: [
-      "Private forum access",
-      "Member resources",
-      "Entry to annual conference",
-      "Official member t-shirt",
+      "Atomic component architecture & tokens",
+      "Tailwind CSS v4 & OKLCH color palettes",
+      "Micro-animations & view transitions",
+      "Accessibility-first interactive components",
     ],
   },
   {
-    title: "Web Development",
+    title: "Performance & Core Web Vitals",
     description:
-      "Lorem ipsum dolor sit amet consect etur adipisicing elit. Itaque amet indis perferendis blanditiis repellendus etur quidem assumenda.",
+      "Deep audits and technical profiling to accelerate render cycles, eliminate layout shifts, minimize bundle footprints, and maximize SEO ranking.",
     features: [
-      "Private forum access",
-      "Member resources",
-      "Entry to annual conference",
-      "Official member t-shirt",
+      "95+ Lighthouse & Core Web Vitals score",
+      "Dynamic code splitting & tree shaking",
+      "Hardware-accelerated CSS animations",
+      "Advanced caching & asset optimization",
     ],
   },
   {
-    title: "Web Development",
+    title: "Applied AI & Workflow Automation",
     description:
-      "Lorem ipsum dolor sit amet consect etur adipisicing elit. Itaque amet indis perferendis blanditiis repellendus etur quidem assumenda.",
+      "Integration of modern LLM APIs, vector search, embeddings, and intelligent agents into product workflows to automate manual operations.",
     features: [
-      "Private forum access",
-      "Member resources",
-      "Entry to annual conference",
-      "Official member t-shirt",
+      "Custom OpenAI / Anthropic API integrations",
+      "Vector embeddings & semantic search",
+      "Autonomous tool-calling agent pipelines",
+      "Streaming responses & optimistic UI updates",
     ],
   },
 ]
@@ -139,43 +143,43 @@ export const services = [
 export const caseStudies = [
   {
     id: 1,
-    category: "Personal Branding",
-    title: "Orbit - SaaS Brand Experience",
+    category: "Cloud Observability & SaaS",
+    title: "Orbit Analytics — Real-time Distributed Monitoring Dashboard",
     image:
       "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
   },
   {
     id: 2,
-    category: "Personal Branding",
-    title: "Orbit - SaaS Brand Experience",
+    category: "Headless E-Commerce",
+    title: "Pulse Commerce — High-Converting Sub-Second Storefront",
     image:
       "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
   },
   {
     id: 3,
-    category: "Personal Branding",
-    title: "Orbit - SaaS Brand Experience",
+    category: "DevOps & Infrastructure",
+    title: "Zenith Cloud — Multi-Tenant Infrastructure Orchestration Console",
     image:
       "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
   },
   {
     id: 4,
-    category: "Personal Branding",
-    title: "Orbit - SaaS Brand Experience",
+    category: "Generative AI",
+    title: "Nova Studio — Collaborative Content Generation & Workflow Engine",
     image:
       "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
   },
   {
     id: 5,
-    category: "Personal Branding",
-    title: "Orbit - SaaS Brand Experience",
+    category: "Design System",
+    title: "HyperFlow — Multi-Brand Component Library with Zero Runtime CSS",
     image:
       "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
   },
   {
     id: 6,
-    category: "Personal Branding",
-    title: "Orbit - SaaS Brand Experience",
+    category: "Fintech & Telemetry",
+    title: "Chronos Core — High-Throughput Resource Scheduling & Billing Platform",
     image:
       "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
   },
@@ -205,217 +209,253 @@ export const activitiesGallery = [
 
 export const educationList = [
   {
-    institution: "ABCD University",
-    degree: "Bachelor of Engineering",
-    field: "BE, Computer Science",
-    period: "2023 – 2027",
+    institution: "State University of Informatics",
+    degree: "Bachelor of Science in Computer Science",
+    field: "Major in Software Engineering & Distributed Systems",
+    period: "2020 – 2024",
   },
   {
-    institution: "ABCD University",
-    degree: "Bachelor of Engineering",
-    field: "BE, Computer Science",
-    period: "2023 – 2027",
+    institution: "Cloud Native Architecture Institute",
+    degree: "Postgraduate Certification",
+    field: "Advanced Microservices & Cloud Infrastructure",
+    period: "2024 – 2025",
   },
 ]
 
 export const experienceList = [
   {
-    role: "Freelance Web Designer",
-    company: "Acme, Inc.",
-    type: "Freelance",
-    location: "Kota Tangerang Selatan, Banten, Indonesia",
-    period: "2024 – 2025",
+    role: "Senior Full-Stack Engineer",
+    company: "TechCorp Solutions",
+    type: "Full-Time",
+    location: "Jakarta / Remote",
+    period: "2024 – Present",
     workMode: "Remote",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo voluptatum consectetur, animi, quam suscipit iste placeat quod repellat sed explicabo dolorem delectus libero. Iste debitis dolorem quasi alias beatae animi?",
+      "Leading architecture and development of scalable Next.js applications, serverless microservices, and high-concurrency API integrations. Reduced page load times by 45% and improved deployment reliability through automated CI/CD pipelines.",
     skills: [
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "PostgreSQL",
+      "Redis",
+      "Turborepo",
+      "Docker",
+      "Tailwind CSS",
     ],
   },
   {
-    role: "Freelance Web Designer",
-    company: "Acme, Inc.",
-    type: "Freelance",
-    location: "Kota Tangerang Selatan, Banten, Indonesia",
-    period: "2024 – 2025",
-    workMode: "Remote",
+    role: "Frontend Engineer & UI Specialist",
+    company: "Studio Alpha Digital",
+    type: "Contract",
+    location: "South Tangerang, Indonesia",
+    period: "2023 – 2024",
+    workMode: "Hybrid",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo voluptatum consectetur, animi, quam suscipit iste placeat quod repellat sed explicabo dolorem delectus libero. Iste debitis dolorem quasi alias beatae animi?",
+      "Spearheaded the unified enterprise design system across 12 client products. Implemented accessible interactive primitives, hardware-accelerated transitions, and comprehensive Storybook component testing.",
     skills: [
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
+      "React",
+      "TypeScript",
+      "Design Systems",
+      "Tailwind CSS",
+      "Radix UI",
+      "Web Accessibility (a11y)",
+      "Storybook",
+      "Figma",
     ],
   },
   {
-    role: "Freelance Web Designer",
-    company: "Acme, Inc.",
-    type: "Freelance",
-    location: "Kota Tangerang Selatan, Banten, Indonesia",
-    period: "2024 – 2025",
-    workMode: "Remote",
+    role: "Full-Stack Developer",
+    company: "Innovate Labs",
+    type: "Full-Time",
+    location: "Jakarta, Indonesia",
+    period: "2022 – 2023",
+    workMode: "On-site",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo voluptatum consectetur, animi, quam suscipit iste placeat quod repellat sed explicabo dolorem delectus libero. Iste debitis dolorem quasi alias beatae animi?",
+      "Engineered backend REST/GraphQL APIs and responsive client portals for fintech applications serving 300k+ monthly active users. Designed database migrations and caching strategies that reduced query latency by 60%.",
     skills: [
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Prisma ORM",
+      "GraphQL",
+      "AWS S3 & Lambda",
+      "Git",
+      "REST APIs",
     ],
   },
   {
-    role: "Freelance Web Designer",
-    company: "Acme, Inc.",
+    role: "Open-Source Engineer & Consultant",
+    company: "Independent Practice",
     type: "Freelance",
-    location: "Kota Tangerang Selatan, Banten, Indonesia",
-    period: "2024 – 2025",
+    location: "Remote",
+    period: "2021 – 2022",
     workMode: "Remote",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo voluptatum consectetur, animi, quam suscipit iste placeat quod repellat sed explicabo dolorem delectus libero. Iste debitis dolorem quasi alias beatae animi?",
+      "Authored popular open-source packages, published technical guides on modern frontend tooling, and advised early-stage startups on technical feasibility, prototyping, and UI architecture.",
     skills: [
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-    ],
-  },
-  {
-    role: "Freelance Web Designer",
-    company: "Acme, Inc.",
-    type: "Freelance",
-    location: "Kota Tangerang Selatan, Banten, Indonesia",
-    period: "2024 – 2025",
-    workMode: "Remote",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo voluptatum consectetur, animi, quam suscipit iste placeat quod repellat sed explicabo dolorem delectus libero. Iste debitis dolorem quasi alias beatae animi?",
-    skills: [
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
-      "Coding",
+      "TypeScript",
+      "Open Source",
+      "JavaScript",
+      "Next.js",
+      "Vite",
+      "Web Performance",
+      "Technical Writing",
+      "Linux",
     ],
   },
 ]
 
 export const openSourceProjects = [
   {
-    name: "OpenAI Code",
-    stars: "1000",
+    name: "agy-cli",
+    stars: "1.4k",
     language: "TypeScript",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam eaque sit nulla voluptas voluptatem, libero necessitatibus voluptates velit magni incidunt illo veritatis officiis vel qui excepturi pariatur facere distinctio. Beatae?",
-    githubUrl: "#",
-    demoUrl: "#",
+      "An autonomous developer CLI and workflow automation suite designed for high-efficiency monorepo scaffolding and code generation.",
+    githubUrl: "https://github.com/ryzmdn",
+    demoUrl: "https://github.com/ryzmdn",
   },
   {
-    name: "OpenAI Code",
-    stars: "1000",
+    name: "next-smooth-transitions",
+    stars: "980",
     language: "TypeScript",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam eaque sit nulla voluptas voluptatem, libero necessitatibus voluptates velit magni incidunt illo veritatis officiis vel qui excepturi pariatur facere distinctio. Beatae?",
-    githubUrl: "#",
-    demoUrl: "#",
+      "Lightweight, hardware-accelerated View Transitions API helper library optimized for Next.js App Router and dynamic route changes.",
+    githubUrl: "https://github.com/ryzmdn",
+    demoUrl: "https://github.com/ryzmdn",
   },
   {
-    name: "OpenAI Code",
-    stars: "1000",
-    language: "TypeScript",
+    name: "edge-cache-proxy",
+    stars: "760",
+    language: "Rust & TypeScript",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam eaque sit nulla voluptas voluptatem, libero necessitatibus voluptates velit magni incidunt illo veritatis officiis vel qui excepturi pariatur facere distinctio. Beatae?",
-    githubUrl: "#",
-    demoUrl: "#",
+      "High-speed distributed edge caching middleware providing sub-millisecond cache hit response times across multi-region serverless workers.",
+    githubUrl: "https://github.com/ryzmdn",
+    demoUrl: "https://github.com/ryzmdn",
   },
   {
-    name: "OpenAI Code",
-    stars: "1000",
+    name: "oklch-palette-engine",
+    stars: "620",
     language: "TypeScript",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam eaque sit nulla voluptas voluptatem, libero necessitatibus voluptates velit magni incidunt illo veritatis officiis vel qui excepturi pariatur facere distinctio. Beatae?",
-    githubUrl: "#",
-    demoUrl: "#",
+      "Perceptually uniform color palette generator utilizing OKLCH color space with automatic dark mode contrast validation.",
+    githubUrl: "https://github.com/ryzmdn",
+    demoUrl: "https://github.com/ryzmdn",
   },
   {
-    name: "OpenAI Code",
-    stars: "1000",
-    language: "TypeScript",
+    name: "react-progressive-blur",
+    stars: "480",
+    language: "React",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam eaque sit nulla voluptas voluptatem, libero necessitatibus voluptates velit magni incidunt illo veritatis officiis vel qui excepturi pariatur facere distinctio. Beatae?",
-    githubUrl: "#",
-    demoUrl: "#",
+      "Elegant, hardware-accelerated progressive blur backdrops with zero layout shift and customizable multi-stop gradient masks.",
+    githubUrl: "https://github.com/ryzmdn",
+    demoUrl: "https://github.com/ryzmdn",
   },
   {
-    name: "OpenAI Code",
-    stars: "1000",
-    language: "TypeScript",
+    name: "turborepo-next-shadcn",
+    stars: "410",
+    language: "Turborepo",
     description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam eaque sit nulla voluptas voluptatem, libero necessitatibus voluptates velit magni incidunt illo veritatis officiis vel qui excepturi pariatur facere distinctio. Beatae?",
-    githubUrl: "#",
-    demoUrl: "#",
+      "Production-ready enterprise monorepo template featuring Next.js 16, Tailwind CSS v4, shared UI packages, and automated CI pipelines.",
+    githubUrl: "https://github.com/ryzmdn",
+    demoUrl: "https://github.com/ryzmdn",
   },
 ]
 
 export const testimonials = [
   {
-    name: "John Doe",
-    handle: "@johndoe",
+    name: "Sarah Jenkins",
+    handle: "CTO at Orbit Labs",
     avatar:
-      "https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&auto=format&fit=crop&w=927&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     content:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam ut architecto magnam, fuga quidem inventore, earum obcaecati soluta labore consequatur quod amet doloribus ea ipsum iure accusamus veritatis aut excepturi.",
+      "Rizky combines deep technical rigor with an intuitive sense for user experience. He redesigned our core dashboard architecture and delivered ahead of deadline with zero regression bugs. A true 10x engineer.",
   },
   {
-    name: "John Doe",
-    handle: "@johndoe",
+    name: "Alex Rivera",
+    handle: "Lead Product Designer at Studio Alpha",
     avatar:
-      "https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&auto=format&fit=crop&w=927&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     content:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam ut architecto magnam, fuga quidem inventore, earum obcaecati soluta labore consequatur quod amet doloribus ea ipsum iure accusamus veritatis aut excepturi.",
+      "Working with Rizky is a breath of fresh air. He takes complex Figma design specs and turns them into fluid, accessible, and high-performance code without cutting any corners.",
   },
   {
-    name: "John Doe",
-    handle: "@johndoe",
+    name: "David Chen",
+    handle: "Founder at Pulse Commerce",
     avatar:
-      "https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&auto=format&fit=crop&w=927&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     content:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam ut architecto magnam, fuga quidem inventore, earum obcaecati soluta labore consequatur quod amet doloribus ea ipsum iure accusamus veritatis aut excepturi.",
+      "Our conversion rates jumped by 28% after Rizky rebuilt our storefront using modern Next.js edge caching and optimized Core Web Vitals. His impact on our bottom line was immediate.",
   },
   {
-    name: "John Doe",
-    handle: "@johndoe",
+    name: "Elena Rostova",
+    handle: "VP of Engineering at CloudScale",
     avatar:
-      "https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&auto=format&fit=crop&w=927&q=80",
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     content:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam ut architecto magnam, fuga quidem inventore, earum obcaecati soluta labore consequatur quod amet doloribus ea ipsum iure accusamus veritatis aut excepturi.",
+      "Rizky's understanding of distributed architectures and clean code patterns set a new benchmark for our team. He is pragmatic, articulate, and exceptionally reliable.",
   },
 ]
 
-export const certifications = Array.from({ length: 10 }).map((_, i) => ({
-  id: i + 1,
-  thumbnail:
-    "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
-  title: `Certification ${i + 1}`,
-}))
+export const certifications = [
+  {
+    id: 1,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "AWS Certified Solutions Architect",
+  },
+  {
+    id: 2,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "Meta Certified Frontend Developer",
+  },
+  {
+    id: 3,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "Google Cloud Associate Engineer",
+  },
+  {
+    id: 4,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "Kubernetes Certified Application Developer",
+  },
+  {
+    id: 5,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "MongoDB Certified Developer Associate",
+  },
+  {
+    id: 6,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "Certified Information Security Manager",
+  },
+  {
+    id: 7,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "HashiCorp Certified Terraform Associate",
+  },
+  {
+    id: 8,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "Docker Certified Associate",
+  },
+  {
+    id: 9,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "Linux Professional Institute LPIC-2",
+  },
+  {
+    id: 10,
+    thumbnail:
+      "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+    title: "TypeScript Deep Dive Specialist",
+  },
+]

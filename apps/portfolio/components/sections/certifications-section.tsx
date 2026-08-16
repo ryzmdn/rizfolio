@@ -6,26 +6,27 @@ export function CertificationsSection() {
   return (
     <Container className="py-20">
       <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">Licenses & certifications</h2>
+        <h2 className="text-2xl font-medium">Licenses & Verified Certifications</h2>
 
         <div className="leading-7 text-muted-foreground">
           <p>
-            Helping businesses build intuitive products that drive growth.
+            Validated industry credentials and technical achievements across
+            cloud computing, web standards, and secure software development.
           </p>
         </div>
       </hgroup>
 
       <div className="relative flow-root w-full space-y-5 py-10">
-        <Marquee pauseOnHover className="[--duration:55s] [--gap:32px]">
-          {certifications.map((item) => (
+        <Marquee pauseOnHover className="[--duration:55s] [--gap:24px]">
+          {certifications.slice(0, 5).map((item) => (
             <div
               key={item.id}
-              className="aspect-4/3 max-h-40 w-auto sm:max-h-52 lg:max-h-64"
+              className="aspect-4/3 max-h-40 w-auto overflow-hidden rounded-xl bg-card border border-border/60 shadow-sm sm:max-h-52 lg:max-h-60"
             >
               <img
                 src={item.thumbnail}
                 alt={item.title}
-                className="size-full"
+                className="size-full object-cover"
               />
             </div>
           ))}
@@ -33,17 +34,17 @@ export function CertificationsSection() {
         <Marquee
           pauseOnHover
           reverse
-          className="[--duration:55s] [--gap:32px]"
+          className="[--duration:55s] [--gap:24px]"
         >
-          {certifications.map((item) => (
+          {certifications.slice(5, 10).map((item) => (
             <div
               key={item.id}
-              className="aspect-4/3 max-h-40 w-auto sm:max-h-52 lg:max-h-64"
+              className="aspect-4/3 max-h-40 w-auto overflow-hidden rounded-xl bg-card border border-border/60 shadow-sm sm:max-h-52 lg:max-h-60"
             >
               <img
                 src={item.thumbnail}
                 alt={item.title}
-                className="size-full"
+                className="size-full object-cover"
               />
             </div>
           ))}

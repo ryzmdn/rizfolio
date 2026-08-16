@@ -1,35 +1,38 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { BriefcaseBusiness } from "lucide-react"
+import { BriefcaseBusiness, Mail } from "lucide-react"
 import { personalInfo } from "@/data/portfolio-data"
 
 export function CtaSection() {
   return (
     <Container className="my-20 w-full bg-foreground shadow-xl md:rounded-4xl">
       <div className="px-6 py-24 text-center shadow-2xl sm:px-16">
-        <div className="mb-8 flex items-center justify-center gap-x-3 text-secondary">
+        <div className="mb-6 inline-flex items-center justify-center gap-x-2 rounded-full bg-secondary/10 px-4 py-1.5 text-secondary text-sm font-medium">
           <BriefcaseBusiness className="size-4" />
-          <p>Let&apos;s Work Together!</p>
+          <span>Available for High-Impact Projects</span>
         </div>
 
-        <h2 className="text-4xl font-semibold tracking-tight text-balance text-secondary sm:text-5xl lg:text-6xl">
-          Ready To Build Something Together
+        <h2 className="text-3xl font-semibold tracking-tight text-balance text-secondary sm:text-5xl lg:text-6xl">
+          Ready to Build Something Exceptional?
         </h2>
-        <p className="mt-6 text-lg/8 text-pretty text-muted-foreground">
-          Whether you&apos;re a brand, a platform or a creator - if
-          you&apos;re serious about growing an audience and generating
-          commercial value, let&apos;s talk.
+        <p className="mx-auto mt-6 max-w-2xl text-base/relaxed text-pretty text-muted sm:text-lg/8">
+          Whether you&apos;re launching a new digital venture, scaling existing
+          cloud systems, or seeking high-caliber engineering leadership—let&apos;s
+          turn ambitious visions into deterministic reality.
         </p>
 
-        <ul className="mt-16 grid gap-x-8 gap-y-10 text-secondary sm:mt-20 sm:grid-cols-2 sm:gap-y-16">
+        <ul className="mt-14 grid gap-6 text-secondary sm:mt-16 sm:grid-cols-2">
           {personalInfo.contactEmails.map((item, idx) => (
             <li
               key={idx}
-              className="flex flex-col items-start gap-y-1 border-l border-border/10 pl-6"
+              className="flex flex-col items-start gap-y-1.5 rounded-xl border border-secondary/10 bg-secondary/5 p-6 text-start backdrop-blur-xs transition-colors hover:bg-secondary/10"
             >
-              <p className="text-xs text-muted-foreground">{item.label}</p>
+              <div className="flex items-center gap-x-2 text-xs uppercase tracking-wider text-muted">
+                <Mail className="size-3.5" />
+                <span>{item.label}</span>
+              </div>
               <a
                 href={`mailto:${item.email}`}
-                className="text-xl font-medium tracking-tight hover:underline"
+                className="text-lg font-medium tracking-tight text-secondary hover:underline sm:text-xl"
               >
                 {item.email}
               </a>

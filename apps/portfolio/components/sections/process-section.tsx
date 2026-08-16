@@ -5,14 +5,13 @@ export function ProcessSection() {
   return (
     <Container className="space-y-16 bg-foreground py-16 md:rounded-4xl">
       <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium text-secondary">My Process</h2>
+        <h2 className="text-2xl font-medium text-secondary">Engineering Lifecycle</h2>
 
         <div className="leading-7 text-muted">
           <p>
-            Your compass to innovation and design excellence. From exploration
-            to execution, this dynamic framework fuels creativity and
-            precision, ensuring your product journey aligns seamlessly with
-            user desires.
+            A deterministic, battle-tested methodology designed to transform
+            complex product requirements into robust, production-ready software
+            systems.
           </p>
         </div>
       </hgroup>
