@@ -2,6 +2,7 @@ import React from "react"
 import { Footer } from "@workspace/ui/components/layouts/footer"
 import { buttonVariants } from "@workspace/ui/components/button"
 import { Facebook, Github, Instagram, Youtube } from "@workspace/ui/constants/icons"
+import { cn } from "@workspace/ui/lib/utils"
 
 const navigation = {
   main: [
@@ -63,9 +64,9 @@ export function AppFooter() {
             <a
               key={item.name}
               href={item.href}
-              className={buttonVariants({ variant: "outline", size: "sm" })}
+              className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-x-2")}
             >
-              <item.icon className="size-5" />
+              <item.icon className="size-4" data-icon="inline-start" />
               <span>{item.name}</span>
             </a>
           ))}

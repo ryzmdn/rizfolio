@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { Moon, Sun } from "lucide-react"
 import { flushSync } from "react-dom"
 import { cn } from "@workspace/ui/lib/utils"
@@ -41,8 +41,6 @@ export function AnimatedThemeToggle({
   ...props
 }: AnimatedThemeToggleProps) {
   const isControlled = theme !== undefined
-  const [internalIsDark, setInternalIsDark] = useState(false)
-  const isDark = isControlled ? theme === "dark" : internalIsDark
   const buttonRef = useRef<HTMLButtonElement>(null)
   const isTransitioningRef = useRef(false)
   const activeAnimRef = useRef<Animation | null>(null)
@@ -63,24 +61,6 @@ export function AnimatedThemeToggle({
     }
   }, [cancelAnim])
 
-  useEffect(() => {
-    if (isControlled) return
-
-    const updateTheme = () => {
-      setInternalIsDark(document.documentElement.classList.contains("dark"))
-    }
-
-    updateTheme()
-
-    const observer = new MutationObserver(updateTheme)
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    })
-
-    return () => observer.disconnect()
-  }, [isControlled])
-
   const toggleTheme = useCallback(() => {
     const button = buttonRef.current
     if (
@@ -89,6 +69,13 @@ export function AnimatedThemeToggle({
       document.documentElement.dataset.magicuiThemeVt === "active"
     )
       return
+
+    const isCurrentDark = isControlled
+      ? theme === "dark"
+      : document.documentElement.classList.contains("dark")
+
+    const newTheme = !isCurrentDark
+    const nextThemeString: "light" | "dark" = newTheme ? "dark" : "light"
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
@@ -108,13 +95,11 @@ export function AnimatedThemeToggle({
     )
 
     const applyTheme = () => {
-      const newTheme = !isDark
-      document.documentElement.classList.toggle("dark")
+      document.documentElement.classList.toggle("dark", newTheme)
       if (isControlled) {
-        onThemeChange?.(newTheme ? "dark" : "light")
+        onThemeChange?.(nextThemeString)
       } else {
-        setInternalIsDark(newTheme)
-        localStorage.setItem("theme", newTheme ? "dark" : "light")
+        localStorage.setItem("theme", nextThemeString)
       }
     }
 
@@ -178,8 +163,8 @@ export function AnimatedThemeToggle({
   }, [
     fromCenter,
     duration,
-    isDark,
     isControlled,
+    theme,
     onThemeChange,
     cancelAnim,
   ])
@@ -189,10 +174,12 @@ export function AnimatedThemeToggle({
       type="button"
       ref={buttonRef}
       onClick={toggleTheme}
-      className={cn(className)}
+      aria-label="Toggle theme"
+      className={cn("inline-flex items-center justify-center", className)}
       {...props}
     >
-      {isDark ? <Sun /> : <Moon />}
+      <Sun className="hidden size-4 dark:block" />
+      <Moon className="block size-4 dark:hidden" />
     </button>
   )
 }

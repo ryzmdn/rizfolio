@@ -7,13 +7,7 @@ import {
 } from "@workspace/ui/components/animated-toggle-theme"
 
 export function ThemeToggle(props: AnimatedThemeToggleProps) {
-  const { resolvedTheme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
 
-  return (
-    <AnimatedThemeToggle
-      theme={resolvedTheme === "dark" ? "dark" : "light"}
-      onThemeChange={setTheme}
-      {...props}
-    />
-  )
+  return <AnimatedThemeToggle onThemeChange={setTheme} {...props} />
 }
