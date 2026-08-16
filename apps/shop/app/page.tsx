@@ -1,69 +1,170 @@
-import Image from "next/image";
+import { Container } from "@workspace/ui/components/layouts"
+import { cn } from "@workspace/ui/lib/utils"
+import { Star } from "lucide-react"
+
+const products = [
+  {
+    id: 1,
+    name: "Organize Basic Set (Walnut)",
+    price: "$149",
+    rating: 5,
+    reviewCount: 38,
+    imageSrc:
+      "https://images.unsplash.com/photo-1585776245991-cf89dd7fc73a?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Wooden desk organizer set in walnut finish",
+    href: "#",
+  },
+  {
+    id: 2,
+    name: "Organize Pen Holder",
+    price: "$15",
+    rating: 5,
+    reviewCount: 18,
+    imageSrc:
+      "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Minimalist wooden desk pen holder with pens",
+    href: "#",
+  },
+  {
+    id: 3,
+    name: "Organize Sticky Note Holder",
+    price: "$15",
+    rating: 5,
+    reviewCount: 14,
+    imageSrc:
+      "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Desktop sticky note holder and notepad setup",
+    href: "#",
+  },
+  {
+    id: 4,
+    name: "Organize Phone Holder",
+    price: "$15",
+    rating: 4,
+    reviewCount: 21,
+    imageSrc:
+      "https://images.unsplash.com/photo-1586105251261-72a756497a11?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Wooden smartphone stand on office desk",
+    href: "#",
+  },
+  {
+    id: 5,
+    name: "Organize Small Tray",
+    price: "$15",
+    rating: 4,
+    reviewCount: 22,
+    imageSrc:
+      "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Small wooden organizer tray for small desk accessories",
+    href: "#",
+  },
+  {
+    id: 6,
+    name: "Organize Basic Set (Maple)",
+    price: "$149",
+    rating: 5,
+    reviewCount: 64,
+    imageSrc:
+      "https://images.unsplash.com/photo-1593642532400-2682810df593?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Maple wood desk organizer basic set setup",
+    href: "#",
+  },
+  {
+    id: 7,
+    name: "Out and About Bottle",
+    price: "$25",
+    rating: 4,
+    reviewCount: 12,
+    imageSrc:
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Re-usable minimalist water bottle",
+    href: "#",
+  },
+  {
+    id: 8,
+    name: "Daily Notebook Refill Pack",
+    price: "$14",
+    rating: 4,
+    reviewCount: 41,
+    imageSrc:
+      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Minimalist journal notebook refill pack",
+    href: "#",
+  },
+  {
+    id: 9,
+    name: "Leather Key Ring (Black)",
+    price: "$32",
+    rating: 5,
+    reviewCount: 24,
+    imageSrc:
+      "https://images.unsplash.com/photo-1628149455678-16f37bc392f4?q=80&w=800&auto=format&fit=crop",
+    imageAlt: "Black leather key ring accessory",
+    href: "#",
+  },
+]
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <Container className="py-16">
+        <hgroup className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
+            Protect your device
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            As a digital creative, your laptop or tablet is at the center of
+            your work. Keep your device safe with a fabric sleeve that matches
+            in quality and looks.
           </p>
+        </hgroup>
+
+        <div className="-mx-px grid grid-cols-2 border-l border-border sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="group relative border-r border-b border-border p-4 sm:p-6"
+            >
+              <img
+                alt={product.imageAlt}
+                src={product.imageSrc}
+                className="bg-borborder-border aspect-square rounded-lg object-cover group-hover:opacity-75"
+              />
+              <div className="pt-10 pb-4 text-center">
+                <h3 className="text-sm font-medium text-primary">
+                  <a href={product.href}>
+                    <span aria-hidden="true" className="absolute inset-0" />
+                    {product.name}
+                  </a>
+                </h3>
+                <div className="mt-3 flex flex-col items-center">
+                  <p className="sr-only">{product.rating} out of 5 stars</p>
+                  <div className="flex items-center">
+                    {[0, 1, 2, 3, 4].map((rating) => (
+                      <Star
+                        key={rating}
+                        aria-hidden="true"
+                        className={cn(
+                          product.rating > rating
+                            ? "text-yellow-400"
+                            : "opacity-25",
+                          "size-5 shrink-0"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {product.reviewCount} reviews
+                  </p>
+                </div>
+                <p className="mt-4 text-base font-medium text-accent-foreground">
+                  {product.price}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+      </Container>
+    </>
+  )
 }
