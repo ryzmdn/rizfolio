@@ -7,7 +7,7 @@ import Link from "next/link"
 
 export function HeroSection() {
   return (
-    <Container className="flow-root space-y-8 py-20 md:py-28">
+    <Container id="hero-section" className="flow-root space-y-8 py-20 md:py-28">
       <div className="relative flex gap-x-6 max-sm:flex-col max-sm:gap-y-3 sm:items-center">
         <div className="shrink-0 size-24 rounded-full bg-foreground/10 p-1.5 ring-1 ring-border ring-inset sm:size-28">
           <div className="relative size-full overflow-hidden rounded-full">
@@ -58,7 +58,7 @@ export function HeroSection() {
           See my Projects
         </Link>
         <Link
-          href="/#connect"
+          href="/#call-to-action"
           className={cn(
             buttonVariants({ variant: "ghost", size: "lg" }),
             "rounded-xl px-4 py-5.5"

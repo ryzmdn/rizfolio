@@ -4,7 +4,7 @@ import { certifications } from "@/data"
 
 export function CertificationsSection() {
   return (
-    <Container className="py-20">
+    <Container id="certifications" className="py-20">
       <hgroup className="w-full space-y-2">
         <h2 className="text-2xl font-medium">Licenses & Verified Certifications</h2>
 

@@ -3,7 +3,7 @@ import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
 import { Marquee } from "@workspace/ui/components/marquee"
 
-const softSkillsList = [
+const softSkillsList: string[] = [
   "Strategic Communication",
   "Product-Driven Mindset",
   "Cross-Functional Leadership",
@@ -14,7 +14,7 @@ const softSkillsList = [
   "Root Cause Analysis",
 ]
 
-const hardSkillsList = [
+const hardSkillsList: string[] = [
   "Next.js 16 & React 19",
   "TypeScript (Strict Mode)",
   "Node.js & Express / Hono",
@@ -25,7 +25,7 @@ const hardSkillsList = [
   "Edge Functions & Serverless",
 ]
 
-const knowledgeSkillsList = [
+const knowledgeSkillsList: string[] = [
   "System Design & Microservices",
   "CI/CD Pipeline Automation",
   "Web Performance (Core Web Vitals)",

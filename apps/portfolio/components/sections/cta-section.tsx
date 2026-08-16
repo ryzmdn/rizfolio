@@ -4,7 +4,7 @@ import { personalInfo } from "@/data"
 
 export function CtaSection() {
   return (
-    <Container className="my-20 w-full bg-foreground shadow-xl md:rounded-4xl">
+    <Container id="call-to-action" className="my-20 w-full bg-foreground shadow-xl md:rounded-4xl">
       <div className="px-6 py-24 text-center shadow-2xl sm:px-16">
         <div className="mb-6 inline-flex items-center justify-center gap-x-2 rounded-full text-secondary text-sm">
           <BriefcaseBusiness className="size-4" />

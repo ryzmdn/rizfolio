@@ -3,7 +3,7 @@ import { activitiesGallery } from "@/data"
 
 export function ActivitiesSection() {
   return (
-    <Container className="py-20">
+    <Container id="activities" className="py-20">
       <hgroup className="w-full space-y-2">
         <h2 className="text-2xl font-medium">Community & Collaborative Highlights</h2>
 

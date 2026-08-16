@@ -3,7 +3,7 @@ import { educationList } from "@/data"
 
 export function EducationSection() {
   return (
-    <Container className="py-20">
+    <Container id="education" className="py-20">
       <hgroup className="w-full space-y-2">
         <h2 className="text-2xl font-medium">Academic Background</h2>
 

@@ -45,7 +45,7 @@ const navigation = {
 
 export function AppFooter() {
   return (
-    <Footer className="w-full px-4 pb-12">
+    <Footer id="footer" className="w-full px-4 pb-12">
       <div className="mx-auto max-w-7xl overflow-hidden">
         <nav
           aria-label="Footer"

@@ -49,7 +49,6 @@ export function AppHeader() {
     return () => clearInterval(timer)
   }, [])
 
-  // Close mobile menu on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsMobileMenuOpen(false)
@@ -59,7 +58,7 @@ export function AppHeader() {
   }, [])
 
   return (
-    <Header className="absolute top-0 left-1/2 z-50 w-full max-w-4xl -translate-x-1/2 px-4 sm:px-6">
+    <Header id="header" className="absolute top-0 left-1/2 z-50 w-full max-w-4xl -translate-x-1/2 px-4 sm:px-6">
       <div className="flex items-center justify-between w-full h-20">
         <div className="flex items-center gap-x-2.5 text-sm">
           <div className="flex items-center text-foreground font-medium">
