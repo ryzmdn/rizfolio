@@ -1,8 +1,8 @@
 export const personalInfo = {
   name: "Rizky Ramadhan",
-  role: "Full-Stack Engineer & Product Builder",
+  role: "Full-Stack Engineer & Product Manager",
   avatar:
-    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Cha_Eun-woo%2C_March_31%2C_2025.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
+    "https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg",
   headline:
     "Engineering robust full-stack systems & high-impact digital experiences.",
   subheadline:
