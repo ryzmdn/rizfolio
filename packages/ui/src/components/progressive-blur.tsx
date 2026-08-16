@@ -4,21 +4,27 @@ export interface Props {
   className?: string
   height?: string
   blurLevels?: number[]
+  position?: "top" | "bottom"
 }
 
 export function ProgressiveBlur({
   className,
   height = "30%",
   blurLevels = [0.5, 1, 2, 4, 8, 16, 32, 64],
+  position = "bottom",
 }: Readonly<Props>) {
   const divElements = Array.from(
     { length: Math.max(blurLevels.length - 2, 0) }
   )
 
+  const direction = position === "top" ? "to top" : "to bottom"
+  const step = 100 / blurLevels.length
+
   return (
     <div
       className={cn(
-        "pointer-events-none fixed inset-x-0 bottom-0 z-10",
+        "pointer-events-none fixed inset-x-0 z-10",
+        position === "top" ? "top-0" : "bottom-0",
         className
       )}
       style={{ height }}
@@ -31,20 +37,20 @@ export function ProgressiveBlur({
           WebkitBackdropFilter: `blur(${blurLevels[0]}px)`,
           maskImage: `
             linear-gradient(
-              to bottom,
+              ${direction},
               rgba(0,0,0,0) 0%,
-              rgba(0,0,0,1) 12.5%,
-              rgba(0,0,0,1) 25%,
-              rgba(0,0,0,0) 37.5%
+              rgba(0,0,0,1) ${step}%,
+              rgba(0,0,0,1) ${step * 2}%,
+              rgba(0,0,0,0) ${step * 3}%
             )
           `,
           WebkitMaskImage: `
             linear-gradient(
-              to bottom,
+              ${direction},
               rgba(0,0,0,0) 0%,
-              rgba(0,0,0,1) 12.5%,
-              rgba(0,0,0,1) 25%,
-              rgba(0,0,0,0) 37.5%
+              rgba(0,0,0,1) ${step}%,
+              rgba(0,0,0,1) ${step * 2}%,
+              rgba(0,0,0,0) ${step * 3}%
             )
           `,
         }}
@@ -52,17 +58,18 @@ export function ProgressiveBlur({
 
       {divElements.map((_, index) => {
         const blurIndex = index + 1
-        const startPercent = blurIndex * 12.5
-        const midPercent = (blurIndex + 1) * 12.5
-        const endPercent = (blurIndex + 2) * 12.5
+        const startPercent = blurIndex * step
+        const midPercent = (blurIndex + 1) * step
+        const endPercent = (blurIndex + 2) * step
+        const fadeOutPercent = (blurIndex + 3) * step
 
         const maskGradient = `
           linear-gradient(
-            to bottom,
+            ${direction},
             rgba(0,0,0,0) ${startPercent}%,
             rgba(0,0,0,1) ${midPercent}%,
             rgba(0,0,0,1) ${endPercent}%,
-            rgba(0,0,0,0) ${endPercent + 12.5}%
+            rgba(0,0,0,0) ${fadeOutPercent}%
           )
         `
 
@@ -89,15 +96,15 @@ export function ProgressiveBlur({
           WebkitBackdropFilter: `blur(${blurLevels.at(-1)}px)`,
           maskImage: `
             linear-gradient(
-              to bottom,
-              rgba(0,0,0,0) 87.5%,
+              ${direction},
+              rgba(0,0,0,0) ${100 - step}%,
               rgba(0,0,0,1) 100%
             )
           `,
           WebkitMaskImage: `
             linear-gradient(
-              to bottom,
-              rgba(0,0,0,0) 87.5%,
+              ${direction},
+              rgba(0,0,0,0) ${100 - step}%,
               rgba(0,0,0,1) 100%
             )
           `,

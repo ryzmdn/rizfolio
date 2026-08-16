@@ -29,6 +29,7 @@ export default function RootLayout({
           <main id="layout-main" className="w-full max-w-4xl mx-auto bg-transparent">
             {children}
           </main>
+          <ProgressiveBlur position="top" height="32px" />
           <ProgressiveBlur height="40px" />
           <AppFooter />
         </AppProvider>

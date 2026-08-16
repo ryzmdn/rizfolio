@@ -42,7 +42,7 @@ export function AppHeader() {
   }, [])
 
   return (
-    <Header className="fixed top-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-4xl backdrop-blur-lg">
+    <Header className="absolute top-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-4xl">
       <div className="flex justify-between items-center px-4 py-6">
         <div className="flex items-center gap-x-2 text-sm/6">
           <div className="flex items-center text-accent-foreground">
