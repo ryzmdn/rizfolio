@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Link from "next/link"
 import { Header } from "@workspace/ui/components/layouts"
 import { Button } from "@workspace/ui/components/button"
 import { Info, Moon, User } from "lucide-react"

@@ -1,6 +1,6 @@
-import { Footer } from "@workspace/ui/components/layouts/footer"
-import { buttonVariants } from "../../button"
 import React from "react"
+import { Footer } from "@workspace/ui/components/layouts/footer"
+import { buttonVariants } from "@workspace/ui/components/button"
 
 const navigation = {
   main: [

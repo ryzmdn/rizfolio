@@ -4,8 +4,8 @@ import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
-import { AppHeader } from "@workspace/ui/components/apps/portfolio/app-header"
-import { AppFooter } from "@workspace/ui/components/apps/portfolio/app-footer"
+import { AppHeader } from "@/components/app-header"
+import { AppFooter } from "@/components/app-footer"
 
 export const metadata: Metadata = {
   title: "Portfolio",
