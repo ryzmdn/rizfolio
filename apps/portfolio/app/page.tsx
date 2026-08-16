@@ -2,7 +2,7 @@ import { Badge } from "@workspace/ui/components/badge"
 import { buttonVariants } from "@workspace/ui/components/button"
 import { Container } from "@workspace/ui/components/layouts"
 import { cn } from "@workspace/ui/lib/utils"
-import { Check, Star, User } from "lucide-react"
+import { BriefcaseBusiness, Check, Star, User } from "lucide-react"
 import React from "react"
 import { Marquee } from "../../../packages/ui/src/components/marquee"
 
@@ -626,9 +626,13 @@ export default function Home() {
               </div>
             ))}
           </Marquee>
-          <Marquee pauseOnHover reverse className="[--duration:55s] [--gap:32px]">
+          <Marquee
+            pauseOnHover
+            reverse
+            className="[--duration:55s] [--gap:32px]"
+          >
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_) => (
-              <div key={_} className="w-auto aspect-4/3 max-h-64">
+              <div key={_} className="aspect-4/3 max-h-64 w-auto">
                 <img
                   src="https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp"
                   alt=""
@@ -639,6 +643,40 @@ export default function Home() {
           </Marquee>
           <div className="pointer-events-none absolute inset-y-0 left-0 w-1/8 bg-linear-to-r from-background/90" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-1/8 bg-linear-to-l from-background/90" />
+        </div>
+      </Container>
+
+      <Container className="my-20 w-full bg-foreground shadow-xl md:rounded-4xl">
+        <div className="px-6 py-24 text-center shadow-2xl sm:px-16">
+          <div className="flex justify-center items-center gap-x-3 text-secondary mb-8">
+            <BriefcaseBusiness className="size-4" />
+            <p>Let&apos;s Work Together!</p>
+          </div>
+
+          <h2 className="text-4xl font-semibold tracking-tight text-balance text-secondary sm:text-5xl lg:text-6xl">
+            Ready To Build Something Together
+          </h2>
+          <p className="mt-6 text-lg/8 text-pretty text-muted-foreground">
+            Whether you&apos;re a brand, a platform or a creator - if
+            you&apos;re serious about growing an audience and generating
+            commercial value, let&apos;s talk.
+          </p>
+
+          <ul className="mt-16 grid gap-x-8 gap-y-10 text-secondary sm:mt-20 sm:grid-cols-2 sm:gap-y-16">
+            {[1, 2].map((_) => (
+              <li
+                key={_}
+                className="flex flex-col items-start gap-y-1 border-l border-border/10 pl-6"
+              >
+                <p className="text-xs text-muted-foreground">
+                  Let&apos;s Connect
+                </p>
+                <h3 className="text-xl font-medium tracking-tight">
+                  ryzmdn@contact.com
+                </h3>
+              </li>
+            ))}
+          </ul>
         </div>
       </Container>
     </>

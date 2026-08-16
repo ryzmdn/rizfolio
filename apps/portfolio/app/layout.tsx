@@ -3,8 +3,9 @@ import "@workspace/ui/styles/globals.css"
 import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
-import { AppHeader } from "@workspace/ui/components/apps/portfolio/header"
-import { ProgressiveBlur } from '../../../packages/ui/src/components/progressive-blur';
+import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
+import { AppHeader } from "@workspace/ui/components/apps/portfolio/app-header"
+import { AppFooter } from "@workspace/ui/components/apps/portfolio/app-footer"
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -29,6 +30,7 @@ export default function RootLayout({
             {children}
           </main>
           <ProgressiveBlur height="40px" />
+          <AppFooter />
         </AppProvider>
       </body>
     </html>
