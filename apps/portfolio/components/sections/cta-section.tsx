@@ -1,6 +1,6 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { BriefcaseBusiness, Mail } from "lucide-react"
-import { personalInfo } from "@/data/portfolio-data"
+import { personalInfo } from "@/data"
 
 export function CtaSection() {
   return (

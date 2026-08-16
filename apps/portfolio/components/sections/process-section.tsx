@@ -1,5 +1,5 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { engineeringProcess } from "@/data/portfolio-data"
+import { engineeringProcess } from "@/data"
 
 export function ProcessSection() {
   return (

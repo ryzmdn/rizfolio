@@ -1,5 +1,5 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { trustedLogos } from "@/data/portfolio-data"
+import { trustedLogos } from "@/data"
 
 export function TrustedBySection() {
   return (

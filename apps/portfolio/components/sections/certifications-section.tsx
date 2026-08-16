@@ -1,6 +1,6 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { Marquee } from "@workspace/ui/components/marquee"
-import { certifications } from "@/data/portfolio-data"
+import { certifications } from "@/data"
 
 export function CertificationsSection() {
   return (

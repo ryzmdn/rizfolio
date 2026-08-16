@@ -1,6 +1,6 @@
-import { Container } from "@workspace/ui/components/layouts"
 import { Quote } from "lucide-react"
-import { testimonials } from "@/data/portfolio-data"
+import { Container } from "@workspace/ui/components/layouts"
+import { testimonials } from "@/data"
 
 export function TestimonialsSection() {
   return (

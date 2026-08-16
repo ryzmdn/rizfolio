@@ -1,5 +1,5 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { activitiesGallery } from "@/data/portfolio-data"
+import { activitiesGallery } from "@/data"
 
 export function ActivitiesSection() {
   return (

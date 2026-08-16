@@ -3,7 +3,7 @@ import { Badge } from "@workspace/ui/components/badge"
 import { buttonVariants } from "@workspace/ui/components/button"
 import { ExternalLink, Star } from "lucide-react"
 import { Github } from "@workspace/ui/constants/icons"
-import { openSourceProjects } from "@/data/portfolio-data"
+import { openSourceProjects } from "@/data"
 
 export function OpenSourceSection() {
   return (

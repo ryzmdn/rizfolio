@@ -1,6 +1,6 @@
-import { Container } from "@workspace/ui/components/layouts"
 import { Check } from "lucide-react"
-import { services } from "@/data/portfolio-data"
+import { Container } from "@workspace/ui/components/layouts"
+import { services } from "@/data"
 
 export function ServicesSection() {
   return (

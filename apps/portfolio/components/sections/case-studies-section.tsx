@@ -1,5 +1,5 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { caseStudies } from "@/data/portfolio-data"
+import { caseStudies } from "@/data"
 
 export function CaseStudiesSection() {
   return (

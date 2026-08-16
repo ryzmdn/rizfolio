@@ -1,5 +1,5 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { educationList } from "@/data/portfolio-data"
+import { educationList } from "@/data"
 
 export function EducationSection() {
   return (

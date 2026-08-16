@@ -1,6 +1,6 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
-import { experienceList } from "@/data/portfolio-data"
+import { experienceList } from "@/data"
 
 export function ExperienceSection() {
   return (

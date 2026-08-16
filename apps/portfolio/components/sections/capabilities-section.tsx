@@ -1,7 +1,7 @@
+import { Brain, BrainCircuit, Handshake } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
 import { Marquee } from "@workspace/ui/components/marquee"
-import { Brain, BrainCircuit, Handshake } from "lucide-react"
 
 const softSkillsList = [
   "Strategic Communication",
