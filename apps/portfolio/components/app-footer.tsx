@@ -1,8 +1,14 @@
 import React from "react"
 import { Footer } from "@workspace/ui/components/layouts/footer"
 import { buttonVariants } from "@workspace/ui/components/button"
-import { Facebook, Github, Instagram, Youtube } from "@workspace/ui/constants/icons"
+import {
+  Facebook,
+  Github,
+  Instagram,
+  Youtube,
+} from "@workspace/ui/constants/icons"
 import { cn } from "@workspace/ui/lib/utils"
+import { NavLink } from "./nav-link"
 
 const navigation = {
   main: [
@@ -43,28 +49,26 @@ export function AppFooter() {
       <div className="mx-auto max-w-7xl overflow-hidden">
         <nav
           aria-label="Footer"
-          className="-mb-6 flex flex-wrap justify-center items-center gap-x-5 gap-y-3 text-sm/6"
+          className="-mb-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-sm/6"
         >
           {navigation.main.map((item, index, array) => (
             <React.Fragment key={item.name}>
-              <a
-                href={item.href}
-                className={buttonVariants({ variant: "link", size: "sm" })}
-              >
-                {item.name}
-              </a>
+              <NavLink href={item.href} first={item.name} last={item.name} />
               {index !== array.length - 1 && (
-                <span className="text-xs text-muted-foreground/50">/</span>
+                <span className="hidden text-xs text-muted-foreground/50 md:inline">/</span>
               )}
             </React.Fragment>
           ))}
         </nav>
-        <div className="mt-16 flex flex-wrap justify-center items-center gap-x-6">
+        <div className="mt-16 flex flex-wrap items-center justify-center gap-x-6">
           {navigation.social.map((item) => (
             <a
               key={item.name}
               href={item.href}
-              className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "gap-x-2")}
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "gap-x-2"
+              )}
             >
               <item.icon className="size-4" data-icon="inline-start" />
               <span>{item.name}</span>
