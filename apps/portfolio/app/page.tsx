@@ -4,6 +4,7 @@ import { Container } from "@workspace/ui/components/layouts"
 import { cn } from "@workspace/ui/lib/utils"
 import { Check, Star, User } from "lucide-react"
 import React from "react"
+import { Marquee } from "../../../packages/ui/src/components/marquee"
 
 const includedFeatures = [
   "Private forum access",
@@ -599,6 +600,45 @@ export default function Home() {
               </div>
             </div>
           ))}
+        </div>
+      </Container>
+
+      <Container className="py-20">
+        <hgroup className="w-full space-y-2">
+          <h2 className="text-2xl font-medium">Licenses & certifications</h2>
+
+          <div className="leading-7 text-muted-foreground">
+            <p>
+              Helping businesses build intuitive products that drive growth.
+            </p>
+          </div>
+        </hgroup>
+
+        <div className="relative flow-root w-full space-y-5 py-10">
+          <Marquee pauseOnHover className="[--duration:55s] [--gap:32px]">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_) => (
+              <div key={_} className="aspect-4/3 max-h-64">
+                <img
+                  src="https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp"
+                  alt=""
+                  className="size-full"
+                />
+              </div>
+            ))}
+          </Marquee>
+          <Marquee pauseOnHover reverse className="[--duration:55s] [--gap:32px]">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_) => (
+              <div key={_} className="w-auto aspect-4/3 max-h-64">
+                <img
+                  src="https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp"
+                  alt=""
+                  className="size-full"
+                />
+              </div>
+            ))}
+          </Marquee>
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/8 bg-linear-to-r from-background/90" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/8 bg-linear-to-l from-background/90" />
         </div>
       </Container>
     </>
