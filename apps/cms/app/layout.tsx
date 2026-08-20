@@ -3,6 +3,7 @@ import "@workspace/ui/styles/globals.css"
 import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
+import { CmsShell } from "../components/cms-shell"
 
 export const metadata: Metadata = {
   title: "Personal CMS",
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
       <body className={cn(fontVariables)}>
-        <AppProvider>{children}</AppProvider>
+        <AppProvider>
+          <CmsShell>{children}</CmsShell>
+        </AppProvider>
       </body>
     </html>
   )
