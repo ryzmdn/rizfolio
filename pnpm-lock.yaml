@@ -330,6 +330,34 @@ importers:
         specifier: ^5
         version: 5.9.3
 
+  packages/auth:
+    dependencies:
+      bcryptjs:
+        specifier: ^3.0.3
+        version: 3.0.3
+      jose:
+        specifier: ^6.1.4
+        version: 6.2.8
+    devDependencies:
+      '@types/bcryptjs':
+        specifier: ^2.4.6
+        version: 2.4.6
+      '@types/node':
+        specifier: ^20
+        version: 20.19.41
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      eslint:
+        specifier: ^9
+        version: 9.39.4(jiti@2.7.0)
+      typescript:
+        specifier: ^5
+        version: 5.9.3
+
   packages/db:
     dependencies:
       '@supabase/supabase-js':
@@ -1767,6 +1795,9 @@ packages:
     cpu: [arm64]
     os: [win32]
 
+  '@types/bcryptjs@2.4.6':
+    resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
+
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
@@ -1955,6 +1986,10 @@ packages:
   baseline-browser-mapping@2.10.32:
     resolution: {integrity: sha512-wbPvpyjJPC0zdfdKXxqEL3Ea+bOMD/87X4lftiJkkaBiuG6ALQy1SLmEd7BSmVCuwCQsBrCamgBoLyfFDD1EPg==}
     engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  bcryptjs@3.0.3:
+    resolution: {integrity: sha512-GlF5wPWnSa/X5LKM1o0wz0suXIINz1iHRLvTS+sLyi7XPbe5ycmYI3DlZqVGZZtDgl4DmasFg7gOB3JYbphV5g==}
     hasBin: true
 
   body-parser@2.3.0:
@@ -5072,6 +5107,8 @@ snapshots:
   '@turbo/windows-arm64@2.10.9':
     optional: true
 
+  '@types/bcryptjs@2.4.6': {}
+
   '@types/estree@1.0.9': {}
 
   '@types/json-schema@7.0.15': {}
@@ -5300,6 +5337,8 @@ snapshots:
   balanced-match@4.0.4: {}
 
   baseline-browser-mapping@2.10.32: {}
+
+  bcryptjs@3.0.3: {}
 
   body-parser@2.3.0:
     dependencies:
