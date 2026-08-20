@@ -3,7 +3,6 @@ import "@workspace/ui/styles/globals.css"
 import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
-import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 
 export const metadata: Metadata = {
   title: "Personal Blog",

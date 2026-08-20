@@ -1,5 +1,5 @@
 import { Container } from "@workspace/ui/components/layouts/container"
-import { FolderGit2, ArrowUpRight } from "lucide-react"
+import { FolderGit2 } from "lucide-react"
 
 export default function ArchivePage() {
   return (
