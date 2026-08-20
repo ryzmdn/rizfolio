@@ -20,7 +20,7 @@ export function FilterBar({
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
 
   const currentCategory = searchParams.get("category") || "ALL"
   const currentSearch = searchParams.get("search") || ""

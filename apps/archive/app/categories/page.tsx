@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Container } from "@workspace/ui/components/layouts/container"
 import { getCategoriesAndCourses } from "../../lib/queries"
-import { GraduationCap, FolderGit2, BookOpen } from "lucide-react"
+import { GraduationCap, BookOpen } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
