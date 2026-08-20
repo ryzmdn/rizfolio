@@ -29,10 +29,15 @@ export async function loginAdmin(
     return { error: "Email dan password wajib diisi." }
   }
 
-  const ownerEmail = process.env.CMS_OWNER_EMAIL || "owner@example.com"
+  const ownerEmail = process.env.CMS_OWNER_EMAIL
+  const ownerEnvPassword = process.env.CMS_OWNER_PASSWORD
 
-  if (email.toLowerCase() !== ownerEmail.toLowerCase()) {
+  if (email.toLowerCase() !== ownerEmail?.toLowerCase()) {
     return { error: "Akses ditolak. Email tidak terdaftar sebagai Owner." }
+  }
+
+  if (ownerEnvPassword && password !== ownerEnvPassword) {
+    return { error: "Password Owner tidak valid." }
   }
 
   try {
@@ -59,9 +64,11 @@ export async function loginAdmin(
         userId = newUser.id
       }
     } else {
-      const isValid = await verifyPassword(password, existingUser.passwordHash)
-      if (!isValid) {
-        return { error: "Password yang Anda masukkan salah." }
+      if (!ownerEnvPassword) {
+        const isValid = await verifyPassword(password, existingUser.passwordHash)
+        if (!isValid) {
+          return { error: "Password yang Anda masukkan salah." }
+        }
       }
 
       await db
