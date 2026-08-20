@@ -44,6 +44,13 @@ export default async function OverviewDashboard() {
       icon: ShoppingBag,
     },
     {
+      title: "Orders Received",
+      value: orders.length,
+      published: orders.filter((o) => o.status === "PAID").length,
+      href: "/shop",
+      icon: ShoppingBag,
+    },
+    {
       title: "Repositories",
       value: repos.length,
       published: repos.filter((r) => r.isPublic).length,

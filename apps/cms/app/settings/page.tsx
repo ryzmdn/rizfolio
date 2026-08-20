@@ -7,7 +7,12 @@ export const dynamic = "force-dynamic"
 
 export default async function SettingsPage() {
   const settings = await getSiteSettings("general")
-  const valueJson = (settings?.valueJson as Record<string, any>) || {}
+  const valueJson = (settings?.valueJson as Record<string, string | boolean>) || {}
+
+  const siteName = typeof valueJson.siteName === "string" ? valueJson.siteName : "Rizfolio"
+  const siteUrl = typeof valueJson.siteUrl === "string" ? valueJson.siteUrl : "https://ryzmdn.dev"
+  const contactEmail = typeof valueJson.contactEmail === "string" ? valueJson.contactEmail : "contact@ryzmdn.dev"
+  const maintenanceMode = Boolean(valueJson.maintenanceMode)
 
   return (
     <CmsPageShell
@@ -64,7 +69,7 @@ export default async function SettingsPage() {
                 <label className="text-xs font-medium text-foreground">Nama Website</label>
                 <input
                   name="siteName"
-                  defaultValue={valueJson.siteName || "Rizfolio"}
+                  defaultValue={siteName}
                   required
                   className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
                 />
@@ -74,7 +79,7 @@ export default async function SettingsPage() {
                 <label className="text-xs font-medium text-foreground">URL Domain Produksi</label>
                 <input
                   name="siteUrl"
-                  defaultValue={valueJson.siteUrl || "https://ryzmdn.dev"}
+                  defaultValue={siteUrl}
                   required
                   className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
                 />
@@ -86,7 +91,7 @@ export default async function SettingsPage() {
                 <label className="text-xs font-medium text-foreground">Email Kontak</label>
                 <input
                   name="contactEmail"
-                  defaultValue={valueJson.contactEmail || "contact@ryzmdn.dev"}
+                  defaultValue={contactEmail}
                   type="email"
                   required
                   className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
@@ -97,7 +102,7 @@ export default async function SettingsPage() {
                 <label className="text-xs font-medium text-foreground">Status Pemeliharaan (Maintenance)</label>
                 <select
                   name="maintenanceMode"
-                  defaultValue={valueJson.maintenanceMode ? "true" : "false"}
+                  defaultValue={maintenanceMode ? "true" : "false"}
                   className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
                 >
                   <option value="false">Normal (Live)</option>

@@ -28,7 +28,7 @@ export function DeleteButton({ onConfirm, itemName = "item ini" }: DeleteConfirm
         type="button"
         onClick={() => setIsOpen(true)}
         className="inline-flex size-7 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-destructive hover:bg-destructive/10 hover:text-destructive"
-        title="Hapus"
+        title={`Hapus ${itemName}`}
       >
         <Trash2 className="size-3.5" />
       </button>
@@ -37,7 +37,7 @@ export function DeleteButton({ onConfirm, itemName = "item ini" }: DeleteConfirm
 
   return (
     <div className="inline-flex items-center gap-1.5 rounded-lg border border-destructive/30 bg-destructive/5 p-1 text-xs">
-      <span className="text-[11px] text-destructive px-1">Yakin hapus?</span>
+      <span className="text-[11px] text-destructive px-1">Hapus {itemName}?</span>
       <button
         type="button"
         disabled={isDeleting}
