@@ -1,22 +1,100 @@
 import { Container } from "@workspace/ui/components/layouts/container"
 import { FolderGit2 } from "lucide-react"
+import { getRepositories, getRepoStats, getCategoriesAndCourses } from "../lib/queries"
+import { FilterBar } from "../components/filter-bar"
+import { RepoCard } from "../components/repo-card"
 
-export default function ArchivePage() {
+export const dynamic = "force-dynamic"
+
+export default async function ArchivePage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    category?: string
+    search?: string
+    course?: string
+    sort?: "latest" | "stars" | "downloads"
+  }>
+}) {
+  const params = await searchParams
+  const [repos, stats, { courses }] = await Promise.all([
+    getRepositories({
+      category: params.category,
+      search: params.search,
+      courseName: params.course,
+      sortBy: params.sort,
+    }),
+    getRepoStats(),
+    getCategoriesAndCourses(),
+  ])
+
   return (
-    <Container className="py-20">
-      <div className="max-w-2xl space-y-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
-          <FolderGit2 className="size-3.5" />
-          <span>Code & Assignment Archive</span>
+    <Container className="py-12 space-y-10">
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between border-b border-border/70 pb-8">
+        <div className="space-y-3 max-w-2xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1 text-xs text-muted-foreground">
+            <FolderGit2 className="size-3.5" />
+            <span>Open Source & Academic Explorer</span>
+          </div>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            Code Archive
+          </h1>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            Koleksi repositori tugas kuliah, eksperimen mini, dan proyek sumber
+            terbuka. Telusuri struktur kode dan unduh secara bebas.
+          </p>
         </div>
-        <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
-          Open Source & Academic Archive
-        </h1>
-        <p className="text-muted-foreground leading-relaxed">
-          A minimalist repository explorer for university coursework, mini
-          experiments, and open-source tools.
-        </p>
+
+        <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground border border-border/70 rounded-xl p-3 bg-card/60">
+          <div className="flex flex-col">
+            <span className="text-foreground font-semibold text-base tabular-nums">
+              {stats.total}
+            </span>
+            <span className="text-[11px]">Repositories</span>
+          </div>
+          <div className="h-6 w-px bg-border/80" />
+          <div className="flex flex-col">
+            <span className="text-foreground font-semibold text-base tabular-nums">
+              {stats.assignments}
+            </span>
+            <span className="text-[11px]">Tugas Kuliah</span>
+          </div>
+          <div className="h-6 w-px bg-border/80" />
+          <div className="flex flex-col">
+            <span className="text-foreground font-semibold text-base tabular-nums">
+              {stats.totalStars}
+            </span>
+            <span className="text-[11px]">Stars</span>
+          </div>
+        </div>
       </div>
+
+      <FilterBar courses={courses} />
+
+      {repos.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+          Tidak ada repositori yang cocok dengan filter atau pencarian Anda.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {repos.map((repo) => (
+            <RepoCard
+              key={repo.id}
+              slug={repo.slug}
+              name={repo.name}
+              description={repo.description}
+              category={repo.category}
+              courseName={repo.courseName}
+              semester={repo.semester}
+              techStack={repo.techStack}
+              starsCount={repo.starsCount}
+              downloadsCount={repo.downloadsCount}
+              viewsCount={repo.viewsCount}
+              demoUrl={repo.demoUrl}
+            />
+          ))}
+        </div>
+      )}
     </Container>
   )
 }
