@@ -5,8 +5,8 @@ import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 
 export const metadata: Metadata = {
-  title: "Changelog",
-  description: "Product updates and release notes",
+  title: "Archive",
+  description: "Open source projects, experiments, and coursework",
 }
 
 export default function RootLayout({
