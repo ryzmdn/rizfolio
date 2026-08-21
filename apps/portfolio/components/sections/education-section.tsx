@@ -1,7 +1,14 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { educationList } from "@/data"
+import type { EducationItem } from "@/lib/queries"
 
-export function EducationSection() {
+interface EducationSectionProps {
+  education?: EducationItem[]
+}
+
+export function EducationSection({
+  education = educationList,
+}: EducationSectionProps) {
   return (
     <Container id="education" className="py-20">
       <hgroup className="w-full space-y-2">
@@ -17,7 +24,7 @@ export function EducationSection() {
       </hgroup>
 
       <div className="w-full divide-y divide-border/60 py-10">
-        {educationList.map((edu, idx) => (
+        {education.map((edu, idx) => (
           <div
             key={idx}
             className="grid w-full items-center py-8 lg:grid-cols-4"

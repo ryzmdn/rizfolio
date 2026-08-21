@@ -1,7 +1,14 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { caseStudies } from "@/data"
+import { caseStudies as fallbackCaseStudies } from "@/data"
+import type { CaseStudyItem } from "@/lib/queries"
 
-export function CaseStudiesSection() {
+interface CaseStudiesSectionProps {
+  caseStudies?: CaseStudyItem[]
+}
+
+export function CaseStudiesSection({
+  caseStudies = fallbackCaseStudies,
+}: CaseStudiesSectionProps) {
   return (
     <Container id="case-studies" className="py-32">
       <hgroup className="w-full space-y-2">

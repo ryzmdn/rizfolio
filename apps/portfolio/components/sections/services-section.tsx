@@ -1,8 +1,15 @@
 import { Check } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
-import { services } from "@/data"
+import { services as fallbackServices } from "@/data"
+import type { ServiceItem } from "@/lib/queries"
 
-export function ServicesSection() {
+interface ServicesSectionProps {
+  services?: ServiceItem[]
+}
+
+export function ServicesSection({
+  services = fallbackServices,
+}: ServicesSectionProps) {
   return (
     <Container id="solutions" className="py-20">
       <hgroup className="w-full space-y-2">
@@ -30,23 +37,27 @@ export function ServicesSection() {
               <p className="mt-4 text-base/7 text-muted-foreground">
                 {service.description}
               </p>
-              <div className="mt-8 flex items-center gap-x-4">
-                <h4 className="flex-none text-sm/6 font-semibold text-accent-foreground">
-                  Deliverables & Features
-                </h4>
-                <div className="h-px flex-auto bg-border/60" />
-              </div>
-              <ul
-                role="list"
-                className="mt-8 grid grid-cols-1 gap-4 text-sm/6 text-muted-foreground sm:grid-cols-2 sm:gap-6"
-              >
-                {service.features.map((feature, fIdx) => (
-                  <li key={fIdx} className="flex items-center gap-x-3 text-foreground">
-                    <Check className="size-4 text-primary shrink-0" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+              {service.features && service.features.length > 0 && (
+                <>
+                  <div className="mt-8 flex items-center gap-x-4">
+                    <h4 className="flex-none text-sm/6 font-semibold text-accent-foreground">
+                      Deliverables & Features
+                    </h4>
+                    <div className="h-px flex-auto bg-border/60" />
+                  </div>
+                  <ul
+                    role="list"
+                    className="mt-8 grid grid-cols-1 gap-4 text-sm/6 text-muted-foreground sm:grid-cols-2 sm:gap-6"
+                  >
+                    {service.features.map((feature, fIdx) => (
+                      <li key={fIdx} className="flex items-center gap-x-3 text-foreground">
+                        <Check className="size-4 text-primary shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
           </div>
         ))}
