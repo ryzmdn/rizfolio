@@ -1,6 +1,6 @@
 "use server"
 
-import { cookies } from "next/headers"
+import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { db, eq } from "@workspace/db"
 import { users } from "@workspace/db/schema"
@@ -9,6 +9,9 @@ import {
   verifyPassword,
   createSessionToken,
   validateOwnerSession,
+  checkRateLimit,
+  consumeRateLimit,
+  resetRateLimit,
   SESSION_COOKIE_NAME,
   SESSION_COOKIE_OPTIONS,
 } from "@workspace/auth"
@@ -18,10 +21,42 @@ export interface AuthState {
   success?: boolean
 }
 
+async function getClientIp(): Promise<string> {
+  try {
+    const headersList = await headers()
+    const forwardedFor = headersList.get("x-forwarded-for")
+    if (forwardedFor) {
+      const firstIp = forwardedFor.split(",")[0]?.trim()
+      if (firstIp) return firstIp
+    }
+    const realIp = headersList.get("x-real-ip")
+    if (realIp) {
+      return realIp.trim()
+    }
+    const cfIp = headersList.get("cf-connecting-ip")
+    if (cfIp) {
+      return cfIp.trim()
+    }
+  } catch {
+    // Fallback when headers() is called outside request scope
+  }
+  return "127.0.0.1"
+}
+
 export async function loginAdmin(
   prevState: AuthState | null,
   formData: FormData
 ): Promise<AuthState | null> {
+  const clientIp = await getClientIp()
+  const rateLimitStatus = checkRateLimit(clientIp)
+
+  if (!rateLimitStatus.allowed) {
+    const minutes = Math.ceil(rateLimitStatus.retryAfterSeconds / 60)
+    return {
+      error: `Terlalu banyak percobaan login yang gagal. Silakan coba lagi dalam ${minutes} menit.`,
+    }
+  }
+
   const email = formData.get("email")?.toString().trim()
   const password = formData.get("password")?.toString()
 
@@ -44,6 +79,7 @@ export async function loginAdmin(
 
     if (existingUser) {
       if (existingUser.role !== "OWNER" || existingUser.email.toLowerCase() !== ownerEnvEmail) {
+        consumeRateLimit(clientIp)
         return { error: "Akses ditolak. Pengguna bukan merupakan Owner." }
       }
 
@@ -53,6 +89,7 @@ export async function loginAdmin(
       )
 
       if (!isPasswordValid) {
+        consumeRateLimit(clientIp)
         return { error: "Password yang Anda masukkan salah." }
       }
 
@@ -64,6 +101,7 @@ export async function loginAdmin(
         .where(eq(users.id, existingUser.id))
     } else {
       if (normalizedEmail !== ownerEnvEmail) {
+        consumeRateLimit(clientIp)
         return { error: "Akses ditolak. Email tidak terdaftar sebagai Owner." }
       }
 
@@ -71,11 +109,11 @@ export async function loginAdmin(
         return { error: "Konfigurasi autentikasi Owner belum lengkap." }
       }
 
-      // Auto-provision initial owner user with bcrypt hash
       const envPasswordHash = await hashPassword(ownerEnvPassword)
       const isPasswordValid = await verifyPassword(password, envPasswordHash)
 
       if (!isPasswordValid) {
+        consumeRateLimit(clientIp)
         return { error: "Password Owner tidak valid." }
       }
 
@@ -95,6 +133,8 @@ export async function loginAdmin(
     if (!userId) {
       return { error: "Gagal memproses sesi pengguna." }
     }
+
+    resetRateLimit(clientIp)
 
     const token = await createSessionToken({
       userId,
