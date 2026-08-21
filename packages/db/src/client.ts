@@ -31,8 +31,8 @@ if (!rawConnectionString || rawConnectionString.trim() === "") {
   }
 }
 
-const connectionString = (process.env.DATABASE_URL!)
-  .replace(/&#35;/g, "%23")
+const connectionString = process.env
+  .DATABASE_URL!.replace(/&#35;/g, "%23")
   .trim()
 
 const isProduction = process.env.NODE_ENV === "production"
