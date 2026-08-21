@@ -1,131 +1,131 @@
 "use client"
 
-import React from "react"
-import { ChevronsUpDown } from "lucide-react"
-import { Button } from "@workspace/ui/components/button"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu"
+import React, { useTransition } from "react"
+import { useRouter, useSearchParams, usePathname } from "next/navigation"
+import { Search, X, Layers } from "lucide-react"
+import { cn } from "@workspace/ui/lib/utils"
+import type { CategoryWithCount } from "@/lib/queries"
 
-export function FilterSection() {
-  const [paymentMethod, setPaymentMethod] = React.useState("card")
-  const [notifications, setNotifications] = React.useState({
-    email: true,
-    sms: false,
-    push: true,
-  })
+interface FilterSectionProps {
+  categories: CategoryWithCount[]
+  activeCategory?: string
+  searchQuery?: string
+  totalPosts: number
+}
+
+export function FilterSection({
+  categories,
+  activeCategory = "all",
+  searchQuery = "",
+  totalPosts,
+}: FilterSectionProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
+  const [query, setQuery] = React.useState(searchQuery)
+
+  const createQueryString = (name: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    if (value && value !== "all") {
+      params.set(name, value)
+    } else {
+      params.delete(name)
+    }
+    params.delete("page")
+    return params.toString()
+  }
+
+  const handleCategorySelect = (slug: string) => {
+    startTransition(() => {
+      const queryString = createQueryString("category", slug)
+      router.push(queryString ? `${pathname}?${queryString}` : pathname)
+    })
+  }
+
+  const handleSearchSubmit = (e: React.SubmitEvent) => {
+    e.preventDefault()
+    startTransition(() => {
+      const queryString = createQueryString("q", query.trim())
+      router.push(queryString ? `${pathname}?${queryString}` : pathname)
+    })
+  }
+
+  const handleClearSearch = () => {
+    setQuery("")
+    startTransition(() => {
+      const queryString = createQueryString("q", "")
+      router.push(queryString ? `${pathname}?${queryString}` : pathname)
+    })
+  }
 
   return (
-    <>
-      <div className="flex-1">
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button variant="ghost">
-                Sort{" "}
-                <ChevronsUpDown className="size-3.5 text-muted-foreground" />
-              </Button>
-            }
-          />
-          <DropdownMenuContent className="min-w-40">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Sort By</DropdownMenuLabel>
-              <DropdownMenuRadioGroup
-                value={paymentMethod}
-                onValueChange={setPaymentMethod}
-              >
-                <DropdownMenuRadioItem value="card">halo</DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="flex items-center gap-x-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button variant="ghost">
-                Topics{" "}
-                <ChevronsUpDown className="size-3.5 text-muted-foreground" />
-              </Button>
-            }
-          />
-          <DropdownMenuContent className="w-48">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Select Topics</DropdownMenuLabel>
-              <DropdownMenuCheckboxItem
-                checked={notifications.email}
-                onCheckedChange={(checked) =>
-                  setNotifications({
-                    ...notifications,
-                    email: checked === true,
-                  })
-                }
-              >
-                Technology
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <div className="w-full space-y-4">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+          <button
+            onClick={() => handleCategorySelect("all")}
+            className={cn(
+              "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 cursor-pointer",
+              activeCategory === "all" || !activeCategory
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+            )}
+          >
+            <Layers className="size-3.5" />
+            <span>All Posts</span>
+            <span className="text-[10px] opacity-70">({totalPosts})</span>
+          </button>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button variant="ghost">
-                Tags{" "}
-                <ChevronsUpDown className="size-3.5 text-muted-foreground" />
-              </Button>
-            }
-          />
-          <DropdownMenuContent className="w-48">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Select Tags</DropdownMenuLabel>
-              <DropdownMenuCheckboxItem
-                checked={notifications.email}
-                onCheckedChange={(checked) =>
-                  setNotifications({
-                    ...notifications,
-                    email: checked === true,
-                  })
-                }
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat.slug
+            return (
+              <button
+                key={cat.id}
+                onClick={() => handleCategorySelect(cat.slug)}
+                className={cn(
+                  "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 cursor-pointer",
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-xs"
+                    : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                )}
               >
-                Lifestyle
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                <span>{cat.name}</span>
+                <span className="text-[10px] opacity-70">({cat.count})</span>
+              </button>
+            )
+          })}
+        </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button variant="ghost">
-                Read Time{" "}
-                <ChevronsUpDown className="size-3.5 text-muted-foreground" />
-              </Button>
-            }
+        <form
+          onSubmit={handleSearchSubmit}
+          className="relative flex items-center min-w-64 max-w-sm"
+        >
+          <Search className="absolute left-3 size-3.5 text-muted-foreground pointer-events-none" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search articles..."
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-lg border border-border bg-card/60 placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary/50 transition-all"
           />
-          <DropdownMenuContent className="min-w-40">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Reading Time</DropdownMenuLabel>
-              <DropdownMenuRadioGroup
-                value={paymentMethod}
-                onValueChange={setPaymentMethod}
-              >
-                <DropdownMenuRadioItem value="card">
-                  3 min
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          {query && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="absolute right-2.5 p-0.5 text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              <X className="size-3.5" />
+            </button>
+          )}
+        </form>
       </div>
-    </>
+
+      {isPending && (
+        <div className="h-0.5 w-full bg-primary/20 overflow-hidden rounded-full">
+          <div className="h-full bg-primary animate-pulse w-1/3" />
+        </div>
+      )}
+    </div>
   )
 }
