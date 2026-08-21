@@ -14,23 +14,34 @@ import {
   CertificationsSection,
   CtaSection,
 } from "@/components/sections"
+import { getPortfolioPageData } from "@/lib/queries"
 
-export default function Home() {
+export default async function Home() {
+  const {
+    profile,
+    experiences,
+    education,
+    certifications,
+    services,
+    caseStudies,
+    testimonials,
+  } = await getPortfolioPageData()
+
   return (
     <>
-      <HeroSection />
+      <HeroSection data={profile} />
       <TrustedBySection />
-      <AboutSection />
+      <AboutSection data={profile} />
       <ProcessSection />
-      <ServicesSection />
-      <CaseStudiesSection />
+      <ServicesSection services={services} />
+      <CaseStudiesSection caseStudies={caseStudies} />
       <ActivitiesSection />
-      <EducationSection />
-      <ExperienceSection />
+      <EducationSection education={education} />
+      <ExperienceSection experiences={experiences} />
       <CapabilitiesSection />
       <OpenSourceSection />
-      <TestimonialsSection />
-      <CertificationsSection />
+      <TestimonialsSection testimonials={testimonials} />
+      <CertificationsSection certifications={certifications} />
       <CtaSection />
     </>
   )
