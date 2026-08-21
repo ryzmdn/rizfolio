@@ -31,16 +31,9 @@ if (!rawConnectionString || rawConnectionString.trim() === "") {
   }
 }
 
-const connectionString = process.env.DATABASE_URL!
-
-if (
-  !connectionString.startsWith("postgresql://") &&
-  !connectionString.startsWith("postgres://")
-) {
-  throw new Error(
-    "CRITICAL DATABASE CONFIGURATION ERROR: Invalid DATABASE_URL protocol. URL must start with 'postgresql://' or 'postgres://'."
-  )
-}
+const connectionString = (process.env.DATABASE_URL!)
+  .replace(/&#35;/g, "%23")
+  .trim()
 
 const isProduction = process.env.NODE_ENV === "production"
 
