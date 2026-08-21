@@ -43,6 +43,8 @@ async function getClientIp(): Promise<string> {
   return "127.0.0.1"
 }
 
+const GENERIC_AUTH_ERROR = "Email atau password yang Anda masukkan tidak valid."
+
 export async function loginAdmin(
   prevState: AuthState | null,
   formData: FormData
@@ -64,23 +66,31 @@ export async function loginAdmin(
     return { error: "Email dan password wajib diisi." }
   }
 
-  const ownerEnvEmail = process.env.CMS_OWNER_EMAIL?.toLowerCase()
+  const ownerEnvEmail = process.env.CMS_OWNER_EMAIL?.toLowerCase().trim()
   const ownerEnvPassword = process.env.CMS_OWNER_PASSWORD
 
   try {
+    const normalizedEmail = email.toLowerCase().trim()
+
     const [existingUser] = await db
       .select()
       .from(users)
-      .where(eq(users.email, email.toLowerCase()))
+      .where(eq(users.email, normalizedEmail))
       .limit(1)
 
-    const normalizedEmail = email.toLowerCase().trim()
     let userId: string | undefined
 
     if (existingUser) {
-      if (existingUser.role !== "OWNER" || existingUser.email.toLowerCase() !== ownerEnvEmail) {
+      if (
+        existingUser.role !== "OWNER" ||
+        existingUser.email.toLowerCase() !== ownerEnvEmail
+      ) {
         consumeRateLimit(clientIp)
-        return { error: "Akses ditolak. Pengguna bukan merupakan Owner." }
+        console.warn("[CMS Auth] Unauthorized login attempt for non-owner user", {
+          ip: clientIp,
+          timestamp: Date.now(),
+        })
+        return { error: GENERIC_AUTH_ERROR }
       }
 
       const isPasswordValid = await verifyPassword(
@@ -90,7 +100,11 @@ export async function loginAdmin(
 
       if (!isPasswordValid) {
         consumeRateLimit(clientIp)
-        return { error: "Password yang Anda masukkan salah." }
+        console.warn("[CMS Auth] Failed login attempt: Invalid password", {
+          ip: clientIp,
+          timestamp: Date.now(),
+        })
+        return { error: GENERIC_AUTH_ERROR }
       }
 
       userId = existingUser.id
@@ -102,11 +116,18 @@ export async function loginAdmin(
     } else {
       if (normalizedEmail !== ownerEnvEmail) {
         consumeRateLimit(clientIp)
-        return { error: "Akses ditolak. Email tidak terdaftar sebagai Owner." }
+        console.warn("[CMS Auth] Failed login attempt: Unrecognized email", {
+          ip: clientIp,
+          timestamp: Date.now(),
+        })
+        return { error: GENERIC_AUTH_ERROR }
       }
 
       if (!ownerEnvPassword) {
-        return { error: "Konfigurasi autentikasi Owner belum lengkap." }
+        console.error(
+          "[CMS Auth] Configuration error: CMS_OWNER_PASSWORD environment variable is not defined."
+        )
+        return { error: "Layanan autentikasi administrator saat ini tidak tersedia." }
       }
 
       const envPasswordHash = await hashPassword(ownerEnvPassword)
@@ -114,7 +135,11 @@ export async function loginAdmin(
 
       if (!isPasswordValid) {
         consumeRateLimit(clientIp)
-        return { error: "Password Owner tidak valid." }
+        console.warn("[CMS Auth] Failed initial provisioning: Invalid owner password", {
+          ip: clientIp,
+          timestamp: Date.now(),
+        })
+        return { error: GENERIC_AUTH_ERROR }
       }
 
       const [newUser] = await db
@@ -131,26 +156,28 @@ export async function loginAdmin(
     }
 
     if (!userId) {
-      return { error: "Gagal memproses sesi pengguna." }
+      return { error: "Gagal memproses sesi administrator." }
     }
 
     resetRateLimit(clientIp)
 
     const token = await createSessionToken({
       userId,
-      email: email.toLowerCase(),
+      email: normalizedEmail,
       role: "OWNER",
     })
 
     const cookieStore = await cookies()
     cookieStore.set(SESSION_COOKIE_NAME, token, SESSION_COOKIE_OPTIONS)
   } catch (error) {
-    console.error("Login error:", error)
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Terjadi kesalahan server saat memproses login."
-    return { error: `Gagal memproses login: ${message}` }
+    console.error("[CMS Auth] Server error during login processing:", {
+      ip: clientIp,
+      error: error instanceof Error ? error.message : "Unknown error",
+      timestamp: Date.now(),
+    })
+    return {
+      error: "Terjadi kesalahan server saat memproses login. Silakan coba lagi.",
+    }
   }
 
   redirect("/")
