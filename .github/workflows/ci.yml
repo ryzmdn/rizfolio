@@ -50,8 +50,10 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: https://mock-supabase.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: mock-anon-key-for-ci-pipeline
       SUPABASE_SERVICE_ROLE_KEY: mock-service-role-key-for-ci-pipeline
-      REVALIDATION_SECRET_TOKEN: mock-revalidation-secret-token
+      REVALIDATION_SECRET_TOKEN: mock-revalidation-secret-token-at-least-32-chars
       CMS_SESSION_SECRET: mock-session-secret-at-least-32-chars-long-abcdef
+      CMS_OWNER_EMAIL: admin@rizkyramadhan.dev
+      CMS_OWNER_PASSWORD: mock-owner-password-for-ci-tests
       NEXT_PUBLIC_PORTFOLIO_URL: https://rizkyramadhan.dev
       NEXT_PUBLIC_BLOG_URL: https://blog.rizkyramadhan.dev
       NEXT_PUBLIC_SHOP_URL: https://shop.rizkyramadhan.dev

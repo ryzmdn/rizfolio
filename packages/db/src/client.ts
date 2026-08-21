@@ -18,15 +18,38 @@ if (!process.env.DATABASE_URL) {
   }
 }
 
-const connectionString =
-  process.env.DATABASE_URL ||
-  "postgresql://postgres:postgres@localhost:5432/postgres"
+const rawConnectionString = process.env.DATABASE_URL
+
+if (!rawConnectionString || rawConnectionString.trim() === "") {
+  if (process.env.NODE_ENV === "test") {
+    process.env.DATABASE_URL =
+      "postgresql://postgres:postgres@localhost:5432/postgres_test"
+  } else {
+    throw new Error(
+      "CRITICAL DATABASE CONFIGURATION ERROR: DATABASE_URL environment variable is missing. Please define a valid PostgreSQL connection string in your .env or deployment configuration."
+    )
+  }
+}
+
+const connectionString = process.env.DATABASE_URL!
+
+if (
+  !connectionString.startsWith("postgresql://") &&
+  !connectionString.startsWith("postgres://")
+) {
+  throw new Error(
+    "CRITICAL DATABASE CONFIGURATION ERROR: Invalid DATABASE_URL protocol. URL must start with 'postgresql://' or 'postgres://'."
+  )
+}
+
+const isProduction = process.env.NODE_ENV === "production"
 
 const client = postgres(connectionString, {
   prepare: false,
-  max: 10,
+  max: isProduction ? 10 : 5,
   idle_timeout: 30,
   connect_timeout: 10,
+  ssl: isProduction ? "require" : false,
 })
 
 export const db = drizzle(client, { schema })
