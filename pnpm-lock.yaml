@@ -313,6 +313,12 @@ importers:
 
   apps/shop:
     dependencies:
+      '@workspace/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@workspace/storage':
+        specifier: workspace:*
+        version: link:../../packages/storage
       '@workspace/ui':
         specifier: workspace:*
         version: link:../../packages/ui
