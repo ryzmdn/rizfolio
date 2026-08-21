@@ -6,7 +6,6 @@ interface MarkdownRendererProps {
 }
 
 export async function MarkdownRenderer({ content }: MarkdownRendererProps) {
-  // Parse markdown into sections (code blocks vs regular markdown text)
   const tokens = parseMarkdownContent(content)
 
   const renderedTokens = await Promise.all(
@@ -28,7 +27,6 @@ export async function MarkdownRenderer({ content }: MarkdownRendererProps) {
         )
       }
 
-      // Render standard markdown blocks
       return (
         <div
           key={idx}
@@ -83,32 +81,24 @@ function parseMarkdownContent(content: string): Array<{ type: "text" | "code"; c
 function renderBasicMarkdown(raw: string): string {
   let html = raw
 
-  // Headings
   html = html.replace(/^### (.*$)/gim, '<h3 class="text-xl font-medium tracking-tight text-foreground mt-8 mb-3">$1</h3>')
   html = html.replace(/^## (.*$)/gim, '<h2 class="text-2xl font-medium tracking-tight text-foreground mt-10 mb-4 pb-2 border-b border-border/40">$1</h2>')
   html = html.replace(/^# (.*$)/gim, '<h1 class="text-3xl font-medium tracking-tight text-foreground mt-12 mb-6">$1</h1>')
 
-  // Blockquote
-  html = html.replace(/^\> (.*$)/gim, '<blockquote class="border-l-2 border-primary pl-4 py-1 my-4 italic text-muted-foreground bg-muted/20 rounded-r-lg">$1</blockquote>')
+  html = html.replace(/^> (.*$)/gim, '<blockquote class="border-l-2 border-primary pl-4 py-1 my-4 italic text-muted-foreground bg-muted/20 rounded-r-lg">$1</blockquote>')
 
-  // Bold & Italic
   html = html.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-medium text-foreground">$1</strong>')
   html = html.replace(/\*(.*?)\*/g, '<em>$1</em>')
 
-  // Inline code
   html = html.replace(/`([^`]+)`/g, '<code class="rounded-md bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground font-normal border border-border/50">$1</code>')
 
-  // Links
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer" class="text-primary underline underline-offset-4 hover:opacity-80 transition-opacity">$1</a>')
 
-  // Unordered list items
-  html = html.replace(/^\- (.*$)/gim, '<li class="flex items-start gap-2 ml-4 list-disc">$1</li>')
+  html = html.replace(/^- (.*$)/gim, '<li class="flex items-start gap-2 ml-4 list-disc">$1</li>')
 
-  // Ordered list items
   html = html.replace(/^\d+\. (.*$)/gim, '<li class="ml-4 list-decimal">$1</li>')
 
-  // Paragraphs
   const paragraphs = html.split(/\n\n+/).filter(Boolean)
   return paragraphs
     .map((p) => {
