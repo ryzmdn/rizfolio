@@ -13,9 +13,6 @@ const APP_URL_MAP: Record<RevalidatableApp, string> = {
   archive: process.env.NEXT_PUBLIC_ARCHIVE_URL || "http://localhost:3005",
 }
 
-const REVALIDATION_SECRET =
-  process.env.REVALIDATION_SECRET_TOKEN || "rizfolio-dev-revalidation-secret"
-
 export interface TriggerRevalidateOptions {
   app: RevalidatableApp
   path?: string
@@ -31,21 +28,32 @@ export async function triggerAppRevalidation(
     return { success: false, error: `Unknown application: ${options.app}` }
   }
 
-  const query = new URLSearchParams({
-    secret: REVALIDATION_SECRET,
-  })
+  const revalidationSecret = process.env.REVALIDATION_SECRET_TOKEN
+  if (!revalidationSecret || revalidationSecret.trim().length < 16) {
+    console.error(
+      "[ISR Revalidation Helper] REVALIDATION_SECRET_TOKEN is not configured in CMS environment."
+    )
+    return {
+      success: false,
+      error: "Revalidation service secret is not configured.",
+    }
+  }
 
+  // Only pass non-sensitive route targets in query params (Secret is sent strictly via headers)
+  const query = new URLSearchParams()
   if (options.path) query.set("path", options.path)
   if (options.slug) query.set("slug", options.slug)
   if (options.tag) query.set("tag", options.tag)
 
-  const targetUrl = `${baseUrl}/api/revalidate?${query.toString()}`
+  const queryString = query.toString()
+  const targetUrl = `${baseUrl}/api/revalidate${queryString ? `?${queryString}` : ""}`
 
   try {
     const res = await fetch(targetUrl, {
       method: "POST",
       headers: {
-        "x-revalidate-secret": REVALIDATION_SECRET,
+        "x-revalidate-secret": revalidationSecret,
+        Authorization: `Bearer ${revalidationSecret}`,
       },
     })
 
@@ -62,7 +70,7 @@ export async function triggerAppRevalidation(
     return { success: true, data }
   } catch (err) {
     console.warn(
-      `[ISR Revalidation] Failed to contact ${options.app} at ${targetUrl}:`,
+      `[ISR Revalidation] Failed to contact ${options.app} target:`,
       err instanceof Error ? err.message : "Network error"
     )
     return {
