@@ -1,9 +1,12 @@
 import type { MetadataRoute } from "next"
-import { getRepositories } from "@/lib/queries"
+import { getRepositories } from "../lib/queries"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
-    process.env.NEXT_PUBLIC_ARCHIVE_URL || process.env.NEXT_PUBLIC_APP_URL
+    process.env.NEXT_PUBLIC_DOCS_URL ||
+    process.env.NEXT_PUBLIC_ARCHIVE_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "https://docs.rizkyramadhan.dev"
 
   const repos = await getRepositories({ limit: 100 })
 
@@ -16,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: baseUrl!,
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1.0,

@@ -2,7 +2,7 @@ import Link from "next/link"
 import {
   FileText,
   ShoppingBag,
-  FolderGit2,
+  BookOpen,
   History,
   User,
   Image,
@@ -14,7 +14,7 @@ import { CmsPageShell } from "../components/cms-page-shell"
 import { RevalidationButton } from "../components/revalidation-button"
 import { getPosts } from "../lib/actions/blog-actions"
 import { getProducts, getOrders } from "../lib/actions/shop-actions"
-import { getAdminRepositories } from "../lib/actions/archive-actions"
+import { getAdminRepositories } from "../lib/actions/docs-actions"
 import { getChangelogs } from "../lib/actions/changelog-actions"
 
 export const dynamic = "force-dynamic"
@@ -51,11 +51,11 @@ export default async function OverviewDashboard() {
       icon: ShoppingBag,
     },
     {
-      title: "Repositories",
+      title: "Docs & Repositories",
       value: repos.length,
       published: repos.filter((r) => r.isPublic).length,
-      href: "/archive",
-      icon: FolderGit2,
+      href: "/docs",
+      icon: BookOpen,
     },
     {
       title: "Changelog Releases",
@@ -70,7 +70,7 @@ export default async function OverviewDashboard() {
     { title: "Kelola Profil & Portofolio", href: "/portfolio", icon: User },
     { title: "Tulis Artikel Baru", href: "/blog", icon: FileText },
     { title: "Tambah Produk Toko", href: "/shop", icon: ShoppingBag },
-    { title: "Unggah Repositori Kode", href: "/archive", icon: FolderGit2 },
+    { title: "Kelola Repositori & Docs", href: "/docs", icon: BookOpen },
     { title: "Media Library (Storage)", href: "/media", icon: Image },
   ]
 

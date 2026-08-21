@@ -3,6 +3,7 @@ export type RevalidatableApp =
   | "blog"
   | "shop"
   | "changelog"
+  | "docs"
   | "archive"
 
 const APP_URL_MAP: Record<RevalidatableApp, string> = {
@@ -10,7 +11,14 @@ const APP_URL_MAP: Record<RevalidatableApp, string> = {
   blog: process.env.NEXT_PUBLIC_BLOG_URL || "http://localhost:3001",
   shop: process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3002",
   changelog: process.env.NEXT_PUBLIC_CHANGELOG_URL || "http://localhost:3003",
-  archive: process.env.NEXT_PUBLIC_ARCHIVE_URL || "http://localhost:3005",
+  docs:
+    process.env.NEXT_PUBLIC_DOCS_URL ||
+    process.env.NEXT_PUBLIC_ARCHIVE_URL ||
+    "http://localhost:3005",
+  archive:
+    process.env.NEXT_PUBLIC_DOCS_URL ||
+    process.env.NEXT_PUBLIC_ARCHIVE_URL ||
+    "http://localhost:3005",
 }
 
 export interface TriggerRevalidateOptions {

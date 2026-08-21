@@ -5,23 +5,23 @@ import {
   getAdminRepositories,
   createRepository,
   deleteRepository,
-} from "../../lib/actions/archive-actions"
+} from "../../lib/actions/docs-actions"
 import { Plus } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
-export default async function ArchiveManagerPage() {
+export default async function DocsManagerPage() {
   const repoList = await getAdminRepositories()
 
   return (
     <CmsPageShell
-      title="Archive & Repositories Manager"
-      description="Kelola repositori tugas kuliah, eksperimen, dan proyek open-source."
+      title="Documentation & Repositories Manager"
+      description="Kelola repositori sumber terbuka, dokumentasi teknis, dan proyek akademik."
     >
       <div className="space-y-8">
         <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <h2 className="text-sm font-semibold text-foreground">
-            Tambah Repositori Baru
+            Tambah Repositori / Dokumen Baru
           </h2>
           <form
             action={async (formData: FormData) => {
@@ -35,7 +35,7 @@ export default async function ArchiveManagerPage() {
                   .replace(/[^\w-]/g, "")
               const description = formData.get("description")?.toString() || ""
               const category =
-                formData.get("category")?.toString() || "ASSIGNMENT"
+                formData.get("category")?.toString() || "OPEN_SOURCE"
               const courseName = formData.get("courseName")?.toString() || null
               const semester = formData.get("semester")?.toString() || null
               const githubUrl = formData.get("githubUrl")?.toString() || null
@@ -63,34 +63,47 @@ export default async function ArchiveManagerPage() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <input
                 name="name"
-                placeholder="Nama Repositori (e.g. algoritma-lanjut)"
+                placeholder="Nama Repositori / Proyek (e.g. core-engine)"
                 required
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
               />
               <input
                 name="slug"
-                placeholder="Slug (opsional)"
+                placeholder="Slug URL (opsional)"
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
               />
               <select
                 name="category"
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
               >
-                <option value="ASSIGNMENT">Tugas Kuliah</option>
-                <option value="EXPERIMENT">Eksperimen</option>
                 <option value="OPEN_SOURCE">Open Source</option>
+                <option value="EXPERIMENT">Eksperimen</option>
+                <option value="ASSIGNMENT">Tugas Kuliah</option>
               </select>
             </div>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <input
                 name="courseName"
-                placeholder="Nama Mata Kuliah (e.g. Struktur Data)"
+                placeholder="Topik / Mata Kuliah (e.g. Software Architecture)"
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
               />
               <input
                 name="semester"
-                placeholder="Semester (e.g. Semester 3)"
+                placeholder="Semester / Batch (opsional)"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <input
+                name="githubUrl"
+                placeholder="GitHub URL (https://github.com/ryzmdn/...)"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
+              />
+              <input
+                name="demoUrl"
+                placeholder="Live Demo URL (https://...)"
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
               />
             </div>
@@ -98,7 +111,7 @@ export default async function ArchiveManagerPage() {
             <textarea
               name="description"
               rows={2}
-              placeholder="Deskripsi singkat repositori..."
+              placeholder="Deskripsi singkat dokumentasi/repositori..."
               className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
             />
 
@@ -115,7 +128,7 @@ export default async function ArchiveManagerPage() {
                 className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
                 <Plus className="size-3.5" />
-                Tambah Repositori
+                Simpan Dokumen / Repositori
               </button>
             </div>
           </form>
@@ -123,13 +136,13 @@ export default async function ArchiveManagerPage() {
 
         <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
           <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
-            Daftar Repositori ({repoList.length})
+            Daftar Repositori & Dokumentasi ({repoList.length})
           </div>
 
           <div className="divide-y divide-border/40 text-xs">
             {repoList.length === 0 ? (
               <div className="py-8 text-center text-muted-foreground">
-                Belum ada repositori.
+                Belum ada repositori atau dokumen.
               </div>
             ) : (
               repoList.map((repo) => (

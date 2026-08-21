@@ -43,7 +43,7 @@ export default async function SettingsPage() {
             <code className="font-mono text-foreground">portfolio</code>,{" "}
             <code className="font-mono text-foreground">blog</code>,{" "}
             <code className="font-mono text-foreground">shop</code>,{" "}
-            <code className="font-mono text-foreground">archive</code>,{" "}
+            <code className="font-mono text-foreground">docs</code>,{" "}
             <code className="font-mono text-foreground">changelog</code>) secara
             instan tanpa perlu rebuild ulang monorepo.
           </p>

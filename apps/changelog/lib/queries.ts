@@ -35,7 +35,7 @@ export const fallbackChangelogs: ChangelogReleaseData[] = [
         id: "item-1-1",
         category: "FEATURE",
         description:
-          "Launched apps/archive with Shiki server-side code highlighting, folder navigation, and direct ZIP archive downloads.",
+          "Launched apps/docs with Shiki server-side code highlighting, folder navigation, and technical documentation explorer.",
         displayOrder: 1,
       },
       {
