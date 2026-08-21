@@ -1,34 +1,40 @@
 import { NextRequest, NextResponse } from "next/server"
 import { revalidatePath, revalidateTag } from "next/cache"
 
-const REVALIDATION_SECRET =
-  process.env.REVALIDATION_SECRET_TOKEN || "rizfolio-dev-revalidation-secret"
-
 export async function POST(request: NextRequest) {
-  return handleRevalidation(request)
-}
+  const expectedSecret = process.env.REVALIDATION_SECRET_TOKEN
 
-export async function GET(request: NextRequest) {
-  return handleRevalidation(request)
-}
+  if (!expectedSecret || expectedSecret.trim().length < 16) {
+    console.error(
+      "[ISR Revalidation - Shop] REVALIDATION_SECRET_TOKEN environment variable is not properly configured."
+    )
+    return NextResponse.json(
+      {
+        error: "Server Misconfiguration",
+        message: "Revalidation service is currently unconfigured.",
+      },
+      { status: 500 }
+    )
+  }
 
-async function handleRevalidation(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
+  const authHeader = request.headers.get("authorization")
   const secret =
-    searchParams.get("secret") ||
     request.headers.get("x-revalidate-secret") ||
-    request.headers.get("authorization")?.replace("Bearer ", "")
+    (authHeader?.startsWith("Bearer ")
+      ? authHeader.substring(7).trim()
+      : undefined)
 
-  if (!secret || secret !== REVALIDATION_SECRET) {
+  if (!secret || secret !== expectedSecret) {
     return NextResponse.json(
       {
         error: "Unauthorized",
-        message: "Invalid or missing revalidation secret token.",
+        message: "Invalid or missing revalidation credentials.",
       },
       { status: 401 }
     )
   }
 
+  const { searchParams } = new URL(request.url)
   const path = searchParams.get("path") || "/"
   const slug = searchParams.get("slug")
   const tag = searchParams.get("tag")
@@ -53,11 +59,15 @@ async function handleRevalidation(request: NextRequest) {
       timestamp: Date.now(),
     })
   } catch (error) {
+    console.error("[ISR Revalidation - Shop] Error executing revalidation:", {
+      error: error instanceof Error ? error.message : "Unknown error",
+      timestamp: Date.now(),
+    })
+
     return NextResponse.json(
       {
         error: "Internal Server Error",
-        message:
-          error instanceof Error ? error.message : "Failed to revalidate.",
+        message: "Failed to revalidate specified target.",
       },
       { status: 500 }
     )
