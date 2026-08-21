@@ -39,21 +39,20 @@ export async function loginAdmin(
       .where(eq(users.email, email.toLowerCase()))
       .limit(1)
 
+    const normalizedEmail = email.toLowerCase().trim()
     let userId: string | undefined
 
     if (existingUser) {
-      if (existingUser.role !== "OWNER" && email.toLowerCase() !== ownerEnvEmail) {
+      if (existingUser.role !== "OWNER" || existingUser.email.toLowerCase() !== ownerEnvEmail) {
         return { error: "Akses ditolak. Pengguna bukan merupakan Owner." }
       }
 
-      const isDbPasswordValid = await verifyPassword(
+      const isPasswordValid = await verifyPassword(
         password,
         existingUser.passwordHash
       )
-      const isEnvPasswordValid =
-        ownerEnvPassword && password === ownerEnvPassword
 
-      if (!isDbPasswordValid && !isEnvPasswordValid) {
+      if (!isPasswordValid) {
         return { error: "Password yang Anda masukkan salah." }
       }
 
@@ -64,21 +63,29 @@ export async function loginAdmin(
         .set({ lastLoginAt: new Date() })
         .where(eq(users.id, existingUser.id))
     } else {
-      if (email.toLowerCase() !== ownerEnvEmail) {
+      if (normalizedEmail !== ownerEnvEmail) {
         return { error: "Akses ditolak. Email tidak terdaftar sebagai Owner." }
       }
 
-      if (ownerEnvPassword && password !== ownerEnvPassword) {
+      if (!ownerEnvPassword) {
+        return { error: "Konfigurasi autentikasi Owner belum lengkap." }
+      }
+
+      // Auto-provision initial owner user with bcrypt hash
+      const envPasswordHash = await hashPassword(ownerEnvPassword)
+      const isPasswordValid = await verifyPassword(password, envPasswordHash)
+
+      if (!isPasswordValid) {
         return { error: "Password Owner tidak valid." }
       }
 
-      const passwordHash = await hashPassword(password)
       const [newUser] = await db
         .insert(users)
         .values({
-          email: email.toLowerCase(),
-          passwordHash,
+          email: normalizedEmail,
+          passwordHash: envPasswordHash,
           role: "OWNER",
+          lastLoginAt: new Date(),
         })
         .returning({ id: users.id })
 
