@@ -11,22 +11,44 @@
     "CMS_OWNER_EMAIL",
     "CMS_OWNER_PASSWORD",
     "CMS_SESSION_SECRET",
-    "REVALIDATION_SECRET_TOKEN"
+    "REVALIDATION_SECRET_TOKEN",
+    "NEXT_PUBLIC_PORTFOLIO_URL",
+    "NEXT_PUBLIC_BLOG_URL",
+    "NEXT_PUBLIC_SHOP_URL",
+    "NEXT_PUBLIC_CHANGELOG_URL",
+    "NEXT_PUBLIC_ARCHIVE_URL",
+    "NEXT_PUBLIC_CMS_URL",
+    "NEXT_PUBLIC_APP_URL",
+    "VERCEL",
+    "VERCEL_URL",
+    "VERCEL_ENV"
   ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "format": {
-      "dependsOn": ["^format"]
+      "dependsOn": ["^lint"],
+      "inputs": ["$TURBO_DEFAULT$"]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["^typecheck"],
+      "inputs": ["$TURBO_DEFAULT$"]
+    },
+    "format": {
+      "dependsOn": ["^format"],
+      "inputs": ["$TURBO_DEFAULT$"]
+    },
+    "format:check": {
+      "inputs": ["$TURBO_DEFAULT$"]
+    },
+    "db:seed": {
+      "cache": false
+    },
+    "storage:setup": {
+      "cache": false
     },
     "clean": {
       "cache": false
