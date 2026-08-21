@@ -49,8 +49,12 @@ export function FileTreeBrowser({
       <div className="divide-y divide-border/40 text-sm">
         {hasParent && (
           <Link
-            href={backPath ? `/repo/${slug}?path=${encodeURIComponent(backPath)}` : `/repo/${slug}`}
-            className="flex items-center gap-2.5 px-4 py-2 text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
+            href={
+              backPath
+                ? `/repo/${slug}?path=${encodeURIComponent(backPath)}`
+                : `/repo/${slug}`
+            }
+            className="flex items-center gap-2.5 px-4 py-2 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
           >
             <CornerLeftUp className="size-4" />
             <span className="font-mono text-xs">..</span>
@@ -72,7 +76,7 @@ export function FileTreeBrowser({
             <Link
               key={file.id}
               href={fileHref}
-              className="flex items-center justify-between px-4 py-2.5 hover:bg-muted/50 transition-colors group"
+              className="group flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-muted/50"
             >
               <div className="flex items-center gap-2.5">
                 {file.isDirectory ? (
@@ -86,7 +90,7 @@ export function FileTreeBrowser({
                 ) : (
                   <File className="size-4 text-muted-foreground group-hover:text-foreground" />
                 )}
-                <span className="font-mono text-xs text-foreground/90 group-hover:text-foreground group-hover:underline underline-offset-2">
+                <span className="font-mono text-xs text-foreground/90 underline-offset-2 group-hover:text-foreground group-hover:underline">
                   {file.filename}
                 </span>
               </div>

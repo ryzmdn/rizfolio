@@ -66,14 +66,16 @@ export const fallbackCategories: CategoryWithCount[] = [
     id: "cat-1",
     name: "Architecture",
     slug: "architecture",
-    description: "System design, distributed services, and monorepo scaling patterns.",
+    description:
+      "System design, distributed services, and monorepo scaling patterns.",
     count: 2,
   },
   {
     id: "cat-2",
     name: "Frontend",
     slug: "frontend",
-    description: "Modern React 19, Next.js 16, RSC, and Tailwind CSS engineering.",
+    description:
+      "Modern React 19, Next.js 16, RSC, and Tailwind CSS engineering.",
     count: 2,
   },
   {
@@ -225,7 +227,7 @@ export async function getPublishedPosts(
       .limit(limit)
       .offset(offset)
 
-    if (postRows.length === 0 && (!query && !categorySlug && !tagSlug)) {
+    if (postRows.length === 0 && !query && !categorySlug && !tagSlug) {
       return {
         posts: fallbackPosts,
         total: fallbackPosts.length,
@@ -290,8 +292,11 @@ export async function getPublishedPosts(
       limit,
     }
   } catch (error) {
-    console.warn("[Blog Data Layer] Failed to fetch published posts, using fallback:", error instanceof Error ? error.message : "Unknown error")
-    
+    console.warn(
+      "[Blog Data Layer] Failed to fetch published posts, using fallback:",
+      error instanceof Error ? error.message : "Unknown error"
+    )
+
     let filteredFallback = fallbackPosts
     if (categorySlug && categorySlug !== "all") {
       filteredFallback = filteredFallback.filter((p: BlogPostItem) =>
@@ -373,7 +378,10 @@ export async function getPostBySlug(
       }
     }
   } catch (error) {
-    console.warn("[Blog Data Layer] Failed to fetch post by slug from DB, checking fallback:", error instanceof Error ? error.message : "Unknown error")
+    console.warn(
+      "[Blog Data Layer] Failed to fetch post by slug from DB, checking fallback:",
+      error instanceof Error ? error.message : "Unknown error"
+    )
   }
 
   const fallback = fallbackPosts.find((p) => p.slug === slug)
@@ -392,14 +400,22 @@ export async function getCategoriesWithCount(): Promise<CategoryWithCount[]> {
       })
       .from(categories)
       .leftJoin(postCategories, eq(categories.id, postCategories.categoryId))
-      .groupBy(categories.id, categories.name, categories.slug, categories.description)
+      .groupBy(
+        categories.id,
+        categories.name,
+        categories.slug,
+        categories.description
+      )
       .orderBy(asc(categories.name))
 
     if (catRows.length > 0) {
       return catRows
     }
   } catch (error) {
-    console.warn("[Blog Data Layer] Failed to fetch categories from DB, using fallback:", error instanceof Error ? error.message : "Unknown error")
+    console.warn(
+      "[Blog Data Layer] Failed to fetch categories from DB, using fallback:",
+      error instanceof Error ? error.message : "Unknown error"
+    )
   }
 
   return fallbackCategories
@@ -423,7 +439,10 @@ export async function getTagsWithCount(): Promise<TagWithCount[]> {
       return tagRows
     }
   } catch (error) {
-    console.warn("[Blog Data Layer] Failed to fetch tags from DB, using fallback:", error instanceof Error ? error.message : "Unknown error")
+    console.warn(
+      "[Blog Data Layer] Failed to fetch tags from DB, using fallback:",
+      error instanceof Error ? error.message : "Unknown error"
+    )
   }
 
   return [

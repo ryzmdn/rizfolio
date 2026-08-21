@@ -7,7 +7,12 @@ import { Header } from "@workspace/ui/components/layouts"
 import { buttonVariants } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
 import { NavLink } from "./nav-link"
-import { Behance, Dribbble, GitHub, LinkedIn } from "@workspace/ui/constants/icons"
+import {
+  Behance,
+  Dribbble,
+  GitHub,
+  LinkedIn,
+} from "@workspace/ui/constants/icons"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 
 const navItems = [
@@ -58,23 +63,20 @@ export function AppHeader() {
   }, [])
 
   return (
-    <Header id="header" className="absolute top-0 left-1/2 z-50 w-full max-w-4xl -translate-x-1/2 px-4 sm:px-6">
-      <div className="flex items-center justify-between w-full h-20">
+    <Header
+      id="header"
+      className="absolute top-0 left-1/2 z-50 w-full max-w-4xl -translate-x-1/2 px-4 sm:px-6"
+    >
+      <div className="flex h-20 w-full items-center justify-between">
         <div className="flex items-center gap-x-2.5 text-sm">
-          <div className="flex items-center text-foreground font-medium">
-            <span className="tabular-nums">
-              {timeData?.time ?? "--:--:--"}
-            </span>
-            <span className="ml-1 uppercase">
-              {timeData?.ampm}
-            </span>
+          <div className="flex items-center font-medium text-foreground">
+            <span className="tabular-nums">{timeData?.time ?? "--:--:--"}</span>
+            <span className="ml-1 uppercase">{timeData?.ampm}</span>
           </div>
-          <span className="text-xs text-muted-foreground">
-            Jakarta (GMT+7)
-          </span>
+          <span className="text-xs text-muted-foreground">Jakarta (GMT+7)</span>
         </div>
 
-        <nav className="hidden items-center justify-center gap-x-5 lg:gap-x-8 text-sm md:flex">
+        <nav className="hidden items-center justify-center gap-x-5 text-sm md:flex lg:gap-x-8">
           {navItems.map((item) => (
             <NavLink
               key={item.href}
@@ -134,7 +136,7 @@ export function AppHeader() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="relative z-50 mt-2 w-full rounded-2xl border border-border/70 bg-background/95 p-5 shadow-2xl backdrop-blur-xl md:hidden animate-in fade-in slide-in-from-top-3 duration-200">
+        <div className="relative z-50 mt-2 w-full animate-in rounded-2xl border border-border/70 bg-background/95 p-5 shadow-2xl backdrop-blur-xl duration-200 fade-in slide-in-from-top-3 md:hidden">
           <nav className="flex flex-col space-y-3.5">
             {navItems.map((item) => (
               <Link
@@ -149,17 +151,18 @@ export function AppHeader() {
             ))}
           </nav>
 
-          <div className="mt-5 pt-4 border-t border-border/50 flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">
-              Social Links
-            </span>
+          <div className="mt-5 flex items-center justify-between border-t border-border/50 pt-4">
+            <span className="text-xs text-muted-foreground">Social Links</span>
             <div className="flex items-center gap-x-2">
               <a
                 href="https://github.com/ryzmdn"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="GitHub"
-                className={buttonVariants({ variant: "outline", size: "icon-sm" })}
+                className={buttonVariants({
+                  variant: "outline",
+                  size: "icon-sm",
+                })}
               >
                 <GitHub className="size-3.5" />
               </a>
@@ -168,7 +171,10 @@ export function AppHeader() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="LinkedIn"
-                className={buttonVariants({ variant: "outline", size: "icon-sm" })}
+                className={buttonVariants({
+                  variant: "outline",
+                  size: "icon-sm",
+                })}
               >
                 <LinkedIn className="size-3.5" />
               </a>
@@ -177,7 +183,10 @@ export function AppHeader() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Behance"
-                className={buttonVariants({ variant: "outline", size: "icon-sm" })}
+                className={buttonVariants({
+                  variant: "outline",
+                  size: "icon-sm",
+                })}
               >
                 <Behance className="size-3.5" />
               </a>
@@ -186,7 +195,10 @@ export function AppHeader() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Dribbble"
-                className={buttonVariants({ variant: "outline", size: "icon-sm" })}
+                className={buttonVariants({
+                  variant: "outline",
+                  size: "icon-sm",
+                })}
               >
                 <Dribbble className="size-3.5" />
               </a>

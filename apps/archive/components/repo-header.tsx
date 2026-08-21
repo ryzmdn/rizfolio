@@ -4,13 +4,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { Badge } from "@workspace/ui/components/badge"
 import { buttonVariants } from "@workspace/ui/components/button"
-import {
-  Star,
-  ExternalLink,
-  Copy,
-  Check,
-  Terminal,
-} from "lucide-react"
+import { Star, ExternalLink, Copy, Check, Terminal } from "lucide-react"
 import { toggleRepoStar } from "../lib/actions"
 
 export interface RepoHeaderProps {
@@ -28,7 +22,10 @@ export interface RepoHeaderProps {
   license?: string | null
 }
 
-const CATEGORY_LABELS: Record<string, { label: string; variant: "default" | "secondary" | "outline" }> = {
+const CATEGORY_LABELS: Record<
+  string,
+  { label: string; variant: "default" | "secondary" | "outline" }
+> = {
   ASSIGNMENT: { label: "Tugas Kuliah", variant: "secondary" },
   EXPERIMENT: { label: "Eksperimen", variant: "outline" },
   OPEN_SOURCE: { label: "Open Source", variant: "default" },
@@ -74,16 +71,19 @@ export function RepoHeader({
   }
 
   return (
-    <div className="space-y-4 pb-6 border-b border-border/70">
+    <div className="space-y-4 border-b border-border/70 pb-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Link href="/" className="hover:text-foreground transition-colors">
+            <Link href="/" className="transition-colors hover:text-foreground">
               archive
             </Link>
             <span>/</span>
             <span className="font-medium text-foreground">{slug}</span>
-            <Badge variant={categoryInfo.variant} className="ml-2 text-[11px] font-normal">
+            <Badge
+              variant={categoryInfo.variant}
+              className="ml-2 text-[11px] font-normal"
+            >
               {categoryInfo.label}
             </Badge>
           </div>
@@ -93,7 +93,7 @@ export function RepoHeader({
           </h1>
 
           {description && (
-            <p className="text-muted-foreground text-sm max-w-3xl leading-relaxed">
+            <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
               {description}
             </p>
           )}
@@ -116,9 +116,9 @@ export function RepoHeader({
               size: "sm",
             })}
           >
-            <Star className="size-3.5 mr-1" />
+            <Star className="mr-1 size-3.5" />
             <span>Star</span>
-            <span className="ml-1.5 rounded bg-background/20 px-1 py-0.2 text-xs tabular-nums">
+            <span className="py-0.2 ml-1.5 rounded bg-background/20 px-1 text-xs tabular-nums">
               {stars}
             </span>
           </button>
@@ -128,7 +128,7 @@ export function RepoHeader({
             onClick={() => setShowCloneModal((p) => !p)}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            <Terminal className="size-3.5 mr-1" />
+            <Terminal className="mr-1 size-3.5" />
             <span>Clone</span>
           </button>
 
@@ -139,7 +139,7 @@ export function RepoHeader({
               rel="noreferrer"
               className={buttonVariants({ variant: "outline", size: "sm" })}
             >
-              <ExternalLink className="size-3.5 mr-1" />
+              <ExternalLink className="mr-1 size-3.5" />
               <span>Live Demo</span>
             </a>
           )}

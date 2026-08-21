@@ -12,8 +12,8 @@ export function CmsHeader() {
 
   return (
     <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-border/80 bg-background/80 px-6 backdrop-blur-md">
-      <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
-        <Link href="/" className="hover:text-foreground transition-colors">
+      <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+        <Link href="/" className="transition-colors hover:text-foreground">
           cms
         </Link>
         {pathSegments.map((segment, index) => (
@@ -22,7 +22,7 @@ export function CmsHeader() {
             <span
               className={
                 index === pathSegments.length - 1
-                  ? "text-foreground font-medium"
+                  ? "font-medium text-foreground"
                   : "text-muted-foreground"
               }
             >
@@ -40,7 +40,7 @@ export function CmsHeader() {
           className={buttonVariants({ variant: "ghost", size: "sm" })}
         >
           <span className="text-xs">Live Site</span>
-          <ExternalLink className="size-3.5 ml-1" />
+          <ExternalLink className="ml-1 size-3.5" />
         </a>
 
         <ThemeToggle

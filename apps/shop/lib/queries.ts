@@ -157,10 +157,7 @@ export async function getActiveProducts(params?: {
     if (params?.query && params.query.trim()) {
       const q = `%${params.query.trim()}%`
       conditions.push(
-        or(
-          ilike(products.title, q),
-          ilike(products.description, q)
-        )!
+        or(ilike(products.title, q), ilike(products.description, q))!
       )
     }
 
@@ -195,7 +192,9 @@ export async function getActiveProducts(params?: {
 
   let fallback = fallbackProducts
   if (params?.productType && params.productType !== "all") {
-    fallback = fallback.filter((p: ShopProduct) => p.productType === params.productType)
+    fallback = fallback.filter(
+      (p: ShopProduct) => p.productType === params.productType
+    )
   }
   if (params?.query && params.query.trim()) {
     const q = params.query.toLowerCase()
@@ -292,5 +291,7 @@ export async function getRelatedProducts(
     )
   }
 
-  return fallbackProducts.filter((p: ShopProduct) => p.slug !== currentSlug).slice(0, limit)
+  return fallbackProducts
+    .filter((p: ShopProduct) => p.slug !== currentSlug)
+    .slice(0, limit)
 }

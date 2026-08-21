@@ -28,10 +28,15 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
 }
 
 export async function getExperiences() {
-  return await db.select().from(experiences).orderBy(asc(experiences.displayOrder), desc(experiences.startDate))
+  return await db
+    .select()
+    .from(experiences)
+    .orderBy(asc(experiences.displayOrder), desc(experiences.startDate))
 }
 
-export async function createExperience(values: typeof experiences.$inferInsert) {
+export async function createExperience(
+  values: typeof experiences.$inferInsert
+) {
   const [created] = await db.insert(experiences).values(values).returning()
   revalidatePath("/portfolio")
   return created
@@ -51,7 +56,10 @@ export async function deleteExperience(id: string) {
 }
 
 export async function getEducation() {
-  return await db.select().from(education).orderBy(asc(education.displayOrder), desc(education.startYear))
+  return await db
+    .select()
+    .from(education)
+    .orderBy(asc(education.displayOrder), desc(education.startYear))
 }
 
 export async function createEducation(values: typeof education.$inferInsert) {
@@ -74,10 +82,15 @@ export async function deleteEducation(id: string) {
 }
 
 export async function getCertifications() {
-  return await db.select().from(certifications).orderBy(asc(certifications.displayOrder), desc(certifications.issueDate))
+  return await db
+    .select()
+    .from(certifications)
+    .orderBy(asc(certifications.displayOrder), desc(certifications.issueDate))
 }
 
-export async function createCertification(values: typeof certifications.$inferInsert) {
+export async function createCertification(
+  values: typeof certifications.$inferInsert
+) {
   const [created] = await db.insert(certifications).values(values).returning()
   revalidatePath("/portfolio")
   return created
@@ -120,7 +133,10 @@ export async function deleteService(id: string) {
 }
 
 export async function getCaseStudies() {
-  return await db.select().from(caseStudies).orderBy(asc(caseStudies.displayOrder))
+  return await db
+    .select()
+    .from(caseStudies)
+    .orderBy(asc(caseStudies.displayOrder))
 }
 
 export async function createCaseStudy(values: typeof caseStudies.$inferInsert) {
@@ -143,10 +159,15 @@ export async function deleteCaseStudy(id: string) {
 }
 
 export async function getTestimonials() {
-  return await db.select().from(testimonials).orderBy(asc(testimonials.displayOrder))
+  return await db
+    .select()
+    .from(testimonials)
+    .orderBy(asc(testimonials.displayOrder))
 }
 
-export async function createTestimonial(values: typeof testimonials.$inferInsert) {
+export async function createTestimonial(
+  values: typeof testimonials.$inferInsert
+) {
   const [created] = await db.insert(testimonials).values(values).returning()
   revalidatePath("/portfolio")
   return created

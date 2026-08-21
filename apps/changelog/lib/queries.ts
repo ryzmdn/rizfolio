@@ -1,11 +1,4 @@
-import {
-  db,
-  changelogs,
-  changelogItems,
-  eq,
-  desc,
-  asc,
-} from "@workspace/db"
+import { db, changelogs, changelogItems, eq, desc, asc } from "@workspace/db"
 
 export type ChangelogCategory = "FEATURE" | "IMPROVEMENT" | "FIX" | "BREAKING"
 

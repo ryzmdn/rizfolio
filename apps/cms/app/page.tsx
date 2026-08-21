@@ -94,7 +94,7 @@ export default async function OverviewDashboard() {
                   <span className="text-xs font-medium text-muted-foreground">
                     {item.title}
                   </span>
-                  <Icon className="size-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                  <Icon className="size-4 text-muted-foreground transition-colors group-hover:text-foreground" />
                 </div>
                 <div className="mt-4 space-y-1">
                   <span className="text-2xl font-semibold tracking-tight text-foreground tabular-nums">
@@ -110,7 +110,7 @@ export default async function OverviewDashboard() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="rounded-xl border border-border/80 bg-card p-5 space-y-4">
+          <div className="space-y-4 rounded-xl border border-border/80 bg-card p-5">
             <h2 className="text-sm font-semibold text-foreground">
               Aksi Cepat
             </h2>
@@ -121,11 +121,11 @@ export default async function OverviewDashboard() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="flex items-center justify-between py-3 hover:text-primary transition-colors group"
+                    className="group flex items-center justify-between py-3 transition-colors hover:text-primary"
                   >
                     <div className="flex items-center gap-3">
                       <Icon className="size-4 text-muted-foreground group-hover:text-foreground" />
-                      <span className="text-foreground/90 font-medium group-hover:text-foreground">
+                      <span className="font-medium text-foreground/90 group-hover:text-foreground">
                         {link.title}
                       </span>
                     </div>
@@ -136,7 +136,7 @@ export default async function OverviewDashboard() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-border/80 bg-card p-5 space-y-4">
+          <div className="space-y-4 rounded-xl border border-border/80 bg-card p-5">
             <h2 className="text-sm font-semibold text-foreground">
               Status Infrastruktur
             </h2>
@@ -149,7 +149,7 @@ export default async function OverviewDashboard() {
                   </span>
                 </div>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success">
-                  <span className="size-1.5 rounded-full bg-success animate-pulse" />
+                  <span className="size-1.5 animate-pulse rounded-full bg-success" />
                   Connected
                 </span>
               </div>

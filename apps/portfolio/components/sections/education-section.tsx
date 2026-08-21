@@ -37,11 +37,11 @@ export function EducationSection({
                 </small>
               </h3>
             </div>
-            <div className="text-start lg:text-center text-muted-foreground lg:col-span-2 mt-2 lg:mt-0">
+            <div className="mt-2 text-start text-muted-foreground lg:col-span-2 lg:mt-0 lg:text-center">
               <p className="font-medium text-foreground">{edu.degree}</p>
               <p className="text-sm">{edu.field}</p>
             </div>
-            <div className="flex items-center justify-start lg:justify-end gap-x-2 leading-7 text-sm font-medium text-muted-foreground mt-2 lg:mt-0">
+            <div className="mt-2 flex items-center justify-start gap-x-2 text-sm leading-7 font-medium text-muted-foreground lg:mt-0 lg:justify-end">
               <p>{edu.period}</p>
             </div>
           </div>

@@ -13,9 +13,7 @@ export function ProgressiveBlur({
   blurLevels = [0.5, 1, 2, 4, 8, 16, 32, 64],
   position = "bottom",
 }: Readonly<Props>) {
-  const divElements = Array.from(
-    { length: Math.max(blurLevels.length - 2, 0) }
-  )
+  const divElements = Array.from({ length: Math.max(blurLevels.length - 2, 0) })
 
   const direction = position === "top" ? "to top" : "to bottom"
   const step = 100 / blurLevels.length

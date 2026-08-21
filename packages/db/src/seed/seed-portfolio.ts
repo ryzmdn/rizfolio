@@ -39,7 +39,14 @@ export async function seedPortfolio() {
       isCurrent: true,
       description:
         "Architecting enterprise monorepos, implementing CI/CD caching strategies with Turborepo, and deploying high-concurrency micro-frontends with Next.js 16 and Supabase.",
-      techStack: ["TypeScript", "Next.js", "Tailwind CSS", "Drizzle ORM", "Turborepo", "PostgreSQL"],
+      techStack: [
+        "TypeScript",
+        "Next.js",
+        "Tailwind CSS",
+        "Drizzle ORM",
+        "Turborepo",
+        "PostgreSQL",
+      ],
       displayOrder: 1,
     },
     {
@@ -51,7 +58,14 @@ export async function seedPortfolio() {
       isCurrent: false,
       description:
         "Engineered resilient REST/GraphQL APIs, optimized PostgreSQL query performance by 40%, and built accessible component libraries using React and Tailwind.",
-      techStack: ["React", "Node.js", "PostgreSQL", "Docker", "Redis", "TypeScript"],
+      techStack: [
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "Docker",
+        "Redis",
+        "TypeScript",
+      ],
       displayOrder: 2,
     },
     {
@@ -91,7 +105,8 @@ export async function seedPortfolio() {
       issueDate: "2025",
       credentialId: "AWS-SAA-8829103",
       credentialUrl: "https://aws.amazon.com/verification",
-      badgeUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=200&auto=format&fit=crop",
+      badgeUrl:
+        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=200&auto=format&fit=crop",
       displayOrder: 1,
     },
     {
@@ -100,7 +115,8 @@ export async function seedPortfolio() {
       issueDate: "2024",
       credentialId: "META-FS-991204",
       credentialUrl: "https://coursera.org/verify",
-      badgeUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=200&auto=format&fit=crop",
+      badgeUrl:
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=200&auto=format&fit=crop",
       displayOrder: 2,
     },
     {
@@ -109,7 +125,8 @@ export async function seedPortfolio() {
       issueDate: "2024",
       credentialId: "EDB-PG-55102",
       credentialUrl: "https://enterprisedb.com",
-      badgeUrl: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=200&auto=format&fit=crop",
+      badgeUrl:
+        "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=200&auto=format&fit=crop",
       displayOrder: 3,
     },
   ])
@@ -119,9 +136,16 @@ export async function seedPortfolio() {
     {
       title: "Enterprise Monorepo & System Architecture",
       slug: "enterprise-monorepo-architecture",
-      summary: "Turborepo & Next.js workspace setup with strict typing, shared packages, and CI/CD pipelines.",
-      description: "Complete design and deployment of enterprise-grade TypeScript monorepos with caching, automated linting, atomic design tokens, and shared database layers.",
-      deliverables: ["Turborepo Config", "Design System UI Package", "Shared DB & Auth Packages", "Automated CI/CD"],
+      summary:
+        "Turborepo & Next.js workspace setup with strict typing, shared packages, and CI/CD pipelines.",
+      description:
+        "Complete design and deployment of enterprise-grade TypeScript monorepos with caching, automated linting, atomic design tokens, and shared database layers.",
+      deliverables: [
+        "Turborepo Config",
+        "Design System UI Package",
+        "Shared DB & Auth Packages",
+        "Automated CI/CD",
+      ],
       startingPrice: 15000000,
       isActive: true,
       displayOrder: 1,
@@ -129,9 +153,16 @@ export async function seedPortfolio() {
     {
       title: "High-Performance Full-Stack Web Development",
       slug: "fullstack-web-development",
-      summary: "Next.js 16, React 19, Supabase, and Drizzle ORM web application development.",
-      description: "End-to-end production web applications engineered for speed, SEO, responsiveness, and seamless developer maintenance.",
-      deliverables: ["Full Application Source Code", "Database Migration Scripts", "Production Deployment", "Technical Documentation"],
+      summary:
+        "Next.js 16, React 19, Supabase, and Drizzle ORM web application development.",
+      description:
+        "End-to-end production web applications engineered for speed, SEO, responsiveness, and seamless developer maintenance.",
+      deliverables: [
+        "Full Application Source Code",
+        "Database Migration Scripts",
+        "Production Deployment",
+        "Technical Documentation",
+      ],
       startingPrice: 20000000,
       isActive: true,
       displayOrder: 2,
@@ -139,9 +170,16 @@ export async function seedPortfolio() {
     {
       title: "Performance & Database Optimization",
       slug: "performance-database-optimization",
-      summary: "PostgreSQL query profiling, connection pooling, and Next.js Core Web Vitals optimization.",
-      description: "In-depth audit and remediation of database latency, slow queries, bundling bottlenecks, and memory leaks.",
-      deliverables: ["Comprehensive Audit Report", "Optimized Query Indexing", "Connection Pooler Setup", "Performance Metrics Verification"],
+      summary:
+        "PostgreSQL query profiling, connection pooling, and Next.js Core Web Vitals optimization.",
+      description:
+        "In-depth audit and remediation of database latency, slow queries, bundling bottlenecks, and memory leaks.",
+      deliverables: [
+        "Comprehensive Audit Report",
+        "Optimized Query Indexing",
+        "Connection Pooler Setup",
+        "Performance Metrics Verification",
+      ],
       startingPrice: 8000000,
       isActive: true,
       displayOrder: 3,
@@ -154,9 +192,12 @@ export async function seedPortfolio() {
       title: "Rizfolio: 6-in-1 Turborepo Modern Monorepo Ecosystem",
       slug: "rizfolio-turborepo-ecosystem",
       clientName: "Internal / Open Source",
-      summary: "Architecting a modular ecosystem containing 6 applications with unified design system and shared database.",
-      contentMd: "# Rizfolio Monorepo\n\nA unified multi-app digital presence powered by Next.js 16, Turborepo, and Supabase.",
-      thumbnailUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop",
+      summary:
+        "Architecting a modular ecosystem containing 6 applications with unified design system and shared database.",
+      contentMd:
+        "# Rizfolio Monorepo\n\nA unified multi-app digital presence powered by Next.js 16, Turborepo, and Supabase.",
+      thumbnailUrl:
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop",
       liveUrl: "https://rizkyramadhan.dev",
       repoUrl: "https://github.com/ryzmdn/rizfolio",
       metrics: { appsCount: 6, packagesCount: 6, lighthouseScore: 99 },
@@ -167,9 +208,12 @@ export async function seedPortfolio() {
       title: "FinFlow: Real-time Financial Transaction Processing",
       slug: "finflow-transaction-engine",
       clientName: "FinTech Global",
-      summary: "Building an idempotent transaction pipeline handling 5,000 req/sec with PostgreSQL advisory locks.",
-      contentMd: "# FinFlow Architecture\n\nHigh-throughput transactional engine with zero double-spends and instant reconciliation.",
-      thumbnailUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
+      summary:
+        "Building an idempotent transaction pipeline handling 5,000 req/sec with PostgreSQL advisory locks.",
+      contentMd:
+        "# FinFlow Architecture\n\nHigh-throughput transactional engine with zero double-spends and instant reconciliation.",
+      thumbnailUrl:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
       liveUrl: "https://finflow.example.com",
       repoUrl: "https://github.com/ryzmdn/finflow",
       metrics: { tps: 5000, latencyP99Ms: 45 },
@@ -184,9 +228,11 @@ export async function seedPortfolio() {
       clientName: "Sarah Jenkins",
       role: "VP of Engineering",
       company: "CloudScale Inc.",
-      content: "Rizky transformed our development velocity by standardizing our monorepo architecture. His attention to detail and deep understanding of distributed systems is truly top-tier.",
+      content:
+        "Rizky transformed our development velocity by standardizing our monorepo architecture. His attention to detail and deep understanding of distributed systems is truly top-tier.",
       rating: 5,
-      avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop",
       isFeatured: true,
       displayOrder: 1,
     },
@@ -194,9 +240,11 @@ export async function seedPortfolio() {
       clientName: "David Chen",
       role: "CTO & Co-Founder",
       company: "FinFlow Technologies",
-      content: "The transaction processing engine built by Rizky is bulletproof. Zero downtime and exceptional performance under heavy load.",
+      content:
+        "The transaction processing engine built by Rizky is bulletproof. Zero downtime and exceptional performance under heavy load.",
       rating: 5,
-      avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
       isFeatured: true,
       displayOrder: 2,
     },

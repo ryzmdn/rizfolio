@@ -59,7 +59,8 @@ export function parseStoragePath(storagePath: string): {
   const parts = storagePath.split("/").filter(Boolean)
   const fileName = parts[parts.length - 1] || ""
   const dotIndex = fileName.lastIndexOf(".")
-  const extension = dotIndex !== -1 ? fileName.substring(dotIndex + 1).toLowerCase() : ""
+  const extension =
+    dotIndex !== -1 ? fileName.substring(dotIndex + 1).toLowerCase() : ""
 
   if (parts.length >= 3) {
     return {
@@ -86,7 +87,8 @@ export function isDownloadTokenExpired(
   expiresAt: Date | string | null | undefined
 ): boolean {
   if (!expiresAt) return false
-  const expiryDate = typeof expiresAt === "string" ? new Date(expiresAt) : expiresAt
+  const expiryDate =
+    typeof expiresAt === "string" ? new Date(expiresAt) : expiresAt
   return expiryDate.getTime() < Date.now()
 }
 

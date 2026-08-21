@@ -19,7 +19,7 @@ export default async function ChangelogManagerPage() {
       description="Catat log rilis pembaruan website, fitur baru, dan perbaikan bug."
     >
       <div className="space-y-8">
-        <div className="rounded-xl border border-border/80 bg-card p-6 space-y-4">
+        <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <h2 className="text-sm font-semibold text-foreground">
             Tambah Rilis Changelog
           </h2>
@@ -37,7 +37,8 @@ export default async function ChangelogManagerPage() {
                 await createChangelog({
                   version,
                   title,
-                  releaseDate: releaseDate || new Date().toISOString().split("T")[0]!,
+                  releaseDate:
+                    releaseDate || new Date().toISOString().split("T")[0]!,
                   summary: summary || null,
                   isPublished: true,
                 })
@@ -77,7 +78,7 @@ export default async function ChangelogManagerPage() {
             <div className="flex justify-end pt-1">
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
                 <Plus className="size-3.5" />
                 Tambah Rilis
@@ -86,7 +87,7 @@ export default async function ChangelogManagerPage() {
           </form>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-card overflow-hidden">
+        <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
           <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
             Daftar Catatan Rilis ({list.length})
           </div>
@@ -100,19 +101,23 @@ export default async function ChangelogManagerPage() {
               list.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors"
+                  className="flex items-center justify-between p-4 transition-colors hover:bg-muted/30"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <Badge variant="default" className="text-[10px] font-mono">
+                      <Badge
+                        variant="default"
+                        className="font-mono text-[10px]"
+                      >
                         {item.version}
                       </Badge>
-                      <span className="font-medium text-foreground text-sm">
+                      <span className="text-sm font-medium text-foreground">
                         {item.title}
                       </span>
                     </div>
-                    <div className="text-muted-foreground text-[11px]">
-                      Dirilis pada {item.releaseDate} {item.summary && `• ${item.summary}`}
+                    <div className="text-[11px] text-muted-foreground">
+                      Dirilis pada {item.releaseDate}{" "}
+                      {item.summary && `• ${item.summary}`}
                     </div>
                   </div>
 

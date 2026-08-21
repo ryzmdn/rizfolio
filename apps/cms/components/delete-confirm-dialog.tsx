@@ -8,7 +8,10 @@ export interface DeleteConfirmDialogProps {
   itemName?: string
 }
 
-export function DeleteButton({ onConfirm, itemName = "item ini" }: DeleteConfirmDialogProps) {
+export function DeleteButton({
+  onConfirm,
+  itemName = "item ini",
+}: DeleteConfirmDialogProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -37,12 +40,14 @@ export function DeleteButton({ onConfirm, itemName = "item ini" }: DeleteConfirm
 
   return (
     <div className="inline-flex items-center gap-1.5 rounded-lg border border-destructive/30 bg-destructive/5 p-1 text-xs">
-      <span className="text-[11px] text-destructive px-1">Hapus {itemName}?</span>
+      <span className="px-1 text-[11px] text-destructive">
+        Hapus {itemName}?
+      </span>
       <button
         type="button"
         disabled={isDeleting}
         onClick={handleDelete}
-        className="rounded bg-destructive px-2 py-0.5 text-[11px] font-medium text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50"
+        className="text-destructive-foreground rounded bg-destructive px-2 py-0.5 text-[11px] font-medium hover:bg-destructive/90 disabled:opacity-50"
       >
         {isDeleting ? <Loader2 className="size-3 animate-spin" /> : "Ya"}
       </button>

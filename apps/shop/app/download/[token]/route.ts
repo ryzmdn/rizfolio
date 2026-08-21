@@ -8,10 +8,7 @@ interface RouteParams {
   }>
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: RouteParams
-) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   const { token } = await params
 
   if (!token || token.trim() === "") {
@@ -48,11 +45,15 @@ export async function GET(
       )
     }
 
-    if (orderItem.tokenExpiresAt && new Date(orderItem.tokenExpiresAt) < new Date()) {
+    if (
+      orderItem.tokenExpiresAt &&
+      new Date(orderItem.tokenExpiresAt) < new Date()
+    ) {
       return new NextResponse(
         JSON.stringify({
           error: "Link Expired",
-          message: "This download link has expired. Please contact support for a new token.",
+          message:
+            "This download link has expired. Please contact support for a new token.",
         }),
         { status: 410, headers: { "Content-Type": "application/json" } }
       )
@@ -74,7 +75,8 @@ export async function GET(
       return new NextResponse(
         JSON.stringify({
           error: "File Not Ready",
-          message: "The requested digital asset file is currently not configured.",
+          message:
+            "The requested digital asset file is currently not configured.",
         }),
         { status: 404, headers: { "Content-Type": "application/json" } }
       )
@@ -96,7 +98,8 @@ export async function GET(
     return new NextResponse(
       JSON.stringify({
         error: "Internal Server Error",
-        message: "An error occurred while verifying the digital download token.",
+        message:
+          "An error occurred while verifying the digital download token.",
       }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     )

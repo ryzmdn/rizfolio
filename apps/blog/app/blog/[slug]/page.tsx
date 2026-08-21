@@ -36,7 +36,9 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+      publishedTime: post.publishedAt
+        ? new Date(post.publishedAt).toISOString()
+        : undefined,
       images: post.coverImageUrl ? [{ url: post.coverImageUrl }] : [],
     },
     twitter: {
@@ -68,17 +70,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     : "Recent"
 
   const primaryCategory = post.categories[0]
-  const otherRelated = relatedPosts.filter((p) => p.slug !== post.slug).slice(0, 2)
+  const otherRelated = relatedPosts
+    .filter((p) => p.slug !== post.slug)
+    .slice(0, 2)
 
   return (
     <>
       <ViewTracker postId={post.id} />
 
-      <Container className="py-12 md:py-20 max-w-4xl">
+      <Container className="max-w-4xl py-12 md:py-20">
         {/* Back Navigation */}
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-8"
+          className="mb-8 inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-3.5" />
           <span>Back to Articles</span>
@@ -88,7 +92,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <header className="space-y-6">
           <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
             {primaryCategory && (
-              <span className="rounded-md bg-primary/10 text-primary border border-primary/20 px-2.5 py-1 font-medium">
+              <span className="rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 font-medium text-primary">
                 {primaryCategory.name}
               </span>
             )}
@@ -112,17 +116,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             )}
           </div>
 
-          <h1 className="text-3xl font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl leading-tight">
+          <h1 className="text-3xl leading-tight font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl">
             {post.title}
           </h1>
 
-          <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
+          <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
             {post.excerpt}
           </p>
 
           {/* Author info */}
-          <div className="flex items-center gap-3 pt-4 border-t border-border/60">
-            <div className="size-10 rounded-full bg-foreground/10 overflow-hidden ring-1 ring-border">
+          <div className="flex items-center gap-3 border-t border-border/60 pt-4">
+            <div className="size-10 overflow-hidden rounded-full bg-foreground/10 ring-1 ring-border">
               <Image
                 src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
                 alt="Rizky Ramadhan"
@@ -132,15 +136,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               />
             </div>
             <div>
-              <div className="text-xs font-medium text-foreground">Rizky Ramadhan</div>
-              <div className="text-[11px] text-muted-foreground">Full-Stack Engineer & Author</div>
+              <div className="text-xs font-medium text-foreground">
+                Rizky Ramadhan
+              </div>
+              <div className="text-[11px] text-muted-foreground">
+                Full-Stack Engineer & Author
+              </div>
             </div>
           </div>
         </header>
 
         {/* Cover Image */}
         {post.coverImageUrl && (
-          <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-muted border border-border/60 my-10 shadow-sm">
+          <div className="relative my-10 aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-sm">
             <Image
               src={post.coverImageUrl}
               alt={post.title}
@@ -152,19 +160,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         )}
 
         {/* Main Article Markdown Content */}
-        <div className="mt-10 pt-4 border-t border-border/40">
+        <div className="mt-10 border-t border-border/40 pt-4">
           <MarkdownRenderer content={post.contentMd} />
         </div>
 
         {/* Tags */}
         {post.tags.length > 0 && (
-          <div className="mt-12 pt-6 border-t border-border/60">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-medium text-muted-foreground mr-1">Tags:</span>
+          <div className="mt-12 border-t border-border/60 pt-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs font-medium text-muted-foreground">
+                Tags:
+              </span>
               {post.tags.map((t) => (
                 <span
                   key={t.id}
-                  className="inline-flex items-center px-2.5 py-1 rounded-md text-xs bg-muted/60 text-muted-foreground border border-border/50"
+                  className="inline-flex items-center rounded-md border border-border/50 bg-muted/60 px-2.5 py-1 text-xs text-muted-foreground"
                 >
                   #{t.name}
                 </span>
@@ -175,26 +185,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* Related Articles */}
         {otherRelated.length > 0 && (
-          <div className="mt-20 pt-12 border-t border-border space-y-6">
+          <div className="mt-20 space-y-6 border-t border-border pt-12">
             <div className="flex items-center gap-2">
               <Sparkles className="size-4 text-primary" />
-              <h2 className="text-lg font-medium text-foreground">Related & Recent Articles</h2>
+              <h2 className="text-lg font-medium text-foreground">
+                Related & Recent Articles
+              </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {otherRelated.map((rel) => (
                 <Link
                   key={rel.id}
                   href={`/blog/${rel.slug}`}
-                  className="group block rounded-xl border border-border/60 bg-card/40 p-4 hover:border-border hover:bg-card transition-all"
+                  className="group block rounded-xl border border-border/60 bg-card/40 p-4 transition-all hover:border-border hover:bg-card"
                 >
-                  <div className="text-xs text-muted-foreground mb-2">
-                    {rel.readingTime} min read &bull; {rel.categories[0]?.name || "Article"}
+                  <div className="mb-2 text-xs text-muted-foreground">
+                    {rel.readingTime} min read &bull;{" "}
+                    {rel.categories[0]?.name || "Article"}
                   </div>
-                  <h3 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
                     {rel.title}
                   </h3>
-                  <p className="mt-2 text-xs text-muted-foreground line-clamp-2">
+                  <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">
                     {rel.excerpt}
                   </p>
                 </Link>

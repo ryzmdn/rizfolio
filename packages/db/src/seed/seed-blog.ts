@@ -21,10 +21,30 @@ export async function seedBlog() {
   const catRows = await db
     .insert(categories)
     .values([
-      { name: "Architecture", slug: "architecture", description: "System design, monorepos, and distributed software patterns." },
-      { name: "Frontend", slug: "frontend", description: "Next.js 16, React 19, Tailwind CSS v4, and UI engineering." },
-      { name: "Backend", slug: "backend", description: "PostgreSQL, Drizzle ORM, Supabase, and high-throughput APIs." },
-      { name: "Performance", slug: "performance", description: "Core Web Vitals, memory optimization, and bundle minimization." },
+      {
+        name: "Architecture",
+        slug: "architecture",
+        description:
+          "System design, monorepos, and distributed software patterns.",
+      },
+      {
+        name: "Frontend",
+        slug: "frontend",
+        description:
+          "Next.js 16, React 19, Tailwind CSS v4, and UI engineering.",
+      },
+      {
+        name: "Backend",
+        slug: "backend",
+        description:
+          "PostgreSQL, Drizzle ORM, Supabase, and high-throughput APIs.",
+      },
+      {
+        name: "Performance",
+        slug: "performance",
+        description:
+          "Core Web Vitals, memory optimization, and bundle minimization.",
+      },
     ])
     .returning()
 
@@ -45,7 +65,8 @@ export async function seedBlog() {
     .values({
       title: "Building Production Monorepos with Next.js 16 and Turborepo",
       slug: "building-production-monorepos-nextjs-16-turborepo",
-      excerpt: "A comprehensive deep dive into architecting modular monorepos using Turborepo, Next.js 16, and shared internal TypeScript packages.",
+      excerpt:
+        "A comprehensive deep dive into architecting modular monorepos using Turborepo, Next.js 16, and shared internal TypeScript packages.",
       contentMd: `# Building Production Monorepos with Next.js 16 and Turborepo
 
 Monorepo architectures have evolved from complex enterprise configurations into highly practical workflows for multi-app digital platforms.
@@ -71,7 +92,8 @@ export const db = drizzle(client)
 
 > "A well-structured monorepo minimizes code duplication while maximizing developer autonomy."
 `,
-      coverImageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop",
+      coverImageUrl:
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop",
       readingTime: 6,
       status: "PUBLISHED",
       publishedAt: new Date("2026-08-15T08:00:00.000Z"),
@@ -83,7 +105,8 @@ export const db = drizzle(client)
     .values({
       title: "Mastering Tailwind CSS v4 & OKLCH Color Spaces",
       slug: "mastering-tailwind-css-v4-oklch-color-spaces",
-      excerpt: "Explore the new CSS-first configuration engine in Tailwind CSS v4 and how OKLCH enables uniform perceptual brightness across dark/light modes.",
+      excerpt:
+        "Explore the new CSS-first configuration engine in Tailwind CSS v4 and how OKLCH enables uniform perceptual brightness across dark/light modes.",
       contentMd: `# Mastering Tailwind CSS v4 & OKLCH Color Spaces
 
 Tailwind CSS v4 introduces a revolutionary CSS-native configuration engine that eliminates \`tailwind.config.js\` in favor of native CSS directives.
@@ -103,7 +126,8 @@ OKLCH allows for uniform lightness adjustments across different hues:
 
 All design tokens are evaluated at build time, yielding minimal stylesheet payloads and pristine performance scores.
 `,
-      coverImageUrl: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop",
+      coverImageUrl:
+        "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop",
       readingTime: 5,
       status: "PUBLISHED",
       publishedAt: new Date("2026-08-10T10:00:00.000Z"),
@@ -115,7 +139,8 @@ All design tokens are evaluated at build time, yielding minimal stylesheet paylo
     .values({
       title: "Type-Safe Relational Data Access with Drizzle ORM and Supabase",
       slug: "type-safe-relational-data-access-drizzle-supabase",
-      excerpt: "How to leverage Drizzle ORM's relational queries and connection pooling for optimal database throughput and end-to-end type safety.",
+      excerpt:
+        "How to leverage Drizzle ORM's relational queries and connection pooling for optimal database throughput and end-to-end type safety.",
       contentMd: `# Type-Safe Relational Data Access with Drizzle ORM and Supabase
 
 Database access should be deterministic, fast, and fully typed without heavy ORM overhead.
@@ -136,7 +161,8 @@ const result = await db.query.posts.findMany({
 
 Use Supabase transaction pooler on port 6543 for serverless environments to prevent connection exhaustion under burst loads.
 `,
-      coverImageUrl: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=800&auto=format&fit=crop",
+      coverImageUrl:
+        "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=800&auto=format&fit=crop",
       readingTime: 7,
       status: "PUBLISHED",
       publishedAt: new Date("2026-08-05T14:30:00.000Z"),
@@ -148,13 +174,19 @@ Use Supabase transaction pooler on port 6543 for serverless environments to prev
   const p3 = post3[0]
 
   if (p1 && catRows[0]) {
-    await db.insert(postCategories).values({ postId: p1.id, categoryId: catRows[0].id })
+    await db
+      .insert(postCategories)
+      .values({ postId: p1.id, categoryId: catRows[0].id })
   }
   if (p2 && catRows[1]) {
-    await db.insert(postCategories).values({ postId: p2.id, categoryId: catRows[1].id })
+    await db
+      .insert(postCategories)
+      .values({ postId: p2.id, categoryId: catRows[1].id })
   }
   if (p3 && catRows[2]) {
-    await db.insert(postCategories).values({ postId: p3.id, categoryId: catRows[2].id })
+    await db
+      .insert(postCategories)
+      .values({ postId: p3.id, categoryId: catRows[2].id })
   }
 
   if (p1 && tagRows[0] && tagRows[1] && tagRows[4]) {

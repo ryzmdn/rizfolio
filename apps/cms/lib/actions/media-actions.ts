@@ -34,7 +34,10 @@ export async function uploadMediaAsset(formData: FormData) {
       url: uploadRes.url,
     }
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Terjadi kesalahan internal saat mengunggah media."
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Terjadi kesalahan internal saat mengunggah media."
     console.error("Media upload error:", error)
     return { error: message }
   }
@@ -46,7 +49,8 @@ export async function deleteMediaAsset(path: string) {
     revalidatePath("/media")
     return { success: true }
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Gagal menghapus berkas."
+    const message =
+      error instanceof Error ? error.message : "Gagal menghapus berkas."
     console.error("Media delete error:", error)
     return { success: false, error: message }
   }

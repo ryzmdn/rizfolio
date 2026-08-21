@@ -5,7 +5,10 @@ import { changelogs, changelogItems } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 
 export async function getChangelogs() {
-  return await db.select().from(changelogs).orderBy(desc(changelogs.releaseDate))
+  return await db
+    .select()
+    .from(changelogs)
+    .orderBy(desc(changelogs.releaseDate))
 }
 
 export async function getChangelogById(id: string) {

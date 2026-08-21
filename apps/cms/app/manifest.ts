@@ -4,7 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Rizfolio CMS — Admin Dashboard",
     short_name: "RizCMS",
-    description: "Internal content management portal and administration workspace.",
+    description:
+      "Internal content management portal and administration workspace.",
     start_url: "/",
     display: "standalone",
     background_color: "#09090b",

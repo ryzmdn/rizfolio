@@ -62,18 +62,29 @@ export const BUCKET_DEFINITIONS: BucketConfig[] = [
 
 export async function setupStorageBuckets(): Promise<{
   success: boolean
-  results: Array<{ bucket: string; action: "created" | "updated" | "failed"; error?: string }>
+  results: Array<{
+    bucket: string
+    action: "created" | "updated" | "failed"
+    error?: string
+  }>
 }> {
   console.log("Inisialisasi Supabase Storage Buckets...")
 
-  const results: Array<{ bucket: string; action: "created" | "updated" | "failed"; error?: string }> = []
+  const results: Array<{
+    bucket: string
+    action: "created" | "updated" | "failed"
+    error?: string
+  }> = []
 
   try {
     const client = getStorageAdminClient()
-    const { data: existingBuckets, error: listError } = await client.storage.listBuckets()
+    const { data: existingBuckets, error: listError } =
+      await client.storage.listBuckets()
 
     if (listError) {
-      throw new Error(`Gagal mengambil daftar bucket dari Supabase: ${listError.message}`)
+      throw new Error(
+        `Gagal mengambil daftar bucket dari Supabase: ${listError.message}`
+      )
     }
 
     const existingNames = new Set(existingBuckets?.map((b) => b.name) || [])
@@ -81,32 +92,54 @@ export async function setupStorageBuckets(): Promise<{
     for (const def of BUCKET_DEFINITIONS) {
       if (existingNames.has(def.name)) {
         console.log(`Mengupdate konfigurasi bucket "${def.name}"...`)
-        const { error: updateError } = await client.storage.updateBucket(def.name, {
-          public: def.public,
-          fileSizeLimit: def.fileSizeLimit,
-          allowedMimeTypes: def.allowedMimeTypes,
-        })
+        const { error: updateError } = await client.storage.updateBucket(
+          def.name,
+          {
+            public: def.public,
+            fileSizeLimit: def.fileSizeLimit,
+            allowedMimeTypes: def.allowedMimeTypes,
+          }
+        )
 
         if (updateError) {
-          console.warn(`Gagal mengupdate bucket "${def.name}": ${updateError.message}`)
-          results.push({ bucket: def.name, action: "failed", error: updateError.message })
+          console.warn(
+            `Gagal mengupdate bucket "${def.name}": ${updateError.message}`
+          )
+          results.push({
+            bucket: def.name,
+            action: "failed",
+            error: updateError.message,
+          })
         } else {
-          console.log(`Bucket "${def.name}" berhasil diselaraskan (Public: ${def.public}).`)
+          console.log(
+            `Bucket "${def.name}" berhasil diselaraskan (Public: ${def.public}).`
+          )
           results.push({ bucket: def.name, action: "updated" })
         }
       } else {
         console.log(`Membuat bucket baru "${def.name}"...`)
-        const { error: createError } = await client.storage.createBucket(def.name, {
-          public: def.public,
-          fileSizeLimit: def.fileSizeLimit,
-          allowedMimeTypes: def.allowedMimeTypes,
-        })
+        const { error: createError } = await client.storage.createBucket(
+          def.name,
+          {
+            public: def.public,
+            fileSizeLimit: def.fileSizeLimit,
+            allowedMimeTypes: def.allowedMimeTypes,
+          }
+        )
 
         if (createError) {
-          console.warn(`Gagal membuat bucket "${def.name}": ${createError.message}`)
-          results.push({ bucket: def.name, action: "failed", error: createError.message })
+          console.warn(
+            `Gagal membuat bucket "${def.name}": ${createError.message}`
+          )
+          results.push({
+            bucket: def.name,
+            action: "failed",
+            error: createError.message,
+          })
         } else {
-          console.log(`Bucket "${def.name}" berhasil dibuat (Public: ${def.public}).`)
+          console.log(
+            `Bucket "${def.name}" berhasil dibuat (Public: ${def.public}).`
+          )
           results.push({ bucket: def.name, action: "created" })
         }
       }
@@ -119,7 +152,13 @@ export async function setupStorageBuckets(): Promise<{
     console.error("Terjadi kesalahan saat inisialisasi bucket:", error)
     return {
       success: false,
-      results: [{ bucket: "all", action: "failed", error: error instanceof Error ? error.message : "Unknown error" }],
+      results: [
+        {
+          bucket: "all",
+          action: "failed",
+          error: error instanceof Error ? error.message : "Unknown error",
+        },
+      ],
     }
   }
 }
@@ -132,6 +171,10 @@ async function main() {
   process.exit(0)
 }
 
-if (typeof process !== "undefined" && process.argv && process.argv[1]?.includes("setup")) {
+if (
+  typeof process !== "undefined" &&
+  process.argv &&
+  process.argv[1]?.includes("setup")
+) {
   main()
 }

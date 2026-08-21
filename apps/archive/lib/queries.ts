@@ -94,7 +94,10 @@ export async function getRepoFiles(repoId: string, parentPath = "") {
 
     return files
   } catch (error) {
-    console.error(`Failed to fetch repo files (${repoId}, ${parentPath}):`, error)
+    console.error(
+      `Failed to fetch repo files (${repoId}, ${parentPath}):`,
+      error
+    )
     return []
   }
 }
@@ -109,7 +112,10 @@ export async function getFileContent(repoId: string, filePath: string) {
 
     return file || null
   } catch (error) {
-    console.error(`Failed to fetch file content (${repoId}, ${filePath}):`, error)
+    console.error(
+      `Failed to fetch file content (${repoId}, ${filePath}):`,
+      error
+    )
     return null
   }
 }
@@ -140,11 +146,20 @@ export async function getRepoStats() {
       .where(eq(repositories.isPublic, true))
 
     const total = allRepos.length
-    const assignments = allRepos.filter((r) => r.category === "ASSIGNMENT").length
-    const experiments = allRepos.filter((r) => r.category === "EXPERIMENT").length
-    const openSource = allRepos.filter((r) => r.category === "OPEN_SOURCE").length
+    const assignments = allRepos.filter(
+      (r) => r.category === "ASSIGNMENT"
+    ).length
+    const experiments = allRepos.filter(
+      (r) => r.category === "EXPERIMENT"
+    ).length
+    const openSource = allRepos.filter(
+      (r) => r.category === "OPEN_SOURCE"
+    ).length
 
-    const totalStars = allRepos.reduce((acc, curr) => acc + (curr.stars || 0), 0)
+    const totalStars = allRepos.reduce(
+      (acc, curr) => acc + (curr.stars || 0),
+      0
+    )
     const totalDownloads = allRepos.reduce(
       (acc, curr) => acc + (curr.downloads || 0),
       0

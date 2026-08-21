@@ -65,7 +65,10 @@ export async function loginAdmin(
       }
     } else {
       if (!ownerEnvPassword) {
-        const isValid = await verifyPassword(password, existingUser.passwordHash)
+        const isValid = await verifyPassword(
+          password,
+          existingUser.passwordHash
+        )
         if (!isValid) {
           return { error: "Password yang Anda masukkan salah." }
         }

@@ -17,21 +17,21 @@ export function ExperienceSection({
 
         <div className="leading-7 text-muted-foreground">
           <p>
-            Demonstrated track record of engineering scalable platforms,
-            leading frontend systems, and collaborating with cross-functional
-            teams.
+            Demonstrated track record of engineering scalable platforms, leading
+            frontend systems, and collaborating with cross-functional teams.
           </p>
         </div>
       </hgroup>
 
       <div className="flow-root w-full space-y-12 divide-y divide-border py-10">
         {experiences.map((exp, idx) => (
-          <div key={idx} className="w-full space-y-5 bg-transparent pt-10 first:pt-0">
-            <hgroup className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-y-2">
+          <div
+            key={idx}
+            className="w-full space-y-5 bg-transparent pt-10 first:pt-0"
+          >
+            <hgroup className="flex flex-col gap-y-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="text-sm/6">
-                <h3 className="text-xl font-medium text-primary">
-                  {exp.role}
-                </h3>
+                <h3 className="text-xl font-medium text-primary">{exp.role}</h3>
                 <div className="flex items-center gap-x-2 text-muted-foreground">
                   <p className="font-medium text-foreground">{exp.company}</p>
                   {exp.type && (
@@ -42,10 +42,12 @@ export function ExperienceSection({
                   )}
                 </div>
                 {exp.location && (
-                  <p className="text-xs text-muted-foreground/80">{exp.location}</p>
+                  <p className="text-xs text-muted-foreground/80">
+                    {exp.location}
+                  </p>
                 )}
               </div>
-              <div className="text-start sm:text-end text-sm/6 text-muted-foreground">
+              <div className="text-start text-sm/6 text-muted-foreground sm:text-end">
                 <p className="font-medium text-foreground">{exp.period}</p>
                 {exp.workMode && <p className="text-xs">{exp.workMode}</p>}
               </div>

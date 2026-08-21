@@ -2,7 +2,9 @@
 
 import { db, postViews, sql } from "@workspace/db"
 
-export async function incrementPostView(postId: string): Promise<{ success: boolean; viewCount?: number }> {
+export async function incrementPostView(
+  postId: string
+): Promise<{ success: boolean; viewCount?: number }> {
   if (!postId) return { success: false }
 
   try {

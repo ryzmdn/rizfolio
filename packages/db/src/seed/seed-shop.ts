@@ -1,10 +1,4 @@
-import {
-  db,
-  products,
-  productFiles,
-  orders,
-  orderItems,
-} from "../index"
+import { db, products, productFiles, orders, orderItems } from "../index"
 
 export async function seedShop() {
   console.log("Seeding Shop Domain...")

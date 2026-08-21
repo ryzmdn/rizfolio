@@ -1,9 +1,4 @@
-import {
-  db,
-  repositories,
-  repoFiles,
-  repoReleases,
-} from "../index"
+import { db, repositories, repoFiles, repoReleases } from "../index"
 
 export async function seedArchive() {
   console.log("Seeding Archive Domain...")

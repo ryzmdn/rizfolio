@@ -37,7 +37,7 @@ export function CaseStudiesSection({
             </div>
 
             <div className="mt-4 w-full space-y-1">
-              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 {item.category}
               </p>
               <h3 className="text-lg font-medium text-primary transition-colors group-hover:text-accent-foreground">

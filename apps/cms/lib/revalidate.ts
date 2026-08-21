@@ -53,7 +53,8 @@ export async function triggerAppRevalidation(
       const errJson = await res.json().catch(() => ({}))
       return {
         success: false,
-        error: errJson.message || `Failed to revalidate with status ${res.status}`,
+        error:
+          errJson.message || `Failed to revalidate with status ${res.status}`,
       }
     }
 

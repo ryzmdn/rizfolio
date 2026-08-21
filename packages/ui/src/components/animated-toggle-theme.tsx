@@ -5,8 +5,7 @@ import { Moon, Sun } from "lucide-react"
 import { flushSync } from "react-dom"
 import { cn } from "@workspace/ui/lib/utils"
 
-export interface AnimatedThemeToggleProps
-  extends React.ComponentPropsWithoutRef<"button"> {
+export interface AnimatedThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number
   fromCenter?: boolean
   theme?: "light" | "dark"
@@ -26,10 +25,7 @@ function getCircleClipPaths(
   const toY = `${(cy / viewportHeight) * 100}%`
   const toRadius = `${(maxRadius / (Math.hypot(viewportWidth, viewportHeight) / Math.SQRT2)) * 100}%`
 
-  return [
-    `circle(0% at ${toX} ${toY})`,
-    `circle(${toRadius} at ${toX} ${toY})`,
-  ]
+  return [`circle(0% at ${toX} ${toY})`, `circle(${toRadius} at ${toX} ${toY})`]
 }
 
 export function AnimatedThemeToggle({
@@ -160,14 +156,7 @@ export function AnimatedThemeToggle({
         })
         .catch(() => {})
     }
-  }, [
-    fromCenter,
-    duration,
-    isControlled,
-    theme,
-    onThemeChange,
-    cancelAnim,
-  ])
+  }, [fromCenter, duration, isControlled, theme, onThemeChange, cancelAnim])
 
   return (
     <button

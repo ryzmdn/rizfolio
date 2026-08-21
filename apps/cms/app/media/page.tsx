@@ -53,7 +53,7 @@ export default function MediaLibraryPage() {
     >
       <div className="space-y-8">
         {/* Upload Form Box */}
-        <div className="rounded-xl border border-border/80 bg-card p-6 space-y-4">
+        <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <h2 className="text-sm font-semibold text-foreground">
             Unggah Berkas Baru
           </h2>
@@ -97,7 +97,7 @@ export default function MediaLibraryPage() {
             <button
               type="submit"
               disabled={isUploading}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               {isUploading ? (
                 <>
@@ -115,11 +115,11 @@ export default function MediaLibraryPage() {
 
           {/* Success Banner with Copy Link */}
           {uploadedUrl && (
-            <div className="mt-4 rounded-xl border border-success/30 bg-success/5 p-4 space-y-2">
+            <div className="mt-4 space-y-2 rounded-xl border border-success/30 bg-success/5 p-4">
               <div className="text-xs font-medium text-success">
                 Berkas berhasil diunggah!
               </div>
-              <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background p-2 text-xs font-mono text-foreground">
+              <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background p-2 font-mono text-xs text-foreground">
                 <span className="truncate">{uploadedUrl}</span>
                 <button
                   type="button"
@@ -144,13 +144,15 @@ export default function MediaLibraryPage() {
         </div>
 
         {/* Bucket Info */}
-        <div className="rounded-xl border border-border/80 bg-card p-6 space-y-3">
+        <div className="space-y-3 rounded-xl border border-border/80 bg-card p-6">
           <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
             <ImageIcon className="size-4 text-muted-foreground" />
             <span>Informasi Supabase Storage</span>
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Semua media disimpan di bucket publik <code className="font-mono text-foreground">media</code> dan dilayani langsung oleh Supabase CDN global dengan latensi rendah.
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Semua media disimpan di bucket publik{" "}
+            <code className="font-mono text-foreground">media</code> dan
+            dilayani langsung oleh Supabase CDN global dengan latensi rendah.
           </p>
         </div>
       </div>

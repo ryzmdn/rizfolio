@@ -12,10 +12,7 @@ import { Plus } from "lucide-react"
 export const dynamic = "force-dynamic"
 
 export default async function BlogManagerPage() {
-  const [postList] = await Promise.all([
-    getPosts(),
-    getBlogCategories(),
-  ])
+  const [postList] = await Promise.all([getPosts(), getBlogCategories()])
 
   return (
     <CmsPageShell
@@ -23,7 +20,7 @@ export default async function BlogManagerPage() {
       description="Tulis artikel teknis, kelola draf, publikasi, dan kategori blog."
     >
       <div className="space-y-8">
-        <div className="rounded-xl border border-border/80 bg-card p-6 space-y-4">
+        <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <h2 className="text-sm font-semibold text-foreground">
             Tulis Artikel Baru
           </h2>
@@ -33,7 +30,10 @@ export default async function BlogManagerPage() {
               const title = formData.get("title")?.toString() || ""
               const slug =
                 formData.get("slug")?.toString().trim().toLowerCase() ||
-                title.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "")
+                title
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")
+                  .replace(/[^\w-]/g, "")
               const excerpt = formData.get("excerpt")?.toString() || ""
               const contentMd = formData.get("contentMd")?.toString() || ""
               const isPublished = formData.get("isPublished") === "true"
@@ -46,7 +46,10 @@ export default async function BlogManagerPage() {
                   contentMd,
                   status: isPublished ? "PUBLISHED" : "DRAFT",
                   publishedAt: isPublished ? new Date() : null,
-                  readingTime: Math.max(1, Math.ceil(contentMd.split(/\s+/).length / 200)),
+                  readingTime: Math.max(
+                    1,
+                    Math.ceil(contentMd.split(/\s+/).length / 200)
+                  ),
                 })
               }
             }}
@@ -79,7 +82,7 @@ export default async function BlogManagerPage() {
               rows={6}
               placeholder="Isi konten artikel (Markdown)..."
               required
-              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono text-foreground focus:outline-none"
+              className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-xs text-foreground focus:outline-none"
             />
 
             <div className="flex items-center justify-between pt-2">
@@ -96,7 +99,7 @@ export default async function BlogManagerPage() {
 
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
                 <Plus className="size-3.5" />
                 Simpan & Publikasikan
@@ -105,7 +108,7 @@ export default async function BlogManagerPage() {
           </form>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-card overflow-hidden">
+        <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
           <div className="flex items-center justify-between border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
             <span>Daftar Artikel ({postList.length})</span>
           </div>
@@ -119,24 +122,28 @@ export default async function BlogManagerPage() {
               postList.map((post) => (
                 <div
                   key={post.id}
-                  className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors"
+                  className="flex items-center justify-between p-4 transition-colors hover:bg-muted/30"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-foreground text-sm">
+                      <span className="text-sm font-medium text-foreground">
                         {post.title}
                       </span>
                       <Badge
-                        variant={post.status === "PUBLISHED" ? "default" : "secondary"}
+                        variant={
+                          post.status === "PUBLISHED" ? "default" : "secondary"
+                        }
                         className="text-[10px]"
                       >
                         {post.status}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-3 text-muted-foreground font-mono text-[11px]">
+                    <div className="flex items-center gap-3 font-mono text-[11px] text-muted-foreground">
                       <span>/{post.slug}</span>
                       <span>•</span>
-                      <span>{new Date(post.createdAt).toLocaleDateString("id-ID")}</span>
+                      <span>
+                        {new Date(post.createdAt).toLocaleDateString("id-ID")}
+                      </span>
                     </div>
                   </div>
 

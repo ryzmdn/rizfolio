@@ -16,7 +16,10 @@ export interface RepoCardProps {
   demoUrl?: string | null
 }
 
-const CATEGORY_LABELS: Record<string, { label: string; variant: "default" | "secondary" | "outline" }> = {
+const CATEGORY_LABELS: Record<
+  string,
+  { label: string; variant: "default" | "secondary" | "outline" }
+> = {
   ASSIGNMENT: { label: "Tugas Kuliah", variant: "secondary" },
   EXPERIMENT: { label: "Eksperimen", variant: "outline" },
   OPEN_SOURCE: { label: "Open Source", variant: "default" },
@@ -48,18 +51,21 @@ export function RepoCard({
             <FolderGit2 className="size-4 text-muted-foreground transition-colors group-hover:text-foreground" />
             <Link
               href={`/repo/${slug}`}
-              className="text-base font-medium text-foreground hover:underline underline-offset-4"
+              className="text-base font-medium text-foreground underline-offset-4 hover:underline"
             >
               {name}
             </Link>
           </div>
-          <Badge variant={categoryInfo.variant} className="text-[11px] font-normal">
+          <Badge
+            variant={categoryInfo.variant}
+            className="text-[11px] font-normal"
+          >
             {categoryInfo.label}
           </Badge>
         </div>
 
         {description && (
-          <p className="line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+          <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
             {description}
           </p>
         )}
@@ -72,7 +78,7 @@ export function RepoCard({
         )}
       </div>
 
-      <div className="mt-5 pt-3 border-t border-border/40 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border/40 pt-3 text-xs text-muted-foreground">
         {techStack && techStack.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
             {techStack.slice(0, 3).map((tech) => (
@@ -91,7 +97,7 @@ export function RepoCard({
           </div>
         )}
 
-        <div className="flex items-center gap-3 ml-auto">
+        <div className="ml-auto flex items-center gap-3">
           <span className="inline-flex items-center gap-1">
             <Star className="size-3" />
             <span className="tabular-nums">{starsCount}</span>
@@ -110,7 +116,7 @@ export function RepoCard({
               target="_blank"
               rel="noreferrer"
               aria-label="Live Demo"
-              className="inline-flex items-center text-foreground hover:text-primary transition-colors"
+              className="inline-flex items-center text-foreground transition-colors hover:text-primary"
             >
               <ExternalLink className="size-3.5" />
             </a>

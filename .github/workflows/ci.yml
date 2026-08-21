@@ -1,0 +1,81 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-checks:
+    name: Code Quality & Type Safety
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify Code Formatting
+        run: pnpm format:check
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Run TypeScript Verification
+        run: pnpm typecheck
+
+  build-validation:
+    name: Production Build Verification
+    needs: [quality-checks]
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      NEXT_PUBLIC_SUPABASE_URL: https://mock-supabase.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: mock-anon-key-for-ci-pipeline
+      SUPABASE_SERVICE_ROLE_KEY: mock-service-role-key-for-ci-pipeline
+      REVALIDATION_SECRET_TOKEN: mock-revalidation-secret-token
+      CMS_SESSION_SECRET: mock-session-secret-at-least-32-chars-long-abcdef
+      NEXT_PUBLIC_PORTFOLIO_URL: https://rizkyramadhan.dev
+      NEXT_PUBLIC_BLOG_URL: https://blog.rizkyramadhan.dev
+      NEXT_PUBLIC_SHOP_URL: https://shop.rizkyramadhan.dev
+      NEXT_PUBLIC_CHANGELOG_URL: https://changelog.rizkyramadhan.dev
+      NEXT_PUBLIC_ARCHIVE_URL: https://archive.rizkyramadhan.dev
+      NEXT_PUBLIC_CMS_URL: https://cms.rizkyramadhan.dev
+      NEXT_PUBLIC_APP_URL: https://rizkyramadhan.dev
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build All Applications
+        run: pnpm build

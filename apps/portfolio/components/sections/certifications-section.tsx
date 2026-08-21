@@ -17,7 +17,9 @@ export function CertificationsSection({
   return (
     <Container id="certifications" className="py-20">
       <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">Licenses & Verified Certifications</h2>
+        <h2 className="text-2xl font-medium">
+          Licenses & Verified Certifications
+        </h2>
 
         <div className="leading-7 text-muted-foreground">
           <p>
@@ -33,7 +35,7 @@ export function CertificationsSection({
             {firstRow.map((item) => (
               <div
                 key={item.id}
-                className="aspect-4/3 max-h-40 w-auto overflow-hidden rounded-xl bg-card border border-border/60 shadow-sm sm:max-h-52 lg:max-h-60"
+                className="aspect-4/3 max-h-40 w-auto overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm sm:max-h-52 lg:max-h-60"
               >
                 <img
                   src={item.thumbnail}
@@ -53,7 +55,7 @@ export function CertificationsSection({
             {secondRow.map((item) => (
               <div
                 key={item.id}
-                className="aspect-4/3 max-h-40 w-auto overflow-hidden rounded-xl bg-card border border-border/60 shadow-sm sm:max-h-52 lg:max-h-60"
+                className="aspect-4/3 max-h-40 w-auto overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm sm:max-h-52 lg:max-h-60"
               >
                 <img
                   src={item.thumbnail}

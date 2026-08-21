@@ -29,7 +29,7 @@ export default async function RepoDetailPage({
   const files = await getRepoFiles(repo.id, path)
 
   return (
-    <Container className="py-10 space-y-8">
+    <Container className="space-y-8 py-10">
       {/* Header */}
       <RepoHeader
         slug={repo.slug}

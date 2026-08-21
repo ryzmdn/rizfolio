@@ -19,7 +19,7 @@ export default async function ArchiveManagerPage() {
       description="Kelola repositori tugas kuliah, eksperimen, dan proyek open-source."
     >
       <div className="space-y-8">
-        <div className="rounded-xl border border-border/80 bg-card p-6 space-y-4">
+        <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <h2 className="text-sm font-semibold text-foreground">
             Tambah Repositori Baru
           </h2>
@@ -29,14 +29,19 @@ export default async function ArchiveManagerPage() {
               const name = formData.get("name")?.toString() || ""
               const slug =
                 formData.get("slug")?.toString().trim().toLowerCase() ||
-                name.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "")
+                name
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")
+                  .replace(/[^\w-]/g, "")
               const description = formData.get("description")?.toString() || ""
-              const category = formData.get("category")?.toString() || "ASSIGNMENT"
+              const category =
+                formData.get("category")?.toString() || "ASSIGNMENT"
               const courseName = formData.get("courseName")?.toString() || null
               const semester = formData.get("semester")?.toString() || null
               const githubUrl = formData.get("githubUrl")?.toString() || null
               const demoUrl = formData.get("demoUrl")?.toString() || null
-              const readmeContent = formData.get("readmeContent")?.toString() || null
+              const readmeContent =
+                formData.get("readmeContent")?.toString() || null
 
               if (name && slug) {
                 await createRepository({
@@ -101,13 +106,13 @@ export default async function ArchiveManagerPage() {
               name="readmeContent"
               rows={4}
               placeholder="README.md konten awal (Markdown)..."
-              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono text-foreground focus:outline-none"
+              className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-xs text-foreground focus:outline-none"
             />
 
             <div className="flex justify-end pt-1">
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
                 <Plus className="size-3.5" />
                 Tambah Repositori
@@ -116,7 +121,7 @@ export default async function ArchiveManagerPage() {
           </form>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-card overflow-hidden">
+        <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
           <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
             Daftar Repositori ({repoList.length})
           </div>
@@ -130,18 +135,18 @@ export default async function ArchiveManagerPage() {
               repoList.map((repo) => (
                 <div
                   key={repo.id}
-                  className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors"
+                  className="flex items-center justify-between p-4 transition-colors hover:bg-muted/30"
                 >
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-foreground text-sm">
+                      <span className="text-sm font-medium text-foreground">
                         {repo.name}
                       </span>
                       <Badge variant="outline" className="text-[10px]">
                         {repo.category}
                       </Badge>
                     </div>
-                    <div className="text-muted-foreground font-mono text-[11px]">
+                    <div className="font-mono text-[11px] text-muted-foreground">
                       /{repo.slug} {repo.courseName && `• ${repo.courseName}`}
                     </div>
                   </div>

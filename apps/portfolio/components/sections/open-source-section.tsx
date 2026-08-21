@@ -25,13 +25,15 @@ export function OpenSourceSection() {
         {openSourceProjects.map((project, idx) => (
           <div
             key={idx}
-            className="flex flex-col justify-between rounded-2xl border border-border/60 bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:border-border"
+            className="flex flex-col justify-between rounded-2xl border border-border/60 bg-card p-6 shadow-sm transition-all duration-300 hover:border-border hover:shadow-md"
           >
             <div>
               <hgroup className="flex items-center justify-between">
-                <h3 className="font-semibold text-lg text-primary">{project.name}</h3>
+                <h3 className="text-lg font-semibold text-primary">
+                  {project.name}
+                </h3>
                 <Badge variant="secondary" className="gap-1 font-normal">
-                  <Star className="size-3 text-amber-500 fill-amber-500" />
+                  <Star className="size-3 fill-amber-500 text-amber-500" />
                   {project.stars}
                 </Badge>
               </hgroup>
@@ -40,13 +42,13 @@ export function OpenSourceSection() {
                 <p className="text-sm/6 text-muted-foreground">
                   {project.description}
                 </p>
-                <Badge variant="outline" className="text-xs font-mono">
+                <Badge variant="outline" className="font-mono text-xs">
                   {project.language}
                 </Badge>
               </div>
             </div>
 
-            <div className="flex items-center gap-x-3 pt-4 border-t border-border/40">
+            <div className="flex items-center gap-x-3 border-t border-border/40 pt-4">
               <a
                 href={project.githubUrl}
                 target="_blank"

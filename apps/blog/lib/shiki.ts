@@ -59,7 +59,19 @@ export async function highlightCodeBlock(
 ): Promise<string> {
   const langKey = langString?.toLowerCase().trim() || "txt"
   const lang = (EXTENSION_LANGUAGE_MAP[langKey] ||
-    (["typescript", "tsx", "javascript", "jsx", "json", "python", "css", "html", "bash", "sql", "yaml"].includes(langKey)
+    ([
+      "typescript",
+      "tsx",
+      "javascript",
+      "jsx",
+      "json",
+      "python",
+      "css",
+      "html",
+      "bash",
+      "sql",
+      "yaml",
+    ].includes(langKey)
       ? langKey
       : "txt")) as BundledLanguage
 

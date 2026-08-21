@@ -2,7 +2,14 @@ import { Container } from "@workspace/ui/components/layouts/container"
 import { getActiveProducts, formatPrice } from "@/lib/queries"
 import Image from "next/image"
 import Link from "next/link"
-import { Sparkles, Download, ArrowRight, Layers, Package, Search } from "lucide-react"
+import {
+  Sparkles,
+  Download,
+  ArrowRight,
+  Layers,
+  Package,
+  Search,
+} from "lucide-react"
 
 interface ShopPageProps {
   searchParams: Promise<{
@@ -32,18 +39,20 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
           <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
             Digital Tools & Starter Kits
           </h1>
-          <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-            Production-tested architectures, design systems, and specialized consultation services crafted to accelerate your software engineering workflow.
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Production-tested architectures, design systems, and specialized
+            consultation services crafted to accelerate your software
+            engineering workflow.
           </p>
         </div>
       </Container>
 
-      <Container className="border-y border-border py-4 bg-background/50 backdrop-blur-xs sticky top-0 z-20">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+      <Container className="sticky top-0 z-20 border-y border-border bg-background/50 py-4 backdrop-blur-xs">
+        <div className="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
+          <div className="flex scrollbar-none items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
             <Link
               href="/"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 !type || type === "all"
                   ? "bg-primary text-primary-foreground shadow-xs"
                   : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -54,7 +63,7 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
             </Link>
             <Link
               href="/?type=DIGITAL_DOWNLOAD"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 type === "DIGITAL_DOWNLOAD"
                   ? "bg-primary text-primary-foreground shadow-xs"
                   : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -65,7 +74,7 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
             </Link>
             <Link
               href="/?type=SERVICE"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
                 type === "SERVICE"
                   ? "bg-primary text-primary-foreground shadow-xs"
                   : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -76,15 +85,19 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
             </Link>
           </div>
 
-          <form action="/" method="GET" className="relative flex items-center min-w-64 max-w-sm">
+          <form
+            action="/"
+            method="GET"
+            className="relative flex max-w-sm min-w-64 items-center"
+          >
             {type && <input type="hidden" name="type" value={type} />}
-            <Search className="absolute left-3 size-3.5 text-muted-foreground pointer-events-none" />
+            <Search className="pointer-events-none absolute left-3 size-3.5 text-muted-foreground" />
             <input
               type="text"
               name="q"
               defaultValue={q || ""}
               placeholder="Search products..."
-              className="w-full pl-9 pr-4 py-1.5 text-xs rounded-lg border border-border bg-card/60 placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary/50 transition-all"
+              className="w-full rounded-lg border border-border bg-card/60 py-1.5 pr-4 pl-9 text-xs transition-all placeholder:text-muted-foreground focus:ring-1 focus:ring-primary/50 focus:outline-hidden"
             />
           </form>
         </div>
@@ -92,15 +105,18 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
 
       <Container className="py-16">
         {products.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center rounded-2xl border border-dashed border-border p-8">
-            <Package className="size-10 text-muted-foreground/40 mb-3" />
-            <h2 className="text-lg font-medium text-foreground">No products found</h2>
-            <p className="mt-1 text-xs text-muted-foreground max-w-sm">
-              We couldn&apos;t find any active digital items matching your search or filter.
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border p-8 py-24 text-center">
+            <Package className="mb-3 size-10 text-muted-foreground/40" />
+            <h2 className="text-lg font-medium text-foreground">
+              No products found
+            </h2>
+            <p className="mt-1 max-w-sm text-xs text-muted-foreground">
+              We couldn&apos;t find any active digital items matching your
+              search or filter.
             </p>
             <Link
               href="/"
-              className="mt-4 inline-flex items-center text-xs text-primary hover:underline font-medium"
+              className="mt-4 inline-flex items-center text-xs font-medium text-primary hover:underline"
             >
               Reset all filters
             </Link>
@@ -149,7 +165,10 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
 
                     <div className="space-y-2">
                       <h2 className="text-base font-medium tracking-tight text-foreground transition-colors group-hover:text-primary">
-                        <Link href={`/product/${product.slug}`} className="focus:outline-hidden">
+                        <Link
+                          href={`/product/${product.slug}`}
+                          className="focus:outline-hidden"
+                        >
                           {product.title}
                         </Link>
                       </h2>
@@ -159,7 +178,7 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-3 border-t border-border/40 flex items-center justify-between">
+                  <div className="mt-6 flex items-center justify-between border-t border-border/40 pt-3">
                     <span className="text-[11px] text-muted-foreground">
                       {isDigital ? "Instant Access" : "Direct Booking"}
                     </span>

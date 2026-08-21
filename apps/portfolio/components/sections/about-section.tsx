@@ -30,7 +30,7 @@ export function AboutSection({ data = personalInfo }: AboutSectionProps) {
             rel="noreferrer"
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              "gap-x-2 text-xs rounded-lg"
+              "gap-x-2 rounded-lg text-xs"
             )}
           >
             <FileText className="size-3.5" />

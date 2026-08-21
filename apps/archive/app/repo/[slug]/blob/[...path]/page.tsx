@@ -29,16 +29,16 @@ export default async function FileViewPage({
   const highlightedHtml = await highlightCode(code, file.filename)
 
   return (
-    <Container className="py-10 space-y-6">
+    <Container className="space-y-6 py-10">
       {/* Breadcrumb Navigation */}
-      <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground border-b border-border/70 pb-4">
-        <Link href="/" className="hover:text-foreground transition-colors">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border/70 pb-4 text-sm text-muted-foreground">
+        <Link href="/" className="transition-colors hover:text-foreground">
           archive
         </Link>
         <span>/</span>
         <Link
           href={`/repo/${slug}`}
-          className="hover:text-foreground transition-colors font-medium text-foreground"
+          className="font-medium text-foreground transition-colors hover:text-foreground"
         >
           {slug}
         </Link>
@@ -50,13 +50,13 @@ export default async function FileViewPage({
             <span key={segmentPath} className="flex items-center gap-2">
               <span>/</span>
               {isLast ? (
-                <span className="font-mono text-foreground font-medium">
+                <span className="font-mono font-medium text-foreground">
                   {segment}
                 </span>
               ) : (
                 <Link
                   href={`/repo/${slug}?path=${encodeURIComponent(segmentPath)}`}
-                  className="font-mono text-muted-foreground hover:text-foreground transition-colors"
+                  className="font-mono text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {segment}
                 </Link>

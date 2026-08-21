@@ -94,7 +94,9 @@ export async function downloadFile(
   const { data, error } = await client.storage.from(bucket).download(path)
 
   if (error || !data) {
-    throw new Error(`Failed to download file from storage: ${error?.message || "Unknown error"}`)
+    throw new Error(
+      `Failed to download file from storage: ${error?.message || "Unknown error"}`
+    )
   }
 
   return data

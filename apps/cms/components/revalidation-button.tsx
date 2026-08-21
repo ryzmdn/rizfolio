@@ -4,9 +4,9 @@ import { useState } from "react"
 import { RefreshCw, Check, AlertCircle } from "lucide-react"
 
 export function RevalidationButton() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
-    "idle"
-  )
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle")
 
   async function handleRevalidate() {
     setStatus("loading")
@@ -31,8 +31,12 @@ export function RevalidationButton() {
         <RefreshCw className="size-3.5 animate-spin text-muted-foreground" />
       )}
       {status === "success" && <Check className="size-3.5 text-success" />}
-      {status === "error" && <AlertCircle className="size-3.5 text-destructive" />}
-      {status === "idle" && <RefreshCw className="size-3.5 text-muted-foreground" />}
+      {status === "error" && (
+        <AlertCircle className="size-3.5 text-destructive" />
+      )}
+      {status === "idle" && (
+        <RefreshCw className="size-3.5 text-muted-foreground" />
+      )}
       <span>
         {status === "loading"
           ? "Memperbarui Cache..."

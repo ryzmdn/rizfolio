@@ -103,14 +103,22 @@ export function CapabilitiesSection() {
             <div className="relative w-full min-w-0 overflow-hidden py-10">
               <Marquee pauseOnHover className="[--gap:8px]">
                 {hardSkillsList.slice(0, 4).map((skill) => (
-                  <Badge key={skill} variant="outline" className="text-secondary">
+                  <Badge
+                    key={skill}
+                    variant="outline"
+                    className="text-secondary"
+                  >
                     {skill}
                   </Badge>
                 ))}
               </Marquee>
               <Marquee pauseOnHover reverse className="[--gap:8px]">
                 {hardSkillsList.slice(4).map((skill) => (
-                  <Badge key={skill} variant="outline" className="text-secondary">
+                  <Badge
+                    key={skill}
+                    variant="outline"
+                    className="text-secondary"
+                  >
                     {skill}
                   </Badge>
                 ))}

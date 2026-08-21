@@ -43,14 +43,14 @@ export function FilterBar({
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+        <div className="relative max-w-md flex-1">
+          <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             defaultValue={currentSearch}
             placeholder="Cari repositori, topik, atau mata kuliah..."
             onChange={(e) => updateQuery({ search: e.target.value || null })}
-            className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-none"
+            className="w-full rounded-lg border border-border bg-background py-2 pr-4 pl-9 text-sm text-foreground placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-none"
           />
         </div>
 

@@ -3,8 +3,7 @@ import { getPublishedPosts } from "@/lib/queries"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BLOG_URL ||
-    process.env.NEXT_PUBLIC_APP_URL
+    process.env.NEXT_PUBLIC_BLOG_URL || process.env.NEXT_PUBLIC_APP_URL
 
   const { posts } = await getPublishedPosts({ limit: 100 })
 

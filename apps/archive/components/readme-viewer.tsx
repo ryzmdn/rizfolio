@@ -10,7 +10,7 @@ export function ReadmeViewer({ content }: { content: string }) {
         <span className="font-mono font-medium text-foreground">README.md</span>
       </div>
 
-      <div className="p-6 prose dark:prose-invert max-w-none text-sm text-foreground leading-relaxed whitespace-pre-wrap font-sans">
+      <div className="prose dark:prose-invert max-w-none p-6 font-sans text-sm leading-relaxed whitespace-pre-wrap text-foreground">
         {content}
       </div>
     </div>

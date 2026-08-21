@@ -34,7 +34,7 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
   return (
     <Container id="hero-section" className="flow-root space-y-8 py-20 md:py-28">
       <div className="relative flex gap-x-6 max-sm:flex-col max-sm:gap-y-3 sm:items-center">
-        <div className="shrink-0 size-24 rounded-full bg-foreground/10 p-1.5 ring-1 ring-border ring-inset sm:size-28">
+        <div className="size-24 shrink-0 rounded-full bg-foreground/10 p-1.5 ring-1 ring-border ring-inset sm:size-28">
           <div className="relative size-full overflow-hidden rounded-full">
             <Image
               src={data.avatar}
@@ -68,7 +68,9 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
               )}
             />
           </span>
-          <p className="text-sm/6 text-accent-foreground">{statusConfig.label}</p>
+          <p className="text-sm/6 text-accent-foreground">
+            {statusConfig.label}
+          </p>
         </div>
       </div>
 
@@ -76,12 +78,12 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
         <h2 className="text-3xl/snug font-medium text-primary md:text-4xl/snug">
           {data.headline}
         </h2>
-        <p className="max-sm:text-sm/6 leading-7 text-muted-foreground">
+        <p className="leading-7 text-muted-foreground max-sm:text-sm/6">
           {data.subheadline}
         </p>
       </div>
 
-      <div className="flex gap-y-3 gap-x-4 max-sm:flex-col">
+      <div className="flex gap-x-4 gap-y-3 max-sm:flex-col">
         <Link
           href="/#case-studies"
           className={cn(

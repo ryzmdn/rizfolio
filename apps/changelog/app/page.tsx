@@ -18,25 +18,29 @@ function getCategoryBadge(category: ChangelogCategory | string) {
     case "FEATURE":
       return {
         label: "Feature",
-        className: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+        className:
+          "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
         icon: <Sparkles className="size-3 shrink-0" />,
       }
     case "IMPROVEMENT":
       return {
         label: "Improvement",
-        className: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+        className:
+          "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
         icon: <Zap className="size-3 shrink-0" />,
       }
     case "FIX":
       return {
         label: "Bug Fix",
-        className: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+        className:
+          "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
         icon: <Wrench className="size-3 shrink-0" />,
       }
     case "BREAKING":
       return {
         label: "Breaking",
-        className: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
+        className:
+          "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
         icon: <AlertCircle className="size-3 shrink-0" />,
       }
     default:
@@ -52,8 +56,8 @@ export default async function ChangelogPage() {
   const releases = await getChangelogReleases()
 
   return (
-    <Container className="py-20 max-w-4xl">
-      <div className="max-w-2xl space-y-4 mb-16">
+    <Container className="max-w-4xl py-20">
+      <div className="mb-16 max-w-2xl space-y-4">
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground">
           <History className="size-3.5 text-primary" />
           <span>Release Notes & Dev Log</span>
@@ -61,32 +65,34 @@ export default async function ChangelogPage() {
         <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
           Changelog
         </h1>
-        <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-          A continuous timeline of architectural milestones, feature additions, performance tunings, and version releases across the monorepo ecosystem.
+        <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+          A continuous timeline of architectural milestones, feature additions,
+          performance tunings, and version releases across the monorepo
+          ecosystem.
         </p>
       </div>
 
-      <div className="relative pl-6 sm:pl-10 space-y-16">
-        <div className="absolute left-[9px] sm:left-[17px] top-3 bottom-3 w-px bg-border/80" />
+      <div className="relative space-y-16 pl-6 sm:pl-10">
+        <div className="absolute top-3 bottom-3 left-[9px] w-px bg-border/80 sm:left-[17px]" />
 
         {releases.map((release, releaseIdx) => {
           const isLatest = releaseIdx === 0
 
           return (
-            <section key={release.id} className="relative group">
-              <div className="absolute -left-6 sm:-left-10 top-1.5 flex size-5 sm:size-9 items-center justify-center rounded-full bg-background border border-border/80 shadow-xs group-hover:border-primary/60 transition-colors">
-                <GitCommit className="size-3 sm:size-4 text-primary" />
+            <section key={release.id} className="group relative">
+              <div className="absolute top-1.5 -left-6 flex size-5 items-center justify-center rounded-full border border-border/80 bg-background shadow-xs transition-colors group-hover:border-primary/60 sm:-left-10 sm:size-9">
+                <GitCommit className="size-3 text-primary sm:size-4" />
               </div>
 
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-primary text-primary-foreground shadow-xs">
+                  <span className="rounded-md bg-primary px-2.5 py-1 font-mono text-xs font-semibold text-primary-foreground shadow-xs">
                     {release.version}
                   </span>
 
                   {isLatest && (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                      <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                      <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
                       Latest Release
                     </span>
                   )}
@@ -97,7 +103,7 @@ export default async function ChangelogPage() {
                   </span>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-medium tracking-tight text-foreground">
+                <h2 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">
                   {release.title}
                 </h2>
 
@@ -120,7 +126,7 @@ export default async function ChangelogPage() {
                           className="flex items-start gap-3 leading-relaxed"
                         >
                           <span
-                            className={`inline-flex items-center gap-1 shrink-0 rounded-md border px-2 py-0.5 text-[11px] font-medium mt-0.5 ${badge.className}`}
+                            className={`mt-0.5 inline-flex shrink-0 items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-medium ${badge.className}`}
                           >
                             {badge.icon}
                             <span>{badge.label}</span>

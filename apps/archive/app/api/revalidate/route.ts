@@ -57,7 +57,8 @@ async function handleRevalidation(request: NextRequest) {
     return NextResponse.json(
       {
         error: "Internal Server Error",
-        message: error instanceof Error ? error.message : "Failed to revalidate.",
+        message:
+          error instanceof Error ? error.message : "Failed to revalidate.",
       },
       { status: 500 }
     )

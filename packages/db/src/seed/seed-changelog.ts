@@ -1,8 +1,4 @@
-import {
-  db,
-  changelogs,
-  changelogItems,
-} from "../index"
+import { db, changelogs, changelogItems } from "../index"
 
 export async function seedChangelog() {
   console.log("Seeding Changelog Domain...")

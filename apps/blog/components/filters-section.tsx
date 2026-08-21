@@ -61,12 +61,12 @@ export function FilterSection({
 
   return (
     <div className="w-full space-y-4">
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+      <div className="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
+        <div className="flex scrollbar-none items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => handleCategorySelect("all")}
             className={cn(
-              "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 cursor-pointer",
+              "inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all",
               activeCategory === "all" || !activeCategory
                 ? "bg-primary text-primary-foreground shadow-xs"
                 : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -84,7 +84,7 @@ export function FilterSection({
                 key={cat.id}
                 onClick={() => handleCategorySelect(cat.slug)}
                 className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 cursor-pointer",
+                  "inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all",
                   isActive
                     ? "bg-primary text-primary-foreground shadow-xs"
                     : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -99,21 +99,21 @@ export function FilterSection({
 
         <form
           onSubmit={handleSearchSubmit}
-          className="relative flex items-center min-w-64 max-w-sm"
+          className="relative flex max-w-sm min-w-64 items-center"
         >
-          <Search className="absolute left-3 size-3.5 text-muted-foreground pointer-events-none" />
+          <Search className="pointer-events-none absolute left-3 size-3.5 text-muted-foreground" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search articles..."
-            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-lg border border-border bg-card/60 placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary/50 transition-all"
+            className="w-full rounded-lg border border-border bg-card/60 py-1.5 pr-8 pl-9 text-xs transition-all placeholder:text-muted-foreground focus:ring-1 focus:ring-primary/50 focus:outline-hidden"
           />
           {query && (
             <button
               type="button"
               onClick={handleClearSearch}
-              className="absolute right-2.5 p-0.5 text-muted-foreground hover:text-foreground cursor-pointer"
+              className="absolute right-2.5 cursor-pointer p-0.5 text-muted-foreground hover:text-foreground"
             >
               <X className="size-3.5" />
             </button>
@@ -122,8 +122,8 @@ export function FilterSection({
       </div>
 
       {isPending && (
-        <div className="h-0.5 w-full bg-primary/20 overflow-hidden rounded-full">
-          <div className="h-full bg-primary animate-pulse w-1/3" />
+        <div className="h-0.5 w-full overflow-hidden rounded-full bg-primary/20">
+          <div className="h-full w-1/3 animate-pulse bg-primary" />
         </div>
       )}
     </div>

@@ -38,7 +38,7 @@ export default function LoginPage() {
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <Mail className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
                 <input
                   id="email"
                   name="email"
@@ -46,7 +46,7 @@ export default function LoginPage() {
                   required
                   autoComplete="email"
                   placeholder="owner@example.com"
-                  className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background py-2 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-none"
                 />
               </div>
             </div>
@@ -59,7 +59,7 @@ export default function LoginPage() {
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <Lock className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
                 <input
                   id="password"
                   name="password"
@@ -67,7 +67,7 @@ export default function LoginPage() {
                   required
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-none"
+                  className="w-full rounded-lg border border-border bg-background py-2 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-none"
                 />
               </div>
             </div>

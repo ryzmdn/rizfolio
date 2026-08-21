@@ -1,7 +1,4 @@
-import {
-  db,
-  siteSettings,
-} from "../index"
+import { db, siteSettings } from "../index"
 
 export async function seedSettings() {
   console.log("Seeding Site Settings...")
@@ -14,7 +11,8 @@ export async function seedSettings() {
         siteName: "Rizfolio Ecosystem",
         ownerName: "Rizky Ramadhan",
         title: "Rizky Ramadhan — Full-Stack Engineer & Architect",
-        description: "Personal multi-app ecosystem powering portfolio, technical blog, digital store, dev changelog, and open-source archive.",
+        description:
+          "Personal multi-app ecosystem powering portfolio, technical blog, digital store, dev changelog, and open-source archive.",
         baseUrl: "https://rizkyramadhan.dev",
       },
       description: "Global site metadata and default OpenGraph configurations.",

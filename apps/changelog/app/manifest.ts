@@ -4,7 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Rizfolio Changelog — Release Notes & Dev Log",
     short_name: "RizChangelog",
-    description: "Continuous timeline of version releases, architecture milestones, and performance tunings.",
+    description:
+      "Continuous timeline of version releases, architecture milestones, and performance tunings.",
     start_url: "/",
     display: "standalone",
     background_color: "#09090b",

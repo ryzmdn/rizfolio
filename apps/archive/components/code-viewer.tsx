@@ -48,7 +48,9 @@ export function CodeViewer({
       <div className="flex items-center justify-between border-b border-border/80 bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground">
         <div className="flex items-center gap-2">
           <FileCode className="size-4 text-foreground/80" />
-          <span className="font-mono text-foreground font-medium">{filename}</span>
+          <span className="font-mono font-medium text-foreground">
+            {filename}
+          </span>
           <span>•</span>
           <span className="tabular-nums">{lineCount} lines</span>
           {sizeBytes ? (
@@ -63,7 +65,7 @@ export function CodeViewer({
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1 rounded border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1 rounded border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             {copied ? (
               <>
@@ -82,7 +84,7 @@ export function CodeViewer({
             type="button"
             onClick={handleDownload}
             aria-label="Download file"
-            className="inline-flex items-center gap-1 rounded border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1 rounded border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <Download className="size-3" />
             <span>Raw</span>
@@ -90,9 +92,9 @@ export function CodeViewer({
         </div>
       </div>
 
-      <div className="overflow-x-auto p-4 text-xs font-mono leading-relaxed bg-background/50">
+      <div className="overflow-x-auto bg-background/50 p-4 font-mono text-xs leading-relaxed">
         <div
-          className="[&>pre]:bg-transparent! [&>pre]:p-0! [&_code]:font-mono!"
+          className="[&_code]:font-mono! [&>pre]:bg-transparent! [&>pre]:p-0!"
           dangerouslySetInnerHTML={{ __html: highlightedHtml }}
         />
       </div>

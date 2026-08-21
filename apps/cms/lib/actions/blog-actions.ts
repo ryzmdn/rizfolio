@@ -41,7 +41,9 @@ export async function getBlogCategories() {
   return await db.select().from(categories).orderBy(asc(categories.name))
 }
 
-export async function createBlogCategory(values: typeof categories.$inferInsert) {
+export async function createBlogCategory(
+  values: typeof categories.$inferInsert
+) {
   const [created] = await db.insert(categories).values(values).returning()
   revalidatePath("/blog")
   return created

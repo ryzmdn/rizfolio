@@ -31,12 +31,12 @@ export function TestimonialsSection({
           >
             <div className="space-y-4">
               <Quote className="size-6 text-muted-foreground/40" />
-              <p className="leading-7 text-muted-foreground text-sm/relaxed">
+              <p className="text-sm/relaxed leading-7 text-muted-foreground">
                 &ldquo;{item.content}&rdquo;
               </p>
             </div>
 
-            <div className="flex items-center gap-x-4 pt-4 border-t border-border/40">
+            <div className="flex items-center gap-x-4 border-t border-border/40 pt-4">
               <div className="size-12 shrink-0 overflow-hidden rounded-full ring-1 ring-border">
                 <img
                   src={item.avatar}
@@ -45,10 +45,10 @@ export function TestimonialsSection({
                 />
               </div>
               <div>
-                <h3 className="font-medium text-foreground text-base">{item.name}</h3>
-                <p className="text-xs text-muted-foreground">
-                  {item.handle}
-                </p>
+                <h3 className="text-base font-medium text-foreground">
+                  {item.name}
+                </h3>
+                <p className="text-xs text-muted-foreground">{item.handle}</p>
               </div>
             </div>
           </div>

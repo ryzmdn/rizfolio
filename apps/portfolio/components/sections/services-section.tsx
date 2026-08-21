@@ -13,7 +13,9 @@ export function ServicesSection({
   return (
     <Container id="solutions" className="py-20">
       <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">Services & Technical Capabilities</h2>
+        <h2 className="text-2xl font-medium">
+          Services & Technical Capabilities
+        </h2>
 
         <div className="leading-7 text-muted-foreground">
           <p>
@@ -28,7 +30,7 @@ export function ServicesSection({
         {services.map((service, idx) => (
           <div key={idx} className="pb-10 lg:flex">
             <div className="lg:flex-auto">
-              <h3 className="relative w-max text-2xl font-medium tracking-tight text-primary max-w-full">
+              <h3 className="relative w-max max-w-full text-2xl font-medium tracking-tight text-primary">
                 {service.title}{" "}
                 <small className="absolute -right-7 hidden text-xs font-normal opacity-50 sm:inline">
                   0{idx + 1}
@@ -50,8 +52,11 @@ export function ServicesSection({
                     className="mt-8 grid grid-cols-1 gap-4 text-sm/6 text-muted-foreground sm:grid-cols-2 sm:gap-6"
                   >
                     {service.features.map((feature, fIdx) => (
-                      <li key={fIdx} className="flex items-center gap-x-3 text-foreground">
-                        <Check className="size-4 text-primary shrink-0" />
+                      <li
+                        key={fIdx}
+                        className="flex items-center gap-x-3 text-foreground"
+                      >
+                        <Check className="size-4 shrink-0 text-primary" />
                         <span>{feature}</span>
                       </li>
                     ))}

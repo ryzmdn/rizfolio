@@ -55,7 +55,9 @@ export function AppFooter() {
             <React.Fragment key={item.name}>
               <NavLink href={item.href} first={item.name} last={item.name} />
               {index !== array.length - 1 && (
-                <span className="hidden text-xs text-muted-foreground/50 md:inline">/</span>
+                <span className="hidden text-xs text-muted-foreground/50 md:inline">
+                  /
+                </span>
               )}
             </React.Fragment>
           ))}

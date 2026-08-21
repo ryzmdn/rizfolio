@@ -37,7 +37,8 @@ export const caseStudies = [
   {
     id: 6,
     category: "Fintech & Telemetry",
-    title: "Chronos Core — High-Throughput Resource Scheduling & Billing Platform",
+    title:
+      "Chronos Core — High-Throughput Resource Scheduling & Billing Platform",
     image:
       "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
   },

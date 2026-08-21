@@ -28,7 +28,7 @@ export default async function PortfolioManagerPage() {
       description="Kelola informasi bio, riwayat pekerjaan, pendidikan, dan layanan profesional."
     >
       <div className="space-y-10">
-        <div className="rounded-xl border border-border/80 bg-card p-6 space-y-4">
+        <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <h2 className="text-sm font-semibold text-foreground">
             Profil & Biodata Utama
           </h2>
@@ -55,7 +55,9 @@ export default async function PortfolioManagerPage() {
           >
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Nama Lengkap</label>
+                <label className="text-xs font-medium text-foreground">
+                  Nama Lengkap
+                </label>
                 <input
                   name="fullName"
                   defaultValue={profileData?.fullName || "Rizky Ramadhan"}
@@ -64,10 +66,14 @@ export default async function PortfolioManagerPage() {
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Headline</label>
+                <label className="text-xs font-medium text-foreground">
+                  Headline
+                </label>
                 <input
                   name="headline"
-                  defaultValue={profileData?.headline || "Software Engineer & AI Enthusiast"}
+                  defaultValue={
+                    profileData?.headline || "Software Engineer & AI Enthusiast"
+                  }
                   required
                   className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
                 />
@@ -75,7 +81,9 @@ export default async function PortfolioManagerPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Bio / Ringkasan</label>
+              <label className="text-xs font-medium text-foreground">
+                Bio / Ringkasan
+              </label>
               <textarea
                 name="bio"
                 defaultValue={profileData?.bio || ""}
@@ -87,7 +95,9 @@ export default async function PortfolioManagerPage() {
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Lokasi</label>
+                <label className="text-xs font-medium text-foreground">
+                  Lokasi
+                </label>
                 <input
                   name="location"
                   defaultValue={profileData?.location || "Jakarta, Indonesia"}
@@ -95,7 +105,9 @@ export default async function PortfolioManagerPage() {
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">URL Resume (PDF)</label>
+                <label className="text-xs font-medium text-foreground">
+                  URL Resume (PDF)
+                </label>
                 <input
                   name="resumeUrl"
                   defaultValue={profileData?.resumeUrl || ""}
@@ -103,7 +115,9 @@ export default async function PortfolioManagerPage() {
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Status Ketersediaan</label>
+                <label className="text-xs font-medium text-foreground">
+                  Status Ketersediaan
+                </label>
                 <select
                   name="status"
                   defaultValue={profileData?.status || "available"}
@@ -118,18 +132,20 @@ export default async function PortfolioManagerPage() {
 
             <button
               type="submit"
-              className="rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+              className="rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
               Simpan Profil
             </button>
           </form>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-card p-6 space-y-4">
+        <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Briefcase className="size-4 text-muted-foreground" />
-              <h2 className="text-sm font-semibold text-foreground">Pengalaman Kerja</h2>
+              <h2 className="text-sm font-semibold text-foreground">
+                Pengalaman Kerja
+              </h2>
             </div>
           </div>
 
@@ -153,7 +169,7 @@ export default async function PortfolioManagerPage() {
                 })
               }
             }}
-            className="grid grid-cols-1 gap-3 sm:grid-cols-4 rounded-lg border border-border/60 bg-muted/20 p-3"
+            className="grid grid-cols-1 gap-3 rounded-lg border border-border/60 bg-muted/20 p-3 sm:grid-cols-4"
           >
             <input
               name="company"
@@ -184,13 +200,22 @@ export default async function PortfolioManagerPage() {
 
           <div className="divide-y divide-border/40 text-xs">
             {expList.length === 0 ? (
-              <p className="py-4 text-center text-muted-foreground">Belum ada data pengalaman kerja.</p>
+              <p className="py-4 text-center text-muted-foreground">
+                Belum ada data pengalaman kerja.
+              </p>
             ) : (
               expList.map((exp) => (
-                <div key={exp.id} className="flex items-center justify-between py-3">
+                <div
+                  key={exp.id}
+                  className="flex items-center justify-between py-3"
+                >
                   <div>
-                    <div className="font-medium text-foreground">{exp.role} • {exp.company}</div>
-                    <div className="text-muted-foreground font-mono text-[11px]">{exp.startDate} - {exp.endDate || "Present"}</div>
+                    <div className="font-medium text-foreground">
+                      {exp.role} • {exp.company}
+                    </div>
+                    <div className="font-mono text-[11px] text-muted-foreground">
+                      {exp.startDate} - {exp.endDate || "Present"}
+                    </div>
                   </div>
                   <DeleteButton
                     onConfirm={async () => {
@@ -204,21 +229,33 @@ export default async function PortfolioManagerPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-card p-6 space-y-4">
+        <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <div className="flex items-center gap-2">
             <GraduationCap className="size-4 text-muted-foreground" />
-            <h2 className="text-sm font-semibold text-foreground">Riwayat Pendidikan</h2>
+            <h2 className="text-sm font-semibold text-foreground">
+              Riwayat Pendidikan
+            </h2>
           </div>
 
           <div className="divide-y divide-border/40 text-xs">
             {eduList.length === 0 ? (
-              <p className="py-4 text-center text-muted-foreground">Belum ada data pendidikan.</p>
+              <p className="py-4 text-center text-muted-foreground">
+                Belum ada data pendidikan.
+              </p>
             ) : (
               eduList.map((edu) => (
-                <div key={edu.id} className="flex items-center justify-between py-3">
+                <div
+                  key={edu.id}
+                  className="flex items-center justify-between py-3"
+                >
                   <div>
-                    <div className="font-medium text-foreground">{edu.degree} in {edu.field}</div>
-                    <div className="text-muted-foreground text-[11px]">{edu.institution} ({edu.startYear} - {edu.endYear || "Present"})</div>
+                    <div className="font-medium text-foreground">
+                      {edu.degree} in {edu.field}
+                    </div>
+                    <div className="text-[11px] text-muted-foreground">
+                      {edu.institution} ({edu.startYear} -{" "}
+                      {edu.endYear || "Present"})
+                    </div>
                   </div>
                   <DeleteButton
                     onConfirm={async () => {
