@@ -1,8 +1,15 @@
 import { Quote } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
-import { testimonials } from "@/data"
+import { testimonials as fallbackTestimonials } from "@/data"
+import type { TestimonialItem } from "@/lib/queries"
 
-export function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  testimonials?: TestimonialItem[]
+}
+
+export function TestimonialsSection({
+  testimonials = fallbackTestimonials,
+}: TestimonialsSectionProps) {
   return (
     <Container id="testimonials" className="py-20">
       <hgroup className="w-full space-y-2">
