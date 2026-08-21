@@ -9,7 +9,8 @@
     "format": "turbo format",
     "typecheck": "turbo typecheck",
     "clean": "turbo clean",
-    "db:seed": "pnpm --filter @workspace/db db:seed"
+    "db:seed": "pnpm --filter @workspace/db db:seed",
+    "storage:setup": "pnpm --filter @workspace/storage storage:setup"
   },
   "devDependencies": {
     "@base-ui/react": "^1.7.0",
