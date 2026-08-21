@@ -6,12 +6,21 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "turbo format",
-    "typecheck": "turbo typecheck"
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "typecheck": "turbo typecheck",
+    "clean": "turbo clean",
+    "db:seed": "pnpm --filter @workspace/db db:seed",
+    "db:keep-alive": "pnpm --filter @workspace/db db:keep-alive",
+    "storage:setup": "pnpm --filter @workspace/storage storage:setup"
   },
   "devDependencies": {
+    "@base-ui/react": "^1.7.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "lenis": "^1.3.26",
+    "lucide-react": "^1.31.0",
+    "next-themes": "^0.4.6",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "turbo": "^2.9.18",
