@@ -14,9 +14,6 @@ export interface UploadFileResult {
   url: string
 }
 
-/**
- * Upload a file to Supabase Storage
- */
 export async function uploadFile(
   options: UploadFileOptions
 ): Promise<UploadFileResult> {
@@ -36,9 +33,6 @@ export async function uploadFile(
   return { path: data.path, url }
 }
 
-/**
- * Delete a file from Supabase Storage
- */
 export async function deleteFile(
   bucket: StorageBucket,
   path: string
@@ -51,28 +45,37 @@ export async function deleteFile(
   }
 }
 
-/**
- * Get public CDN URL for a file
- */
 export function getPublicUrl(bucket: StorageBucket, path: string): string {
   const client = getStoragePublicClient()
   const { data } = client.storage.from(bucket).getPublicUrl(path)
   return data.publicUrl
 }
 
-/**
- * Generate a temporary signed download URL (for private digital products or private archives)
- * @param expiresInSeconds Duration in seconds (default 3600 = 1 hour)
- */
+export interface SignedDownloadOptions {
+  expiresInSeconds?: number
+  download?: boolean | string
+}
+
 export async function createSignedDownloadUrl(
   bucket: StorageBucket,
   path: string,
-  expiresInSeconds = 3600
+  optionsOrSeconds: number | SignedDownloadOptions = 3600
 ): Promise<string> {
   const client = getStorageAdminClient()
+  const expiresIn =
+    typeof optionsOrSeconds === "number"
+      ? optionsOrSeconds
+      : optionsOrSeconds.expiresInSeconds || 3600
+  const downloadOption =
+    typeof optionsOrSeconds === "object" && optionsOrSeconds.download
+      ? optionsOrSeconds.download
+      : undefined
+
   const { data, error } = await client.storage
     .from(bucket)
-    .createSignedUrl(path, expiresInSeconds)
+    .createSignedUrl(path, expiresIn, {
+      download: downloadOption,
+    })
 
   if (error || !data?.signedUrl) {
     throw new Error(
@@ -81,4 +84,18 @@ export async function createSignedDownloadUrl(
   }
 
   return data.signedUrl
+}
+
+export async function downloadFile(
+  bucket: StorageBucket,
+  path: string
+): Promise<Blob> {
+  const client = getStorageAdminClient()
+  const { data, error } = await client.storage.from(bucket).download(path)
+
+  if (error || !data) {
+    throw new Error(`Failed to download file from storage: ${error?.message || "Unknown error"}`)
+  }
+
+  return data
 }
