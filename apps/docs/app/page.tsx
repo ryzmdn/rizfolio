@@ -1,5 +1,5 @@
 import { Container } from "@workspace/ui/components/layouts/container"
-import { FolderGit2 } from "lucide-react"
+import { BookOpen } from "lucide-react"
 import {
   getRepositories,
   getRepoStats,
@@ -10,7 +10,7 @@ import { RepoCard } from "../components/repo-card"
 
 export const dynamic = "force-dynamic"
 
-export default async function ArchivePage({
+export default async function DocsPage({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -37,15 +37,15 @@ export default async function ArchivePage({
       <div className="flex flex-col gap-6 border-b border-border/70 pb-8 sm:flex-row sm:items-end sm:justify-between">
         <div className="max-w-2xl space-y-3">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1 text-xs text-muted-foreground">
-            <FolderGit2 className="size-3.5" />
-            <span>Open Source & Academic Explorer</span>
+            <BookOpen className="size-3.5" />
+            <span>Open Source & Documentation Explorer</span>
           </div>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Code Archive
+            Documentation & Code
           </h1>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Koleksi repositori tugas kuliah, eksperimen mini, dan proyek sumber
-            terbuka. Telusuri struktur kode dan unduh secara bebas.
+            Dokumentasi teknis, repositori sumber terbuka, eksperimen mini, dan
+            arsip kode akademik. Telusuri struktur kode dan unduh secara bebas.
           </p>
         </div>
 
@@ -77,7 +77,8 @@ export default async function ArchivePage({
 
       {repos.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
-          Tidak ada repositori yang cocok dengan filter atau pencarian Anda.
+          Tidak ada repositori atau dokumen yang cocok dengan filter atau
+          pencarian Anda.
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

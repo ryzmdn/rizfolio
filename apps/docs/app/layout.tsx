@@ -5,8 +5,12 @@ import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 
 export const metadata: Metadata = {
-  title: "Archive",
-  description: "Open source projects, experiments, and coursework",
+  title: {
+    default: "Documentation & Code Explorer",
+    template: "%s | Rizfolio Docs",
+  },
+  description:
+    "Interactive technical documentation, open source repositories, experiments, and coursework code explorer.",
 }
 
 export default function RootLayout({

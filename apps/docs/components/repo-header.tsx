@@ -76,7 +76,7 @@ export function RepoHeader({
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Link href="/" className="transition-colors hover:text-foreground">
-              archive
+              docs
             </Link>
             <span>/</span>
             <span className="font-medium text-foreground">{slug}</span>
