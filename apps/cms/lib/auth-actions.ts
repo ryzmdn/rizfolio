@@ -29,16 +29,8 @@ export async function loginAdmin(
     return { error: "Email dan password wajib diisi." }
   }
 
-  const ownerEmail = process.env.CMS_OWNER_EMAIL
+  const ownerEnvEmail = process.env.CMS_OWNER_EMAIL?.toLowerCase()
   const ownerEnvPassword = process.env.CMS_OWNER_PASSWORD
-
-  if (email.toLowerCase() !== ownerEmail?.toLowerCase()) {
-    return { error: "Akses ditolak. Email tidak terdaftar sebagai Owner." }
-  }
-
-  if (ownerEnvPassword && password !== ownerEnvPassword) {
-    return { error: "Password Owner tidak valid." }
-  }
 
   try {
     const [existingUser] = await db
@@ -47,9 +39,39 @@ export async function loginAdmin(
       .where(eq(users.email, email.toLowerCase()))
       .limit(1)
 
-    let userId = existingUser?.id
+    let userId: string | undefined
 
-    if (!existingUser) {
+    if (existingUser) {
+      if (existingUser.role !== "OWNER" && email.toLowerCase() !== ownerEnvEmail) {
+        return { error: "Akses ditolak. Pengguna bukan merupakan Owner." }
+      }
+
+      const isDbPasswordValid = await verifyPassword(
+        password,
+        existingUser.passwordHash
+      )
+      const isEnvPasswordValid =
+        ownerEnvPassword && password === ownerEnvPassword
+
+      if (!isDbPasswordValid && !isEnvPasswordValid) {
+        return { error: "Password yang Anda masukkan salah." }
+      }
+
+      userId = existingUser.id
+
+      await db
+        .update(users)
+        .set({ lastLoginAt: new Date() })
+        .where(eq(users.id, existingUser.id))
+    } else {
+      if (email.toLowerCase() !== ownerEnvEmail) {
+        return { error: "Akses ditolak. Email tidak terdaftar sebagai Owner." }
+      }
+
+      if (ownerEnvPassword && password !== ownerEnvPassword) {
+        return { error: "Password Owner tidak valid." }
+      }
+
       const passwordHash = await hashPassword(password)
       const [newUser] = await db
         .insert(users)
@@ -60,28 +82,15 @@ export async function loginAdmin(
         })
         .returning({ id: users.id })
 
-      if (newUser) {
-        userId = newUser.id
-      }
-    } else {
-      if (!ownerEnvPassword) {
-        const isValid = await verifyPassword(
-          password,
-          existingUser.passwordHash
-        )
-        if (!isValid) {
-          return { error: "Password yang Anda masukkan salah." }
-        }
-      }
+      userId = newUser?.id
+    }
 
-      await db
-        .update(users)
-        .set({ lastLoginAt: new Date() })
-        .where(eq(users.id, existingUser.id))
+    if (!userId) {
+      return { error: "Gagal memproses sesi pengguna." }
     }
 
     const token = await createSessionToken({
-      userId: userId!,
+      userId,
       email: email.toLowerCase(),
       role: "OWNER",
     })
@@ -90,7 +99,11 @@ export async function loginAdmin(
     cookieStore.set(SESSION_COOKIE_NAME, token, SESSION_COOKIE_OPTIONS)
   } catch (error) {
     console.error("Login error:", error)
-    return { error: "Terjadi kesalahan server saat memproses login." }
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Terjadi kesalahan server saat memproses login."
+    return { error: `Gagal memproses login: ${message}` }
   }
 
   redirect("/")

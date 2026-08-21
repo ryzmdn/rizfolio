@@ -39,10 +39,9 @@ export async function verifySessionToken(
 }
 
 export const SESSION_COOKIE_OPTIONS = {
-  name: SESSION_COOKIE_NAME,
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "strict" as const,
+  sameSite: "lax" as const,
   path: "/",
   maxAge: 7 * 24 * 60 * 60, // 7 days
 }
