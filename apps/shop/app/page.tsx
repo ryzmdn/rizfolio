@@ -1,169 +1,181 @@
-import { Container } from "@workspace/ui/components/layouts"
-import { cn } from "@workspace/ui/lib/utils"
-import { Star } from "lucide-react"
+import { Container } from "@workspace/ui/components/layouts/container"
+import { getActiveProducts, formatPrice } from "@/lib/queries"
+import Image from "next/image"
+import Link from "next/link"
+import { Sparkles, Download, ArrowRight, Layers, Package, Search } from "lucide-react"
 
-const products = [
-  {
-    id: 1,
-    name: "Organize Basic Set (Walnut)",
-    price: "$149",
-    rating: 5,
-    reviewCount: 38,
-    imageSrc:
-      "https://images.unsplash.com/photo-1585776245991-cf89dd7fc73a?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Wooden desk organizer set in walnut finish",
-    href: "#",
-  },
-  {
-    id: 2,
-    name: "Organize Pen Holder",
-    price: "$15",
-    rating: 5,
-    reviewCount: 18,
-    imageSrc:
-      "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Minimalist wooden desk pen holder with pens",
-    href: "#",
-  },
-  {
-    id: 3,
-    name: "Organize Sticky Note Holder",
-    price: "$15",
-    rating: 5,
-    reviewCount: 14,
-    imageSrc:
-      "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Desktop sticky note holder and notepad setup",
-    href: "#",
-  },
-  {
-    id: 4,
-    name: "Organize Phone Holder",
-    price: "$15",
-    rating: 4,
-    reviewCount: 21,
-    imageSrc:
-      "https://images.unsplash.com/photo-1586105251261-72a756497a11?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Wooden smartphone stand on office desk",
-    href: "#",
-  },
-  {
-    id: 5,
-    name: "Organize Small Tray",
-    price: "$15",
-    rating: 4,
-    reviewCount: 22,
-    imageSrc:
-      "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Small wooden organizer tray for small desk accessories",
-    href: "#",
-  },
-  {
-    id: 6,
-    name: "Organize Basic Set (Maple)",
-    price: "$149",
-    rating: 5,
-    reviewCount: 64,
-    imageSrc:
-      "https://images.unsplash.com/photo-1593642532400-2682810df593?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Maple wood desk organizer basic set setup",
-    href: "#",
-  },
-  {
-    id: 7,
-    name: "Out and About Bottle",
-    price: "$25",
-    rating: 4,
-    reviewCount: 12,
-    imageSrc:
-      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Re-usable minimalist water bottle",
-    href: "#",
-  },
-  {
-    id: 8,
-    name: "Daily Notebook Refill Pack",
-    price: "$14",
-    rating: 4,
-    reviewCount: 41,
-    imageSrc:
-      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Minimalist journal notebook refill pack",
-    href: "#",
-  },
-  {
-    id: 9,
-    name: "Leather Key Ring (Black)",
-    price: "$32",
-    rating: 5,
-    reviewCount: 24,
-    imageSrc:
-      "https://images.unsplash.com/photo-1628149455678-16f37bc392f4?q=80&w=800&auto=format&fit=crop",
-    imageAlt: "Black leather key ring accessory",
-    href: "#",
-  },
-]
+interface ShopPageProps {
+  searchParams: Promise<{
+    type?: string
+    q?: string
+  }>
+}
 
-export default function Home() {
+export default async function ShopHomePage({ searchParams }: ShopPageProps) {
+  const resolvedParams = await searchParams
+  const type = resolvedParams?.type
+  const q = resolvedParams?.q
+
+  const products = await getActiveProducts({
+    productType: type,
+    query: q,
+  })
+
   return (
     <>
-      <Container className="py-16">
-        <hgroup className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
-            Protect your device
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            As a digital creative, your laptop or tablet is at the center of
-            your work. Keep your device safe with a fabric sleeve that matches
-            in quality and looks.
+      <Container className="py-20">
+        <div className="max-w-2xl space-y-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground">
+            <Sparkles className="size-3.5 text-primary" />
+            <span>Curated Software & Engineering Assets</span>
+          </div>
+          <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
+            Digital Tools & Starter Kits
+          </h1>
+          <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
+            Production-tested architectures, design systems, and specialized consultation services crafted to accelerate your software engineering workflow.
           </p>
-        </hgroup>
-
-        <div className="-mx-px grid grid-cols-2 border-l border-border sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="group relative border-r border-b border-border p-4 sm:p-6"
-            >
-              <img
-                alt={product.imageAlt}
-                src={product.imageSrc}
-                className="bg-borborder-border aspect-square rounded-lg object-cover group-hover:opacity-75"
-              />
-              <div className="pt-10 pb-4 text-center">
-                <h3 className="text-sm font-medium text-primary">
-                  <a href={product.href}>
-                    <span aria-hidden="true" className="absolute inset-0" />
-                    {product.name}
-                  </a>
-                </h3>
-                <div className="mt-3 flex flex-col items-center">
-                  <p className="sr-only">{product.rating} out of 5 stars</p>
-                  <div className="flex items-center">
-                    {[0, 1, 2, 3, 4].map((rating) => (
-                      <Star
-                        key={rating}
-                        aria-hidden="true"
-                        className={cn(
-                          product.rating > rating
-                            ? "text-yellow-400"
-                            : "opacity-25",
-                          "size-5 shrink-0"
-                        )}
-                      />
-                    ))}
-                  </div>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {product.reviewCount} reviews
-                  </p>
-                </div>
-                <p className="mt-4 text-base font-medium text-accent-foreground">
-                  {product.price}
-                </p>
-              </div>
-            </div>
-          ))}
         </div>
+      </Container>
+
+      <Container className="border-y border-border py-4 bg-background/50 backdrop-blur-xs sticky top-0 z-20">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+            <Link
+              href="/"
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
+                !type || type === "all"
+                  ? "bg-primary text-primary-foreground shadow-xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              <Layers className="size-3.5" />
+              <span>All Products</span>
+            </Link>
+            <Link
+              href="/?type=DIGITAL_DOWNLOAD"
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
+                type === "DIGITAL_DOWNLOAD"
+                  ? "bg-primary text-primary-foreground shadow-xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              <Download className="size-3.5" />
+              <span>Digital Downloads</span>
+            </Link>
+            <Link
+              href="/?type=SERVICE"
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
+                type === "SERVICE"
+                  ? "bg-primary text-primary-foreground shadow-xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              <Sparkles className="size-3.5" />
+              <span>Services & Consultations</span>
+            </Link>
+          </div>
+
+          <form action="/" method="GET" className="relative flex items-center min-w-64 max-w-sm">
+            {type && <input type="hidden" name="type" value={type} />}
+            <Search className="absolute left-3 size-3.5 text-muted-foreground pointer-events-none" />
+            <input
+              type="text"
+              name="q"
+              defaultValue={q || ""}
+              placeholder="Search products..."
+              className="w-full pl-9 pr-4 py-1.5 text-xs rounded-lg border border-border bg-card/60 placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary/50 transition-all"
+            />
+          </form>
+        </div>
+      </Container>
+
+      <Container className="py-16">
+        {products.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-center rounded-2xl border border-dashed border-border p-8">
+            <Package className="size-10 text-muted-foreground/40 mb-3" />
+            <h2 className="text-lg font-medium text-foreground">No products found</h2>
+            <p className="mt-1 text-xs text-muted-foreground max-w-sm">
+              We couldn&apos;t find any active digital items matching your search or filter.
+            </p>
+            <Link
+              href="/"
+              className="mt-4 inline-flex items-center text-xs text-primary hover:underline font-medium"
+            >
+              Reset all filters
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => {
+              const isDigital = product.productType === "DIGITAL_DOWNLOAD"
+
+              return (
+                <div
+                  key={product.id}
+                  className="group flex flex-col justify-between rounded-2xl border border-border/60 bg-card/40 p-4 transition-all duration-200 hover:border-border hover:bg-card hover:shadow-xs"
+                >
+                  <div className="space-y-4">
+                    {product.coverImageUrl && (
+                      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted">
+                        <Image
+                          src={product.coverImageUrl}
+                          alt={product.title}
+                          fill
+                          loading="lazy"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 font-medium text-foreground">
+                        {isDigital ? (
+                          <>
+                            <Download className="size-3" />
+                            <span>Digital Download</span>
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="size-3" />
+                            <span>Service</span>
+                          </>
+                        )}
+                      </span>
+                      <span className="text-sm font-semibold text-foreground">
+                        {formatPrice(product.price, product.currency)}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h2 className="text-base font-medium tracking-tight text-foreground transition-colors group-hover:text-primary">
+                        <Link href={`/product/${product.slug}`} className="focus:outline-hidden">
+                          {product.title}
+                        </Link>
+                      </h2>
+                      <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                        {product.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-3 border-t border-border/40 flex items-center justify-between">
+                    <span className="text-[11px] text-muted-foreground">
+                      {isDigital ? "Instant Access" : "Direct Booking"}
+                    </span>
+                    <Link
+                      href={`/product/${product.slug}`}
+                      className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                    >
+                      <span>View Details</span>
+                      <ArrowRight className="size-3" />
+                    </Link>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
       </Container>
     </>
   )
