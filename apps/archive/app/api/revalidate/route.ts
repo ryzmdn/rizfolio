@@ -60,10 +60,13 @@ export async function POST(request: NextRequest) {
       timestamp: Date.now(),
     })
   } catch (error) {
-    console.error("[ISR Revalidation - Archive] Error executing revalidation:", {
-      error: error instanceof Error ? error.message : "Unknown error",
-      timestamp: Date.now(),
-    })
+    console.error(
+      "[ISR Revalidation - Archive] Error executing revalidation:",
+      {
+        error: error instanceof Error ? error.message : "Unknown error",
+        timestamp: Date.now(),
+      }
+    )
 
     return NextResponse.json(
       {

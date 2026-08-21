@@ -86,7 +86,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json(
         {
           error: "File Unavailable",
-          message: "The digital asset file is currently not ready for download.",
+          message:
+            "The digital asset file is currently not ready for download.",
         },
         { status: 404, headers: NO_CACHE_HEADERS }
       )
@@ -105,10 +106,13 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return redirectResponse
   } catch (error) {
-    console.error("[Shop Download] Internal error while verifying download token:", {
-      error: error instanceof Error ? error.message : "Unknown error",
-      timestamp: Date.now(),
-    })
+    console.error(
+      "[Shop Download] Internal error while verifying download token:",
+      {
+        error: error instanceof Error ? error.message : "Unknown error",
+        timestamp: Date.now(),
+      }
+    )
 
     return NextResponse.json(
       {

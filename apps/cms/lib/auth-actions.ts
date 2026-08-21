@@ -86,10 +86,13 @@ export async function loginAdmin(
         existingUser.email.toLowerCase() !== ownerEnvEmail
       ) {
         consumeRateLimit(clientIp)
-        console.warn("[CMS Auth] Unauthorized login attempt for non-owner user", {
-          ip: clientIp,
-          timestamp: Date.now(),
-        })
+        console.warn(
+          "[CMS Auth] Unauthorized login attempt for non-owner user",
+          {
+            ip: clientIp,
+            timestamp: Date.now(),
+          }
+        )
         return { error: GENERIC_AUTH_ERROR }
       }
 
@@ -127,7 +130,9 @@ export async function loginAdmin(
         console.error(
           "[CMS Auth] Configuration error: CMS_OWNER_PASSWORD environment variable is not defined."
         )
-        return { error: "Layanan autentikasi administrator saat ini tidak tersedia." }
+        return {
+          error: "Layanan autentikasi administrator saat ini tidak tersedia.",
+        }
       }
 
       const envPasswordHash = await hashPassword(ownerEnvPassword)
@@ -135,10 +140,13 @@ export async function loginAdmin(
 
       if (!isPasswordValid) {
         consumeRateLimit(clientIp)
-        console.warn("[CMS Auth] Failed initial provisioning: Invalid owner password", {
-          ip: clientIp,
-          timestamp: Date.now(),
-        })
+        console.warn(
+          "[CMS Auth] Failed initial provisioning: Invalid owner password",
+          {
+            ip: clientIp,
+            timestamp: Date.now(),
+          }
+        )
         return { error: GENERIC_AUTH_ERROR }
       }
 
@@ -176,7 +184,8 @@ export async function loginAdmin(
       timestamp: Date.now(),
     })
     return {
-      error: "Terjadi kesalahan server saat memproses login. Silakan coba lagi.",
+      error:
+        "Terjadi kesalahan server saat memproses login. Silakan coba lagi.",
     }
   }
 

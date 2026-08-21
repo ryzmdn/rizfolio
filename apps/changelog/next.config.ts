@@ -10,7 +10,9 @@ const cspHeader = `
   frame-ancestors 'none';
   base-uri 'self';
   form-action 'self';
-`.replace(/\s{2,}/g, " ").trim()
+`
+  .replace(/\s{2,}/g, " ")
+  .trim()
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@workspace/ui"],

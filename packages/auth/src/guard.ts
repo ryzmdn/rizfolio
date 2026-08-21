@@ -25,7 +25,11 @@ export async function validateOwnerSession(
     return null
   }
 
-  if (!payload.jti || typeof payload.jti !== "string" || payload.jti.trim() === "") {
+  if (
+    !payload.jti ||
+    typeof payload.jti !== "string" ||
+    payload.jti.trim() === ""
+  ) {
     return null
   }
 

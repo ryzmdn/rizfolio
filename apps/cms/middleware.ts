@@ -60,7 +60,8 @@ export async function middleware(request: NextRequest) {
       const unauthorizedResponse = NextResponse.json(
         {
           error: "Unauthorized",
-          message: "Valid administrator session is required to access CMS APIs.",
+          message:
+            "Valid administrator session is required to access CMS APIs.",
         },
         { status: 401 }
       )
