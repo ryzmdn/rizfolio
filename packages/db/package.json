@@ -9,6 +9,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/seed/index.ts",
+    "db:keep-alive": "tsx src/scripts/keep-alive.ts",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },

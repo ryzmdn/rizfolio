@@ -11,6 +11,7 @@
     "typecheck": "turbo typecheck",
     "clean": "turbo clean",
     "db:seed": "pnpm --filter @workspace/db db:seed",
+    "db:keep-alive": "pnpm --filter @workspace/db db:keep-alive",
     "storage:setup": "pnpm --filter @workspace/storage storage:setup"
   },
   "devDependencies": {
