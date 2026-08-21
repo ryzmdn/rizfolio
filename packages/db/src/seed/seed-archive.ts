@@ -43,7 +43,7 @@ An experimental distributed caching node implementing consistent hashing and vir
     })
     .returning()
 
-  const r2 = await db
+  await db
     .insert(repositories)
     .values({
       name: "OKLCH Theme Generator",

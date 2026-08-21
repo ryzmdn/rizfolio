@@ -1,11 +1,15 @@
 import dotenv from "dotenv"
 import path from "path"
+import { fileURLToPath } from "url"
 import { seedPortfolio } from "./seed-portfolio"
 import { seedBlog } from "./seed-blog"
 import { seedShop } from "./seed-shop"
 import { seedChangelog } from "./seed-changelog"
 import { seedArchive } from "./seed-archive"
 import { seedSettings } from "./seed-settings"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") })
 dotenv.config({ path: path.resolve(__dirname, "../../../../.env") })
