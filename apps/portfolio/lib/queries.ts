@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache"
 import {
   db,
   profile,
@@ -243,7 +244,7 @@ export async function getTestimonials(): Promise<TestimonialItem[]> {
   return fallbackTestimonials
 }
 
-export async function getPortfolioPageData() {
+async function fetchPortfolioPageData() {
   const [
     profileData,
     experiencesData,
@@ -272,3 +273,12 @@ export async function getPortfolioPageData() {
     testimonials: testimonialsData,
   }
 }
+
+export const getPortfolioPageData = unstable_cache(
+  fetchPortfolioPageData,
+  ["portfolio-page-data"],
+  {
+    revalidate: 3600,
+    tags: ["portfolio"],
+  }
+)

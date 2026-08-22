@@ -16,6 +16,8 @@ import {
 } from "@/components/sections"
 import { getPortfolioPageData } from "@/lib/queries"
 
+export const revalidate = 3600
+
 export default async function Home() {
   const {
     profile,

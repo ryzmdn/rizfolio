@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache"
 import {
   db,
   products,
@@ -143,7 +144,7 @@ export function formatPrice(price: number, currency: string = "IDR"): string {
   }).format(price)
 }
 
-export async function getActiveProducts(params?: {
+async function fetchActiveProducts(params?: {
   productType?: string
   query?: string
 }): Promise<ShopProduct[]> {
@@ -208,9 +209,22 @@ export async function getActiveProducts(params?: {
   return fallback
 }
 
-export async function getProductBySlug(
-  slug: string
-): Promise<ShopProduct | null> {
+export async function getActiveProducts(params?: {
+  productType?: string
+  query?: string
+}): Promise<ShopProduct[]> {
+  const cacheKey = `shop-products-${params?.productType || "all"}-${params?.query || ""}`
+  return unstable_cache(
+    () => fetchActiveProducts(params),
+    ["shop-products", cacheKey],
+    {
+      revalidate: 3600,
+      tags: ["shop"],
+    }
+  )()
+}
+
+async function fetchProductBySlug(slug: string): Promise<ShopProduct | null> {
   try {
     const rows = await db
       .select()
@@ -256,7 +270,20 @@ export async function getProductBySlug(
   return fallback || null
 }
 
-export async function getRelatedProducts(
+export async function getProductBySlug(
+  slug: string
+): Promise<ShopProduct | null> {
+  return unstable_cache(
+    () => fetchProductBySlug(slug),
+    ["shop-product", slug],
+    {
+      revalidate: 3600,
+      tags: ["shop", `product-${slug}`],
+    }
+  )()
+}
+
+async function fetchRelatedProducts(
   currentSlug: string,
   limit: number = 3
 ): Promise<ShopProduct[]> {
@@ -294,4 +321,18 @@ export async function getRelatedProducts(
   return fallbackProducts
     .filter((p: ShopProduct) => p.slug !== currentSlug)
     .slice(0, limit)
+}
+
+export async function getRelatedProducts(
+  currentSlug: string,
+  limit: number = 3
+): Promise<ShopProduct[]> {
+  return unstable_cache(
+    () => fetchRelatedProducts(currentSlug, limit),
+    ["shop-related-products", currentSlug, String(limit)],
+    {
+      revalidate: 3600,
+      tags: ["shop"],
+    }
+  )()
 }

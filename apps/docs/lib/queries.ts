@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache"
 import { db, eq, and, or, ilike, desc, asc } from "@workspace/db"
 import { repositories, repoFiles, repoReleases } from "@workspace/db/schema"
 
@@ -11,7 +12,7 @@ export interface RepositoryFilters {
   offset?: number
 }
 
-export async function getRepositories(filters: RepositoryFilters = {}) {
+async function fetchRepositories(filters: RepositoryFilters = {}) {
   try {
     const conditions = [eq(repositories.isPublic, true)]
 
@@ -61,7 +62,19 @@ export async function getRepositories(filters: RepositoryFilters = {}) {
   }
 }
 
-export async function getRepositoryBySlug(slug: string) {
+export async function getRepositories(filters: RepositoryFilters = {}) {
+  const cacheKey = `docs-repos-${filters.category || "all"}-${filters.search || ""}-${filters.courseName || ""}-${filters.sortBy || "latest"}-${filters.limit || 0}-${filters.offset || 0}`
+  return unstable_cache(
+    () => fetchRepositories(filters),
+    ["docs-repositories", cacheKey],
+    {
+      revalidate: 3600,
+      tags: ["docs"],
+    }
+  )()
+}
+
+async function fetchRepositoryBySlug(slug: string) {
   try {
     const repo = await db.query?.repositories?.findFirst?.({
       where: eq(repositories.slug, slug),
@@ -80,6 +93,17 @@ export async function getRepositoryBySlug(slug: string) {
     console.error(`Failed to fetch repository by slug (${slug}):`, error)
     return null
   }
+}
+
+export async function getRepositoryBySlug(slug: string) {
+  return unstable_cache(
+    () => fetchRepositoryBySlug(slug),
+    ["docs-repo", slug],
+    {
+      revalidate: 3600,
+      tags: ["docs", `docs-${slug}`],
+    }
+  )()
 }
 
 export async function getRepoFiles(repoId: string, parentPath = "") {
@@ -133,7 +157,7 @@ export async function getRepoReleases(repoId: string) {
   }
 }
 
-export async function getRepoStats() {
+async function fetchRepoStats() {
   try {
     const allRepos = await db
       .select({
@@ -186,7 +210,16 @@ export async function getRepoStats() {
   }
 }
 
-export async function getCategoriesAndCourses() {
+export const getRepoStats = unstable_cache(
+  fetchRepoStats,
+  ["docs-repo-stats"],
+  {
+    revalidate: 3600,
+    tags: ["docs"],
+  }
+)
+
+async function fetchCategoriesAndCourses() {
   try {
     const repos = await db
       .select({
@@ -222,3 +255,12 @@ export async function getCategoriesAndCourses() {
     return { courses: [] }
   }
 }
+
+export const getCategoriesAndCourses = unstable_cache(
+  fetchCategoriesAndCourses,
+  ["docs-categories-courses"],
+  {
+    revalidate: 3600,
+    tags: ["docs"],
+  }
+)

@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache"
 import {
   db,
   posts,
@@ -154,7 +155,7 @@ export const fallbackPosts: BlogPostItem[] = [
   },
 ]
 
-export async function getPublishedPosts(
+async function fetchPublishedPosts(
   params: GetPostsParams = {}
 ): Promise<PaginatedPostsResult> {
   const { categorySlug, tagSlug, query, page = 1, limit = 9 } = params
@@ -322,9 +323,21 @@ export async function getPublishedPosts(
   }
 }
 
-export async function getPostBySlug(
-  slug: string
-): Promise<BlogPostItem | null> {
+export async function getPublishedPosts(
+  params: GetPostsParams = {}
+): Promise<PaginatedPostsResult> {
+  const cacheKey = `posts-${params.categorySlug || "all"}-${params.tagSlug || "all"}-${params.query || ""}-${params.page || 1}-${params.limit || 9}`
+  return unstable_cache(
+    () => fetchPublishedPosts(params),
+    ["blog-posts", cacheKey],
+    {
+      revalidate: 3600,
+      tags: ["blog"],
+    }
+  )()
+}
+
+async function fetchPostBySlug(slug: string): Promise<BlogPostItem | null> {
   try {
     const postRows = await db
       .select()
@@ -388,7 +401,16 @@ export async function getPostBySlug(
   return fallback || null
 }
 
-export async function getCategoriesWithCount(): Promise<CategoryWithCount[]> {
+export async function getPostBySlug(
+  slug: string
+): Promise<BlogPostItem | null> {
+  return unstable_cache(() => fetchPostBySlug(slug), ["blog-post", slug], {
+    revalidate: 3600,
+    tags: ["blog", `blog-${slug}`],
+  })()
+}
+
+async function fetchCategoriesWithCount(): Promise<CategoryWithCount[]> {
   try {
     const catRows = await db
       .select({
@@ -421,7 +443,16 @@ export async function getCategoriesWithCount(): Promise<CategoryWithCount[]> {
   return fallbackCategories
 }
 
-export async function getTagsWithCount(): Promise<TagWithCount[]> {
+export const getCategoriesWithCount = unstable_cache(
+  fetchCategoriesWithCount,
+  ["blog-categories"],
+  {
+    revalidate: 3600,
+    tags: ["blog"],
+  }
+)
+
+async function fetchTagsWithCount(): Promise<TagWithCount[]> {
   try {
     const tagRows = await db
       .select({
@@ -452,6 +483,15 @@ export async function getTagsWithCount(): Promise<TagWithCount[]> {
     { id: "tag-4", name: "PostgreSQL", slug: "postgres", count: 1 },
   ]
 }
+
+export const getTagsWithCount = unstable_cache(
+  fetchTagsWithCount,
+  ["blog-tags"],
+  {
+    revalidate: 3600,
+    tags: ["blog"],
+  }
+)
 
 export async function getFeaturedOrRecentPosts(
   limit: number = 3

@@ -37,15 +37,30 @@ const connectionString = process.env
 
 const isProduction = process.env.NODE_ENV === "production"
 
-const client = postgres(connectionString, {
-  prepare: false,
-  max: isProduction ? 10 : 5,
-  idle_timeout: 30,
-  connect_timeout: 10,
-  ssl: isProduction ? "require" : false,
-})
+declare global {
+  var __postgresClient: ReturnType<typeof postgres> | undefined
+  var __drizzleDb: ReturnType<typeof drizzle<typeof schema>> | undefined
+}
 
-export const db = drizzle(client, { schema })
+const client =
+  globalThis.__postgresClient ??
+  postgres(connectionString, {
+    prepare: false,
+    max: isProduction ? 10 : 5,
+    idle_timeout: 20,
+    connect_timeout: 5,
+    ssl: isProduction ? "require" : false,
+  })
+
+if (!isProduction) {
+  globalThis.__postgresClient = client
+}
+
+export const db = globalThis.__drizzleDb ?? drizzle(client, { schema })
+
+if (!isProduction) {
+  globalThis.__drizzleDb = db
+}
 export type Database = typeof db
 
 export { client }

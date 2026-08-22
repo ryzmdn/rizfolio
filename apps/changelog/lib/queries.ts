@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache"
 import { db, changelogs, changelogItems, eq, desc, asc } from "@workspace/db"
 
 export type ChangelogCategory = "FEATURE" | "IMPROVEMENT" | "FIX" | "BREAKING"
@@ -122,7 +123,7 @@ export const fallbackChangelogs: ChangelogReleaseData[] = [
   },
 ]
 
-export async function getChangelogReleases(): Promise<ChangelogReleaseData[]> {
+async function fetchChangelogReleases(): Promise<ChangelogReleaseData[]> {
   try {
     const releaseRows = await db
       .select()
@@ -168,6 +169,15 @@ export async function getChangelogReleases(): Promise<ChangelogReleaseData[]> {
 
   return fallbackChangelogs
 }
+
+export const getChangelogReleases = unstable_cache(
+  fetchChangelogReleases,
+  ["changelog-releases"],
+  {
+    revalidate: 3600,
+    tags: ["changelog"],
+  }
+)
 
 export async function getLatestRelease(): Promise<ChangelogReleaseData | null> {
   const releases = await getChangelogReleases()
