@@ -52,16 +52,17 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: mock-service-role-key-for-ci-pipeline
       REVALIDATION_SECRET_TOKEN: mock-revalidation-secret-token-at-least-32-chars
       CMS_SESSION_SECRET: mock-session-secret-at-least-32-chars-long-abcdef
-      CMS_OWNER_EMAIL: admin@rizkyramadhan.dev
+      CMS_OWNER_EMAIL: admin@ryzmdn.me
       CMS_OWNER_PASSWORD: mock-owner-password-for-ci-tests
-      NEXT_PUBLIC_PORTFOLIO_URL: https://rizkyramadhan.dev
-      NEXT_PUBLIC_BLOG_URL: https://blog.rizkyramadhan.dev
-      NEXT_PUBLIC_SHOP_URL: https://shop.rizkyramadhan.dev
-      NEXT_PUBLIC_CHANGELOG_URL: https://changelog.rizkyramadhan.dev
-      NEXT_PUBLIC_DOCS_URL: https://docs.rizkyramadhan.dev
-      NEXT_PUBLIC_ARCHIVE_URL: https://docs.rizkyramadhan.dev
-      NEXT_PUBLIC_CMS_URL: https://cms.rizkyramadhan.dev
-      NEXT_PUBLIC_APP_URL: https://rizkyramadhan.dev
+      NEXT_PUBLIC_PORTFOLIO_URL: https://ryzmdn.me
+      NEXT_PUBLIC_BLOG_URL: https://blog.ryzmdn.me
+      NEXT_PUBLIC_SHOP_URL: https://shop.ryzmdn.me
+      NEXT_PUBLIC_CHANGELOG_URL: https://changelog.ryzmdn.me
+      NEXT_PUBLIC_DOCS_URL: https://docs.ryzmdn.me
+      NEXT_PUBLIC_LINKBIO_URL: https://link.ryzmdn.me
+      NEXT_PUBLIC_ARCHIVE_URL: https://docs.ryzmdn.me
+      NEXT_PUBLIC_CMS_URL: https://cms.ryzmdn.me
+      NEXT_PUBLIC_APP_URL: https://ryzmdn.me
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
