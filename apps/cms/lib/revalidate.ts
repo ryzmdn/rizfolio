@@ -4,6 +4,7 @@ export type RevalidatableApp =
   | "shop"
   | "changelog"
   | "docs"
+  | "linkbio"
   | "archive"
 
 const APP_URL_MAP: Record<RevalidatableApp, string> = {
@@ -15,6 +16,7 @@ const APP_URL_MAP: Record<RevalidatableApp, string> = {
     process.env.NEXT_PUBLIC_DOCS_URL ||
     process.env.NEXT_PUBLIC_ARCHIVE_URL ||
     "http://localhost:3005",
+  linkbio: process.env.NEXT_PUBLIC_LINKBIO_URL || "http://localhost:3006",
   archive:
     process.env.NEXT_PUBLIC_DOCS_URL ||
     process.env.NEXT_PUBLIC_ARCHIVE_URL ||
