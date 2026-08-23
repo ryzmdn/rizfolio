@@ -5,7 +5,6 @@ import {
   ProcessSection,
   ServicesSection,
   CaseStudiesSection,
-  ActivitiesSection,
   EducationSection,
   ExperienceSection,
   CapabilitiesSection,
@@ -25,8 +24,6 @@ export default async function Home() {
     education,
     certifications,
     services,
-    caseStudies,
-    testimonials,
   } = await getPortfolioPageData()
 
   return (
@@ -36,13 +33,12 @@ export default async function Home() {
       <AboutSection data={profile} />
       <ProcessSection />
       <ServicesSection services={services} />
-      <CaseStudiesSection caseStudies={caseStudies} />
-      <ActivitiesSection />
+      <CaseStudiesSection />
       <EducationSection education={education} />
       <ExperienceSection experiences={experiences} />
       <CapabilitiesSection />
       <OpenSourceSection />
-      <TestimonialsSection testimonials={testimonials} />
+      <TestimonialsSection />
       <CertificationsSection certifications={certifications} />
       <CtaSection />
     </>
