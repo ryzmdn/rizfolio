@@ -28,6 +28,7 @@ export const experiences = pgTable("experiences", {
   company: varchar("company", { length: 255 }).notNull(),
   role: varchar("role", { length: 255 }).notNull(),
   location: varchar("location", { length: 255 }),
+  companyLogoUrl: text("company_logo_url"),
   startDate: varchar("start_date", { length: 50 }).notNull(),
   endDate: varchar("end_date", { length: 50 }),
   isCurrent: boolean("is_current").notNull().default(false),

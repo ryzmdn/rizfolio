@@ -8,15 +8,13 @@ import {
   Activity,
   Receipt,
   CheckCircle2,
-  AlertTriangle,
-  Clock,
   Search,
-  Filter,
   Shield,
   Layers,
   FileText,
   ShoppingBag,
   BookOpen,
+  type LucideIcon,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -27,7 +25,7 @@ const domainBadges: Record<
   {
     label: string
     variant: "default" | "secondary" | "outline" | "destructive"
-    icon: any
+    icon: LucideIcon
   }
 > = {
   COMMERCE: { label: "Commerce", variant: "default", icon: ShoppingBag },
@@ -79,7 +77,6 @@ export default async function TransactionsPage({
       description="Pusat audit trail, pencatatan transaksi terpadu, dan rekonsiliasi data lintas 7 domain monorepo."
     >
       <div className="space-y-8">
-        {/* Metric Cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl border border-border/80 bg-card p-5">
             <div className="flex items-center justify-between">
@@ -144,7 +141,6 @@ export default async function TransactionsPage({
           </div>
         </div>
 
-        {/* Filter & Search Bar */}
         <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
           <form className="flex flex-1 items-center gap-2" method="GET">
             <div className="relative max-w-md flex-1">
@@ -209,7 +205,6 @@ export default async function TransactionsPage({
           </div>
         </div>
 
-        {/* Master Transactions Ledger Table */}
         <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
           <div className="border-b border-border/80 px-6 py-4">
             <h2 className="text-sm font-semibold text-foreground">

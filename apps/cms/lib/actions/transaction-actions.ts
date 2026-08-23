@@ -13,7 +13,6 @@ import {
   type InsertMasterTransactionInput,
   insertMasterTransactionSchema,
 } from "@workspace/db"
-import { revalidatePath } from "next/cache"
 
 function generateTrxNumber(domain: string): string {
   const now = new Date()
