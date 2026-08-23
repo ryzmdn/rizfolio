@@ -15,6 +15,7 @@ import {
   SESSION_COOKIE_NAME,
   SESSION_COOKIE_OPTIONS,
 } from "@workspace/auth"
+import { recordTransaction } from "./actions/transaction-actions"
 
 export interface AuthState {
   error?: string
@@ -177,6 +178,20 @@ export async function loginAdmin(
 
     const cookieStore = await cookies()
     cookieStore.set(SESSION_COOKIE_NAME, token, SESSION_COOKIE_OPTIONS)
+
+    await recordTransaction({
+      domain: "AUTH_SECURITY",
+      actionType: "ADMIN_LOGIN_SUCCESS",
+      status: "COMPLETED",
+      actorId: userId,
+      actorType: "OWNER",
+      entityType: "users",
+      entityId: userId,
+      clientIp,
+      metadata: { email: normalizedEmail },
+    })
+
+    return { success: true }
   } catch (error) {
     console.error("[CMS Auth] Server error during login processing:", {
       ip: clientIp,
@@ -188,12 +203,25 @@ export async function loginAdmin(
         "Terjadi kesalahan server saat memproses login. Silakan coba lagi.",
     }
   }
-
-  redirect("/")
 }
 
 export async function logoutAdmin(): Promise<void> {
   const cookieStore = await cookies()
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value
+  const session = await validateOwnerSession(token)
+
+  if (session) {
+    await recordTransaction({
+      domain: "AUTH_SECURITY",
+      actionType: "ADMIN_LOGOUT",
+      status: "COMPLETED",
+      actorId: session.userId,
+      actorType: "OWNER",
+      entityType: "users",
+      entityId: session.userId,
+    })
+  }
+
   cookieStore.delete(SESSION_COOKIE_NAME)
   redirect("/login")
 }
