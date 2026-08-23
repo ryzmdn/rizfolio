@@ -71,6 +71,12 @@ export async function recordTransaction(
   }
 }
 
+export async function logTransaction(input: InsertMasterTransactionInput) {
+  void recordTransaction(input).catch((err) => {
+    console.warn("[Master Transactions] Background log failed:", err)
+  })
+}
+
 export interface GetTransactionsParams {
   domain?: string
   status?: string
@@ -142,36 +148,41 @@ export async function getMasterTransactions(
 
 export async function getMasterTransactionStats() {
   try {
-    const [totalRes, completedRes, commerceVolumeRes, recentItems] =
-      await Promise.all([
-        db
-          .select({ count: sql<number>`count(*)::int` })
-          .from(masterTransactions),
-        db
-          .select({ count: sql<number>`count(*)::int` })
-          .from(masterTransactions)
-          .where(eq(masterTransactions.status, "COMPLETED")),
-        db
-          .select({
-            totalAmount: sql<number>`coalesce(sum(amount), 0)::int`,
-          })
-          .from(masterTransactions)
-          .where(
-            and(
-              eq(masterTransactions.domain, "COMMERCE"),
-              eq(masterTransactions.status, "COMPLETED")
-            )
-          ),
-        db
-          .select()
-          .from(masterTransactions)
-          .orderBy(desc(masterTransactions.createdAt))
-          .limit(6),
-      ])
+    // Single-query aggregation: avoids 4 separate round-trips to the database
+    const [statsRow, recentItems] = await Promise.all([
+      db.execute(
+        sql<{
+          total: number
+          completed: number
+          commerce_volume: number
+        }>`
+          SELECT
+            COUNT(*)::int                                                       AS total,
+            COUNT(*) FILTER (WHERE status = 'COMPLETED')::int                  AS completed,
+            COALESCE(SUM(amount) FILTER (
+              WHERE domain = 'COMMERCE' AND status = 'COMPLETED'
+            ), 0)::int                                                          AS commerce_volume
+          FROM ${masterTransactions}
+        `
+      ),
+      db
+        .select()
+        .from(masterTransactions)
+        .orderBy(desc(masterTransactions.createdAt))
+        .limit(6),
+    ])
 
-    const total = totalRes[0]?.count || 0
-    const completed = completedRes[0]?.count || 0
-    const commerceVolume = commerceVolumeRes[0]?.totalAmount || 0
+    const row = (statsRow as unknown[])[0] as
+      | {
+          total: number
+          completed: number
+          commerce_volume: number
+        }
+      | undefined
+
+    const total = row?.total ?? 0
+    const completed = row?.completed ?? 0
+    const commerceVolume = row?.commerce_volume ?? 0
 
     return {
       total,

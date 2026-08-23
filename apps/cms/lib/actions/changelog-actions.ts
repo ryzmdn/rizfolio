@@ -3,7 +3,7 @@
 import { db, eq, desc, asc } from "@workspace/db"
 import { changelogs, changelogItems } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
-import { recordTransaction } from "./transaction-actions"
+import { logTransaction } from "./transaction-actions"
 
 export async function getChangelogs() {
   return await db
@@ -24,7 +24,7 @@ export async function getChangelogById(id: string) {
 export async function createChangelog(values: typeof changelogs.$inferInsert) {
   const [created] = await db.insert(changelogs).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "SYSTEM",
       actionType: "CHANGELOG_RELEASED",
       status: "COMPLETED",
@@ -48,7 +48,7 @@ export async function updateChangelog(
     .where(eq(changelogs.id, id))
     .returning()
   if (updated) {
-    await recordTransaction({
+    logTransaction({
       domain: "SYSTEM",
       actionType: "CHANGELOG_UPDATED",
       status: "COMPLETED",
@@ -64,7 +64,7 @@ export async function updateChangelog(
 
 export async function deleteChangelog(id: string) {
   await db.delete(changelogs).where(eq(changelogs.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "SYSTEM",
     actionType: "CHANGELOG_DELETED",
     status: "COMPLETED",

@@ -37,6 +37,9 @@ const connectionString = process.env
 
 const isProduction = process.env.NODE_ENV === "production"
 
+// Supabase always requires SSL — detect by hostname
+const isSupabase = connectionString.includes(".supabase.com")
+
 declare global {
   var __postgresClient: ReturnType<typeof postgres> | undefined
   var __drizzleDb: ReturnType<typeof drizzle<typeof schema>> | undefined
@@ -46,10 +49,11 @@ const client =
   globalThis.__postgresClient ??
   postgres(connectionString, {
     prepare: false,
-    max: isProduction ? 10 : 5,
-    idle_timeout: 20,
-    connect_timeout: 5,
-    ssl: isProduction ? "require" : false,
+    max: isProduction ? 10 : 3,
+    idle_timeout: 30,
+    connect_timeout: 15,
+    // Always use SSL for Supabase connections, even in dev
+    ssl: isSupabase ? "require" : isProduction ? "require" : false,
   })
 
 if (!isProduction) {

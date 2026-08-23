@@ -3,7 +3,7 @@
 import { db, eq, desc } from "@workspace/db"
 import { products, productFiles, orders } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
-import { recordTransaction } from "./transaction-actions"
+import { logTransaction } from "./transaction-actions"
 
 export async function getProducts() {
   return await db.select().from(products).orderBy(desc(products.createdAt))
@@ -21,7 +21,7 @@ export async function getProductById(id: string) {
 export async function createProduct(values: typeof products.$inferInsert) {
   const [created] = await db.insert(products).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "COMMERCE",
       actionType: "PRODUCT_CREATED",
       status: "COMPLETED",
@@ -47,7 +47,7 @@ export async function updateProduct(
     .where(eq(products.id, id))
     .returning()
   if (updated) {
-    await recordTransaction({
+    logTransaction({
       domain: "COMMERCE",
       actionType: "PRODUCT_UPDATED",
       status: "COMPLETED",
@@ -65,7 +65,7 @@ export async function updateProduct(
 
 export async function deleteProduct(id: string) {
   await db.delete(products).where(eq(products.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "COMMERCE",
     actionType: "PRODUCT_DELETED",
     status: "COMPLETED",
@@ -86,7 +86,7 @@ export async function getProductFiles(productId: string) {
 export async function addProductFile(values: typeof productFiles.$inferInsert) {
   const [created] = await db.insert(productFiles).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "COMMERCE",
       actionType: "PRODUCT_FILE_UPLOADED",
       status: "COMPLETED",
@@ -102,7 +102,7 @@ export async function addProductFile(values: typeof productFiles.$inferInsert) {
 
 export async function deleteProductFile(id: string) {
   await db.delete(productFiles).where(eq(productFiles.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "COMMERCE",
     actionType: "PRODUCT_FILE_DELETED",
     status: "COMPLETED",
@@ -126,7 +126,7 @@ export async function updateOrderStatus(
     .where(eq(orders.id, id))
     .returning()
   if (updated) {
-    await recordTransaction({
+    logTransaction({
       domain: "COMMERCE",
       actionType: `ORDER_STATUS_${status}`,
       status:

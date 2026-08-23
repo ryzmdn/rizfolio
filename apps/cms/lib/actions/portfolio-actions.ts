@@ -11,7 +11,7 @@ import {
   testimonials,
 } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
-import { recordTransaction } from "./transaction-actions"
+import { logTransaction } from "./transaction-actions"
 
 export async function getProfile() {
   const [data] = await db.select().from(profile).limit(1)
@@ -22,7 +22,7 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
   const existing = await getProfile()
   if (existing) {
     await db.update(profile).set(values).where(eq(profile.id, existing.id))
-    await recordTransaction({
+    logTransaction({
       domain: "PORTFOLIO",
       actionType: "PROFILE_UPDATED",
       status: "COMPLETED",
@@ -33,7 +33,7 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
   } else {
     const [inserted] = await db.insert(profile).values(values).returning()
     if (inserted) {
-      await recordTransaction({
+      logTransaction({
         domain: "PORTFOLIO",
         actionType: "PROFILE_CREATED",
         status: "COMPLETED",
@@ -58,7 +58,7 @@ export async function createExperience(
 ) {
   const [created] = await db.insert(experiences).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "PORTFOLIO",
       actionType: "EXPERIENCE_CREATED",
       status: "COMPLETED",
@@ -76,7 +76,7 @@ export async function updateExperience(
   values: Partial<typeof experiences.$inferInsert>
 ) {
   await db.update(experiences).set(values).where(eq(experiences.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "PORTFOLIO",
     actionType: "EXPERIENCE_UPDATED",
     status: "COMPLETED",
@@ -89,7 +89,7 @@ export async function updateExperience(
 
 export async function deleteExperience(id: string) {
   await db.delete(experiences).where(eq(experiences.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "PORTFOLIO",
     actionType: "EXPERIENCE_DELETED",
     status: "COMPLETED",
@@ -109,7 +109,7 @@ export async function getEducation() {
 export async function createEducation(values: typeof education.$inferInsert) {
   const [created] = await db.insert(education).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "PORTFOLIO",
       actionType: "EDUCATION_CREATED",
       status: "COMPLETED",
@@ -146,7 +146,7 @@ export async function createCertification(
 ) {
   const [created] = await db.insert(certifications).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "PORTFOLIO",
       actionType: "CERTIFICATION_CREATED",
       status: "COMPLETED",
@@ -179,7 +179,7 @@ export async function getServices() {
 export async function createService(values: typeof services.$inferInsert) {
   const [created] = await db.insert(services).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "PORTFOLIO",
       actionType: "SERVICE_CREATED",
       status: "COMPLETED",
@@ -216,7 +216,7 @@ export async function getCaseStudies() {
 export async function createCaseStudy(values: typeof caseStudies.$inferInsert) {
   const [created] = await db.insert(caseStudies).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "PORTFOLIO",
       actionType: created.isPublished
         ? "CASE_STUDY_PUBLISHED"
@@ -237,7 +237,7 @@ export async function updateCaseStudy(
   values: Partial<typeof caseStudies.$inferInsert>
 ) {
   await db.update(caseStudies).set(values).where(eq(caseStudies.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "PORTFOLIO",
     actionType: "CASE_STUDY_UPDATED",
     status: "COMPLETED",
@@ -251,7 +251,7 @@ export async function updateCaseStudy(
 
 export async function deleteCaseStudy(id: string) {
   await db.delete(caseStudies).where(eq(caseStudies.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "PORTFOLIO",
     actionType: "CASE_STUDY_DELETED",
     status: "COMPLETED",
@@ -274,7 +274,7 @@ export async function createTestimonial(
 ) {
   const [created] = await db.insert(testimonials).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "PORTFOLIO",
       actionType: "TESTIMONIAL_CREATED",
       status: "COMPLETED",

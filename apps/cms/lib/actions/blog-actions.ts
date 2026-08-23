@@ -3,7 +3,7 @@
 import { db, eq, desc, asc } from "@workspace/db"
 import { posts, categories, tags } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
-import { recordTransaction } from "./transaction-actions"
+import { logTransaction } from "./transaction-actions"
 
 export async function getPosts() {
   return await db.select().from(posts).orderBy(desc(posts.createdAt))
@@ -17,7 +17,7 @@ export async function getPostById(id: string) {
 export async function createPost(values: typeof posts.$inferInsert) {
   const [created] = await db.insert(posts).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "CONTENT",
       actionType:
         created.status === "PUBLISHED" ? "POST_PUBLISHED" : "POST_DRAFTED",
@@ -46,7 +46,7 @@ export async function updatePost(
     .where(eq(posts.id, id))
     .returning()
   if (updated) {
-    await recordTransaction({
+    logTransaction({
       domain: "CONTENT",
       actionType: "POST_UPDATED",
       status: "COMPLETED",
@@ -66,7 +66,7 @@ export async function updatePost(
 
 export async function deletePost(id: string) {
   await db.delete(posts).where(eq(posts.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "CONTENT",
     actionType: "POST_DELETED",
     status: "COMPLETED",
@@ -86,7 +86,7 @@ export async function createBlogCategory(
 ) {
   const [created] = await db.insert(categories).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "CONTENT",
       actionType: "CATEGORY_CREATED",
       status: "COMPLETED",
@@ -100,7 +100,7 @@ export async function createBlogCategory(
 
 export async function deleteBlogCategory(id: string) {
   await db.delete(categories).where(eq(categories.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "CONTENT",
     actionType: "CATEGORY_DELETED",
     status: "COMPLETED",
@@ -117,7 +117,7 @@ export async function getBlogTags() {
 export async function createBlogTag(values: typeof tags.$inferInsert) {
   const [created] = await db.insert(tags).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "CONTENT",
       actionType: "TAG_CREATED",
       status: "COMPLETED",
@@ -131,7 +131,7 @@ export async function createBlogTag(values: typeof tags.$inferInsert) {
 
 export async function deleteBlogTag(id: string) {
   await db.delete(tags).where(eq(tags.id, id))
-  await recordTransaction({
+  logTransaction({
     domain: "CONTENT",
     actionType: "TAG_DELETED",
     status: "COMPLETED",

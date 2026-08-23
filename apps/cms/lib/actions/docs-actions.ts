@@ -4,7 +4,7 @@ import { db, eq, desc, asc } from "@workspace/db"
 import { repositories, repoFiles, repoReleases } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { triggerAppRevalidation } from "../revalidate"
-import { recordTransaction } from "./transaction-actions"
+import { logTransaction } from "./transaction-actions"
 
 export async function getAdminRepositories() {
   return await db
@@ -27,7 +27,7 @@ export async function createRepository(
 ) {
   const [created] = await db.insert(repositories).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "CODE_DOCS",
       actionType: "REPO_CREATED",
       status: "COMPLETED",
@@ -52,7 +52,7 @@ export async function updateRepository(
     .where(eq(repositories.id, id))
     .returning()
   if (updated) {
-    await recordTransaction({
+    logTransaction({
       domain: "CODE_DOCS",
       actionType: "REPO_UPDATED",
       status: "COMPLETED",
@@ -78,7 +78,7 @@ export async function deleteRepository(id: string) {
     .where(eq(repositories.id, id))
     .returning()
   if (deleted) {
-    await recordTransaction({
+    logTransaction({
       domain: "CODE_DOCS",
       actionType: "REPO_DELETED",
       status: "COMPLETED",
@@ -104,7 +104,7 @@ export async function getAdminRepoFiles(repoId: string) {
 export async function createRepoFile(values: typeof repoFiles.$inferInsert) {
   const [created] = await db.insert(repoFiles).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "CODE_DOCS",
       actionType: "REPO_FILE_CREATED",
       status: "COMPLETED",
@@ -149,7 +149,7 @@ export async function createRepoRelease(
 ) {
   const [created] = await db.insert(repoReleases).values(values).returning()
   if (created) {
-    await recordTransaction({
+    logTransaction({
       domain: "CODE_DOCS",
       actionType: "REPO_RELEASE_PUBLISHED",
       status: "COMPLETED",
