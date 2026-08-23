@@ -3,6 +3,7 @@
 import { db, eq, desc, asc } from "@workspace/db"
 import { changelogs, changelogItems } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
+import { recordTransaction } from "./transaction-actions"
 
 export async function getChangelogs() {
   return await db
@@ -22,6 +23,17 @@ export async function getChangelogById(id: string) {
 
 export async function createChangelog(values: typeof changelogs.$inferInsert) {
   const [created] = await db.insert(changelogs).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "SYSTEM",
+      actionType: "CHANGELOG_RELEASED",
+      status: "COMPLETED",
+      entityType: "changelogs",
+      entityId: created.id,
+      changelogId: created.id,
+      payloadAfter: { version: created.version, title: created.title },
+    })
+  }
   revalidatePath("/changelog")
   return created
 }
@@ -35,12 +47,31 @@ export async function updateChangelog(
     .set(values)
     .where(eq(changelogs.id, id))
     .returning()
+  if (updated) {
+    await recordTransaction({
+      domain: "SYSTEM",
+      actionType: "CHANGELOG_UPDATED",
+      status: "COMPLETED",
+      entityType: "changelogs",
+      entityId: updated.id,
+      changelogId: updated.id,
+      payloadAfter: values,
+    })
+  }
   revalidatePath("/changelog")
   return updated
 }
 
 export async function deleteChangelog(id: string) {
   await db.delete(changelogs).where(eq(changelogs.id, id))
+  await recordTransaction({
+    domain: "SYSTEM",
+    actionType: "CHANGELOG_DELETED",
+    status: "COMPLETED",
+    entityType: "changelogs",
+    entityId: id,
+    changelogId: id,
+  })
   revalidatePath("/changelog")
 }
 

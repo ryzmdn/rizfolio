@@ -12,6 +12,7 @@ import {
   Image,
   Settings,
   LogOut,
+  Activity,
   ShieldCheck,
 } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
@@ -19,6 +20,7 @@ import { logoutAdmin } from "../lib/auth-actions"
 
 const NAV_ITEMS = [
   { href: "/", label: "Overview", icon: LayoutDashboard, exact: true },
+  { href: "/transactions", label: "Transactions", icon: Activity },
   { href: "/portfolio", label: "Portfolio", icon: User },
   { href: "/blog", label: "Blog", icon: FileText },
   { href: "/shop", label: "Shop", icon: ShoppingBag },
@@ -61,7 +63,7 @@ export function CmsSidebar({ userEmail }: { userEmail?: string }) {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-colors",
                 isActive
-                  ? "bg-primary font-semibold text-primary-foreground"
+                  ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >

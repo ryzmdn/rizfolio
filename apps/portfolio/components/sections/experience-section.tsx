@@ -35,15 +35,17 @@ export function ExperienceSection({
           >
             <hgroup className="flex flex-col gap-y-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-x-5">
-                <div className="relative size-16 shrink-0 overflow-hidden rounded-md">
-                  <Image
-                    src={exp.logo}
-                    alt={exp.company}
-                    fill
-                    priority
-                    className="size-full object-cover"
-                  />
-                </div>
+                {exp.logo ? (
+                  <div className="relative size-16 shrink-0 overflow-hidden rounded-md">
+                    <Image
+                      src={exp.logo}
+                      alt={exp.company}
+                      fill
+                      priority
+                      className="size-full object-cover"
+                    />
+                  </div>
+                ) : null}
                 <div className="text-sm/6">
                   <h3 className="text-xl font-medium text-primary">
                     {exp.role}

@@ -29,7 +29,17 @@ export type ProfileData = typeof personalInfo & {
   resumeUrl?: string | null
 }
 
-export type ExperienceItem = (typeof experienceList)[number]
+export type ExperienceItem = {
+  logo?: string
+  role: string
+  company: string
+  type?: string
+  location?: string
+  period: string
+  workMode?: string
+  description: string
+  skills?: string[]
+}
 export type EducationItem = (typeof educationList)[number]
 export type CertificationItem = (typeof fallbackCertifications)[number]
 export type ServiceItem = (typeof fallbackServices)[number]
@@ -82,7 +92,7 @@ export async function getExperiences(): Promise<ExperienceItem[]> {
     if (rows.length > 0) {
       return rows.map(
         (exp: ExperienceSelect): ExperienceItem => ({
-          logo: "",
+          logo: (exp as any).companyLogoUrl || "",
           role: exp.role,
           company: exp.company,
           type: "Full-Time",

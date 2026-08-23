@@ -1,3 +1,5 @@
+import { recordTransaction } from "./actions/transaction-actions"
+
 export type RevalidatableApp =
   | "portfolio"
   | "blog"
@@ -69,6 +71,19 @@ export async function triggerAppRevalidation(
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({}))
+      await recordTransaction({
+        domain: "SYSTEM",
+        actionType: "REVALIDATION_FAILED",
+        status: "FAILED",
+        entityType: "app_cache",
+        entityId: options.app,
+        metadata: {
+          app: options.app,
+          status: res.status,
+          path: options.path,
+          tag: options.tag,
+        },
+      })
       return {
         success: false,
         error:
@@ -77,12 +92,29 @@ export async function triggerAppRevalidation(
     }
 
     const data = await res.json()
+    await recordTransaction({
+      domain: "SYSTEM",
+      actionType: "REVALIDATION_DISPATCHED",
+      status: "COMPLETED",
+      entityType: "app_cache",
+      entityId: options.app,
+      metadata: { app: options.app, path: options.path, tag: options.tag },
+    })
+
     return { success: true, data }
   } catch (err) {
     console.warn(
       `[ISR Revalidation] Failed to contact ${options.app} target:`,
       err instanceof Error ? err.message : "Network error"
     )
+    await recordTransaction({
+      domain: "SYSTEM",
+      actionType: "REVALIDATION_ERROR",
+      status: "FAILED",
+      entityType: "app_cache",
+      entityId: options.app,
+      metadata: { error: err instanceof Error ? err.message : "Network error" },
+    })
     return {
       success: false,
       error: err instanceof Error ? err.message : "Network error",

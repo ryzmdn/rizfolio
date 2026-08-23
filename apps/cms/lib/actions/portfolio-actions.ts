@@ -11,6 +11,7 @@ import {
   testimonials,
 } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
+import { recordTransaction } from "./transaction-actions"
 
 export async function getProfile() {
   const [data] = await db.select().from(profile).limit(1)
@@ -21,8 +22,26 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
   const existing = await getProfile()
   if (existing) {
     await db.update(profile).set(values).where(eq(profile.id, existing.id))
+    await recordTransaction({
+      domain: "PORTFOLIO",
+      actionType: "PROFILE_UPDATED",
+      status: "COMPLETED",
+      entityType: "profile",
+      entityId: existing.id,
+      payloadAfter: values,
+    })
   } else {
-    await db.insert(profile).values(values)
+    const [inserted] = await db.insert(profile).values(values).returning()
+    if (inserted) {
+      await recordTransaction({
+        domain: "PORTFOLIO",
+        actionType: "PROFILE_CREATED",
+        status: "COMPLETED",
+        entityType: "profile",
+        entityId: inserted.id,
+        payloadAfter: values,
+      })
+    }
   }
   revalidatePath("/portfolio")
 }
@@ -38,6 +57,16 @@ export async function createExperience(
   values: typeof experiences.$inferInsert
 ) {
   const [created] = await db.insert(experiences).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "PORTFOLIO",
+      actionType: "EXPERIENCE_CREATED",
+      status: "COMPLETED",
+      entityType: "experiences",
+      entityId: created.id,
+      payloadAfter: { company: created.company, role: created.role },
+    })
+  }
   revalidatePath("/portfolio")
   return created
 }
@@ -47,11 +76,26 @@ export async function updateExperience(
   values: Partial<typeof experiences.$inferInsert>
 ) {
   await db.update(experiences).set(values).where(eq(experiences.id, id))
+  await recordTransaction({
+    domain: "PORTFOLIO",
+    actionType: "EXPERIENCE_UPDATED",
+    status: "COMPLETED",
+    entityType: "experiences",
+    entityId: id,
+    payloadAfter: values,
+  })
   revalidatePath("/portfolio")
 }
 
 export async function deleteExperience(id: string) {
   await db.delete(experiences).where(eq(experiences.id, id))
+  await recordTransaction({
+    domain: "PORTFOLIO",
+    actionType: "EXPERIENCE_DELETED",
+    status: "COMPLETED",
+    entityType: "experiences",
+    entityId: id,
+  })
   revalidatePath("/portfolio")
 }
 
@@ -64,6 +108,15 @@ export async function getEducation() {
 
 export async function createEducation(values: typeof education.$inferInsert) {
   const [created] = await db.insert(education).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "PORTFOLIO",
+      actionType: "EDUCATION_CREATED",
+      status: "COMPLETED",
+      entityType: "education",
+      entityId: created.id,
+    })
+  }
   revalidatePath("/portfolio")
   return created
 }
@@ -92,6 +145,16 @@ export async function createCertification(
   values: typeof certifications.$inferInsert
 ) {
   const [created] = await db.insert(certifications).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "PORTFOLIO",
+      actionType: "CERTIFICATION_CREATED",
+      status: "COMPLETED",
+      entityType: "certifications",
+      entityId: created.id,
+      payloadAfter: { title: created.title, issuer: created.issuer },
+    })
+  }
   revalidatePath("/portfolio")
   return created
 }
@@ -115,6 +178,17 @@ export async function getServices() {
 
 export async function createService(values: typeof services.$inferInsert) {
   const [created] = await db.insert(services).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "PORTFOLIO",
+      actionType: "SERVICE_CREATED",
+      status: "COMPLETED",
+      entityType: "services",
+      entityId: created.id,
+      amount: created.startingPrice || 0,
+      currency: "IDR",
+    })
+  }
   revalidatePath("/portfolio")
   return created
 }
@@ -141,6 +215,19 @@ export async function getCaseStudies() {
 
 export async function createCaseStudy(values: typeof caseStudies.$inferInsert) {
   const [created] = await db.insert(caseStudies).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "PORTFOLIO",
+      actionType: created.isPublished
+        ? "CASE_STUDY_PUBLISHED"
+        : "CASE_STUDY_DRAFTED",
+      status: "COMPLETED",
+      entityType: "case_studies",
+      entityId: created.id,
+      caseStudyId: created.id,
+      payloadAfter: { slug: created.slug, title: created.title },
+    })
+  }
   revalidatePath("/portfolio")
   return created
 }
@@ -150,11 +237,28 @@ export async function updateCaseStudy(
   values: Partial<typeof caseStudies.$inferInsert>
 ) {
   await db.update(caseStudies).set(values).where(eq(caseStudies.id, id))
+  await recordTransaction({
+    domain: "PORTFOLIO",
+    actionType: "CASE_STUDY_UPDATED",
+    status: "COMPLETED",
+    entityType: "case_studies",
+    entityId: id,
+    caseStudyId: id,
+    payloadAfter: values,
+  })
   revalidatePath("/portfolio")
 }
 
 export async function deleteCaseStudy(id: string) {
   await db.delete(caseStudies).where(eq(caseStudies.id, id))
+  await recordTransaction({
+    domain: "PORTFOLIO",
+    actionType: "CASE_STUDY_DELETED",
+    status: "COMPLETED",
+    entityType: "case_studies",
+    entityId: id,
+    caseStudyId: id,
+  })
   revalidatePath("/portfolio")
 }
 
@@ -169,6 +273,15 @@ export async function createTestimonial(
   values: typeof testimonials.$inferInsert
 ) {
   const [created] = await db.insert(testimonials).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "PORTFOLIO",
+      actionType: "TESTIMONIAL_CREATED",
+      status: "COMPLETED",
+      entityType: "testimonials",
+      entityId: created.id,
+    })
+  }
   revalidatePath("/portfolio")
   return created
 }

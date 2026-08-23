@@ -1,0 +1,197 @@
+"use server"
+
+import {
+  db,
+  masterTransactions,
+  desc,
+  eq,
+  and,
+  or,
+  ilike,
+  sql,
+  type MasterTransaction,
+  type InsertMasterTransactionInput,
+  insertMasterTransactionSchema,
+} from "@workspace/db"
+import { revalidatePath } from "next/cache"
+
+function generateTrxNumber(domain: string): string {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, "0")
+  const randomHex = Math.random().toString(36).substring(2, 8).toUpperCase()
+  const domainPrefix = domain.substring(0, 3).toUpperCase()
+  return `TRX-${domainPrefix}-${year}${month}-${randomHex}`
+}
+
+export async function recordTransaction(
+  input: InsertMasterTransactionInput
+): Promise<{ success: boolean; trxNumber?: string; id?: string }> {
+  try {
+    const validated = insertMasterTransactionSchema.parse(input)
+    const trxNumber = validated.trxNumber || generateTrxNumber(validated.domain)
+
+    const [inserted] = await db
+      .insert(masterTransactions)
+      .values({
+        trxNumber,
+        domain: validated.domain,
+        actionType: validated.actionType,
+        status: validated.status || "COMPLETED",
+        actorId: validated.actorId || null,
+        actorType: validated.actorType || "SYSTEM",
+        entityType: validated.entityType,
+        entityId: validated.entityId,
+        orderId: validated.orderId || null,
+        productId: validated.productId || null,
+        postId: validated.postId || null,
+        repoId: validated.repoId || null,
+        caseStudyId: validated.caseStudyId || null,
+        changelogId: validated.changelogId || null,
+        amount: validated.amount ?? 0,
+        currency: validated.currency || "IDR",
+        payloadBefore: validated.payloadBefore || null,
+        payloadAfter: validated.payloadAfter || null,
+        clientIp: validated.clientIp || null,
+        userAgent: validated.userAgent || null,
+        traceId: validated.traceId || null,
+        metadata: validated.metadata || {},
+      })
+      .returning({
+        id: masterTransactions.id,
+        trxNumber: masterTransactions.trxNumber,
+      })
+
+    return { success: true, id: inserted?.id, trxNumber: inserted?.trxNumber }
+  } catch (error) {
+    console.warn(
+      "[Master Transactions] Failed to record transaction:",
+      error instanceof Error ? error.message : "Unknown error"
+    )
+    return { success: false }
+  }
+}
+
+export interface GetTransactionsParams {
+  domain?: string
+  status?: string
+  search?: string
+  limit?: number
+  offset?: number
+}
+
+export async function getMasterTransactions(
+  params: GetTransactionsParams = {}
+): Promise<{
+  items: MasterTransaction[]
+  total: number
+}> {
+  try {
+    const limit = params.limit || 50
+    const offset = params.offset || 0
+
+    const conditions = []
+
+    if (params.domain && params.domain !== "ALL") {
+      conditions.push(eq(masterTransactions.domain, params.domain))
+    }
+
+    if (params.status && params.status !== "ALL") {
+      conditions.push(eq(masterTransactions.status, params.status))
+    }
+
+    if (params.search && params.search.trim()) {
+      const term = `%${params.search.trim()}%`
+      conditions.push(
+        or(
+          ilike(masterTransactions.trxNumber, term),
+          ilike(masterTransactions.actionType, term),
+          ilike(masterTransactions.entityType, term),
+          ilike(masterTransactions.entityId, term)
+        )
+      )
+    }
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+
+    const [items, countResult] = await Promise.all([
+      db
+        .select()
+        .from(masterTransactions)
+        .where(whereClause)
+        .orderBy(desc(masterTransactions.createdAt))
+        .limit(limit)
+        .offset(offset),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(masterTransactions)
+        .where(whereClause),
+    ])
+
+    return {
+      items,
+      total: countResult[0]?.count || 0,
+    }
+  } catch (error) {
+    console.error(
+      "[CMS Transactions] Error fetching master transactions:",
+      error instanceof Error ? error.message : "Unknown error"
+    )
+    return { items: [], total: 0 }
+  }
+}
+
+export async function getMasterTransactionStats() {
+  try {
+    const [totalRes, completedRes, commerceVolumeRes, recentItems] =
+      await Promise.all([
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(masterTransactions),
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(masterTransactions)
+          .where(eq(masterTransactions.status, "COMPLETED")),
+        db
+          .select({
+            totalAmount: sql<number>`coalesce(sum(amount), 0)::int`,
+          })
+          .from(masterTransactions)
+          .where(
+            and(
+              eq(masterTransactions.domain, "COMMERCE"),
+              eq(masterTransactions.status, "COMPLETED")
+            )
+          ),
+        db
+          .select()
+          .from(masterTransactions)
+          .orderBy(desc(masterTransactions.createdAt))
+          .limit(6),
+      ])
+
+    const total = totalRes[0]?.count || 0
+    const completed = completedRes[0]?.count || 0
+    const commerceVolume = commerceVolumeRes[0]?.totalAmount || 0
+
+    return {
+      total,
+      completed,
+      successRate: total > 0 ? Math.round((completed / total) * 100) : 100,
+      commerceVolume,
+      recentItems,
+    }
+  } catch (error) {
+    console.error(
+      "[CMS Transactions] Error fetching stats:",
+      error instanceof Error ? error.message : "Unknown error"
+    )
+    return {
+      total: 0,
+      completed: 0,
+      successRate: 100,
+      commerceVolume: 0,
+      recentItems: [],
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { db, eq, desc, asc } from "@workspace/db"
 import { repositories, repoFiles, repoReleases } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { triggerAppRevalidation } from "../revalidate"
+import { recordTransaction } from "./transaction-actions"
 
 export async function getAdminRepositories() {
   return await db
@@ -25,6 +26,17 @@ export async function createRepository(
   values: typeof repositories.$inferInsert
 ) {
   const [created] = await db.insert(repositories).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "CODE_DOCS",
+      actionType: "REPO_CREATED",
+      status: "COMPLETED",
+      entityType: "repositories",
+      entityId: created.id,
+      repoId: created.id,
+      payloadAfter: { slug: created.slug, name: created.name },
+    })
+  }
   revalidatePath("/docs")
   await triggerAppRevalidation({ app: "docs", path: "/" }).catch(() => {})
   return created
@@ -39,6 +51,17 @@ export async function updateRepository(
     .set({ ...values, updatedAt: new Date() })
     .where(eq(repositories.id, id))
     .returning()
+  if (updated) {
+    await recordTransaction({
+      domain: "CODE_DOCS",
+      actionType: "REPO_UPDATED",
+      status: "COMPLETED",
+      entityType: "repositories",
+      entityId: updated.id,
+      repoId: updated.id,
+      payloadAfter: values,
+    })
+  }
   revalidatePath("/docs")
   if (updated?.slug) {
     await triggerAppRevalidation({
@@ -54,6 +77,16 @@ export async function deleteRepository(id: string) {
     .delete(repositories)
     .where(eq(repositories.id, id))
     .returning()
+  if (deleted) {
+    await recordTransaction({
+      domain: "CODE_DOCS",
+      actionType: "REPO_DELETED",
+      status: "COMPLETED",
+      entityType: "repositories",
+      entityId: id,
+      repoId: id,
+    })
+  }
   revalidatePath("/docs")
   if (deleted?.slug) {
     await triggerAppRevalidation({ app: "docs", path: "/" }).catch(() => {})
@@ -70,6 +103,17 @@ export async function getAdminRepoFiles(repoId: string) {
 
 export async function createRepoFile(values: typeof repoFiles.$inferInsert) {
   const [created] = await db.insert(repoFiles).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "CODE_DOCS",
+      actionType: "REPO_FILE_CREATED",
+      status: "COMPLETED",
+      entityType: "repo_files",
+      entityId: created.id,
+      repoId: created.repoId,
+      metadata: { path: created.path, filename: created.filename },
+    })
+  }
   revalidatePath("/docs")
   return created
 }
@@ -104,6 +148,17 @@ export async function createRepoRelease(
   values: typeof repoReleases.$inferInsert
 ) {
   const [created] = await db.insert(repoReleases).values(values).returning()
+  if (created) {
+    await recordTransaction({
+      domain: "CODE_DOCS",
+      actionType: "REPO_RELEASE_PUBLISHED",
+      status: "COMPLETED",
+      entityType: "repo_releases",
+      entityId: created.id,
+      repoId: created.repoId,
+      metadata: { versionTag: created.versionTag },
+    })
+  }
   revalidatePath("/docs")
   return created
 }
