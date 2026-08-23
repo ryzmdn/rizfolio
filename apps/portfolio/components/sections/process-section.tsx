@@ -1,15 +1,20 @@
 import { Container } from "@workspace/ui/components/layouts"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { engineeringProcess } from "@/data"
 
-export function ProcessSection() {
+interface ProcessSectionProps {
+  sectionNumber?: number | string
+}
+
+export function ProcessSection({ sectionNumber = 3 }: ProcessSectionProps) {
   return (
-    <Container id="process" className="flow-root space-y-12 py-20">
-      <hgroup className="mx-auto max-w-3xl text-center">
-        <small className="text-muted-foreground">Our Process</small>
-        <h2 className="text-2xl font-semibold tracking-tight text-primary mt-2 mb-4 sm:text-3xl">
+    <Container id="process" className="space-y-16 py-20">
+      <hgroup className="w-full space-y-2">
+        <SectionEyebrow number={sectionNumber} label="Engineering Process." />
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Engineering Lifecycle
         </h2>
-        <p className="text-muted-foreground">
+        <p className="leading-7 text-muted-foreground">
           A deterministic, battle-tested methodology designed to transform
           complex product requirements into robust, production-ready software
           systems.

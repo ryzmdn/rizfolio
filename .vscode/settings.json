@@ -6,23 +6,17 @@
     "javascriptreact": "html",
     "html": "html"
   },
-  "tailwindCSS.classAttributes": [
-    "class",
-    "className",
-    "ngClass"
-  ],
-  "tailwindCSS.classFunctions": [
-    "cn",
-    "cva",
-    "clsx",
-    "twMerge"
-  ],
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass"],
+  "tailwindCSS.classFunctions": ["cn", "cva", "clsx", "twMerge"],
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
     ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
     ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-    ["(?:class|className):\\s*[\"'`]([^\"'`]*).*?[\"'`]", "[\"'`]([^\"'`]*).*?[\"'`]"]
+    [
+      "(?:class|className):\\s*[\"'`]([^\"'`]*).*?[\"'`]",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ]
   ],
   "tailwindCSS.emmetCompletions": true,
   "editor.quickSuggestions": {

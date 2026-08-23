@@ -1,16 +1,23 @@
 import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { caseStudies } from "@/data"
 
-export function CaseStudiesSection() {
+interface CaseStudiesSectionProps {
+  sectionNumber?: number | string
+}
+
+export function CaseStudiesSection({
+  sectionNumber = 5,
+}: CaseStudiesSectionProps) {
   return (
-    <Container id="case-studies" className="flow-root space-y-12 py-20">
-      <hgroup className="mx-auto max-w-3xl text-center">
-        <small className="text-muted-foreground">Our Case Studies</small>
-        <h2 className="mt-2 mb-4 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
+    <Container id="case-studies" className="space-y-12 py-20">
+      <hgroup className="w-full space-y-2">
+        <SectionEyebrow number={sectionNumber} label="Case Studies." />
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Featured Case Studies & Systems
         </h2>
-        <p className="text-muted-foreground">
+        <p className="leading-7 text-muted-foreground">
           A curated selection of engineering initiatives focused on high
           throughput, architectural clarity, and verifiable business impact.
         </p>

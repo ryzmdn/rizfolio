@@ -2,6 +2,7 @@ import {
   HeroSection,
   TrustedBySection,
   AboutSection,
+  NowSection,
   ProcessSection,
   ServicesSection,
   CaseStudiesSection,
@@ -18,19 +19,15 @@ import { getPortfolioPageData } from "@/lib/queries"
 export const revalidate = 3600
 
 export default async function Home() {
-  const {
-    profile,
-    experiences,
-    education,
-    certifications,
-    services,
-  } = await getPortfolioPageData()
+  const { profile, experiences, education, certifications, services } =
+    await getPortfolioPageData()
 
   return (
     <>
       <HeroSection data={profile} />
       <TrustedBySection />
       <AboutSection data={profile} />
+      <NowSection />
       <ProcessSection />
       <ServicesSection services={services} />
       <CaseStudiesSection />

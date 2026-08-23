@@ -1,6 +1,7 @@
 export * from "./hero-section"
 export * from "./trusted-by-section"
 export * from "./about-section"
+export * from "./now-section"
 export * from "./process-section"
 export * from "./services-section"
 export * from "./case-studies-section"

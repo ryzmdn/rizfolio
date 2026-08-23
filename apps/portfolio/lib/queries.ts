@@ -82,6 +82,7 @@ export async function getExperiences(): Promise<ExperienceItem[]> {
     if (rows.length > 0) {
       return rows.map(
         (exp: ExperienceSelect): ExperienceItem => ({
+          logo: "",
           role: exp.role,
           company: exp.company,
           type: "Full-Time",

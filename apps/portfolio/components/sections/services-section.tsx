@@ -1,5 +1,6 @@
 import { Check } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { services as fallbackServices } from "@/data"
 import type { ServiceItem } from "@/lib/queries"
 import Link from "next/link"
@@ -8,19 +9,21 @@ import { buttonVariants } from "@workspace/ui/components/button"
 
 interface ServicesSectionProps {
   services?: ServiceItem[]
+  sectionNumber?: number | string
 }
 
 export function ServicesSection({
   services = fallbackServices,
+  sectionNumber = 4,
 }: ServicesSectionProps) {
   return (
-    <Container id="solutions" className="flow-root space-y-12 py-20">
-      <hgroup className="mx-auto max-w-3xl text-center">
-        <small className="text-muted-foreground">Our Services</small>
-        <h2 className="mt-2 mb-4 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
+    <Container id="solutions" className="space-y-12 py-20">
+      <hgroup className="w-full space-y-2">
+        <SectionEyebrow number={sectionNumber} label="Services & Solutions." />
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Services & Technical Capabilities
         </h2>
-        <p className="text-muted-foreground">
+        <p className="leading-7 text-muted-foreground">
           Comprehensive full-stack engineering solutions tailored for scaling
           startups, modern SaaS platforms, and enterprise digital
           transformations.

@@ -1,24 +1,34 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import Image from "next/image"
-import { experienceList } from "@/data"
+import { experienceList as fallbackExperienceList } from "@/data"
+import type { ExperienceItem } from "@/lib/queries"
 
-export function ExperienceSection() {
+interface ExperienceSectionProps {
+  experiences?: ExperienceItem[]
+  sectionNumber?: number | string
+}
+
+export function ExperienceSection({
+  experiences = fallbackExperienceList,
+  sectionNumber = 7,
+}: ExperienceSectionProps) {
   return (
-    <Container id="experience" className="flow-root space-y-12 py-20">
-      <hgroup className="mx-auto max-w-3xl text-center">
-        <small className="text-muted-foreground">Work Experience</small>
-        <h2 className="mt-2 mb-4 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
+    <Container id="experience" className="space-y-12 py-20">
+      <hgroup className="w-full space-y-2">
+        <SectionEyebrow number={sectionNumber} label="Career History." />
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Professional Experience
         </h2>
-        <p className="text-muted-foreground">
+        <p className="leading-7 text-muted-foreground">
           Demonstrated track record of engineering scalable platforms, leading
           frontend systems, and collaborating with cross-functional teams.
         </p>
       </hgroup>
 
       <div className="flow-root w-full space-y-12 divide-y divide-border py-10">
-        {experienceList.map((exp, idx) => (
+        {experiences.map((exp, idx) => (
           <div
             key={idx}
             className="w-full space-y-5 bg-transparent pt-10 first:pt-0"
