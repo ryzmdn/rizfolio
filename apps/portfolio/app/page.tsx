@@ -2,13 +2,15 @@ import {
   HeroSection,
   TrustedBySection,
   AboutSection,
+  NowSection,
+  PrinciplesSection,
   ProcessSection,
   ServicesSection,
   CaseStudiesSection,
-  ActivitiesSection,
   EducationSection,
   ExperienceSection,
   CapabilitiesSection,
+  StackArchitectureSection,
   OpenSourceSection,
   TestimonialsSection,
   CertificationsSection,
@@ -19,30 +21,25 @@ import { getPortfolioPageData } from "@/lib/queries"
 export const revalidate = 3600
 
 export default async function Home() {
-  const {
-    profile,
-    experiences,
-    education,
-    certifications,
-    services,
-    caseStudies,
-    testimonials,
-  } = await getPortfolioPageData()
+  const { profile, experiences, education, certifications, services } =
+    await getPortfolioPageData()
 
   return (
     <>
       <HeroSection data={profile} />
       <TrustedBySection />
       <AboutSection data={profile} />
+      <NowSection />
+      <PrinciplesSection />
       <ProcessSection />
       <ServicesSection services={services} />
-      <CaseStudiesSection caseStudies={caseStudies} />
-      <ActivitiesSection />
+      <CaseStudiesSection />
       <EducationSection education={education} />
       <ExperienceSection experiences={experiences} />
       <CapabilitiesSection />
+      <StackArchitectureSection />
       <OpenSourceSection />
-      <TestimonialsSection testimonials={testimonials} />
+      <TestimonialsSection />
       <CertificationsSection certifications={certifications} />
       <CtaSection />
     </>

@@ -1,19 +1,22 @@
-import { Quote } from "lucide-react"
+import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
-import { testimonials as fallbackTestimonials } from "@/data"
-import type { TestimonialItem } from "@/lib/queries"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
+import { testimonials } from "@/data"
 
 interface TestimonialsSectionProps {
-  testimonials?: TestimonialItem[]
+  sectionNumber?: number | string
 }
 
 export function TestimonialsSection({
-  testimonials = fallbackTestimonials,
+  sectionNumber = 11,
 }: TestimonialsSectionProps) {
   return (
     <Container id="testimonials" className="py-20">
       <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">Peer & Client Endorsements</h2>
+        <SectionEyebrow number={sectionNumber} label="Testimonials." />
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
+          Peer & Client Endorsements
+        </h2>
 
         <div className="leading-7 text-muted-foreground">
           <p>
@@ -23,34 +26,31 @@ export function TestimonialsSection({
         </div>
       </hgroup>
 
-      <div className="grid gap-8 py-12 sm:grid-cols-2">
-        {testimonials.map((item, idx) => (
+      <div className="grid gap-6 py-10 sm:grid-cols-2">
+        {testimonials.map((item) => (
           <div
-            key={idx}
-            className="flex flex-col justify-between space-y-6 rounded-2xl border border-border/60 bg-card/60 p-6 shadow-sm backdrop-blur-xs"
+            key={item.name}
+            className="pt-6 sm:inline-block sm:w-full sm:px-4"
           >
-            <div className="space-y-4">
-              <Quote className="size-6 text-muted-foreground/40" />
-              <p className="text-sm/relaxed leading-7 text-muted-foreground">
-                &ldquo;{item.content}&rdquo;
-              </p>
-            </div>
-
-            <div className="flex items-center gap-x-4 border-t border-border/40 pt-4">
-              <div className="size-12 shrink-0 overflow-hidden rounded-full ring-1 ring-border">
-                <img
-                  src={item.avatar}
-                  alt={item.name}
-                  className="size-full object-cover"
-                />
-              </div>
-              <div>
-                <h3 className="text-base font-medium text-foreground">
-                  {item.name}
-                </h3>
-                <p className="text-xs text-muted-foreground">{item.handle}</p>
-              </div>
-            </div>
+            <figure className="rounded-2xl bg-secondary p-6 text-sm/6">
+              <blockquote className="text-accent-foreground">
+                {item.content}
+              </blockquote>
+              <figcaption className="mt-6 flex items-center gap-x-4">
+                <div className="relative size-11 overflow-hidden rounded-full bg-background">
+                  <Image
+                    src={item.avatar}
+                    alt={item.name}
+                    fill
+                    className="object-cover object-top"
+                  />
+                </div>
+                <div className="-space-y-1">
+                  <h3 className="font-medium text-primary">{item.name}</h3>
+                  <p className="text-muted-foreground">&#64;{item.handle}</p>
+                </div>
+              </figcaption>
+            </figure>
           </div>
         ))}
       </div>

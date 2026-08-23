@@ -1,13 +1,14 @@
 export const experienceList = [
   {
-    role: "Senior Full-Stack Engineer",
-    company: "TechCorp Solutions",
-    type: "Full-Time",
-    location: "Jakarta / Remote",
+    logo: "https://media.licdn.com/dms/image/v2/C560BAQGLBSn_Nw57lw/company-logo_100_100/company-logo_100_100/0/1651748357308/shopeepay_logo?e=1788998400&v=beta&t=l7SagLmqDg66QPIdBVKsvegrivUSDccmEMgBxC423Z8",
+    role: "SPARK Agent",
+    company: "Shopee",
+    type: "Seasonal",
+    location: "Kota Tangerang Selatan, Banten, Indonesia",
     period: "2024 – Present",
     workMode: "Remote",
     description:
-      "Leading architecture and development of scalable Next.js applications, serverless microservices, and high-concurrency API integrations. Reduced page load times by 45% and improved deployment reliability through automated CI/CD pipelines.",
+      "Active advocate untuk produk digital ShopeePay. Bikin konten referral yang trend-aware di platform sosial media demi memaksimalkan pertumbuhan user baru dan digital payment adoption.",
     skills: [
       "Next.js 16",
       "React 19",
@@ -20,6 +21,7 @@ export const experienceList = [
     ],
   },
   {
+    logo: "https://media.licdn.com/dms/image/v2/D4E0BAQF4tth1jz9Kzw/company-logo_100_100/B4EZvDruLkJ8AU-/0/1768514577945/contrahq_logo?e=1788998400&v=beta&t=GcEupuuscNT3Axlnrca4tIZ33XtjFX5o90yqVJ3FOrE",
     role: "Frontend Engineer & UI Specialist",
     company: "Studio Alpha Digital",
     type: "Contract",
@@ -40,6 +42,7 @@ export const experienceList = [
     ],
   },
   {
+    logo: "https://media.licdn.com/dms/image/v2/C510BAQGq132MNK2_cQ/company-logo_100_100/company-logo_100_100/0/1630634350666?e=1788998400&v=beta&t=LcniGBHcrVoSte91E0Dn8uIkqOxZ1BOOpCfjdUDXfuk",
     role: "Full-Stack Developer",
     company: "Innovate Labs",
     type: "Full-Time",
@@ -60,6 +63,7 @@ export const experienceList = [
     ],
   },
   {
+    logo: "https://media.licdn.com/dms/image/v2/D4E0BAQEmtBDiCeG3KA/company-logo_100_100/company-logo_100_100/0/1709628883956/novo_club_by_paragon_corp_logo?e=1788998400&v=beta&t=v0roWLJ6tn_kRnGDHc11VuD8G9XU9iYMFLxgKpbnk-0",
     role: "Open-Source Engineer & Consultant",
     company: "Independent Practice",
     type: "Freelance",
