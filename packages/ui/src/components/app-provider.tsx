@@ -7,6 +7,7 @@ import {
   ThemeSynchronizer,
   THEME_STORAGE_KEY,
 } from "./providers"
+import { CookieConsent } from "./cookie-consent"
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -19,6 +20,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     >
       <ThemeSynchronizer />
       <SmoothScrollProvider>{children}</SmoothScrollProvider>
+      <CookieConsent />
     </ThemeProvider>
   )
 }
