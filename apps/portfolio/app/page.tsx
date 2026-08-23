@@ -3,6 +3,7 @@ import {
   TrustedBySection,
   AboutSection,
   NowSection,
+  PrinciplesSection,
   ProcessSection,
   ServicesSection,
   CaseStudiesSection,
@@ -28,6 +29,7 @@ export default async function Home() {
       <TrustedBySection />
       <AboutSection data={profile} />
       <NowSection />
+      <PrinciplesSection />
       <ProcessSection />
       <ServicesSection services={services} />
       <CaseStudiesSection />
