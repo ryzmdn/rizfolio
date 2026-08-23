@@ -2,6 +2,7 @@ import { Brain, BrainCircuit, Handshake } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
 import { Marquee } from "@workspace/ui/components/marquee"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 
 const softSkillsList: string[] = [
   "Strategic Communication",
@@ -36,11 +37,25 @@ const knowledgeSkillsList: string[] = [
   "Applied LLMs & Prompt Engineering",
 ]
 
-export function CapabilitiesSection() {
+interface CapabilitiesSectionProps {
+  sectionNumber?: number | string
+}
+
+export function CapabilitiesSection({
+  sectionNumber = 9,
+}: CapabilitiesSectionProps) {
   return (
     <Container id="capabilities" className="w-full space-y-12 py-20">
-      <hgroup className="grid w-full space-y-2 lg:grid-cols-2">
-        <h2 className="text-2xl font-medium">Core Competencies & Stack</h2>
+      <hgroup className="grid w-full items-start gap-4 space-y-2 lg:grid-cols-2">
+        <div className="space-y-1">
+          <SectionEyebrow
+            number={sectionNumber}
+            label="Skills & Competencies."
+          />
+          <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
+            Core Competencies & Stack
+          </h2>
+        </div>
 
         <div className="text-2xl/snug">
           <p>

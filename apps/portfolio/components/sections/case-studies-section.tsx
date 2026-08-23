@@ -8,7 +8,7 @@ interface CaseStudiesSectionProps {
 }
 
 export function CaseStudiesSection({
-  sectionNumber = 5,
+  sectionNumber = 6,
 }: CaseStudiesSectionProps) {
   return (
     <Container id="case-studies" className="space-y-12 py-20">

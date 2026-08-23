@@ -17,9 +17,9 @@ export const engineeringPrinciples: EngineeringPrinciple[] = [
     mentalModel: "Predictability > Obscurity",
     tagline: "Simple code is not rudimentary; it is complexity resolved.",
     description:
-      "I prioritize explicit state management, predictable data flow, and compile-time type invariants over fragile, magic abstractions. Code must remain immediately comprehensible by any engineer six months from now.",
+      "I engineer systems with explicit state transitions, strict compile-time type invariants, and clear data boundaries. Code must be immediately legible to any engineer, eliminating fragile magic and hidden side effects.",
     rules: [
-      "Type-Safe Invariants",
+      "Compile-Time Invariants",
       "Explicit Data Contracts",
       "Zero Hidden Side-Effects",
     ],
@@ -29,15 +29,15 @@ export const engineeringPrinciples: EngineeringPrinciple[] = [
     id: "performance",
     number: "02",
     title: "Performance by Default",
-    mentalModel: "Zero-Cost Mental Accounting",
+    mentalModel: "Sub-100ms Invariant",
     tagline:
       "Latency is a feature, and responsiveness is respect for the user.",
     description:
-      "High performance is engineered at the architectural level—leveraging React Server Components, on-demand ISR revalidation, and granular database indexing to deliver instantaneous sub-100ms user interactions without bloated client bundles.",
+      "Speed is an architectural discipline, not a cosmetic patch. I leverage server-first compute, on-demand ISR invalidation, and lean bundle budgeting to guarantee instant interactions and fluid Core Web Vitals.",
     rules: [
-      "Server-First Compute",
-      "Sub-100ms Interactions",
-      "Featherweight Bundles",
+      "Server-First React 19 RSC",
+      "Instant On-Demand ISR",
+      "Featherweight Client Bundles",
     ],
     icon: "zap",
   },
@@ -45,15 +45,15 @@ export const engineeringPrinciples: EngineeringPrinciple[] = [
     id: "defense-in-depth",
     number: "03",
     title: "Defense-in-Depth Security",
-    mentalModel: "Zero Trust Architecture",
+    mentalModel: "Zero-Trust Architecture",
     tagline:
-      "Security is never an afterthought or a final checklist; it is an invariant foundation.",
+      "Security is never an afterthought; it is an unyielding foundation.",
     description:
-      "Treating all incoming requests as untrusted by default. Implementing cryptographic session validation, rate limiting, header-only secret handshakes, and perimeter sanitization across every layer from the edge to the database.",
+      "Treating every boundary and client request as untrusted by default. I implement perimeter input validation, cryptographic session governance, rate limiting, and strict header-only authentication across edge to storage.",
     rules: [
-      "Perimeter Sanitization",
-      "Header-Only Secrets",
-      "Strict Session Lifetimes",
+      "Perimeter Input Sanitization",
+      "Header-Only Verification",
+      "Strict Cryptographic Sessions",
     ],
     icon: "lock",
   },
@@ -63,13 +63,13 @@ export const engineeringPrinciples: EngineeringPrinciple[] = [
     title: "Product-Driven Pragmatism",
     mentalModel: "High-ROI Engineering",
     tagline:
-      "Technical elegance only matters if it ships and drives measurable human impact.",
+      "Technical elegance only matters if it ships and drives measurable business value.",
     description:
-      "Resisting premature optimization and architectural vanity. Every technology choice, refactoring cycle, and architectural decision must directly defend user value, platform reliability, and business execution velocity.",
+      "Resisting premature optimization and resume-driven overengineering. Every architectural decision, refactor, and tool selection is strictly measured by its return on user delight, uptime reliability, and shipping velocity.",
     rules: [
       "Reuse Before Reinvent",
       "Measurable Business Value",
-      "Continuous Shipping Velocity",
+      "Deterministic Shipping Cadence",
     ],
     icon: "compass",
   },

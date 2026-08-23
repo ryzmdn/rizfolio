@@ -14,7 +14,7 @@ interface ServicesSectionProps {
 
 export function ServicesSection({
   services = fallbackServices,
-  sectionNumber = 4,
+  sectionNumber = 5,
 }: ServicesSectionProps) {
   return (
     <Container id="solutions" className="space-y-12 py-20">

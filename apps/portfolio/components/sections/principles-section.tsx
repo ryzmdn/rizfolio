@@ -25,22 +25,19 @@ export function PrinciplesSection({
   return (
     <Container id="principles" className="py-20">
       <div className="space-y-12">
-        {/* Header */}
+        {/* Section Header */}
         <hgroup className="max-w-2xl space-y-2">
-          <SectionEyebrow
-            number={sectionNumber}
-            label="Principles & Mental Models."
-          />
+          <SectionEyebrow number={sectionNumber} label="How I Think." />
           <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
             Engineering Principles & Mental Models
           </h2>
           <p className="leading-7 text-muted-foreground">
-            A deterministic set of architectural axioms and cognitive frameworks
-            that govern every system I design, build, and scale.
+            A deterministic set of architectural axioms and cognitive models
+            governing how I design, build, and scale resilient software systems.
           </p>
         </hgroup>
 
-        {/* Principles 2x2 Grid */}
+        {/* Principles Luxury 2x2 Grid */}
         <div className="grid gap-6 md:grid-cols-2">
           {principles.map((principle) => {
             const Icon = iconMap[principle.icon] || Shield
@@ -54,30 +51,32 @@ export function PrinciplesSection({
                 )}
               >
                 <div className="space-y-5">
-                  {/* Top Bar: Number + Icon + Mental Model Badge */}
+                  {/* Top Header: Index + Separator + Icon + Mental Model Pill */}
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-sm font-semibold tracking-wider text-muted-foreground">
                         {principle.number}
                       </span>
-                      <span className="text-xs text-border">&#47;&#47;</span>
+                      <span className="text-xs text-border" aria-hidden="true">
+                        &#47;&#47;
+                      </span>
                       <div className="flex size-8 items-center justify-center rounded-lg border border-border/80 bg-background/80 text-foreground shadow-2xs transition-colors group-hover:border-foreground/40">
                         <Icon
                           className="size-4 text-primary"
-                          strokeWidth={1.75}
+                          strokeWidth={1.5}
                         />
                       </div>
                     </div>
 
                     <Badge
                       variant="outline"
-                      className="rounded-full border-border/70 bg-background/50 px-2.5 py-0.5 text-[10px] font-medium tracking-wider text-muted-foreground uppercase"
+                      className="rounded-full border-border/70 bg-background/50 px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-muted-foreground uppercase"
                     >
                       {principle.mentalModel}
                     </Badge>
                   </div>
 
-                  {/* Title & Tagline */}
+                  {/* Principle Title & Golden Tagline */}
                   <div className="space-y-2 pt-1">
                     <h3 className="text-xl font-medium tracking-tight text-foreground transition-colors group-hover:text-primary">
                       {principle.title}
@@ -87,13 +86,13 @@ export function PrinciplesSection({
                     </p>
                   </div>
 
-                  {/* Narrative Description */}
+                  {/* Narrative Body Copy */}
                   <p className="text-sm/relaxed text-muted-foreground">
                     {principle.description}
                   </p>
                 </div>
 
-                {/* Bottom Rules / Invariants */}
+                {/* Architectural Invariants / Rules Checklist */}
                 <div className="mt-6 border-t border-border/40 pt-5">
                   <div className="flex flex-wrap items-center gap-2">
                     {principle.rules.map((rule, idx) => (

@@ -1,21 +1,32 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
 import { buttonVariants } from "@workspace/ui/components/button"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { ExternalLink, Star } from "lucide-react"
 import { Github } from "@workspace/ui/constants/icons"
 import { openSourceProjects } from "@/data"
 
-export function OpenSourceSection() {
+interface OpenSourceSectionProps {
+  sectionNumber?: number | string
+}
+
+export function OpenSourceSection({
+  sectionNumber = 10,
+}: OpenSourceSectionProps) {
   return (
     <Container id="experiments" className="flow-root space-y-12 py-20">
       <hgroup className="mx-auto max-w-3xl text-center">
-        <small className="text-muted-foreground">Experiments</small>
+        <SectionEyebrow
+          number={sectionNumber}
+          label="Open Source & Experiments."
+          className="justify-center"
+        />
         <h2 className="mt-2 mb-4 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
           Open-Source Toolkits & Experiments
         </h2>
         <p className="text-muted-foreground">
           Developer utilities, libraries, and templates crafted to elevate
-            developer ergonomics and give back to the engineering community.
+          developer ergonomics and give back to the engineering community.
         </p>
       </hgroup>
 

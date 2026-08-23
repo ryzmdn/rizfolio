@@ -6,7 +6,7 @@ interface ProcessSectionProps {
   sectionNumber?: number | string
 }
 
-export function ProcessSection({ sectionNumber = 3 }: ProcessSectionProps) {
+export function ProcessSection({ sectionNumber = 4 }: ProcessSectionProps) {
   return (
     <Container id="process" className="space-y-16 py-20">
       <hgroup className="w-full space-y-2">

@@ -1,14 +1,17 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { Marquee } from "@workspace/ui/components/marquee"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { certifications as fallbackCertifications } from "@/data"
 import type { CertificationItem } from "@/lib/queries"
 
 interface CertificationsSectionProps {
   certifications?: CertificationItem[]
+  sectionNumber?: number | string
 }
 
 export function CertificationsSection({
   certifications = fallbackCertifications,
+  sectionNumber = 12,
 }: CertificationsSectionProps) {
   const midpoint = Math.ceil(certifications.length / 2)
   const firstRow = certifications.slice(0, midpoint)
@@ -17,7 +20,11 @@ export function CertificationsSection({
   return (
     <Container id="certifications" className="py-20">
       <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">
+        <SectionEyebrow
+          number={sectionNumber}
+          label="Verified Certifications."
+        />
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Licenses & Verified Certifications
         </h2>
 

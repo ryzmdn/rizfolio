@@ -1,12 +1,22 @@
 import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { testimonials } from "@/data"
 
-export function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  sectionNumber?: number | string
+}
+
+export function TestimonialsSection({
+  sectionNumber = 11,
+}: TestimonialsSectionProps) {
   return (
     <Container id="testimonials" className="py-20">
       <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">Peer & Client Endorsements</h2>
+        <SectionEyebrow number={sectionNumber} label="Testimonials." />
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
+          Peer & Client Endorsements
+        </h2>
 
         <div className="leading-7 text-muted-foreground">
           <p>

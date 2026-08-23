@@ -12,7 +12,7 @@ interface ExperienceSectionProps {
 
 export function ExperienceSection({
   experiences = fallbackExperienceList,
-  sectionNumber = 7,
+  sectionNumber = 8,
 }: ExperienceSectionProps) {
   return (
     <Container id="experience" className="space-y-12 py-20">
@@ -34,8 +34,8 @@ export function ExperienceSection({
             className="w-full space-y-5 bg-transparent pt-10 first:pt-0"
           >
             <hgroup className="flex flex-col gap-y-2 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex gap-x-5 items-center">
-                <div className="relative shrink-0 size-16 rounded-md overflow-hidden">
+              <div className="flex items-center gap-x-5">
+                <div className="relative size-16 shrink-0 overflow-hidden rounded-md">
                   <Image
                     src={exp.logo}
                     alt={exp.company}
@@ -71,7 +71,7 @@ export function ExperienceSection({
             </hgroup>
 
             <div className="w-full leading-7 text-muted-foreground">
-              <p>{exp.description}</p>  
+              <p>{exp.description}</p>
             </div>
 
             {exp.skills && exp.skills.length > 0 && (
