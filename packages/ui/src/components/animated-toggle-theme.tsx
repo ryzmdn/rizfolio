@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef } from "react"
 import { Moon, Sun } from "lucide-react"
 import { flushSync } from "react-dom"
+import { useTheme } from "next-themes"
 import { cn } from "@workspace/ui/lib/utils"
 
 export interface AnimatedThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {
@@ -32,11 +33,12 @@ export function AnimatedThemeToggle({
   className,
   duration = 400,
   fromCenter = false,
-  theme,
+  theme: controlledTheme,
   onThemeChange,
   ...props
 }: AnimatedThemeToggleProps) {
-  const isControlled = theme !== undefined
+  const { resolvedTheme, setTheme } = useTheme()
+  const isControlled = controlledTheme !== undefined
   const buttonRef = useRef<HTMLButtonElement>(null)
   const isTransitioningRef = useRef(false)
   const activeAnimRef = useRef<Animation | null>(null)
@@ -67,11 +69,11 @@ export function AnimatedThemeToggle({
       return
 
     const isCurrentDark = isControlled
-      ? theme === "dark"
-      : document.documentElement.classList.contains("dark")
+      ? controlledTheme === "dark"
+      : resolvedTheme === "dark" ||
+        document.documentElement.classList.contains("dark")
 
-    const newTheme = !isCurrentDark
-    const nextThemeString: "light" | "dark" = newTheme ? "dark" : "light"
+    const nextThemeString: "light" | "dark" = isCurrentDark ? "light" : "dark"
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
@@ -91,11 +93,15 @@ export function AnimatedThemeToggle({
     )
 
     const applyTheme = () => {
-      document.documentElement.classList.toggle("dark", newTheme)
+      document.documentElement.classList.toggle(
+        "dark",
+        nextThemeString === "dark"
+      )
       if (isControlled) {
         onThemeChange?.(nextThemeString)
       } else {
-        localStorage.setItem("theme", nextThemeString)
+        setTheme(nextThemeString)
+        onThemeChange?.(nextThemeString)
       }
     }
 
@@ -156,7 +162,16 @@ export function AnimatedThemeToggle({
         })
         .catch(() => {})
     }
-  }, [fromCenter, duration, isControlled, theme, onThemeChange, cancelAnim])
+  }, [
+    fromCenter,
+    duration,
+    isControlled,
+    controlledTheme,
+    resolvedTheme,
+    onThemeChange,
+    setTheme,
+    cancelAnim,
+  ])
 
   return (
     <button
