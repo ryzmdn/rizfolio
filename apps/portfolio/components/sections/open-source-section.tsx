@@ -7,33 +7,31 @@ import { openSourceProjects } from "@/data"
 
 export function OpenSourceSection() {
   return (
-    <Container id="experiments" className="py-20">
-      <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">
+    <Container id="experiments" className="flow-root space-y-12 py-20">
+      <hgroup className="mx-auto max-w-3xl text-center">
+        <small className="text-muted-foreground">Experiments</small>
+        <h2 className="mt-2 mb-4 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
           Open-Source Toolkits & Experiments
         </h2>
-
-        <div className="leading-7 text-muted-foreground">
-          <p>
-            Developer utilities, libraries, and templates crafted to elevate
+        <p className="text-muted-foreground">
+          Developer utilities, libraries, and templates crafted to elevate
             developer ergonomics and give back to the engineering community.
-          </p>
-        </div>
+        </p>
       </hgroup>
 
       <div className="grid w-full gap-x-8 gap-y-12 py-10 sm:grid-cols-2">
         {openSourceProjects.map((project, idx) => (
           <div
             key={idx}
-            className="flex flex-col justify-between rounded-2xl border border-border/60 bg-card p-6 shadow-sm transition-all duration-300 hover:border-border hover:shadow-md"
+            className="flex flex-col justify-between rounded-2xl border border-border/60 bg-card p-6"
           >
             <div>
               <hgroup className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-primary">
                   {project.name}
                 </h3>
-                <Badge variant="secondary" className="gap-1 font-normal">
-                  <Star className="size-3 fill-amber-500 text-amber-500" />
+                <Badge variant="secondary" className="gap-1.5 font-normal">
+                  <Star className="size-3" />
                   {project.stars}
                 </Badge>
               </hgroup>

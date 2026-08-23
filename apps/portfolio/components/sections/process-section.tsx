@@ -3,30 +3,25 @@ import { engineeringProcess } from "@/data"
 
 export function ProcessSection() {
   return (
-    <Container
-      id="process"
-      className="space-y-16 bg-foreground py-16 md:rounded-4xl"
-    >
-      <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium text-secondary">
+    <Container id="process" className="flow-root space-y-12 py-20">
+      <hgroup className="mx-auto max-w-3xl text-center">
+        <small className="text-muted-foreground">Our Process</small>
+        <h2 className="text-2xl font-semibold tracking-tight text-primary mt-2 mb-4 sm:text-3xl">
           Engineering Lifecycle
         </h2>
-
-        <div className="leading-7 text-muted">
-          <p>
-            A deterministic, battle-tested methodology designed to transform
-            complex product requirements into robust, production-ready software
-            systems.
-          </p>
-        </div>
+        <p className="text-muted-foreground">
+          A deterministic, battle-tested methodology designed to transform
+          complex product requirements into robust, production-ready software
+          systems.
+        </p>
       </hgroup>
 
-      <div className="flow-root gap-8 space-y-20 overflow-hidden">
+      <div className="grid gap-x-8 gap-y-16 overflow-hidden py-10 md:grid-cols-2">
         {engineeringProcess.map((item) => (
           <div key={item.name}>
             <time
               dateTime={item.dateTime}
-              className="flex items-center text-sm/6 font-semibold text-muted"
+              className="flex items-center text-sm/6 text-muted-foreground"
             >
               <svg
                 viewBox="0 0 4 4"
@@ -38,13 +33,15 @@ export function ProcessSection() {
               {item.date}
               <div
                 aria-hidden="true"
-                className="absolute -ml-2 h-px w-screen -translate-x-full bg-background/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
+                className="absolute -ml-2 h-px w-screen -translate-x-full bg-border sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
               />
             </time>
-            <p className="mt-6 text-xl/8 font-medium tracking-tight text-secondary">
+            <p className="mt-6 text-xl/8 font-medium tracking-tight text-primary">
               {item.name}
             </p>
-            <p className="mt-3.5 leading-7 text-muted">{item.description}</p>
+            <p className="mt-3.5 leading-7 text-muted-foreground">
+              {item.description}
+            </p>
           </div>
         ))}
       </div>

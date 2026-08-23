@@ -4,18 +4,16 @@ import { caseStudies } from "@/data"
 
 export function CaseStudiesSection() {
   return (
-    <Container id="case-studies" className="py-32">
-      <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">
+    <Container id="case-studies" className="flow-root space-y-12 py-20">
+      <hgroup className="mx-auto max-w-3xl text-center">
+        <small className="text-muted-foreground">Our Case Studies</small>
+        <h2 className="mt-2 mb-4 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
           Featured Case Studies & Systems
         </h2>
-
-        <div className="leading-7 text-muted-foreground">
-          <p>
-            A curated selection of engineering initiatives focused on high
-            throughput, architectural clarity, and verifiable business impact.
-          </p>
-        </div>
+        <p className="text-muted-foreground">
+          A curated selection of engineering initiatives focused on high
+          throughput, architectural clarity, and verifiable business impact.
+        </p>
       </hgroup>
 
       <div className="grid w-full gap-y-10 py-10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12">
