@@ -4,11 +4,13 @@
 @import "lenis/dist/lenis.css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant max-xs (@media (max-width: 480px));
 @source "../../../apps/**/*.{ts,tsx,mdx}";
 @source "../../../packages/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
 
 @theme inline {
+  --breakpoint-xs: 30rem;
   --font-heading: var(--font-google-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -195,4 +197,8 @@
       transform: translateY(calc(-100% - var(--gap)));
     }
   }
+}
+
+@utility max-xs {
+  max-width: 20rem;
 }

@@ -34,7 +34,7 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
   return (
     <Container id="hero-section" className="flow-root space-y-8 py-20 md:py-28">
       <div className="relative flex gap-x-6 max-sm:flex-col max-sm:gap-y-3 sm:items-center">
-        <div className="size-24 shrink-0 rounded-full bg-foreground/10 p-1.5 ring-1 ring-border ring-inset sm:size-28">
+        <div className="size-24 shrink-0 rounded-full bg-foreground/10 p-1.5 ring-1 ring-border ring-inset sm:size-24">
           <div className="relative size-full overflow-hidden rounded-full">
             <Image
               src={data.avatar}
@@ -83,7 +83,7 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
         </p>
       </div>
 
-      <div className="flex gap-x-4 gap-y-3 max-sm:flex-col">
+      <div className="flex w-full gap-x-4 gap-y-3 max-xs:flex-col">
         <Link
           href="/#case-studies"
           className={cn(
