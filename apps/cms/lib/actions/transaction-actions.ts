@@ -121,7 +121,19 @@ export async function getMasterTransactions(
 
     const [items, countResult] = await Promise.all([
       db
-        .select()
+        .select({
+          id: masterTransactions.id,
+          trxNumber: masterTransactions.trxNumber,
+          domain: masterTransactions.domain,
+          actionType: masterTransactions.actionType,
+          entityType: masterTransactions.entityType,
+          entityId: masterTransactions.entityId,
+          actorType: masterTransactions.actorType,
+          amount: masterTransactions.amount,
+          currency: masterTransactions.currency,
+          status: masterTransactions.status,
+          createdAt: masterTransactions.createdAt,
+        })
         .from(masterTransactions)
         .where(whereClause)
         .orderBy(desc(masterTransactions.createdAt))
@@ -134,7 +146,7 @@ export async function getMasterTransactions(
     ])
 
     return {
-      items,
+      items: items as unknown as MasterTransaction[],
       total: countResult[0]?.count || 0,
     }
   } catch (error) {
@@ -148,7 +160,6 @@ export async function getMasterTransactions(
 
 export async function getMasterTransactionStats() {
   try {
-    // Single-query aggregation: avoids 4 separate round-trips to the database
     const [statsRow, recentItems] = await Promise.all([
       db.execute(
         sql<{

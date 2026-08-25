@@ -4,10 +4,24 @@ import { db, eq, desc, asc } from "@workspace/db"
 import { posts, categories, tags } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
+import { dispatchBackgroundRevalidation } from "../revalidate"
 
 export async function getPosts() {
   try {
-    return await db.select().from(posts).orderBy(desc(posts.createdAt))
+    return await db
+      .select({
+        id: posts.id,
+        title: posts.title,
+        slug: posts.slug,
+        excerpt: posts.excerpt,
+        coverImageUrl: posts.coverImageUrl,
+        status: posts.status,
+        readingTime: posts.readingTime,
+        publishedAt: posts.publishedAt,
+        createdAt: posts.createdAt,
+      })
+      .from(posts)
+      .orderBy(desc(posts.createdAt))
   } catch (error) {
     console.error(
       "[CMS Blog] Failed to fetch posts:",
@@ -51,8 +65,10 @@ export async function createPost(values: typeof posts.$inferInsert) {
         status: created.status,
       },
     })
+    dispatchBackgroundRevalidation({ app: "blog", path: "/" })
   }
   revalidatePath("/blog")
+  revalidatePath("/")
   return created
 }
 
@@ -79,8 +95,14 @@ export async function updatePost(
         status: updated.status,
       },
     })
+    dispatchBackgroundRevalidation({
+      app: "blog",
+      slug: updated.slug,
+      path: `/blog/${updated.slug}`,
+    })
   }
   revalidatePath("/blog")
+  revalidatePath("/")
   return updated
 }
 
@@ -94,7 +116,9 @@ export async function deletePost(id: string) {
     entityId: id,
     postId: id,
   })
+  dispatchBackgroundRevalidation({ app: "blog", path: "/" })
   revalidatePath("/blog")
+  revalidatePath("/")
 }
 
 export async function getBlogCategories() {

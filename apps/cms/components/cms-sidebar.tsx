@@ -16,7 +16,7 @@ import {
   ShieldCheck,
 } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
-import { logoutAdmin } from "../lib/auth-actions"
+import { logoutAdmin } from "@/lib/auth-actions"
 
 const NAV_ITEMS = [
   { href: "/", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -60,7 +60,6 @@ export function CmsSidebar({ userEmail }: { userEmail?: string }) {
             <Link
               key={item.href}
               href={item.href}
-              prefetch={false}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-colors",
                 isActive

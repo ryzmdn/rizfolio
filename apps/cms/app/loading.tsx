@@ -3,7 +3,6 @@ import React from "react"
 export default function CmsLoading() {
   return (
     <div className="mx-auto max-w-6xl animate-pulse space-y-8 p-6 md:p-8">
-      {/* Header Skeleton */}
       <div className="flex flex-col gap-3 border-b border-border/70 pb-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
           <div className="h-7 w-48 rounded-lg bg-muted/60" />
@@ -12,7 +11,6 @@ export default function CmsLoading() {
         <div className="h-9 w-32 rounded-lg bg-muted/50" />
       </div>
 
-      {/* Metric Cards Skeleton */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3].map((i) => (
           <div
@@ -31,7 +29,6 @@ export default function CmsLoading() {
         ))}
       </div>
 
-      {/* Main Content Box Skeleton */}
       <div className="space-y-4 rounded-xl border border-border/60 bg-card p-6">
         <div className="h-5 w-36 rounded bg-muted/60" />
         <div className="space-y-3 pt-2">
@@ -41,7 +38,6 @@ export default function CmsLoading() {
         </div>
       </div>
 
-      {/* Table / List Skeleton */}
       <div className="overflow-hidden rounded-xl border border-border/60 bg-card">
         <div className="border-b border-border/60 bg-muted/30 p-4">
           <div className="h-4 w-32 rounded bg-muted/60" />

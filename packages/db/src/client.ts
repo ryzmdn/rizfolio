@@ -37,7 +37,6 @@ const connectionString = process.env
 
 const isProduction = process.env.NODE_ENV === "production"
 
-// Supabase always requires SSL — detect by hostname
 const isSupabase = connectionString.includes(".supabase.com")
 
 declare global {
@@ -52,7 +51,6 @@ const client =
     max: isProduction ? 15 : 10,
     idle_timeout: 20,
     connect_timeout: 10,
-    // Always use SSL for Supabase connections, even in dev
     ssl: isSupabase ? "require" : isProduction ? "require" : false,
   })
 

@@ -1,10 +1,11 @@
-import { CmsPageShell } from "../../components/cms-page-shell"
-import { RevalidationButton } from "../../components/revalidation-button"
+import { Settings, RefreshCw } from "lucide-react"
+import { CmsPageShell } from "@/components/cms-page-shell"
+import { RevalidationButton } from "@/components/revalidation-button"
+import { FormSubmitButton } from "@/components/form-submit-button"
 import {
   getSiteSettings,
   updateSiteSettings,
-} from "../../lib/actions/settings-actions"
-import { Settings, RefreshCw } from "lucide-react"
+} from "@/lib/actions/settings-actions"
 
 export const dynamic = "force-dynamic"
 
@@ -139,12 +140,12 @@ export default async function SettingsPage() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            <FormSubmitButton
+              icon="save"
+              pendingLabel="Menyimpan pengaturan..."
             >
               Simpan Pengaturan
-            </button>
+            </FormSubmitButton>
           </form>
         </div>
       </div>

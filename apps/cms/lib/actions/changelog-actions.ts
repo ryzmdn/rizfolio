@@ -4,11 +4,20 @@ import { db, eq, desc, asc } from "@workspace/db"
 import { changelogs, changelogItems } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
+import { dispatchBackgroundRevalidation } from "../revalidate"
 
 export async function getChangelogs() {
   try {
     return await db
-      .select()
+      .select({
+        id: changelogs.id,
+        version: changelogs.version,
+        title: changelogs.title,
+        releaseDate: changelogs.releaseDate,
+        summary: changelogs.summary,
+        isPublished: changelogs.isPublished,
+        createdAt: changelogs.createdAt,
+      })
       .from(changelogs)
       .orderBy(desc(changelogs.releaseDate))
   } catch (error) {
@@ -49,8 +58,10 @@ export async function createChangelog(values: typeof changelogs.$inferInsert) {
       changelogId: created.id,
       payloadAfter: { version: created.version, title: created.title },
     })
+    dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   }
   revalidatePath("/changelog")
+  revalidatePath("/")
   return created
 }
 
@@ -73,8 +84,10 @@ export async function updateChangelog(
       changelogId: updated.id,
       payloadAfter: values,
     })
+    dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   }
   revalidatePath("/changelog")
+  revalidatePath("/")
   return updated
 }
 
@@ -88,7 +101,9 @@ export async function deleteChangelog(id: string) {
     entityId: id,
     changelogId: id,
   })
+  dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   revalidatePath("/changelog")
+  revalidatePath("/")
 }
 
 export async function getChangelogItems(changelogId: string) {

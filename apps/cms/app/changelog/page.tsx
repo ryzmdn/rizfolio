@@ -1,12 +1,12 @@
-import { CmsPageShell } from "../../components/cms-page-shell"
 import { Badge } from "@workspace/ui/components/badge"
-import { DeleteButton } from "../../components/delete-confirm-dialog"
+import { CmsPageShell } from "@/components/cms-page-shell"
+import { DeleteButton } from "@/components/delete-confirm-dialog"
+import { FormSubmitButton } from "@/components/form-submit-button"
 import {
   getChangelogs,
   createChangelog,
   deleteChangelog,
-} from "../../lib/actions/changelog-actions"
-import { Plus } from "lucide-react"
+} from "@/lib/actions/changelog-actions"
 
 export const dynamic = "force-dynamic"
 
@@ -76,13 +76,9 @@ export default async function ChangelogManagerPage() {
             />
 
             <div className="flex justify-end pt-1">
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
-              >
-                <Plus className="size-3.5" />
+              <FormSubmitButton icon="plus" pendingLabel="Menyimpan rilis...">
                 Tambah Rilis
-              </button>
+              </FormSubmitButton>
             </div>
           </form>
         </div>

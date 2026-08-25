@@ -12,68 +12,56 @@ import {
   Activity,
   ArrowRight,
 } from "lucide-react"
-import { CmsPageShell } from "../components/cms-page-shell"
-import { RevalidationButton } from "../components/revalidation-button"
-import { getPosts } from "../lib/actions/blog-actions"
-import { getProducts, getOrders } from "../lib/actions/shop-actions"
-import { getAdminRepositories } from "../lib/actions/docs-actions"
-import { getChangelogs } from "../lib/actions/changelog-actions"
-import { getMasterTransactionStats } from "../lib/actions/transaction-actions"
 import { Badge } from "@workspace/ui/components/badge"
+import { CmsPageShell } from "@/components/cms-page-shell"
+import { RevalidationButton } from "@/components/revalidation-button"
+import { getCachedCmsDashboardSummary } from "@/lib/actions/overview-actions"
 
 export const dynamic = "force-dynamic"
 
 export default async function OverviewDashboard() {
-  const [posts, products, orders, repos, changelogs, trxStats] =
-    await Promise.all([
-      getPosts(),
-      getProducts(),
-      getOrders(),
-      getAdminRepositories(),
-      getChangelogs(),
-      getMasterTransactionStats(),
-    ])
+  const { stats: s, recentTransactions } = await getCachedCmsDashboardSummary()
 
   const stats = [
     {
       title: "Master Transactions",
-      value: trxStats.total,
-      published: `${trxStats.successRate}% success`,
+      value: s.trxTotal,
+      published: `${s.trxSuccessRate}% success`,
       href: "/transactions",
       icon: Activity,
     },
     {
       title: "Blog Articles",
-      value: posts.length,
-      published: `${posts.filter((p) => p.status === "PUBLISHED").length} published`,
+      value: s.postsTotal,
+      published: `${s.postsPublished} published`,
       href: "/blog",
       icon: FileText,
     },
     {
       title: "Digital Products",
-      value: products.length,
-      published: `${products.filter((p) => p.isActive).length} active`,
+      value: s.productsTotal,
+      published: `${s.productsActive} active`,
       href: "/shop",
       icon: ShoppingBag,
     },
     {
       title: "Orders Received",
-      value: orders.length,
-      published: `${orders.filter((o) => o.status === "PAID").length} settled`,
+      value: s.ordersTotal,
+      published: `${s.ordersPaid} settled`,
       href: "/shop",
       icon: ShoppingBag,
     },
     {
       title: "Docs & Repositories",
-      value: repos.length,
-      published: `${repos.filter((r) => r.isPublic).length} public`,
+      value: s.reposTotal,
+      published: `${s.reposPublic} public`,
       href: "/docs",
       icon: BookOpen,
     },
     {
       title: "Changelog Releases",
-      value: changelogs.length,
-      published: `${changelogs.filter((c) => c.isPublished).length} published`,
+      value: s.changelogsTotal,
+      published: `${s.changelogsPublished} published`,
       href: "/changelog",
       icon: History,
     },
@@ -236,12 +224,12 @@ export default async function OverviewDashboard() {
           </div>
 
           <div className="mt-3 divide-y divide-border/40">
-            {trxStats.recentItems.length === 0 ? (
+            {recentTransactions.length === 0 ? (
               <div className="py-8 text-center text-xs text-muted-foreground">
                 Belum ada transaksi tercatat pada master ledger.
               </div>
             ) : (
-              trxStats.recentItems.map((trx) => (
+              recentTransactions.map((trx) => (
                 <div
                   key={trx.id}
                   className="flex items-center justify-between py-3 text-xs"
