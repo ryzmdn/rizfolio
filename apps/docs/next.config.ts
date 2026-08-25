@@ -1,8 +1,5 @@
 import type { NextConfig } from "next"
 import createMDX from "@next/mdx"
-import remarkGfm from "remark-gfm"
-import rehypeSlug from "rehype-slug"
-import rehypeAutolinkHeadings from "rehype-autolink-headings"
 
 const cspHeader = `
   default-src 'self';
@@ -51,25 +48,7 @@ const nextConfig: NextConfig = {
   },
 }
 
-const withMDX = createMDX({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      rehypeSlug,
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "wrap",
-          properties: {
-            className: ["subheading-anchor"],
-            ariaLabel: "Link to section",
-          },
-        },
-      ],
-    ],
-  },
-})
+const withMDX = createMDX()
 
 export default withMDX(
   nextConfig as Parameters<typeof withMDX>[0]
