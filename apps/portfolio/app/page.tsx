@@ -10,7 +10,6 @@ import {
   EducationSection,
   ExperienceSection,
   CapabilitiesSection,
-  StackArchitectureSection,
   OpenSourceSection,
   TestimonialsSection,
   CertificationsSection,
@@ -37,7 +36,6 @@ export default async function Home() {
       <EducationSection education={education} />
       <ExperienceSection experiences={experiences} />
       <CapabilitiesSection />
-      <StackArchitectureSection />
       <OpenSourceSection />
       <TestimonialsSection />
       <CertificationsSection certifications={certifications} />
