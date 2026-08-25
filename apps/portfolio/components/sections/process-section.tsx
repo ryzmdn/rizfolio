@@ -1,16 +1,11 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { engineeringProcess } from "@/data"
 
-interface ProcessSectionProps {
-  sectionNumber?: number | string
-}
-
-export function ProcessSection({ sectionNumber = 4 }: ProcessSectionProps) {
+export function ProcessSection() {
   return (
     <Container id="process" className="space-y-16 py-20">
-      <hgroup className="w-full space-y-2">
-        <SectionEyebrow number={sectionNumber} label="Engineering Process." />
+      <hgroup className="text-center mx-auto max-w-2xl space-y-3">
+        <p className="text-sm/6 text-muted-foreground">Engineering Process.</p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Engineering Lifecycle
         </h2>

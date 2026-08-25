@@ -2,7 +2,6 @@ import { Brain, BrainCircuit, Handshake } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
 import { Marquee } from "@workspace/ui/components/marquee"
-import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 
 const softSkillsList: string[] = [
   "Strategic Communication",
@@ -37,39 +36,22 @@ const knowledgeSkillsList: string[] = [
   "Applied LLMs & Prompt Engineering",
 ]
 
-interface CapabilitiesSectionProps {
-  sectionNumber?: number | string
-}
-
-export function CapabilitiesSection({
-  sectionNumber = 9,
-}: CapabilitiesSectionProps) {
+export function CapabilitiesSection() {
   return (
     <Container id="capabilities" className="w-full space-y-12 py-20">
-      <hgroup className="grid w-full items-start gap-4 space-y-2 lg:grid-cols-2">
-        <div className="space-y-1">
-          <SectionEyebrow
-            number={sectionNumber}
-            label="Skills & Competencies."
-          />
-          <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
-            Core Competencies & Stack
-          </h2>
-        </div>
-
-        <div className="text-2xl/snug">
-          <p>
-            Architecting resilient digital solutions with precision.{" "}
-            <span className="text-muted-foreground">
-              A balanced synthesis of technical mastery, system thinking, and
-              collaborative leadership.
-            </span>
-          </p>
-        </div>
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">Skills & Competencies</p>
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
+          Core Competencies & Stack
+        </h2>
+        <p className="leading-7 text-muted-foreground">
+          Architecting resilient digital solutions with precision. A balanced
+          synthesis of technical mastery, system thinking, and collaborative
+          leadership.
+        </p>
       </hgroup>
 
       <div className="grid w-full min-w-0 gap-4 lg:grid-cols-3">
-        {/* Soft Skills Card */}
         <div className="relative w-full min-w-0 space-y-1.5 overflow-hidden rounded-2xl p-1.5">
           <hgroup className="flex items-center justify-between rounded-xl bg-background px-3 py-2 shadow-2xl">
             <h2 className="font-medium">Soft Skills & Leadership</h2>
@@ -101,7 +83,6 @@ export function CapabilitiesSection({
           </div>
         </div>
 
-        {/* Hard Skills Card */}
         <div className="w-full min-w-0 space-y-1.5 overflow-hidden rounded-2xl bg-foreground p-1 shadow-2xl lg:h-max">
           <hgroup className="flex items-center justify-between rounded-xl bg-brand px-3 py-2 text-secondary shadow">
             <h2 className="font-medium">Technical Proficiencies</h2>
@@ -145,7 +126,6 @@ export function CapabilitiesSection({
           </div>
         </div>
 
-        {/* Knowledge Skills Card */}
         <div className="w-full min-w-0 space-y-1.5 overflow-hidden rounded-2xl p-1.5">
           <hgroup className="flex items-center justify-between rounded-xl bg-background px-3 py-2 shadow-2xl">
             <h2 className="font-medium">Architecture & Domain</h2>

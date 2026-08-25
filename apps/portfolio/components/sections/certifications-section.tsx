@@ -19,21 +19,17 @@ export function CertificationsSection({
 
   return (
     <Container id="certifications" className="py-20">
-      <hgroup className="w-full space-y-2">
-        <SectionEyebrow
-          number={sectionNumber}
-          label="Verified Certifications."
-        />
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">
+          Verified Certifications
+        </p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Licenses & Verified Certifications
         </h2>
-
-        <div className="leading-7 text-muted-foreground">
-          <p>
-            Validated industry credentials and technical achievements across
-            cloud computing, web standards, and secure software development.
-          </p>
-        </div>
+        <p className="leading-7 text-muted-foreground">
+          Validated industry credentials and technical achievements across cloud
+          computing, web standards, and secure software development.
+        </p>
       </hgroup>
 
       <div className="relative flow-root w-full space-y-5 py-10">

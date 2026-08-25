@@ -1,5 +1,5 @@
 export * from "./hero-section"
-export * from "./trusted-by-section"
+export * from "./statement-section"
 export * from "./about-section"
 export * from "./now-section"
 export * from "./principles-section"

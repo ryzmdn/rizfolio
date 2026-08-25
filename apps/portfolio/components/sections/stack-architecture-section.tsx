@@ -51,10 +51,11 @@ export function StackArchitectureSection({
 
   return (
     <Container id="architecture" className="space-y-12 py-20">
-      {/* Section Header */}
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <hgroup className="max-w-2xl space-y-2">
-          <SectionEyebrow number={sectionNumber} label="System Architecture." />
+        <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+          <p className="text-sm/6 text-muted-foreground">
+            System Architecture.
+          </p>
           <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
             Architectural Blueprint & Tech Stack Rationale
           </h2>
@@ -65,7 +66,6 @@ export function StackArchitectureSection({
           </p>
         </hgroup>
 
-        {/* Live Architecture Metric Chip */}
         <div className="flex items-center gap-2.5 self-start rounded-full border border-border/80 bg-secondary/40 px-3.5 py-1.5 text-xs text-muted-foreground backdrop-blur-xs lg:self-auto">
           <span className="flex size-2 rounded-full bg-emerald-500" />
           <span className="font-mono text-foreground">
@@ -78,7 +78,6 @@ export function StackArchitectureSection({
         </div>
       </div>
 
-      {/* Layer Navigation Tabs */}
       <div className="w-full">
         <div
           role="tablist"
@@ -127,7 +126,6 @@ export function StackArchitectureSection({
         </div>
       </div>
 
-      {/* Active Layer Banner & Thesis */}
       <div
         role="tabpanel"
         id={`panel-${activeLayer.id}`}
@@ -151,7 +149,6 @@ export function StackArchitectureSection({
           </p>
         </div>
 
-        {/* Stack Decisions Grid */}
         <div className="grid gap-6 lg:grid-cols-3">
           {activeLayer.stack.map((item: StackChoiceItem) => (
             <div
@@ -159,7 +156,6 @@ export function StackArchitectureSection({
               className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/70 bg-background/90 p-6 shadow-xs transition-all duration-300 hover:border-border hover:shadow-md"
             >
               <div className="space-y-4">
-                {/* Header: Tech Name & Role */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-0.5">
                     <h4 className="text-base font-semibold tracking-tight text-primary group-hover:text-foreground">
@@ -177,12 +173,10 @@ export function StackArchitectureSection({
                   </Badge>
                 </div>
 
-                {/* Summary */}
                 <p className="border-l-2 border-primary/40 pl-2.5 text-xs/relaxed font-medium text-foreground">
                   {item.summary}
                 </p>
 
-                {/* Rationale (Why This Choice) */}
                 <div className="space-y-1.5 rounded-xl bg-secondary/40 p-3 text-xs">
                   <div className="flex items-center gap-1.5 font-medium text-primary">
                     <Zap className="size-3.5 text-ring" />
@@ -193,7 +187,6 @@ export function StackArchitectureSection({
                   </p>
                 </div>
 
-                {/* Trade-off Invariant */}
                 <div className="space-y-1.5 rounded-xl border border-border/40 bg-card/40 p-3 text-xs">
                   <div className="flex items-center gap-1.5 font-medium text-muted-foreground">
                     <Scale className="size-3.5 text-muted-foreground/80" />
@@ -205,7 +198,6 @@ export function StackArchitectureSection({
                 </div>
               </div>
 
-              {/* Card Footer: Impact Metric & Tags */}
               <div className="mt-5 space-y-3 border-t border-border/50 pt-4">
                 <div className="flex items-center justify-between gap-2 text-xs">
                   <span className="text-muted-foreground/80">
@@ -231,7 +223,6 @@ export function StackArchitectureSection({
           ))}
         </div>
 
-        {/* Bottom Explorer Prompt */}
         <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-border/50 bg-secondary/30 px-5 py-4 text-xs sm:flex-row">
           <div className="flex items-center gap-2 text-muted-foreground">
             <Terminal className="size-4 text-primary" />

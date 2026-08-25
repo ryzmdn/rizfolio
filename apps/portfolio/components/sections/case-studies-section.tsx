@@ -1,19 +1,12 @@
 import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
-import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { caseStudies } from "@/data"
 
-interface CaseStudiesSectionProps {
-  sectionNumber?: number | string
-}
-
-export function CaseStudiesSection({
-  sectionNumber = 6,
-}: CaseStudiesSectionProps) {
+export function CaseStudiesSection() {
   return (
     <Container id="case-studies" className="space-y-12 py-20">
-      <hgroup className="w-full space-y-2">
-        <SectionEyebrow number={sectionNumber} label="Case Studies." />
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">Case Studies</p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Featured Case Studies & Systems
         </h2>

@@ -5,25 +5,19 @@ import type { EducationItem } from "@/lib/queries"
 
 interface EducationSectionProps {
   education?: EducationItem[]
-  sectionNumber?: number | string
 }
 
 export function EducationSection({
   education = educationList,
-  sectionNumber = 7,
 }: EducationSectionProps) {
   return (
     <Container id="education" className="flow-root space-y-12 py-20">
-      <hgroup className="mx-auto max-w-3xl text-center">
-        <SectionEyebrow
-          number={sectionNumber}
-          label="Academic Background."
-          className="justify-center"
-        />
-        <h2 className="mt-2 mb-4 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">Academic Background</p>
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Academic Background
         </h2>
-        <p className="text-muted-foreground">
+        <p className="leading-7 text-muted-foreground">
           Formal foundation in computer science and software theory complemented
           by continuous specialized certifications in modern system
           architecture.

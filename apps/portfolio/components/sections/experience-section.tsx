@@ -1,23 +1,22 @@
+import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
-import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
-import Image from "next/image"
 import { experienceList as fallbackExperienceList } from "@/data"
 import type { ExperienceItem } from "@/lib/queries"
 
 interface ExperienceSectionProps {
   experiences?: ExperienceItem[]
-  sectionNumber?: number | string
 }
 
 export function ExperienceSection({
   experiences = fallbackExperienceList,
-  sectionNumber = 8,
 }: ExperienceSectionProps) {
   return (
     <Container id="experience" className="space-y-12 py-20">
-      <hgroup className="w-full space-y-2">
-        <SectionEyebrow number={sectionNumber} label="Career History." />
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">
+          Career History.
+        </p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Professional Experience
         </h2>

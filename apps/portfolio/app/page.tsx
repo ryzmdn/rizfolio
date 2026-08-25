@@ -1,6 +1,6 @@
 import {
   HeroSection,
-  TrustedBySection,
+  StatementSection,
   AboutSection,
   NowSection,
   PrinciplesSection,
@@ -27,7 +27,7 @@ export default async function Home() {
   return (
     <>
       <HeroSection data={profile} />
-      <TrustedBySection />
+      <StatementSection />
       <AboutSection data={profile} />
       <NowSection />
       <PrinciplesSection />
