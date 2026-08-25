@@ -23,8 +23,11 @@ export function setSharedThemeCookie(theme: string) {
     const cookieOptions = `; path=/; max-age=31536000; SameSite=Lax${domainAttribute}`
     document.cookie = `${THEME_STORAGE_KEY}=${encodeURIComponent(theme)}${cookieOptions}`
     document.cookie = `theme=${encodeURIComponent(theme)}${cookieOptions}`
-  } catch {
-    // Ignore cookie write errors in restricted environments
+  } catch (error: unknown) {
+    console.error(
+      "[ThemeSync] Failed to set shared theme cookie:",
+      error instanceof Error ? error.message : String(error)
+    )
   }
 }
 
@@ -41,8 +44,11 @@ export function getSharedTheme(): string | null {
     const local =
       localStorage.getItem(THEME_STORAGE_KEY) || localStorage.getItem("theme")
     if (local) return local
-  } catch {
-    // Ignore read errors
+  } catch (error: unknown) {
+    console.error(
+      "[ThemeSync] Failed to read shared theme:",
+      error instanceof Error ? error.message : String(error)
+    )
   }
   return null
 }
@@ -64,7 +70,7 @@ export function ThemeSynchronizer() {
         isSyncingRef.current = false
       }, 50)
     }
-  }, [])
+  }, [theme, setTheme])
 
   React.useEffect(() => {
     if (!theme) return
@@ -72,8 +78,11 @@ export function ThemeSynchronizer() {
     try {
       localStorage.setItem(THEME_STORAGE_KEY, theme)
       localStorage.setItem("theme", theme)
-    } catch {
-      // Ignore storage write failure
+    } catch (error: unknown) {
+      console.error(
+        "[ThemeSync] Failed to write theme to storage:",
+        error instanceof Error ? error.message : String(error)
+      )
     }
 
     if (isSyncingRef.current) return
@@ -83,8 +92,11 @@ export function ThemeSynchronizer() {
         const channel = new BroadcastChannel(THEME_BROADCAST_CHANNEL)
         channel.postMessage({ type: "THEME_CHANGE", theme })
         channel.close()
-      } catch {
-        // Ignore BroadcastChannel errors
+      } catch (error: unknown) {
+        console.error(
+          "[ThemeSync] Failed to broadcast theme change:",
+          error instanceof Error ? error.message : String(error)
+        )
       }
     }
   }, [theme])
@@ -112,8 +124,11 @@ export function ThemeSynchronizer() {
             }
           }
         }
-      } catch {
-        // Ignore broadcast channel errors
+      } catch (error: unknown) {
+        console.error(
+          "[ThemeSync] Failed to initialize broadcast channel listener:",
+          error instanceof Error ? error.message : String(error)
+        )
       }
     }
 

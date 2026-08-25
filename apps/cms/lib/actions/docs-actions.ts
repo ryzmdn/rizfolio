@@ -38,7 +38,14 @@ export async function createRepository(
     })
   }
   revalidatePath("/docs")
-  await triggerAppRevalidation({ app: "docs", path: "/" }).catch(() => {})
+  await triggerAppRevalidation({ app: "docs", path: "/" }).catch(
+    (err: unknown) => {
+      console.error(
+        "[Docs Actions] Failed to revalidate docs home:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  )
   return created
 }
 
@@ -67,7 +74,12 @@ export async function updateRepository(
     await triggerAppRevalidation({
       app: "docs",
       path: `/repo/${updated.slug}`,
-    }).catch(() => {})
+    }).catch((err: unknown) => {
+      console.error(
+        "[Docs Actions] Failed to revalidate repo detail:",
+        err instanceof Error ? err.message : String(err)
+      )
+    })
   }
   return updated
 }
@@ -89,7 +101,14 @@ export async function deleteRepository(id: string) {
   }
   revalidatePath("/docs")
   if (deleted?.slug) {
-    await triggerAppRevalidation({ app: "docs", path: "/" }).catch(() => {})
+    await triggerAppRevalidation({ app: "docs", path: "/" }).catch(
+      (err: unknown) => {
+        console.error(
+          "[Docs Actions] Failed to revalidate docs on delete:",
+          err instanceof Error ? err.message : String(err)
+        )
+      }
+    )
   }
 }
 

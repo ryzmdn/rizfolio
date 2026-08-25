@@ -13,8 +13,11 @@ if (!process.env.DATABASE_URL) {
     dotenv.config({ path: path.resolve(__dirname, "../../../../.env") })
     dotenv.config({ path: path.resolve(process.cwd(), ".env") })
     dotenv.config({ path: path.resolve(process.cwd(), "../../.env") })
-  } catch {
-    // Ignore in non-file environments
+  } catch (error: unknown) {
+    console.error(
+      "[DB Client] Failed loading environment files:",
+      error instanceof Error ? error.message : String(error)
+    )
   }
 }
 

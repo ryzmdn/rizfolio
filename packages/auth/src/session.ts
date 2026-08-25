@@ -59,7 +59,11 @@ export async function verifySessionToken(
     })
 
     return payload as SessionPayload
-  } catch {
+  } catch (error: unknown) {
+    console.error(
+      "[Auth Session] verifySessionToken error:",
+      error instanceof Error ? error.message : String(error)
+    )
     return null
   }
 }

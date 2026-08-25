@@ -7,7 +7,19 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@workspace/storage": ["./src/index.ts"],
+      "@workspace/storage/*": ["./src/*"],
+      "@workspace/auth": ["../auth/src/index.ts"],
+      "@workspace/auth/*": ["../auth/src/*"],
+      "@workspace/db": ["../db/src/index.ts"],
+      "@workspace/db/*": ["../db/src/*"],
+      "@workspace/ui": ["../ui/src/index.ts"],
+      "@workspace/ui/*": ["../ui/src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

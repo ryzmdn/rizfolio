@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { posts, categories, tags } from "../schema/blog"
+import { posts, categories, tags } from "@workspace/db/schema/blog"
 
 export const insertPostSchema = createInsertSchema(posts)
 export const selectPostSchema = createSelectSchema(posts)

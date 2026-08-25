@@ -1,5 +1,10 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { products, productFiles, orders, orderItems } from "../schema/shop"
+import {
+  products,
+  productFiles,
+  orders,
+  orderItems,
+} from "@workspace/db/schema/shop"
 
 export const insertProductSchema = createInsertSchema(products)
 export const selectProductSchema = createSelectSchema(products)
