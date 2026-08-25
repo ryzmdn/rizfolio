@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Cookie, X, ShieldCheck } from "lucide-react"
+import { Cookie, X } from "lucide-react"
 import { Button } from "./button"
 import { cn } from "../lib/utils"
 
@@ -28,8 +28,11 @@ export function saveCookieConsent(status: "accepted" | "dismissed") {
     const domainPart = getCookieDomainAttribute()
     document.cookie = `${COOKIE_CONSENT_KEY}=${status}; path=/${domainPart}; max-age=${CONSENT_MAX_AGE}; SameSite=Lax`
     localStorage.setItem(COOKIE_CONSENT_KEY, status)
-  } catch {
-    // Ignore write failures in private/sandboxed storage
+  } catch (error: unknown) {
+    console.error(
+      "[CookieConsent] Failed to save cookie consent:",
+      error instanceof Error ? error.message : String(error)
+    )
   }
 }
 
@@ -46,8 +49,11 @@ export function getCookieConsent(): "accepted" | "dismissed" | null {
     if (local === "accepted" || local === "dismissed") {
       return local
     }
-  } catch {
-    // Ignore read errors
+  } catch (error: unknown) {
+    console.error(
+      "[CookieConsent] Failed to read cookie consent:",
+      error instanceof Error ? error.message : String(error)
+    )
   }
   return null
 }

@@ -24,7 +24,12 @@ export default async function RepoDetailPage({
   }
 
   // Increment view on server render
-  incrementRepoView(slug).catch(() => {})
+  incrementRepoView(slug).catch((err: unknown) => {
+    console.error(
+      "[Docs Detail Page] Failed to increment repo view:",
+      err instanceof Error ? err.message : String(err)
+    )
+  })
 
   const files = await getRepoFiles(repo.id, path)
 

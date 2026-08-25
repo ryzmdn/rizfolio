@@ -140,7 +140,12 @@ export function AnimatedThemeToggle({
     })
 
     if (typeof transition?.finished?.finally === "function") {
-      transition.finished.finally(cleanup).catch(() => {})
+      transition.finished.finally(cleanup).catch((err: unknown) => {
+        console.error(
+          "[AnimatedThemeToggle] Transition finished failed:",
+          err instanceof Error ? err.message : String(err)
+        )
+      })
     } else {
       cleanup()
     }
@@ -160,7 +165,12 @@ export function AnimatedThemeToggle({
           )
           activeAnimRef.current = anim
         })
-        .catch(() => {})
+        .catch((err: unknown) => {
+          console.error(
+            "[AnimatedThemeToggle] Animation ready failed:",
+            err instanceof Error ? err.message : String(err)
+          )
+        })
     }
   }, [
     fromCenter,

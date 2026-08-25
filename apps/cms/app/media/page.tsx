@@ -31,7 +31,11 @@ export default function MediaLibraryPage() {
         setUploadedUrl(res.url)
         form.reset()
       }
-    } catch {
+    } catch (error: unknown) {
+      console.error(
+        "[CMS Media Page] Upload media error:",
+        error instanceof Error ? error.message : String(error)
+      )
       setErrorMsg("Gagal mengunggah berkas ke server.")
     } finally {
       setIsUploading(false)

@@ -14,7 +14,11 @@ export function RevalidationButton() {
       await new Promise((resolve) => setTimeout(resolve, 800))
       setStatus("success")
       setTimeout(() => setStatus("idle"), 2500)
-    } catch {
+    } catch (error: unknown) {
+      console.error(
+        "[RevalidationButton] Failed to revalidate cache:",
+        error instanceof Error ? error.message : String(error)
+      )
       setStatus("error")
       setTimeout(() => setStatus("idle"), 2500)
     }

@@ -70,7 +70,13 @@ export async function triggerAppRevalidation(
     })
 
     if (!res.ok) {
-      const errJson = await res.json().catch(() => ({}))
+      const errJson = await res.json().catch((jsonErr: unknown) => {
+        console.error(
+          "[ISR Revalidation] Failed to parse error response JSON:",
+          jsonErr instanceof Error ? jsonErr.message : String(jsonErr)
+        )
+        return {}
+      })
       await recordTransaction({
         domain: "SYSTEM",
         actionType: "REVALIDATION_FAILED",

@@ -198,7 +198,7 @@ async function fetchRepoStats() {
       totalDownloads,
     }
   } catch (error) {
-    console.error("Failed to fetch archive stats:", error)
+    console.error("Failed to fetch docs repo stats:", error)
     return {
       total: 0,
       assignments: 0,
