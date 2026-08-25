@@ -7,8 +7,6 @@ import {
   BookOpen,
   Cpu,
   Layers,
-  MapPin,
-  Clock,
   Sparkles,
 } from "lucide-react"
 
