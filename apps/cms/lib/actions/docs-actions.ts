@@ -7,19 +7,35 @@ import { triggerAppRevalidation } from "../revalidate"
 import { logTransaction } from "./transaction-actions"
 
 export async function getAdminRepositories() {
-  return await db
-    .select()
-    .from(repositories)
-    .orderBy(desc(repositories.createdAt))
+  try {
+    return await db
+      .select()
+      .from(repositories)
+      .orderBy(desc(repositories.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Docs] Failed to fetch repositories:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function getAdminRepoById(id: string) {
-  const [repo] = await db
-    .select()
-    .from(repositories)
-    .where(eq(repositories.id, id))
-    .limit(1)
-  return repo || null
+  try {
+    const [repo] = await db
+      .select()
+      .from(repositories)
+      .where(eq(repositories.id, id))
+      .limit(1)
+    return repo || null
+  } catch (error) {
+    console.error(
+      "[CMS Docs] Failed to fetch repository by ID:",
+      error instanceof Error ? error.message : error
+    )
+    return null
+  }
 }
 
 export async function createRepository(
@@ -94,11 +110,19 @@ export async function deleteRepository(id: string) {
 }
 
 export async function getAdminRepoFiles(repoId: string) {
-  return await db
-    .select()
-    .from(repoFiles)
-    .where(eq(repoFiles.repoId, repoId))
-    .orderBy(desc(repoFiles.isDirectory), asc(repoFiles.path))
+  try {
+    return await db
+      .select()
+      .from(repoFiles)
+      .where(eq(repoFiles.repoId, repoId))
+      .orderBy(desc(repoFiles.isDirectory), asc(repoFiles.path))
+  } catch (error) {
+    console.error(
+      "[CMS Docs] Failed to fetch repo files:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createRepoFile(values: typeof repoFiles.$inferInsert) {
@@ -137,11 +161,19 @@ export async function deleteRepoFile(id: string) {
 }
 
 export async function getAdminRepoReleases(repoId: string) {
-  return await db
-    .select()
-    .from(repoReleases)
-    .where(eq(repoReleases.repoId, repoId))
-    .orderBy(desc(repoReleases.createdAt))
+  try {
+    return await db
+      .select()
+      .from(repoReleases)
+      .where(eq(repoReleases.repoId, repoId))
+      .orderBy(desc(repoReleases.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Docs] Failed to fetch repo releases:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createRepoRelease(

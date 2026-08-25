@@ -6,19 +6,35 @@ import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 
 export async function getChangelogs() {
-  return await db
-    .select()
-    .from(changelogs)
-    .orderBy(desc(changelogs.releaseDate))
+  try {
+    return await db
+      .select()
+      .from(changelogs)
+      .orderBy(desc(changelogs.releaseDate))
+  } catch (error) {
+    console.error(
+      "[CMS Changelog] Failed to fetch changelogs:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function getChangelogById(id: string) {
-  const [changelog] = await db
-    .select()
-    .from(changelogs)
-    .where(eq(changelogs.id, id))
-    .limit(1)
-  return changelog || null
+  try {
+    const [changelog] = await db
+      .select()
+      .from(changelogs)
+      .where(eq(changelogs.id, id))
+      .limit(1)
+    return changelog || null
+  } catch (error) {
+    console.error(
+      "[CMS Changelog] Failed to fetch changelog by ID:",
+      error instanceof Error ? error.message : error
+    )
+    return null
+  }
 }
 
 export async function createChangelog(values: typeof changelogs.$inferInsert) {
@@ -76,11 +92,19 @@ export async function deleteChangelog(id: string) {
 }
 
 export async function getChangelogItems(changelogId: string) {
-  return await db
-    .select()
-    .from(changelogItems)
-    .where(eq(changelogItems.changelogId, changelogId))
-    .orderBy(asc(changelogItems.displayOrder))
+  try {
+    return await db
+      .select()
+      .from(changelogItems)
+      .where(eq(changelogItems.changelogId, changelogId))
+      .orderBy(asc(changelogItems.displayOrder))
+  } catch (error) {
+    console.error(
+      "[CMS Changelog] Failed to fetch changelog items:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createChangelogItem(

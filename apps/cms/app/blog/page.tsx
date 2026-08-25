@@ -5,14 +5,13 @@ import {
   getPosts,
   createPost,
   deletePost,
-  getBlogCategories,
 } from "../../lib/actions/blog-actions"
 import { Plus } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
 export default async function BlogManagerPage() {
-  const [postList] = await Promise.all([getPosts(), getBlogCategories()])
+  const postList = await getPosts()
 
   return (
     <CmsPageShell

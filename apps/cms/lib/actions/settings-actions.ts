@@ -5,12 +5,20 @@ import { siteSettings } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 
 export async function getSiteSettings(key = "general") {
-  const [settings] = await db
-    .select()
-    .from(siteSettings)
-    .where(eq(siteSettings.key, key))
-    .limit(1)
-  return settings || null
+  try {
+    const [settings] = await db
+      .select()
+      .from(siteSettings)
+      .where(eq(siteSettings.key, key))
+      .limit(1)
+    return settings || null
+  } catch (error) {
+    console.error(
+      "[CMS Settings] Failed to fetch settings:",
+      error instanceof Error ? error.message : error
+    )
+    return null
+  }
 }
 
 export async function updateSiteSettings(

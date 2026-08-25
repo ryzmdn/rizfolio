@@ -49,9 +49,9 @@ const client =
   globalThis.__postgresClient ??
   postgres(connectionString, {
     prepare: false,
-    max: isProduction ? 10 : 3,
-    idle_timeout: 30,
-    connect_timeout: 15,
+    max: isProduction ? 15 : 10,
+    idle_timeout: 20,
+    connect_timeout: 10,
     // Always use SSL for Supabase connections, even in dev
     ssl: isSupabase ? "require" : isProduction ? "require" : false,
   })

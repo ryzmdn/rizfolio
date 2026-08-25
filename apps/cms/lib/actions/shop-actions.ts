@@ -6,16 +6,32 @@ import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 
 export async function getProducts() {
-  return await db.select().from(products).orderBy(desc(products.createdAt))
+  try {
+    return await db.select().from(products).orderBy(desc(products.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Shop] Failed to fetch products:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function getProductById(id: string) {
-  const [product] = await db
-    .select()
-    .from(products)
-    .where(eq(products.id, id))
-    .limit(1)
-  return product || null
+  try {
+    const [product] = await db
+      .select()
+      .from(products)
+      .where(eq(products.id, id))
+      .limit(1)
+    return product || null
+  } catch (error) {
+    console.error(
+      "[CMS Shop] Failed to fetch product by ID:",
+      error instanceof Error ? error.message : error
+    )
+    return null
+  }
 }
 
 export async function createProduct(values: typeof products.$inferInsert) {
@@ -77,10 +93,18 @@ export async function deleteProduct(id: string) {
 }
 
 export async function getProductFiles(productId: string) {
-  return await db
-    .select()
-    .from(productFiles)
-    .where(eq(productFiles.productId, productId))
+  try {
+    return await db
+      .select()
+      .from(productFiles)
+      .where(eq(productFiles.productId, productId))
+  } catch (error) {
+    console.error(
+      "[CMS Shop] Failed to fetch product files:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function addProductFile(values: typeof productFiles.$inferInsert) {
@@ -113,7 +137,15 @@ export async function deleteProductFile(id: string) {
 }
 
 export async function getOrders() {
-  return await db.select().from(orders).orderBy(desc(orders.createdAt))
+  try {
+    return await db.select().from(orders).orderBy(desc(orders.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Shop] Failed to fetch orders:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function updateOrderStatus(

@@ -8,7 +8,6 @@ import {
   deleteExperience,
   getEducation,
   deleteEducation,
-  getServices,
 } from "../../lib/actions/portfolio-actions"
 import { Plus, Briefcase, GraduationCap } from "lucide-react"
 
@@ -19,7 +18,6 @@ export default async function PortfolioManagerPage() {
     getProfile(),
     getExperiences(),
     getEducation(),
-    getServices(),
   ])
 
   return (
