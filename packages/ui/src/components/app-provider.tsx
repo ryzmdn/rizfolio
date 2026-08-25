@@ -8,6 +8,7 @@ import {
   THEME_STORAGE_KEY,
 } from "./providers"
 import { CookieConsent } from "./cookie-consent"
+import { GSAPProvider } from "./animations/gsap-provider"
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -19,7 +20,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       disableTransitionOnChange
     >
       <ThemeSynchronizer />
-      <SmoothScrollProvider>{children}</SmoothScrollProvider>
+      <SmoothScrollProvider>
+        <GSAPProvider>{children}</GSAPProvider>
+      </SmoothScrollProvider>
       <CookieConsent />
     </ThemeProvider>
   )
