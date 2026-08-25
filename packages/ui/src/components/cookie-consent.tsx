@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Cookie, X } from "lucide-react"
 import { Button } from "./button"
-import { cn } from "../lib/utils"
+import { cn } from "@workspace/ui/lib/utils"
 
 export const COOKIE_CONSENT_KEY = "rizfolio_cookie_consent"
 const CONSENT_MAX_AGE = 180 * 24 * 60 * 60 // 180 days (6 months)

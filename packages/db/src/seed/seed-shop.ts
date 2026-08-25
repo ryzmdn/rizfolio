@@ -1,4 +1,4 @@
-import { db, products, productFiles, orders, orderItems } from "../index"
+import { db, products, productFiles, orders, orderItems } from "@workspace/db"
 
 export async function seedShop() {
   console.log("Seeding Shop Domain...")
