@@ -1,4 +1,8 @@
 import type { NextConfig } from "next"
+import createMDX from "@next/mdx"
+import remarkGfm from "remark-gfm"
+import rehypeSlug from "rehype-slug"
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
 
 const cmsCspHeader = `
   default-src 'self';
@@ -15,6 +19,7 @@ const cmsCspHeader = `
   .trim()
 
 const nextConfig: NextConfig = {
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   transpilePackages: ["@workspace/ui"],
   reactStrictMode: true,
   poweredByHeader: false,
@@ -56,4 +61,26 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "wrap",
+          properties: {
+            className: ["subheading-anchor"],
+            ariaLabel: "Link to section",
+          },
+        },
+      ],
+    ],
+  },
+})
+
+export default withMDX(
+  nextConfig as Parameters<typeof withMDX>[0]
+) as unknown as NextConfig
