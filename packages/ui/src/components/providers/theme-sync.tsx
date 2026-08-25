@@ -55,29 +55,39 @@ export function getSharedTheme(): string | null {
 
 export function ThemeSynchronizer() {
   const { theme, setTheme } = useTheme()
-  const isSyncingRef = React.useRef(false)
+  const themeRef = React.useRef(theme)
+  const isIncomingSyncRef = React.useRef(false)
+  const isMountedRef = React.useRef(false)
 
   React.useEffect(() => {
+    themeRef.current = theme
+  }, [theme])
+
+  React.useEffect(() => {
+    if (isMountedRef.current) return
+    isMountedRef.current = true
+
     const shared = getSharedTheme()
     if (
       shared &&
-      shared !== theme &&
-      (shared === "light" || shared === "dark" || shared === "system")
+      (shared === "light" || shared === "dark" || shared === "system") &&
+      shared !== themeRef.current
     ) {
-      isSyncingRef.current = true
+      isIncomingSyncRef.current = true
       setTheme(shared)
-      setTimeout(() => {
-        isSyncingRef.current = false
-      }, 50)
+      const timer = setTimeout(() => {
+        isIncomingSyncRef.current = false
+      }, 100)
+      return () => clearTimeout(timer)
     }
-  }, [theme, setTheme])
+  }, [setTheme])
 
   React.useEffect(() => {
     if (!theme) return
+
     setSharedThemeCookie(theme)
     try {
       localStorage.setItem(THEME_STORAGE_KEY, theme)
-      localStorage.setItem("theme", theme)
     } catch (error: unknown) {
       console.error(
         "[ThemeSync] Failed to write theme to storage:",
@@ -85,7 +95,10 @@ export function ThemeSynchronizer() {
       )
     }
 
-    if (isSyncingRef.current) return
+    if (isIncomingSyncRef.current) {
+      isIncomingSyncRef.current = false
+      return
+    }
 
     if (typeof BroadcastChannel !== "undefined") {
       try {
@@ -104,24 +117,28 @@ export function ThemeSynchronizer() {
   React.useEffect(() => {
     let channel: BroadcastChannel | null = null
 
+    const applyIncomingTheme = (nextTheme: string | null | undefined) => {
+      if (
+        nextTheme &&
+        (nextTheme === "light" ||
+          nextTheme === "dark" ||
+          nextTheme === "system") &&
+        nextTheme !== themeRef.current
+      ) {
+        isIncomingSyncRef.current = true
+        setTheme(nextTheme)
+        setTimeout(() => {
+          isIncomingSyncRef.current = false
+        }, 100)
+      }
+    }
+
     if (typeof BroadcastChannel !== "undefined") {
       try {
         channel = new BroadcastChannel(THEME_BROADCAST_CHANNEL)
         channel.onmessage = (event) => {
           if (event.data?.type === "THEME_CHANGE" && event.data?.theme) {
-            const nextTheme = event.data.theme
-            if (
-              nextTheme !== theme &&
-              (nextTheme === "light" ||
-                nextTheme === "dark" ||
-                nextTheme === "system")
-            ) {
-              isSyncingRef.current = true
-              setTheme(nextTheme)
-              setTimeout(() => {
-                isSyncingRef.current = false
-              }, 50)
-            }
+            applyIncomingTheme(event.data.theme)
           }
         }
       } catch (error: unknown) {
@@ -134,20 +151,7 @@ export function ThemeSynchronizer() {
 
     const handleStorage = (e: StorageEvent) => {
       if (e.key === THEME_STORAGE_KEY || e.key === "theme") {
-        const nextTheme = e.newValue
-        if (
-          nextTheme &&
-          nextTheme !== theme &&
-          (nextTheme === "light" ||
-            nextTheme === "dark" ||
-            nextTheme === "system")
-        ) {
-          isSyncingRef.current = true
-          setTheme(nextTheme)
-          setTimeout(() => {
-            isSyncingRef.current = false
-          }, 50)
-        }
+        applyIncomingTheme(e.newValue)
       }
     }
 
@@ -157,7 +161,7 @@ export function ThemeSynchronizer() {
       channel?.close()
       window.removeEventListener("storage", handleStorage)
     }
-  }, [theme, setTheme])
+  }, [setTheme])
 
   return null
 }
