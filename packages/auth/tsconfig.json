@@ -6,7 +6,19 @@
     "target": "ES2022",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@workspace/auth": ["./src/index.ts"],
+      "@workspace/auth/*": ["./src/*"],
+      "@workspace/db": ["../db/src/index.ts"],
+      "@workspace/db/*": ["../db/src/*"],
+      "@workspace/ui": ["../ui/src/index.ts"],
+      "@workspace/ui/*": ["../ui/src/*"],
+      "@workspace/storage": ["../storage/src/index.ts"],
+      "@workspace/storage/*": ["../storage/src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

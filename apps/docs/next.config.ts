@@ -1,4 +1,5 @@
 import type { NextConfig } from "next"
+import createMDX from "@next/mdx"
 
 const cspHeader = `
   default-src 'self';
@@ -15,6 +16,7 @@ const cspHeader = `
   .trim()
 
 const nextConfig: NextConfig = {
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   transpilePackages: ["@workspace/ui"],
   reactStrictMode: true,
   poweredByHeader: false,
@@ -46,4 +48,8 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+const withMDX = createMDX()
+
+export default withMDX(
+  nextConfig as Parameters<typeof withMDX>[0]
+) as unknown as NextConfig

@@ -1,1 +1,1 @@
-export * from "../constants/icons"
+export * from "@workspace/ui/constants/icons"

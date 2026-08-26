@@ -1,4 +1,4 @@
-import { db, changelogs, changelogItems } from "../index"
+import { db, changelogs, changelogItems } from "@workspace/db"
 
 export async function seedChangelog() {
   console.log("Seeding Changelog Domain...")

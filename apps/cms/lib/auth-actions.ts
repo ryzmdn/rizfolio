@@ -38,8 +38,11 @@ async function getClientIp(): Promise<string> {
     if (cfIp) {
       return cfIp.trim()
     }
-  } catch {
-    // Fallback when headers() is called outside request scope
+  } catch (error: unknown) {
+    console.warn(
+      "[Auth Actions] getClientIp fallback to 127.0.0.1:",
+      error instanceof Error ? error.message : String(error)
+    )
   }
   return "127.0.0.1"
 }
@@ -231,7 +234,11 @@ export async function getCurrentUser() {
     const cookieStore = await cookies()
     const token = cookieStore.get(SESSION_COOKIE_NAME)?.value
     return await validateOwnerSession(token)
-  } catch {
+  } catch (error: unknown) {
+    console.error(
+      "[Auth Actions] getCurrentUser validation failed:",
+      error instanceof Error ? error.message : String(error)
+    )
     return null
   }
 }

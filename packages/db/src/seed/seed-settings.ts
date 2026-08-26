@@ -1,4 +1,4 @@
-import { db, siteSettings } from "../index"
+import { db, siteSettings } from "@workspace/db"
 
 export async function seedSettings() {
   console.log("Seeding Site Settings...")

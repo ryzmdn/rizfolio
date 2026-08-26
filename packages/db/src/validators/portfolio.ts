@@ -7,7 +7,7 @@ import {
   services,
   caseStudies,
   testimonials,
-} from "../schema/portfolio"
+} from "@workspace/db/schema/portfolio"
 
 export const insertProfileSchema = createInsertSchema(profile)
 export const selectProfileSchema = createSelectSchema(profile)

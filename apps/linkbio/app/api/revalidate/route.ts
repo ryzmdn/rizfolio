@@ -42,11 +42,16 @@ export async function POST(request: NextRequest) {
       now: Date.now(),
       target: path || tag || "all",
     })
-  } catch {
+  } catch (error: unknown) {
+    console.error(
+      "[Linkbio Revalidate Route] Revalidation error:",
+      error instanceof Error ? error.message : String(error)
+    )
     return NextResponse.json(
       {
         success: false,
         message: "Internal server error processing revalidation",
+        error: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     )
