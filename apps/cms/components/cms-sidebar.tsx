@@ -16,7 +16,7 @@ import {
   ShieldCheck,
 } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
-import { logoutAdmin } from "../lib/auth-actions"
+import { logoutAdmin } from "@/lib/auth-actions"
 
 const NAV_ITEMS = [
   { href: "/", label: "Overview", icon: LayoutDashboard, exact: true },

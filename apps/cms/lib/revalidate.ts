@@ -1,4 +1,4 @@
-import { recordTransaction } from "./actions/transaction-actions"
+import { logTransaction } from "./actions/transaction-actions"
 
 export type RevalidatableApp =
   | "portfolio"
@@ -42,16 +42,12 @@ export async function triggerAppRevalidation(
 
   const revalidationSecret = process.env.REVALIDATION_SECRET_TOKEN
   if (!revalidationSecret || revalidationSecret.trim().length < 16) {
-    console.error(
-      "[ISR Revalidation Helper] REVALIDATION_SECRET_TOKEN is not configured in CMS environment."
-    )
     return {
       success: false,
       error: "Revalidation service secret is not configured.",
     }
   }
 
-  // Only pass non-sensitive route targets in query params (Secret is sent strictly via headers)
   const query = new URLSearchParams()
   if (options.path) query.set("path", options.path)
   if (options.slug) query.set("slug", options.slug)
@@ -61,23 +57,19 @@ export async function triggerAppRevalidation(
   const targetUrl = `${baseUrl}/api/revalidate${queryString ? `?${queryString}` : ""}`
 
   try {
+    // 1500ms hard timeout to prevent hanging when apps are offline
     const res = await fetch(targetUrl, {
       method: "POST",
       headers: {
         "x-revalidate-secret": revalidationSecret,
         Authorization: `Bearer ${revalidationSecret}`,
       },
+      signal: AbortSignal.timeout(1500),
     })
 
     if (!res.ok) {
-      const errJson = await res.json().catch((jsonErr: unknown) => {
-        console.error(
-          "[ISR Revalidation] Failed to parse error response JSON:",
-          jsonErr instanceof Error ? jsonErr.message : String(jsonErr)
-        )
-        return {}
-      })
-      await recordTransaction({
+      const errJson = await res.json().catch(() => ({}))
+      logTransaction({
         domain: "SYSTEM",
         actionType: "REVALIDATION_FAILED",
         status: "FAILED",
@@ -98,7 +90,7 @@ export async function triggerAppRevalidation(
     }
 
     const data = await res.json()
-    await recordTransaction({
+    logTransaction({
       domain: "SYSTEM",
       actionType: "REVALIDATION_DISPATCHED",
       status: "COMPLETED",
@@ -109,21 +101,32 @@ export async function triggerAppRevalidation(
 
     return { success: true, data }
   } catch (err) {
-    console.warn(
-      `[ISR Revalidation] Failed to contact ${options.app} target:`,
-      err instanceof Error ? err.message : "Network error"
-    )
-    await recordTransaction({
+    logTransaction({
       domain: "SYSTEM",
-      actionType: "REVALIDATION_ERROR",
+      actionType: "REVALIDATION_SKIPPED",
       status: "FAILED",
       entityType: "app_cache",
       entityId: options.app,
-      metadata: { error: err instanceof Error ? err.message : "Network error" },
+      metadata: {
+        error: err instanceof Error ? err.message : "Target offline/timeout",
+      },
     })
     return {
       success: false,
-      error: err instanceof Error ? err.message : "Network error",
+      error: err instanceof Error ? err.message : "Target offline",
     }
+  }
+}
+
+/**
+ * Dispatches revalidation in the background (fire-and-forget).
+ * Does not block server action execution or UI rendering.
+ */
+export function dispatchBackgroundRevalidation(
+  options: TriggerRevalidateOptions | TriggerRevalidateOptions[]
+) {
+  const list = Array.isArray(options) ? options : [options]
+  for (const opt of list) {
+    void triggerAppRevalidation(opt).catch(() => {})
   }
 }

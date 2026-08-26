@@ -1,13 +1,13 @@
-import { CmsPageShell } from "../../components/cms-page-shell"
 import { Badge } from "@workspace/ui/components/badge"
-import { DeleteButton } from "../../components/delete-confirm-dialog"
+import { CmsPageShell } from "@/components/cms-page-shell"
+import { DeleteButton } from "@/components/delete-confirm-dialog"
+import { FormSubmitButton } from "@/components/form-submit-button"
 import {
   getProducts,
   createProduct,
   deleteProduct,
   getOrders,
-} from "../../lib/actions/shop-actions"
-import { Plus } from "lucide-react"
+} from "@/lib/actions/shop-actions"
 
 export const dynamic = "force-dynamic"
 
@@ -100,13 +100,9 @@ export default async function ShopManagerPage() {
                 className="w-72 rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
               />
 
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
-              >
-                <Plus className="size-3.5" />
+              <FormSubmitButton icon="plus" pendingLabel="Menyimpan produk...">
                 Tambah Produk
-              </button>
+              </FormSubmitButton>
             </div>
           </form>
         </div>

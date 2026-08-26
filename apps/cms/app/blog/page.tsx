@@ -1,18 +1,13 @@
-import { CmsPageShell } from "../../components/cms-page-shell"
 import { Badge } from "@workspace/ui/components/badge"
-import { DeleteButton } from "../../components/delete-confirm-dialog"
-import {
-  getPosts,
-  createPost,
-  deletePost,
-  getBlogCategories,
-} from "../../lib/actions/blog-actions"
-import { Plus } from "lucide-react"
+import { CmsPageShell } from "@/components/cms-page-shell"
+import { DeleteButton } from "@/components/delete-confirm-dialog"
+import { FormSubmitButton } from "@/components/form-submit-button"
+import { getPosts, createPost, deletePost } from "@/lib/actions/blog-actions"
 
 export const dynamic = "force-dynamic"
 
 export default async function BlogManagerPage() {
-  const [postList] = await Promise.all([getPosts(), getBlogCategories()])
+  const postList = await getPosts()
 
   return (
     <CmsPageShell
@@ -97,13 +92,12 @@ export default async function BlogManagerPage() {
                 </select>
               </div>
 
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              <FormSubmitButton
+                icon="plus"
+                pendingLabel="Mempublikasikan artikel..."
               >
-                <Plus className="size-3.5" />
                 Simpan & Publikasikan
-              </button>
+              </FormSubmitButton>
             </div>
           </form>
         </div>

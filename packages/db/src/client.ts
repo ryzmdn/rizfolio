@@ -40,7 +40,6 @@ const connectionString = process.env
 
 const isProduction = process.env.NODE_ENV === "production"
 
-// Supabase always requires SSL — detect by hostname
 const isSupabase = connectionString.includes(".supabase.com")
 
 declare global {
@@ -52,10 +51,9 @@ const client =
   globalThis.__postgresClient ??
   postgres(connectionString, {
     prepare: false,
-    max: isProduction ? 10 : 3,
-    idle_timeout: 30,
-    connect_timeout: 15,
-    // Always use SSL for Supabase connections, even in dev
+    max: isProduction ? 15 : 10,
+    idle_timeout: 20,
+    connect_timeout: 10,
     ssl: isSupabase ? "require" : isProduction ? "require" : false,
   })
 

@@ -4,18 +4,49 @@ import { db, eq, desc } from "@workspace/db"
 import { products, productFiles, orders } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
+import { dispatchBackgroundRevalidation } from "../revalidate"
 
 export async function getProducts() {
-  return await db.select().from(products).orderBy(desc(products.createdAt))
+  try {
+    return await db
+      .select({
+        id: products.id,
+        title: products.title,
+        slug: products.slug,
+        description: products.description,
+        price: products.price,
+        currency: products.currency,
+        productType: products.productType,
+        coverImageUrl: products.coverImageUrl,
+        isActive: products.isActive,
+        createdAt: products.createdAt,
+      })
+      .from(products)
+      .orderBy(desc(products.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Shop] Failed to fetch products:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function getProductById(id: string) {
-  const [product] = await db
-    .select()
-    .from(products)
-    .where(eq(products.id, id))
-    .limit(1)
-  return product || null
+  try {
+    const [product] = await db
+      .select()
+      .from(products)
+      .where(eq(products.id, id))
+      .limit(1)
+    return product || null
+  } catch (error) {
+    console.error(
+      "[CMS Shop] Failed to fetch product by ID:",
+      error instanceof Error ? error.message : error
+    )
+    return null
+  }
 }
 
 export async function createProduct(values: typeof products.$inferInsert) {
@@ -30,10 +61,12 @@ export async function createProduct(values: typeof products.$inferInsert) {
       productId: created.id,
       amount: created.price,
       currency: created.currency,
-      payloadAfter: created,
+      payloadAfter: { slug: created.slug, title: created.title },
     })
+    dispatchBackgroundRevalidation({ app: "shop", path: "/" })
   }
   revalidatePath("/shop")
+  revalidatePath("/")
   return created
 }
 
@@ -56,10 +89,15 @@ export async function updateProduct(
       productId: updated.id,
       amount: updated.price,
       currency: updated.currency,
-      payloadAfter: updated,
+      payloadAfter: values,
     })
+    dispatchBackgroundRevalidation([
+      { app: "shop", path: "/" },
+      { app: "shop", slug: updated.slug, path: `/product/${updated.slug}` },
+    ])
   }
   revalidatePath("/shop")
+  revalidatePath("/")
   return updated
 }
 
@@ -73,17 +111,29 @@ export async function deleteProduct(id: string) {
     entityId: id,
     productId: id,
   })
+  dispatchBackgroundRevalidation({ app: "shop", path: "/" })
   revalidatePath("/shop")
+  revalidatePath("/")
 }
 
 export async function getProductFiles(productId: string) {
-  return await db
-    .select()
-    .from(productFiles)
-    .where(eq(productFiles.productId, productId))
+  try {
+    return await db
+      .select()
+      .from(productFiles)
+      .where(eq(productFiles.productId, productId))
+  } catch (error) {
+    console.error(
+      "[CMS Shop] Failed to fetch product files:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
-export async function addProductFile(values: typeof productFiles.$inferInsert) {
+export async function createProductFile(
+  values: typeof productFiles.$inferInsert
+) {
   const [created] = await db.insert(productFiles).values(values).returning()
   if (created) {
     logTransaction({
@@ -96,29 +146,42 @@ export async function addProductFile(values: typeof productFiles.$inferInsert) {
       metadata: { fileName: created.fileName, size: created.fileSizeBytes },
     })
   }
-  revalidatePath(`/shop`)
+  revalidatePath("/shop")
   return created
 }
 
 export async function deleteProductFile(id: string) {
   await db.delete(productFiles).where(eq(productFiles.id, id))
-  logTransaction({
-    domain: "COMMERCE",
-    actionType: "PRODUCT_FILE_DELETED",
-    status: "COMPLETED",
-    entityType: "product_files",
-    entityId: id,
-  })
-  revalidatePath(`/shop`)
+  revalidatePath("/shop")
 }
 
 export async function getOrders() {
-  return await db.select().from(orders).orderBy(desc(orders.createdAt))
+  try {
+    return await db
+      .select({
+        id: orders.id,
+        orderNumber: orders.orderNumber,
+        totalAmount: orders.totalAmount,
+        currency: orders.currency,
+        status: orders.status,
+        customerEmail: orders.customerEmail,
+        customerName: orders.customerName,
+        createdAt: orders.createdAt,
+      })
+      .from(orders)
+      .orderBy(desc(orders.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Shop] Failed to fetch orders:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function updateOrderStatus(
   id: string,
-  status: "PENDING" | "PAID" | "FAILED" | "EXPIRED"
+  status: "PENDING" | "PAID" | "FAILED" | "REFUNDED"
 ) {
   const [updated] = await db
     .update(orders)
@@ -129,20 +192,16 @@ export async function updateOrderStatus(
     logTransaction({
       domain: "COMMERCE",
       actionType: `ORDER_STATUS_${status}`,
-      status:
-        status === "PAID"
-          ? "COMPLETED"
-          : status === "FAILED"
-            ? "FAILED"
-            : "PENDING",
+      status: status === "PAID" ? "COMPLETED" : "PENDING",
       entityType: "orders",
       entityId: updated.id,
       orderId: updated.id,
       amount: updated.totalAmount,
       currency: updated.currency,
-      payloadAfter: updated,
+      payloadAfter: { status },
     })
   }
   revalidatePath("/shop")
+  revalidatePath("/")
   return updated
 }

@@ -14,8 +14,16 @@ import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 
 export async function getProfile() {
-  const [data] = await db.select().from(profile).limit(1)
-  return data || null
+  try {
+    const [data] = await db.select().from(profile).limit(1)
+    return data || null
+  } catch (error) {
+    console.error(
+      "[CMS Portfolio] Failed to fetch profile:",
+      error instanceof Error ? error.message : error
+    )
+    return null
+  }
 }
 
 export async function upsertProfile(values: typeof profile.$inferInsert) {
@@ -47,10 +55,18 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
 }
 
 export async function getExperiences() {
-  return await db
-    .select()
-    .from(experiences)
-    .orderBy(asc(experiences.displayOrder), desc(experiences.startDate))
+  try {
+    return await db
+      .select()
+      .from(experiences)
+      .orderBy(asc(experiences.displayOrder), desc(experiences.startDate))
+  } catch (error) {
+    console.error(
+      "[CMS Portfolio] Failed to fetch experiences:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createExperience(
@@ -100,10 +116,18 @@ export async function deleteExperience(id: string) {
 }
 
 export async function getEducation() {
-  return await db
-    .select()
-    .from(education)
-    .orderBy(asc(education.displayOrder), desc(education.startYear))
+  try {
+    return await db
+      .select()
+      .from(education)
+      .orderBy(asc(education.displayOrder), desc(education.startYear))
+  } catch (error) {
+    console.error(
+      "[CMS Portfolio] Failed to fetch education:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createEducation(values: typeof education.$inferInsert) {
@@ -135,10 +159,18 @@ export async function deleteEducation(id: string) {
 }
 
 export async function getCertifications() {
-  return await db
-    .select()
-    .from(certifications)
-    .orderBy(asc(certifications.displayOrder), desc(certifications.issueDate))
+  try {
+    return await db
+      .select()
+      .from(certifications)
+      .orderBy(asc(certifications.displayOrder), desc(certifications.issueDate))
+  } catch (error) {
+    console.error(
+      "[CMS Portfolio] Failed to fetch certifications:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createCertification(
@@ -173,7 +205,15 @@ export async function deleteCertification(id: string) {
 }
 
 export async function getServices() {
-  return await db.select().from(services).orderBy(asc(services.displayOrder))
+  try {
+    return await db.select().from(services).orderBy(asc(services.displayOrder))
+  } catch (error) {
+    console.error(
+      "[CMS Portfolio] Failed to fetch services:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createService(values: typeof services.$inferInsert) {
@@ -207,10 +247,18 @@ export async function deleteService(id: string) {
 }
 
 export async function getCaseStudies() {
-  return await db
-    .select()
-    .from(caseStudies)
-    .orderBy(asc(caseStudies.displayOrder))
+  try {
+    return await db
+      .select()
+      .from(caseStudies)
+      .orderBy(asc(caseStudies.displayOrder))
+  } catch (error) {
+    console.error(
+      "[CMS Portfolio] Failed to fetch case studies:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createCaseStudy(values: typeof caseStudies.$inferInsert) {
@@ -263,10 +311,18 @@ export async function deleteCaseStudy(id: string) {
 }
 
 export async function getTestimonials() {
-  return await db
-    .select()
-    .from(testimonials)
-    .orderBy(asc(testimonials.displayOrder))
+  try {
+    return await db
+      .select()
+      .from(testimonials)
+      .orderBy(asc(testimonials.displayOrder))
+  } catch (error) {
+    console.error(
+      "[CMS Portfolio] Failed to fetch testimonials:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createTestimonial(

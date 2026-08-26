@@ -1,5 +1,7 @@
-import { CmsPageShell } from "../../components/cms-page-shell"
-import { DeleteButton } from "../../components/delete-confirm-dialog"
+import { Briefcase, GraduationCap } from "lucide-react"
+import { CmsPageShell } from "@/components/cms-page-shell"
+import { DeleteButton } from "@/components/delete-confirm-dialog"
+import { FormSubmitButton } from "@/components/form-submit-button"
 import {
   getProfile,
   upsertProfile,
@@ -8,9 +10,7 @@ import {
   deleteExperience,
   getEducation,
   deleteEducation,
-  getServices,
-} from "../../lib/actions/portfolio-actions"
-import { Plus, Briefcase, GraduationCap } from "lucide-react"
+} from "@/lib/actions/portfolio-actions"
 
 export const dynamic = "force-dynamic"
 
@@ -19,7 +19,6 @@ export default async function PortfolioManagerPage() {
     getProfile(),
     getExperiences(),
     getEducation(),
-    getServices(),
   ])
 
   return (
@@ -130,12 +129,9 @@ export default async function PortfolioManagerPage() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
-            >
+            <FormSubmitButton icon="save" pendingLabel="Menyimpan profil...">
               Simpan Profil
-            </button>
+            </FormSubmitButton>
           </form>
         </div>
 
@@ -189,13 +185,13 @@ export default async function PortfolioManagerPage() {
               required
               className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs text-foreground"
             />
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-xs font-medium text-background hover:opacity-90"
+            <FormSubmitButton
+              icon="plus"
+              pendingLabel="Menambahkan..."
+              className="px-3 py-1.5"
             >
-              <Plus className="size-3.5" />
               Tambah
-            </button>
+            </FormSubmitButton>
           </form>
 
           <div className="divide-y divide-border/40 text-xs">

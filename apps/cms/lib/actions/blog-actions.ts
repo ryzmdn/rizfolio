@@ -4,14 +4,48 @@ import { db, eq, desc, asc } from "@workspace/db"
 import { posts, categories, tags } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
+import { dispatchBackgroundRevalidation } from "../revalidate"
 
 export async function getPosts() {
-  return await db.select().from(posts).orderBy(desc(posts.createdAt))
+  try {
+    return await db
+      .select({
+        id: posts.id,
+        title: posts.title,
+        slug: posts.slug,
+        excerpt: posts.excerpt,
+        coverImageUrl: posts.coverImageUrl,
+        status: posts.status,
+        readingTime: posts.readingTime,
+        publishedAt: posts.publishedAt,
+        createdAt: posts.createdAt,
+      })
+      .from(posts)
+      .orderBy(desc(posts.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Blog] Failed to fetch posts:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function getPostById(id: string) {
-  const [post] = await db.select().from(posts).where(eq(posts.id, id)).limit(1)
-  return post || null
+  try {
+    const [post] = await db
+      .select()
+      .from(posts)
+      .where(eq(posts.id, id))
+      .limit(1)
+    return post || null
+  } catch (error) {
+    console.error(
+      "[CMS Blog] Failed to fetch post by ID:",
+      error instanceof Error ? error.message : error
+    )
+    return null
+  }
 }
 
 export async function createPost(values: typeof posts.$inferInsert) {
@@ -31,8 +65,10 @@ export async function createPost(values: typeof posts.$inferInsert) {
         status: created.status,
       },
     })
+    dispatchBackgroundRevalidation({ app: "blog", path: "/" })
   }
   revalidatePath("/blog")
+  revalidatePath("/")
   return created
 }
 
@@ -59,8 +95,14 @@ export async function updatePost(
         status: updated.status,
       },
     })
+    dispatchBackgroundRevalidation({
+      app: "blog",
+      slug: updated.slug,
+      path: `/blog/${updated.slug}`,
+    })
   }
   revalidatePath("/blog")
+  revalidatePath("/")
   return updated
 }
 
@@ -74,11 +116,21 @@ export async function deletePost(id: string) {
     entityId: id,
     postId: id,
   })
+  dispatchBackgroundRevalidation({ app: "blog", path: "/" })
   revalidatePath("/blog")
+  revalidatePath("/")
 }
 
 export async function getBlogCategories() {
-  return await db.select().from(categories).orderBy(asc(categories.name))
+  try {
+    return await db.select().from(categories).orderBy(asc(categories.name))
+  } catch (error) {
+    console.error(
+      "[CMS Blog] Failed to fetch categories:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createBlogCategory(
@@ -111,7 +163,15 @@ export async function deleteBlogCategory(id: string) {
 }
 
 export async function getBlogTags() {
-  return await db.select().from(tags).orderBy(asc(tags.name))
+  try {
+    return await db.select().from(tags).orderBy(asc(tags.name))
+  } catch (error) {
+    console.error(
+      "[CMS Blog] Failed to fetch tags:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createBlogTag(values: typeof tags.$inferInsert) {

@@ -4,21 +4,46 @@ import { db, eq, desc, asc } from "@workspace/db"
 import { changelogs, changelogItems } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
+import { dispatchBackgroundRevalidation } from "../revalidate"
 
 export async function getChangelogs() {
-  return await db
-    .select()
-    .from(changelogs)
-    .orderBy(desc(changelogs.releaseDate))
+  try {
+    return await db
+      .select({
+        id: changelogs.id,
+        version: changelogs.version,
+        title: changelogs.title,
+        releaseDate: changelogs.releaseDate,
+        summary: changelogs.summary,
+        isPublished: changelogs.isPublished,
+        createdAt: changelogs.createdAt,
+      })
+      .from(changelogs)
+      .orderBy(desc(changelogs.releaseDate))
+  } catch (error) {
+    console.error(
+      "[CMS Changelog] Failed to fetch changelogs:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function getChangelogById(id: string) {
-  const [changelog] = await db
-    .select()
-    .from(changelogs)
-    .where(eq(changelogs.id, id))
-    .limit(1)
-  return changelog || null
+  try {
+    const [changelog] = await db
+      .select()
+      .from(changelogs)
+      .where(eq(changelogs.id, id))
+      .limit(1)
+    return changelog || null
+  } catch (error) {
+    console.error(
+      "[CMS Changelog] Failed to fetch changelog by ID:",
+      error instanceof Error ? error.message : error
+    )
+    return null
+  }
 }
 
 export async function createChangelog(values: typeof changelogs.$inferInsert) {
@@ -33,8 +58,10 @@ export async function createChangelog(values: typeof changelogs.$inferInsert) {
       changelogId: created.id,
       payloadAfter: { version: created.version, title: created.title },
     })
+    dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   }
   revalidatePath("/changelog")
+  revalidatePath("/")
   return created
 }
 
@@ -57,8 +84,10 @@ export async function updateChangelog(
       changelogId: updated.id,
       payloadAfter: values,
     })
+    dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   }
   revalidatePath("/changelog")
+  revalidatePath("/")
   return updated
 }
 
@@ -72,15 +101,25 @@ export async function deleteChangelog(id: string) {
     entityId: id,
     changelogId: id,
   })
+  dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   revalidatePath("/changelog")
+  revalidatePath("/")
 }
 
 export async function getChangelogItems(changelogId: string) {
-  return await db
-    .select()
-    .from(changelogItems)
-    .where(eq(changelogItems.changelogId, changelogId))
-    .orderBy(asc(changelogItems.displayOrder))
+  try {
+    return await db
+      .select()
+      .from(changelogItems)
+      .where(eq(changelogItems.changelogId, changelogId))
+      .orderBy(asc(changelogItems.displayOrder))
+  } catch (error) {
+    console.error(
+      "[CMS Changelog] Failed to fetch changelog items:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function createChangelogItem(
