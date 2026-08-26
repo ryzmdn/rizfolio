@@ -1,29 +1,19 @@
 import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
-import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { testimonials } from "@/data"
 
-interface TestimonialsSectionProps {
-  sectionNumber?: number | string
-}
-
-export function TestimonialsSection({
-  sectionNumber = 11,
-}: TestimonialsSectionProps) {
+export function TestimonialsSection() {
   return (
     <Container id="testimonials" className="py-20">
-      <hgroup className="w-full space-y-2">
-        <SectionEyebrow number={sectionNumber} label="Testimonials." />
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">What they say</p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Peer & Client Endorsements
         </h2>
-
-        <div className="leading-7 text-muted-foreground">
-          <p>
-            Perspectives from engineering leads, founders, and product managers
-            on technical rigor, execution speed, and collaboration.
-          </p>
-        </div>
+        <p className="leading-7 text-muted-foreground">
+          Perspectives from engineering leads, founders, and product managers on
+          technical rigor, execution speed, and collaboration.
+        </p>
       </hgroup>
 
       <div className="grid gap-6 py-10 sm:grid-cols-2">

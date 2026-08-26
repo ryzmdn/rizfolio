@@ -1,6 +1,6 @@
 import {
   HeroSection,
-  TrustedBySection,
+  StatementSection,
   AboutSection,
   NowSection,
   PrinciplesSection,
@@ -10,7 +10,6 @@ import {
   EducationSection,
   ExperienceSection,
   CapabilitiesSection,
-  StackArchitectureSection,
   OpenSourceSection,
   TestimonialsSection,
   CertificationsSection,
@@ -27,7 +26,7 @@ export default async function Home() {
   return (
     <>
       <HeroSection data={profile} />
-      <TrustedBySection />
+      <StatementSection />
       <AboutSection data={profile} />
       <NowSection />
       <PrinciplesSection />
@@ -37,7 +36,6 @@ export default async function Home() {
       <EducationSection education={education} />
       <ExperienceSection experiences={experiences} />
       <CapabilitiesSection />
-      <StackArchitectureSection />
       <OpenSourceSection />
       <TestimonialsSection />
       <CertificationsSection certifications={certifications} />

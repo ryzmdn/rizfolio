@@ -54,7 +54,7 @@ export function AboutSection({ data = personalInfo }: AboutSectionProps) {
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3">
         {emails.map((item, index, array) => {
           const isEmail = item.includes("@")
           const isGithub = item.toLowerCase().includes("github")
@@ -69,7 +69,7 @@ export function AboutSection({ data = personalInfo }: AboutSectionProps) {
                 rel={isEmail ? undefined : "noreferrer"}
                 className={cn(
                   buttonVariants({ variant: "link" }),
-                  "font-normal"
+                  "font-normal gap-x-3"
                 )}
               >
                 {isEmail ? (

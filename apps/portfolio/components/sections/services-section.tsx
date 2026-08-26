@@ -1,6 +1,5 @@
 import { Check } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
-import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { services as fallbackServices } from "@/data"
 import type { ServiceItem } from "@/lib/queries"
 import Link from "next/link"
@@ -9,17 +8,15 @@ import { buttonVariants } from "@workspace/ui/components/button"
 
 interface ServicesSectionProps {
   services?: ServiceItem[]
-  sectionNumber?: number | string
 }
 
 export function ServicesSection({
   services = fallbackServices,
-  sectionNumber = 5,
 }: ServicesSectionProps) {
   return (
     <Container id="solutions" className="space-y-12 py-20">
-      <hgroup className="w-full space-y-2">
-        <SectionEyebrow number={sectionNumber} label="Services & Solutions." />
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">Services & Solutions.</p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Services & Technical Capabilities
         </h2>
