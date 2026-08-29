@@ -1,9 +1,8 @@
 import * as React from "react"
+import { Shield, Zap, Lock, Compass, Check } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
 import { engineeringPrinciples, type EngineeringPrinciple } from "@/data"
-import { Shield, Zap, Lock, Compass, CheckCircle2 } from "lucide-react"
-import { cn } from "@workspace/ui/lib/utils"
 
 interface PrinciplesSectionProps {
   principles?: EngineeringPrinciple[]
@@ -20,7 +19,7 @@ export function PrinciplesSection({
   principles = engineeringPrinciples,
 }: PrinciplesSectionProps) {
   return (
-    <Container id="principles" className="py-20 space-y-10">
+    <Container id="principles" className="space-y-10 py-20">
       <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
         <p className="text-sm/6 text-muted-foreground">How I Think.</p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
@@ -32,71 +31,61 @@ export function PrinciplesSection({
         </p>
       </hgroup>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {principles.map((principle) => {
-          const Icon = iconMap[principle.icon] || Shield
+      <div className="flow-root w-full space-y-10 divide-y divide-border py-10">
+        {principles.map((service, idx) => {
+          const Icon = iconMap[service.icon] || Shield
 
           return (
-            <article
-              key={principle.id}
-              className={cn(
-                "group relative flex flex-col justify-between rounded-2xl border border-border/60 bg-card/60 p-7 shadow-xs backdrop-blur-xs",
-                "transition-all duration-300 hover:border-foreground/25 hover:shadow-md dark:hover:border-white/20"
-              )}
-            >
-              <div className="space-y-5">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm font-semibold tracking-wider text-muted-foreground">
-                      {principle.number}
-                    </span>
-                    <span className="text-xs text-border" aria-hidden="true">
-                      &#47;&#47;
-                    </span>
-                    <div className="flex size-8 items-center justify-center rounded-lg border border-border/80 bg-background/80 text-foreground shadow-2xs transition-colors group-hover:border-foreground/40">
-                      <Icon className="size-4 text-primary" strokeWidth={1.5} />
+            <div key={idx} className="pb-10 lg:flex">
+              <div className="lg:flex-auto">
+                <div className="w-full space-y-5">
+                  <div className="flex max-xs:flex-col justify-between gap-4 sm:items-center">
+                    <div className="flex justify-center items-center size-8 text-secondary bg-foreground rounded-md">
+                      <Icon className="size-4" />
                     </div>
+                    <div className="flex-1">
+                      <h3 className="relative max-w-max text-2xl font-medium tracking-tight text-primary">
+                        {service.title}
+                        <small className="absolute -right-5 hidden text-xs font-normal opacity-50 sm:inline">
+                          0{idx + 1}
+                        </small>
+                      </h3>
+                    </div>
+                    <Badge variant="secondary" className="max-sm:hidden">{service.mentalModel}</Badge>
                   </div>
-
-                  <Badge
-                    variant="outline"
-                    className="rounded-full border-border/70 bg-background/50 px-2.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-muted-foreground uppercase"
-                  >
-                    {principle.mentalModel}
-                  </Badge>
-                </div>
-
-                <div className="space-y-2 pt-1">
-                  <h3 className="text-xl font-medium tracking-tight text-foreground transition-colors group-hover:text-primary">
-                    {principle.title}
-                  </h3>
-                  <p className="border-l-2 border-primary/30 pl-3 font-mono text-xs leading-relaxed text-muted-foreground italic">
-                    &ldquo;{principle.tagline}&rdquo;
+                  <p className="leading-7 text-muted-foreground">
+                    {service.description}
                   </p>
                 </div>
-
-                <p className="text-sm/relaxed text-muted-foreground">
-                  {principle.description}
-                </p>
-              </div>
-
-              <div className="mt-6 border-t border-border/40 pt-5">
-                <div className="flex flex-wrap items-center gap-2">
-                  {principle.rules.map((rule, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-1.5 rounded-md bg-secondary/70 px-2.5 py-1 text-xs font-normal text-secondary-foreground"
-                    >
-                      <CheckCircle2
-                        className="size-3 shrink-0 text-emerald-500"
-                        strokeWidth={2}
-                      />
-                      <span>{rule}</span>
-                    </div>
-                  ))}
+                <div className="border-l border-border italic my-7 pl-8 leading-7 text-muted-foreground">
+                  <q>{service.tagline}</q>
                 </div>
+                {service.rules && service.rules.length > 0 && (
+                  <>
+                    <div className="flex items-center gap-x-4">
+                      <h4 className="flex-none text-sm/6 font-semibold text-accent-foreground">
+                        Deliverables & Features
+                      </h4>
+                      <div className="h-px flex-auto bg-border/60" />
+                    </div>
+                    <ul
+                      role="list"
+                      className="mt-8 grid grid-cols-1 gap-4 text-sm/6 text-muted-foreground sm:grid-cols-2 sm:gap-6"
+                    >
+                      {service.rules.map((feature, fIdx) => (
+                        <li
+                          key={fIdx}
+                          className="flex items-center gap-x-3 text-foreground"
+                        >
+                          <Check className="size-4 shrink-0 text-primary" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
-            </article>
+            </div>
           )
         })}
       </div>
