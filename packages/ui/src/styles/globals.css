@@ -148,13 +148,26 @@
 
 @layer base {
   html::-webkit-scrollbar {
-    @apply w-2 h-auto;
+    @apply h-auto w-2;
   }
   html::-webkit-scrollbar-track {
-    @apply bg-background rounded-sm;
+    @apply rounded-sm bg-background;
   }
   html::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground hover:bg-ring border border-secondary rounded-sm;
+    @apply rounded-sm border border-secondary bg-muted-foreground hover:bg-ring;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
   }
   * {
     @apply selection:bg-primary/90 selection:text-accent;
