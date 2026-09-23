@@ -1,20 +1,10 @@
-"use client"
-
-import { useState } from "react"
-import { BookOpen, Copy, Check } from "lucide-react"
+import { BookOpen } from "lucide-react"
 import { MDXRemoteRenderer } from "@workspace/ui/components/mdx"
 import { TableOfContents } from "./table-of-contents"
+import { CopyMarkdownButton } from "./copy-markdown-button"
 
 export function ReadmeViewer({ content }: { content: string }) {
-  const [copied, setCopied] = useState(false)
-
   if (!content) return null
-
-  function handleCopy() {
-    navigator.clipboard.writeText(content)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
 
   // Calculate approximate reading time
   const words = content.trim().split(/\s+/).length
@@ -35,23 +25,7 @@ export function ReadmeViewer({ content }: { content: string }) {
           </span>
         </div>
 
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
-        >
-          {copied ? (
-            <>
-              <Check className="size-3 text-emerald-500" />
-              <span>Copied</span>
-            </>
-          ) : (
-            <>
-              <Copy className="size-3" />
-              <span>Copy Markdown</span>
-            </>
-          )}
-        </button>
+        <CopyMarkdownButton content={content} />
       </div>
 
       {/* Main Body: Markdown Content + Sticky Table of Contents */}

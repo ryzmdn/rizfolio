@@ -28,8 +28,47 @@ export interface RepositoryFilters {
   offset?: number
 }
 
-async function fetchRepositories(filters: RepositoryFilters = {}) {
+const dbHealth = {
+  isHealthy: true,
+  lastCheck: 0,
+}
+
+const CIRCUIT_BREAKER_COOLDOWN_MS = 60_000
+
+async function safeDbQuery<T>(queryFn: () => Promise<T>): Promise<T | null> {
+  const now = Date.now()
+  if (!dbHealth.isHealthy && now - dbHealth.lastCheck < CIRCUIT_BREAKER_COOLDOWN_MS) {
+    return null
+  }
+
+  let timer: NodeJS.Timeout
+  const timeoutPromise = new Promise<null>((resolve) => {
+    timer = setTimeout(() => {
+      resolve(null)
+    }, 1500)
+  })
+
   try {
+    const result = await Promise.race([queryFn(), timeoutPromise])
+    if (result !== null) {
+      dbHealth.isHealthy = true
+      return result
+    } else {
+      dbHealth.isHealthy = false
+      dbHealth.lastCheck = Date.now()
+      return null
+    }
+  } catch {
+    dbHealth.isHealthy = false
+    dbHealth.lastCheck = Date.now()
+    return null
+  } finally {
+    clearTimeout(timer!)
+  }
+}
+
+async function fetchRepositories(filters: RepositoryFilters = {}) {
+  const rows = await safeDbQuery(async () => {
     const conditions = [eq(repositories.isPublic, true)]
 
     if (filters.category && filters.category !== "ALL") {
@@ -73,19 +112,14 @@ async function fetchRepositories(filters: RepositoryFilters = {}) {
       query.offset(filters.offset)
     }
 
-    const rows = await query
-    if (rows && rows.length > 0) {
-      return rows
-    }
+    return await query
+  })
 
-    return getFallbackRepositories(filters)
-  } catch (error) {
-    console.error(
-      "Failed to fetch repositories from database, serving resilient fallback data:",
-      error
-    )
-    return getFallbackRepositories(filters)
+  if (rows && rows.length > 0) {
+    return rows
   }
+
+  return getFallbackRepositories(filters)
 }
 
 export async function getRepositories(filters: RepositoryFilters = {}) {
@@ -101,29 +135,19 @@ export async function getRepositories(filters: RepositoryFilters = {}) {
 }
 
 async function fetchRepositoryBySlug(slug: string) {
-  try {
-    const repo = await db.query?.repositories?.findFirst?.({
-      where: eq(repositories.slug, slug),
-    })
-
-    if (repo) return repo
-
-    const [found] = await db
+  const rows = await safeDbQuery(() =>
+    db
       .select()
       .from(repositories)
       .where(eq(repositories.slug, slug))
       .limit(1)
+  )
 
-    if (found) return found
-
-    return getFallbackRepository(slug)
-  } catch (error) {
-    console.error(
-      `Failed to fetch repository by slug (${slug}), serving resilient fallback data:`,
-      error
-    )
-    return getFallbackRepository(slug)
+  if (rows && rows[0]) {
+    return rows[0]
   }
+
+  return getFallbackRepository(slug)
 }
 
 export async function getRepositoryBySlug(slug: string) {
@@ -138,74 +162,58 @@ export async function getRepositoryBySlug(slug: string) {
 }
 
 export async function getRepoFiles(repoId: string, parentPath = "") {
-  try {
-    const files = await db
+  const files = await safeDbQuery(() =>
+    db
       .select()
       .from(repoFiles)
       .where(
         and(eq(repoFiles.repoId, repoId), eq(repoFiles.parentPath, parentPath))
       )
       .orderBy(desc(repoFiles.isDirectory), asc(repoFiles.filename))
+  )
 
-    if (files && files.length > 0) {
-      return files
-    }
-
-    return getFallbackRepoFiles(repoId, parentPath)
-  } catch (error) {
-    console.error(
-      `Failed to fetch repo files (${repoId}, ${parentPath}), serving resilient fallback data:`,
-      error
-    )
-    return getFallbackRepoFiles(repoId, parentPath)
+  if (files && files.length > 0) {
+    return files
   }
+
+  return getFallbackRepoFiles(repoId, parentPath)
 }
 
 export async function getFileContent(repoId: string, filePath: string) {
-  try {
-    const [file] = await db
+  const rows = await safeDbQuery(() =>
+    db
       .select()
       .from(repoFiles)
       .where(and(eq(repoFiles.repoId, repoId), eq(repoFiles.path, filePath)))
       .limit(1)
+  )
 
-    if (file) return file
-
-    return getFallbackFileContent(repoId, filePath)
-  } catch (error) {
-    console.error(
-      `Failed to fetch file content (${repoId}, ${filePath}), serving resilient fallback data:`,
-      error
-    )
-    return getFallbackFileContent(repoId, filePath)
+  if (rows && rows[0]) {
+    return rows[0]
   }
+
+  return getFallbackFileContent(repoId, filePath)
 }
 
 export async function getRepoReleases(repoId: string) {
-  try {
-    const releases = await db
+  const releases = await safeDbQuery(() =>
+    db
       .select()
       .from(repoReleases)
       .where(eq(repoReleases.repoId, repoId))
       .orderBy(desc(repoReleases.createdAt))
+  )
 
-    if (releases && releases.length > 0) {
-      return releases
-    }
-
-    return getFallbackReleases(repoId)
-  } catch (error) {
-    console.error(
-      `Failed to fetch releases (${repoId}), serving resilient fallback data:`,
-      error
-    )
-    return getFallbackReleases(repoId)
+  if (releases && releases.length > 0) {
+    return releases
   }
+
+  return getFallbackReleases(repoId)
 }
 
 async function fetchRepoStats() {
-  try {
-    const allRepos = await db
+  const allRepos = await safeDbQuery(() =>
+    db
       .select({
         category: repositories.category,
         stars: repositories.starsCount,
@@ -214,46 +222,40 @@ async function fetchRepoStats() {
       })
       .from(repositories)
       .where(eq(repositories.isPublic, true))
+  )
 
-    if (allRepos && allRepos.length > 0) {
-      const total = allRepos.length
-      const assignments = allRepos.filter(
-        (r) => r.category === "ASSIGNMENT"
-      ).length
-      const experiments = allRepos.filter(
-        (r) => r.category === "EXPERIMENT"
-      ).length
-      const openSource = allRepos.filter(
-        (r) => r.category === "OPEN_SOURCE"
-      ).length
+  if (allRepos && allRepos.length > 0) {
+    const total = allRepos.length
+    const assignments = allRepos.filter(
+      (r) => r.category === "ASSIGNMENT"
+    ).length
+    const experiments = allRepos.filter(
+      (r) => r.category === "EXPERIMENT"
+    ).length
+    const openSource = allRepos.filter(
+      (r) => r.category === "OPEN_SOURCE"
+    ).length
 
-      const totalStars = allRepos.reduce(
-        (acc, curr) => acc + (curr.stars || 0),
-        0
-      )
-      const totalDownloads = allRepos.reduce(
-        (acc, curr) => acc + (curr.downloads || 0),
-        0
-      )
-
-      return {
-        total,
-        assignments,
-        experiments,
-        openSource,
-        totalStars,
-        totalDownloads,
-      }
-    }
-
-    return getFallbackStats()
-  } catch (error) {
-    console.error(
-      "Failed to fetch docs repo stats, serving resilient fallback data:",
-      error
+    const totalStars = allRepos.reduce(
+      (acc, curr) => acc + (curr.stars || 0),
+      0
     )
-    return getFallbackStats()
+    const totalDownloads = allRepos.reduce(
+      (acc, curr) => acc + (curr.downloads || 0),
+      0
+    )
+
+    return {
+      total,
+      assignments,
+      experiments,
+      openSource,
+      totalStars,
+      totalDownloads,
+    }
   }
+
+  return getFallbackStats()
 }
 
 export const getRepoStats = unstable_cache(
@@ -266,8 +268,8 @@ export const getRepoStats = unstable_cache(
 )
 
 async function fetchCategoriesAndCourses() {
-  try {
-    const repos = await db
+  const repos = await safeDbQuery(() =>
+    db
       .select({
         courseName: repositories.courseName,
         semester: repositories.semester,
@@ -275,40 +277,34 @@ async function fetchCategoriesAndCourses() {
       })
       .from(repositories)
       .where(eq(repositories.isPublic, true))
+  )
 
-    if (repos && repos.length > 0) {
-      const coursesMap = new Map<string, { semester?: string; count: number }>()
+  if (repos && repos.length > 0) {
+    const coursesMap = new Map<string, { semester?: string; count: number }>()
 
-      for (const r of repos) {
-        if (r.courseName) {
-          const existing = coursesMap.get(r.courseName) || {
-            semester: r.semester || undefined,
-            count: 0,
-          }
-          existing.count += 1
-          coursesMap.set(r.courseName, existing)
+    for (const r of repos) {
+      if (r.courseName) {
+        const existing = coursesMap.get(r.courseName) || {
+          semester: r.semester || undefined,
+          count: 0,
         }
-      }
-
-      const courses = Array.from(coursesMap.entries()).map(([name, val]) => ({
-        name,
-        semester: val.semester,
-        count: val.count,
-      }))
-
-      if (courses.length > 0) {
-        return { courses }
+        existing.count += 1
+        coursesMap.set(r.courseName, existing)
       }
     }
 
-    return getFallbackCategoriesAndCourses()
-  } catch (error) {
-    console.error(
-      "Failed to fetch categories & courses, serving resilient fallback data:",
-      error
-    )
-    return getFallbackCategoriesAndCourses()
+    const courses = Array.from(coursesMap.entries()).map(([name, val]) => ({
+      name,
+      semester: val.semester,
+      count: val.count,
+    }))
+
+    if (courses.length > 0) {
+      return { courses }
+    }
   }
+
+  return getFallbackCategoriesAndCourses()
 }
 
 export const getCategoriesAndCourses = unstable_cache(
@@ -321,38 +317,34 @@ export const getCategoriesAndCourses = unstable_cache(
 )
 
 export async function getAllRepoSlugs(): Promise<string[]> {
-  try {
-    const rows = await db
+  const rows = await safeDbQuery(() =>
+    db
       .select({ slug: repositories.slug })
       .from(repositories)
       .where(eq(repositories.isPublic, true))
+  )
 
-    if (rows && rows.length > 0) {
-      return rows.map((r) => r.slug)
-    }
-
-    return getAllFallbackSlugs()
-  } catch {
-    return getAllFallbackSlugs()
+  if (rows && rows.length > 0) {
+    return rows.map((r) => r.slug)
   }
+
+  return getAllFallbackSlugs()
 }
 
 export async function getAllRepoFilePaths(slug: string): Promise<string[]> {
-  try {
-    const repo = await getRepositoryBySlug(slug)
-    if (!repo) return getAllFallbackFilePaths(slug)
+  const repo = await getRepositoryBySlug(slug)
+  if (!repo) return getAllFallbackFilePaths(slug)
 
-    const files = await db
+  const files = await safeDbQuery(() =>
+    db
       .select({ path: repoFiles.path, isDirectory: repoFiles.isDirectory })
       .from(repoFiles)
       .where(and(eq(repoFiles.repoId, repo.id), eq(repoFiles.isDirectory, false)))
+  )
 
-    if (files && files.length > 0) {
-      return files.map((f) => f.path)
-    }
-
-    return getAllFallbackFilePaths(slug)
-  } catch {
-    return getAllFallbackFilePaths(slug)
+  if (files && files.length > 0) {
+    return files.map((f) => f.path)
   }
+
+  return getAllFallbackFilePaths(slug)
 }

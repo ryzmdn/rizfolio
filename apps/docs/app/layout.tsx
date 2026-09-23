@@ -64,7 +64,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
+    <html
+      lang="en"
+      className="w-full scroll-smooth"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <body className={cn(fontVariables)}>
         <AppProvider>
           <a

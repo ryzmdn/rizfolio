@@ -19,9 +19,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
+  const repoFilePaths = await Promise.all(
+    repos.map(async (repo) => {
+      const filePaths = await getAllRepoFilePaths(repo.slug)
+      return { repo, filePaths }
+    })
+  )
+
   const blobEntries: MetadataRoute.Sitemap = []
-  for (const repo of repos) {
-    const filePaths = await getAllRepoFilePaths(repo.slug)
+  for (const { repo, filePaths } of repoFilePaths) {
     for (const fp of filePaths) {
       blobEntries.push({
         url: `${baseUrl}/repo/${repo.slug}/blob/${fp}`,
