@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next"
-import { getRepositories } from "../lib/queries"
+import { getRepositories, getAllRepoFilePaths } from "../lib/queries"
+
+export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
@@ -17,6 +19,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
+  const blobEntries: MetadataRoute.Sitemap = []
+  for (const repo of repos) {
+    const filePaths = await getAllRepoFilePaths(repo.slug)
+    for (const fp of filePaths) {
+      blobEntries.push({
+        url: `${baseUrl}/repo/${repo.slug}/blob/${fp}`,
+        lastModified: repo.updatedAt ? new Date(repo.updatedAt) : new Date(),
+        changeFrequency: "monthly",
+        priority: 0.6,
+      })
+    }
+  }
+
   return [
     {
       url: baseUrl,
@@ -31,5 +46,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     ...repoEntries,
+    ...blobEntries,
   ]
 }

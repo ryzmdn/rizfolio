@@ -96,9 +96,35 @@ export default async function FileViewPage({
 
   const parentPath = path.length > 1 ? path.slice(0, -1).join("/") : ""
   const parentName = path.length > 1 ? path[path.length - 2] : repo.name
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOCS_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "https://docs.rizkyramadhan.dev"
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name: file.filename,
+    programmingLanguage: file.filename.split(".").pop() || undefined,
+    codeSampleType: "full snippet",
+    isPartOf: {
+      "@type": "SoftwareSourceCode",
+      name: repo.name,
+      url: `${baseUrl}/repo/${slug}`,
+    },
+    author: {
+      "@type": "Person",
+      name: "Rizky Ramadhan",
+      url: "https://rizkyramadhan.dev",
+    },
+  }
 
   return (
     <Container className="space-y-6 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="flex flex-col gap-4 border-b border-border/70 pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <Link

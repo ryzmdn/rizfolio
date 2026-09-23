@@ -52,8 +52,39 @@ export default async function DocsPage({
       (params.sort && params.sort !== "latest")
   )
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOCS_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "https://docs.rizkyramadhan.dev"
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Documentation & Code Explorer — Rizky Ramadhan",
+    description:
+      "Interactive technical documentation, open-source repositories, academic coursework archive, and source code explorer.",
+    url: baseUrl,
+    author: {
+      "@type": "Person",
+      name: "Rizky Ramadhan",
+      url: "https://rizkyramadhan.dev",
+    },
+    hasPart: repos.map((repo) => ({
+      "@type": "SoftwareSourceCode",
+      name: repo.name,
+      description: repo.description,
+      programmingLanguage: repo.techStack,
+      codeRepository: repo.githubUrl || undefined,
+      url: `${baseUrl}/repo/${repo.slug}`,
+    })),
+  }
+
   return (
     <Container className="space-y-10 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero Section */}
       <div className="flex flex-col gap-6 border-b border-border/70 pb-8 sm:flex-row sm:items-end sm:justify-between">
         <div className="max-w-2xl space-y-3">

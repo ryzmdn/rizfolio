@@ -102,8 +102,31 @@ export default async function CategoriesIndexPage() {
     },
   ]
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOCS_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "https://docs.rizkyramadhan.dev"
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Curriculum Taxonomy & Categories — Rizfolio Docs",
+    description:
+      "Arsip kurikulum akademik universitas, riset eksperimental, dan pustaka open source.",
+    url: `${baseUrl}/categories`,
+    author: {
+      "@type": "Person",
+      name: "Rizky Ramadhan",
+      url: "https://rizkyramadhan.dev",
+    },
+  }
+
   return (
     <Container className="space-y-14 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <Link href="/" className="transition-colors hover:text-foreground">
           docs
