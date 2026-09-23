@@ -136,7 +136,7 @@ async function fetchActiveProducts(
       .orderBy(orderByClause)
 
     if (rows && rows.length > 0) {
-      return rows.map((p) => {
+      let result = rows.map((p) => {
         const fallbackMatch = fallbackProducts.find((f) => f.slug === p.slug)
         return {
           id: p.id,
@@ -161,6 +161,12 @@ async function fetchActiveProducts(
           faq: fallbackMatch?.faq || [],
         }
       })
+
+      if (params?.category && params.category !== "all") {
+        result = result.filter((p) => p.category === params.category)
+      }
+
+      return result
     }
 
     return filterFallbackProducts(params)
@@ -364,7 +370,7 @@ export async function getOrderByNumber(
     const rows = await db
       .select()
       .from(orders)
-      .where(eq(orders.orderNumber, orderNumber))
+      .where(or(eq(orders.orderNumber, orderNumber), eq(orders.id, orderNumber))!)
       .limit(1)
 
     const ord = rows[0]
@@ -396,9 +402,17 @@ export async function getOrderByNumber(
       }
     }
 
-    return fallbackOrders.find((o) => o.orderNumber === orderNumber) || null
+    return (
+      fallbackOrders.find(
+        (o) => o.orderNumber === orderNumber || o.id === orderNumber
+      ) || null
+    )
   } catch {
-    return fallbackOrders.find((o) => o.orderNumber === orderNumber) || null
+    return (
+      fallbackOrders.find(
+        (o) => o.orderNumber === orderNumber || o.id === orderNumber
+      ) || null
+    )
   }
 }
 

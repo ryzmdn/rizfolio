@@ -1,31 +1,40 @@
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
+import type { Metadata } from "next"
+import {
+  ArrowLeft,
+  CheckCircle2,
+  FileCode,
+  ShieldCheck,
+  Zap,
+  ArrowRight,
+  Layers,
+  Sparkles,
+} from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
 import {
   getProductBySlug,
   getRelatedProducts,
-  formatPrice,
+  getAllProductSlugs,
+  getProductReviews,
 } from "@/lib/queries"
-import { AddToCartButton } from "@/components/add-to-cart-button"
-import {
-  ArrowLeft,
-  CheckCircle2,
-  Download,
-  ShieldCheck,
-  Zap,
-  FileCode,
-  Sparkles,
-  ArrowRight,
-  Layers,
-  Lock,
-} from "lucide-react"
-import type { Metadata } from "next"
+import { formatPrice } from "@/lib/utils"
+import { ImageGallery } from "@/components/image-gallery"
+import { ProductPurchaseCard } from "@/components/product-purchase-card"
+import { ReviewsSection } from "@/components/reviews-section"
+import { StickyBuyBar } from "@/components/sticky-buy-bar"
+import { ProductFaq } from "@/components/product-faq"
 
 interface ProductPageProps {
   params: Promise<{
     slug: string
   }>
+}
+
+export async function generateStaticParams() {
+  const slugs = await getAllProductSlugs()
+  return slugs.map((slug) => ({ slug }))
 }
 
 export async function generateMetadata({
@@ -71,16 +80,16 @@ function formatBytes(bytes: number): string {
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params
-  const [product, relatedProducts] = await Promise.all([
+  const [product, relatedProducts, reviews] = await Promise.all([
     getProductBySlug(slug),
     getRelatedProducts(slug, 3),
+    getProductReviews(slug),
   ])
 
   if (!product) {
     notFound()
   }
 
-  const isDigital = product.productType === "DIGITAL_DOWNLOAD"
   const gallery =
     product.galleryUrls && product.galleryUrls.length > 0
       ? product.galleryUrls
@@ -88,260 +97,207 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         ? [product.coverImageUrl]
         : []
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description,
+    image: product.coverImageUrl,
+    offers: {
+      "@type": "Offer",
+      price: product.price,
+      priceCurrency: product.currency,
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Person",
+        name: "Rizky Ramadhan",
+      },
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: product.rating,
+      reviewCount: product.reviewCount,
+    },
+  }
+
   return (
-    <Container className="max-w-6xl py-12 md:py-20">
-      <Link
-        href="/"
-        className="mb-8 inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeft className="size-3.5" />
-        <span>Back to Store Catalog</span>
-      </Link>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="space-y-8 lg:col-span-7">
-          {gallery.length > 0 && (
-            <div className="relative aspect-16/10 w-full overflow-hidden rounded-2xl border border-border/80 bg-muted shadow-xs">
-              <Image
-                src={gallery[0] || ""}
-                alt={product.title}
-                fill
-                priority
-                className="object-cover"
-              />
+      <Container className="max-w-6xl py-10 md:py-16">
+        <Link
+          href="/"
+          className="mb-8 inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-3.5" />
+          <span>Back to Store Catalog</span>
+        </Link>
+
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="space-y-10 lg:col-span-7">
+            <ImageGallery images={gallery} title={product.title} />
+
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+                Architecture & System Overview
+              </h2>
+              <p className="text-xs leading-relaxed whitespace-pre-line text-muted-foreground sm:text-sm">
+                {product.description}
+              </p>
             </div>
-          )}
 
-          {gallery.length > 1 && (
-            <div className="grid grid-cols-3 gap-4">
-              {gallery.slice(1).map((imgUrl, idx) => (
+            {product.features && product.features.length > 0 && (
+              <div className="space-y-4 rounded-3xl border border-border/70 bg-card/40 p-6 sm:p-8">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="size-4 text-primary" />
+                  <h3 className="text-base font-semibold text-foreground">
+                    Key Features & Technical Capabilities
+                  </h3>
+                </div>
+                <ul className="grid grid-cols-1 gap-3 pt-1 text-xs text-muted-foreground sm:grid-cols-2">
+                  {product.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <span className="leading-snug">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {product.files && product.files.length > 0 && (
+              <div className="space-y-4 rounded-3xl border border-border/70 bg-card/40 p-6 sm:p-8">
+                <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <FileCode className="size-4 text-primary" />
+                  <span>Included Digital Packages</span>
+                </div>
+                <ul className="divide-y divide-border/60 text-xs">
+                  {product.files.map((file) => (
+                    <li
+                      key={file.id}
+                      className="flex items-center justify-between py-3"
+                    >
+                      <span className="font-mono text-foreground">
+                        {file.fileName}
+                      </span>
+                      <span className="rounded-lg bg-muted px-2.5 py-1 font-mono text-[11px] font-medium text-muted-foreground">
+                        {formatBytes(file.fileSizeBytes)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex items-start gap-3.5 rounded-2xl border border-border/60 bg-card/30 p-5">
+                <Zap className="mt-0.5 size-5 shrink-0 text-primary" />
+                <div className="space-y-1">
+                  <h4 className="text-xs font-semibold text-foreground">
+                    Instant Digital Delivery
+                  </h4>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Automated download token and license key generated
+                    immediately upon transaction completion.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3.5 rounded-2xl border border-border/60 bg-card/30 p-5">
+                <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" />
+                <div className="space-y-1">
+                  <h4 className="text-xs font-semibold text-foreground">
+                    Verified TypeScript Codebase
+                  </h4>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Tested with Next.js 16 and React 19 compiler with zero
+                    runtime type discrepancies.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {product.faq && product.faq.length > 0 && (
+              <ProductFaq faq={product.faq} />
+            )}
+
+            <ReviewsSection
+              productSlug={product.slug}
+              initialReviews={reviews}
+              averageRating={product.rating}
+              reviewCount={product.reviewCount}
+            />
+          </div>
+
+          <div className="lg:col-span-5">
+            <ProductPurchaseCard product={product} />
+          </div>
+        </div>
+
+        {relatedProducts.length > 0 && (
+          <div className="mt-24 space-y-8 border-t border-border/80 pt-16">
+            <div className="flex items-center gap-2">
+              <Layers className="size-4 text-primary" />
+              <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+                Related Software Architectures
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedProducts.map((rel) => (
                 <div
-                  key={idx}
-                  className="relative aspect-video overflow-hidden rounded-xl border border-border/60 bg-muted"
+                  key={rel.id}
+                  className="group flex flex-col justify-between rounded-2xl border border-border/70 bg-card/40 p-5 transition-all duration-300 hover:border-primary/40 hover:bg-card hover:shadow-lg hover:shadow-primary/5"
                 >
-                  <Image
-                    src={imgUrl}
-                    alt={`${product.title} preview ${idx + 2}`}
-                    fill
-                    className="object-cover"
-                  />
+                  <div className="space-y-3">
+                    {rel.coverImageUrl && (
+                      <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-border/60 bg-muted">
+                        <Image
+                          src={rel.coverImageUrl}
+                          alt={rel.title}
+                          fill
+                          sizes="300px"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        {rel.productType === "DIGITAL_DOWNLOAD"
+                          ? "Digital Download"
+                          : "1-on-1 Service"}
+                      </span>
+                      <span className="font-mono font-bold text-foreground">
+                        {formatPrice(rel.price, rel.currency)}
+                      </span>
+                    </div>
+
+                    <h3 className="text-sm font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">
+                      <Link href={`/product/${rel.slug}`}>{rel.title}</Link>
+                    </h3>
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-end border-t border-border/50 pt-3">
+                    <Link
+                      href={`/product/${rel.slug}`}
+                      className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                    >
+                      <span>Explore</span>
+                      <ArrowRight className="size-3" />
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>
-          )}
-
-          <div className="space-y-6 border-t border-border/60 pt-4">
-            <h2 className="text-xl font-medium tracking-tight text-foreground">
-              Product Overview & Specifications
-            </h2>
-            <p className="text-sm leading-relaxed whitespace-pre-line text-muted-foreground sm:text-base">
-              {product.description}
-            </p>
           </div>
+        )}
+      </Container>
 
-          {product.files && product.files.length > 0 && (
-            <div className="space-y-4 rounded-xl border border-border/60 bg-card/40 p-5">
-              <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
-                <FileCode className="size-4 text-primary" />
-                <span>Included Digital Assets & Packages</span>
-              </div>
-              <ul className="divide-y divide-border/40 text-xs">
-                {product.files.map((file) => (
-                  <li
-                    key={file.id}
-                    className="flex items-center justify-between py-2.5"
-                  >
-                    <span className="font-mono text-muted-foreground">
-                      {file.fileName}
-                    </span>
-                    <span className="rounded-md bg-muted px-2 py-0.5 font-medium text-foreground">
-                      {formatBytes(file.fileSizeBytes)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
-            <div className="flex items-start gap-3 rounded-xl border border-border/50 bg-card/30 p-4">
-              <Zap className="mt-0.5 size-5 shrink-0 text-primary" />
-              <div className="space-y-1">
-                <h3 className="text-xs font-medium text-foreground">
-                  Instant Fulfillment
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Download tokens are automatically provisioned upon completed
-                  checkout.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 rounded-xl border border-border/50 bg-card/30 p-4">
-              <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" />
-              <div className="space-y-1">
-                <h3 className="text-xs font-medium text-foreground">
-                  Type-Safe & Tested
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Written in strict TypeScript with zero runtime syntax errors.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="lg:col-span-5">
-          <div className="sticky top-24 space-y-6 rounded-2xl border border-border/80 bg-card/70 p-6 shadow-sm backdrop-blur-xs">
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1 rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
-                {isDigital ? (
-                  <>
-                    <Download className="size-3" />
-                    <span>Digital Download</span>
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="size-3" />
-                    <span>Service Consultation</span>
-                  </>
-                )}
-              </span>
-              <span className="flex items-center gap-1 text-xs font-medium text-emerald-500">
-                <CheckCircle2 className="size-3.5" />
-                <span>In Stock & Ready</span>
-              </span>
-            </div>
-
-            <div className="space-y-2">
-              <h1 className="text-2xl leading-tight font-medium tracking-tight text-foreground sm:text-3xl">
-                {product.title}
-              </h1>
-              <div className="pt-2">
-                <span className="text-3xl font-semibold text-foreground">
-                  {formatPrice(product.price, product.currency)}
-                </span>
-                <span className="ml-2 text-xs text-muted-foreground">
-                  One-time payment
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-3 border-t border-border/60 pt-4 text-xs text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-primary" />
-                <span>Full source code with MIT / Commercial license</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-primary" />
-                <span>Lifetime access and free future revision downloads</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-primary" />
-                <span>Direct email engineering support</span>
-              </div>
-            </div>
-
-            <div className="space-y-3 pt-4">
-              <AddToCartButton
-                product={{
-                  id: product.id,
-                  slug: product.slug,
-                  title: product.title,
-                  coverImageUrl: product.coverImageUrl,
-                  productType: product.productType,
-                  price: product.price,
-                  currency: product.currency,
-                }}
-                size="lg"
-                className="w-full"
-                label={isDigital ? "Add to Cart" : "Book Consultation (Add to Cart)"}
-              />
-
-              <div className="flex items-center justify-center gap-2 pt-1 text-[11px] text-muted-foreground">
-                <Lock className="size-3" />
-                <span>
-                  Secure encrypted inquiry and direct order fulfillment
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-2 rounded-xl border border-border/40 bg-muted/40 p-4 text-xs">
-              <div className="flex items-center justify-between text-muted-foreground">
-                <span>Architecture</span>
-                <span className="font-medium text-foreground">
-                  Next.js 16 + Tailwind v4
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-muted-foreground">
-                <span>Delivery Format</span>
-                <span className="font-medium text-foreground">
-                  {isDigital ? "Secure ZIP Archive" : "Video Call / Report"}
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-muted-foreground">
-                <span>Updated</span>
-                <span className="font-medium text-foreground">August 2026</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {relatedProducts.length > 0 && (
-        <div className="mt-24 space-y-8 border-t border-border pt-16">
-          <div className="flex items-center gap-2">
-            <Layers className="size-4 text-primary" />
-            <h2 className="text-xl font-medium tracking-tight text-foreground">
-              More Engineering Assets & Services
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedProducts.map((rel) => (
-              <div
-                key={rel.id}
-                className="group flex flex-col justify-between rounded-xl border border-border/60 bg-card/40 p-4 transition-all hover:border-border hover:bg-card"
-              >
-                <div className="space-y-3">
-                  {rel.coverImageUrl && (
-                    <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
-                      <Image
-                        src={rel.coverImageUrl}
-                        alt={rel.title}
-                        fill
-                        className="object-cover transition-transform group-hover:scale-105"
-                      />
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">
-                      {rel.productType === "DIGITAL_DOWNLOAD"
-                        ? "Digital Download"
-                        : "Service"}
-                    </span>
-                    <span className="font-semibold text-foreground">
-                      {formatPrice(rel.price, rel.currency)}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
-                    <Link href={`/product/${rel.slug}`}>{rel.title}</Link>
-                  </h3>
-                </div>
-
-                <div className="mt-4 flex items-center justify-end border-t border-border/40 pt-3">
-                  <Link
-                    href={`/product/${rel.slug}`}
-                    className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                  >
-                    <span>View Product</span>
-                    <ArrowRight className="size-3" />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </Container>
+      <StickyBuyBar product={product} />
+    </>
   )
 }
