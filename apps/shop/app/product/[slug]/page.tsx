@@ -7,6 +7,7 @@ import {
   getRelatedProducts,
   formatPrice,
 } from "@/lib/queries"
+import { AddToCartButton } from "@/components/add-to-cart-button"
 import {
   ArrowLeft,
   CheckCircle2,
@@ -16,7 +17,6 @@ import {
   FileCode,
   Sparkles,
   ArrowRight,
-  Clock,
   Layers,
   Lock,
 } from "lucide-react"
@@ -242,22 +242,20 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </div>
 
             <div className="space-y-3 pt-4">
-              <a
-                href={`mailto:hello@rizkyramadhan.dev?subject=Order Inquiry: ${encodeURIComponent(product.title)}`}
-                className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
-              >
-                {isDigital ? (
-                  <>
-                    <Download className="size-4" />
-                    <span>Get Instant Access</span>
-                  </>
-                ) : (
-                  <>
-                    <Clock className="size-4" />
-                    <span>Book Consultation Session</span>
-                  </>
-                )}
-              </a>
+              <AddToCartButton
+                product={{
+                  id: product.id,
+                  slug: product.slug,
+                  title: product.title,
+                  coverImageUrl: product.coverImageUrl,
+                  productType: product.productType,
+                  price: product.price,
+                  currency: product.currency,
+                }}
+                size="lg"
+                className="w-full"
+                label={isDigital ? "Add to Cart" : "Book Consultation (Add to Cart)"}
+              />
 
               <div className="flex items-center justify-center gap-2 pt-1 text-[11px] text-muted-foreground">
                 <Lock className="size-3" />

@@ -1,5 +1,6 @@
 import { Container } from "@workspace/ui/components/layouts/container"
 import { getActiveProducts, formatPrice } from "@/lib/queries"
+import { AddToCartButton } from "@/components/add-to-cart-button"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -179,14 +180,25 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
                   </div>
 
                   <div className="mt-6 flex items-center justify-between border-t border-border/40 pt-3">
-                    <span className="text-[11px] text-muted-foreground">
-                      {isDigital ? "Instant Access" : "Direct Booking"}
-                    </span>
+                    <AddToCartButton
+                      product={{
+                        id: product.id,
+                        slug: product.slug,
+                        title: product.title,
+                        coverImageUrl: product.coverImageUrl,
+                        productType: product.productType,
+                        price: product.price,
+                        currency: product.currency,
+                      }}
+                      size="sm"
+                      variant="outline"
+                      label="Add to Cart"
+                    />
                     <Link
                       href={`/product/${product.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
                     >
-                      <span>View Details</span>
+                      <span>Details</span>
                       <ArrowRight className="size-3" />
                     </Link>
                   </div>

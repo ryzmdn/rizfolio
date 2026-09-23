@@ -49,19 +49,7 @@ export interface ProductFilterParams {
   maxPrice?: number
 }
 
-export function formatPrice(price: number, currency: string = "IDR"): string {
-  if (currency === "IDR") {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      maximumFractionDigits: 0,
-    }).format(price)
-  }
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency || "USD",
-  }).format(price)
-}
+export { formatPrice } from "./utils"
 
 function filterFallbackProducts(params?: ProductFilterParams): ShopProduct[] {
   let list = [...fallbackProducts]
