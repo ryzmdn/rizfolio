@@ -1,13 +1,29 @@
 import { unstable_cache } from "next/cache"
 import { db, eq, and, or, ilike, desc, asc } from "@workspace/db"
 import { repositories, repoFiles, repoReleases } from "@workspace/db/schema"
+import {
+  getFallbackRepositories,
+  getFallbackRepository,
+  getFallbackRepoFiles,
+  getFallbackFileContent,
+  getFallbackReleases,
+  getFallbackStats,
+  getFallbackCategoriesAndCourses,
+  getAllFallbackSlugs,
+  getAllFallbackFilePaths,
+  type FallbackRepository,
+  type FallbackRepoFile,
+  type FallbackRepoRelease,
+} from "../data"
+
+export type { FallbackRepository, FallbackRepoFile, FallbackRepoRelease }
 
 export interface RepositoryFilters {
   category?: string
   search?: string
   courseName?: string
   techStack?: string
-  sortBy?: "latest" | "stars" | "downloads"
+  sortBy?: "latest" | "stars" | "downloads" | "alphabetical"
   limit?: number
   offset?: number
 }
@@ -40,6 +56,8 @@ async function fetchRepositories(filters: RepositoryFilters = {}) {
       orderByClause = desc(repositories.starsCount)
     } else if (filters.sortBy === "downloads") {
       orderByClause = desc(repositories.downloadsCount)
+    } else if (filters.sortBy === "alphabetical") {
+      orderByClause = asc(repositories.name)
     }
 
     const query = db
@@ -55,10 +73,18 @@ async function fetchRepositories(filters: RepositoryFilters = {}) {
       query.offset(filters.offset)
     }
 
-    return await query
+    const rows = await query
+    if (rows && rows.length > 0) {
+      return rows
+    }
+
+    return getFallbackRepositories(filters)
   } catch (error) {
-    console.error("Failed to fetch repositories:", error)
-    return []
+    console.error(
+      "Failed to fetch repositories from database, serving resilient fallback data:",
+      error
+    )
+    return getFallbackRepositories(filters)
   }
 }
 
@@ -88,10 +114,15 @@ async function fetchRepositoryBySlug(slug: string) {
       .where(eq(repositories.slug, slug))
       .limit(1)
 
-    return found || null
+    if (found) return found
+
+    return getFallbackRepository(slug)
   } catch (error) {
-    console.error(`Failed to fetch repository by slug (${slug}):`, error)
-    return null
+    console.error(
+      `Failed to fetch repository by slug (${slug}), serving resilient fallback data:`,
+      error
+    )
+    return getFallbackRepository(slug)
   }
 }
 
@@ -116,13 +147,17 @@ export async function getRepoFiles(repoId: string, parentPath = "") {
       )
       .orderBy(desc(repoFiles.isDirectory), asc(repoFiles.filename))
 
-    return files
+    if (files && files.length > 0) {
+      return files
+    }
+
+    return getFallbackRepoFiles(repoId, parentPath)
   } catch (error) {
     console.error(
-      `Failed to fetch repo files (${repoId}, ${parentPath}):`,
+      `Failed to fetch repo files (${repoId}, ${parentPath}), serving resilient fallback data:`,
       error
     )
-    return []
+    return getFallbackRepoFiles(repoId, parentPath)
   }
 }
 
@@ -134,26 +169,37 @@ export async function getFileContent(repoId: string, filePath: string) {
       .where(and(eq(repoFiles.repoId, repoId), eq(repoFiles.path, filePath)))
       .limit(1)
 
-    return file || null
+    if (file) return file
+
+    return getFallbackFileContent(repoId, filePath)
   } catch (error) {
     console.error(
-      `Failed to fetch file content (${repoId}, ${filePath}):`,
+      `Failed to fetch file content (${repoId}, ${filePath}), serving resilient fallback data:`,
       error
     )
-    return null
+    return getFallbackFileContent(repoId, filePath)
   }
 }
 
 export async function getRepoReleases(repoId: string) {
   try {
-    return await db
+    const releases = await db
       .select()
       .from(repoReleases)
       .where(eq(repoReleases.repoId, repoId))
       .orderBy(desc(repoReleases.createdAt))
+
+    if (releases && releases.length > 0) {
+      return releases
+    }
+
+    return getFallbackReleases(repoId)
   } catch (error) {
-    console.error(`Failed to fetch releases (${repoId}):`, error)
-    return []
+    console.error(
+      `Failed to fetch releases (${repoId}), serving resilient fallback data:`,
+      error
+    )
+    return getFallbackReleases(repoId)
   }
 }
 
@@ -169,44 +215,44 @@ async function fetchRepoStats() {
       .from(repositories)
       .where(eq(repositories.isPublic, true))
 
-    const total = allRepos.length
-    const assignments = allRepos.filter(
-      (r) => r.category === "ASSIGNMENT"
-    ).length
-    const experiments = allRepos.filter(
-      (r) => r.category === "EXPERIMENT"
-    ).length
-    const openSource = allRepos.filter(
-      (r) => r.category === "OPEN_SOURCE"
-    ).length
+    if (allRepos && allRepos.length > 0) {
+      const total = allRepos.length
+      const assignments = allRepos.filter(
+        (r) => r.category === "ASSIGNMENT"
+      ).length
+      const experiments = allRepos.filter(
+        (r) => r.category === "EXPERIMENT"
+      ).length
+      const openSource = allRepos.filter(
+        (r) => r.category === "OPEN_SOURCE"
+      ).length
 
-    const totalStars = allRepos.reduce(
-      (acc, curr) => acc + (curr.stars || 0),
-      0
-    )
-    const totalDownloads = allRepos.reduce(
-      (acc, curr) => acc + (curr.downloads || 0),
-      0
-    )
+      const totalStars = allRepos.reduce(
+        (acc, curr) => acc + (curr.stars || 0),
+        0
+      )
+      const totalDownloads = allRepos.reduce(
+        (acc, curr) => acc + (curr.downloads || 0),
+        0
+      )
 
-    return {
-      total,
-      assignments,
-      experiments,
-      openSource,
-      totalStars,
-      totalDownloads,
+      return {
+        total,
+        assignments,
+        experiments,
+        openSource,
+        totalStars,
+        totalDownloads,
+      }
     }
+
+    return getFallbackStats()
   } catch (error) {
-    console.error("Failed to fetch docs repo stats:", error)
-    return {
-      total: 0,
-      assignments: 0,
-      experiments: 0,
-      openSource: 0,
-      totalStars: 0,
-      totalDownloads: 0,
-    }
+    console.error(
+      "Failed to fetch docs repo stats, serving resilient fallback data:",
+      error
+    )
+    return getFallbackStats()
   }
 }
 
@@ -230,29 +276,38 @@ async function fetchCategoriesAndCourses() {
       .from(repositories)
       .where(eq(repositories.isPublic, true))
 
-    const coursesMap = new Map<string, { semester?: string; count: number }>()
+    if (repos && repos.length > 0) {
+      const coursesMap = new Map<string, { semester?: string; count: number }>()
 
-    for (const r of repos) {
-      if (r.courseName) {
-        const existing = coursesMap.get(r.courseName) || {
-          semester: r.semester || undefined,
-          count: 0,
+      for (const r of repos) {
+        if (r.courseName) {
+          const existing = coursesMap.get(r.courseName) || {
+            semester: r.semester || undefined,
+            count: 0,
+          }
+          existing.count += 1
+          coursesMap.set(r.courseName, existing)
         }
-        existing.count += 1
-        coursesMap.set(r.courseName, existing)
+      }
+
+      const courses = Array.from(coursesMap.entries()).map(([name, val]) => ({
+        name,
+        semester: val.semester,
+        count: val.count,
+      }))
+
+      if (courses.length > 0) {
+        return { courses }
       }
     }
 
-    const courses = Array.from(coursesMap.entries()).map(([name, val]) => ({
-      name,
-      semester: val.semester,
-      count: val.count,
-    }))
-
-    return { courses }
+    return getFallbackCategoriesAndCourses()
   } catch (error) {
-    console.error("Failed to fetch categories & courses:", error)
-    return { courses: [] }
+    console.error(
+      "Failed to fetch categories & courses, serving resilient fallback data:",
+      error
+    )
+    return getFallbackCategoriesAndCourses()
   }
 }
 
@@ -264,3 +319,40 @@ export const getCategoriesAndCourses = unstable_cache(
     tags: ["docs"],
   }
 )
+
+export async function getAllRepoSlugs(): Promise<string[]> {
+  try {
+    const rows = await db
+      .select({ slug: repositories.slug })
+      .from(repositories)
+      .where(eq(repositories.isPublic, true))
+
+    if (rows && rows.length > 0) {
+      return rows.map((r) => r.slug)
+    }
+
+    return getAllFallbackSlugs()
+  } catch {
+    return getAllFallbackSlugs()
+  }
+}
+
+export async function getAllRepoFilePaths(slug: string): Promise<string[]> {
+  try {
+    const repo = await getRepositoryBySlug(slug)
+    if (!repo) return getAllFallbackFilePaths(slug)
+
+    const files = await db
+      .select({ path: repoFiles.path, isDirectory: repoFiles.isDirectory })
+      .from(repoFiles)
+      .where(and(eq(repoFiles.repoId, repo.id), eq(repoFiles.isDirectory, false)))
+
+    if (files && files.length > 0) {
+      return files.map((f) => f.path)
+    }
+
+    return getAllFallbackFilePaths(slug)
+  } catch {
+    return getAllFallbackFilePaths(slug)
+  }
+}
