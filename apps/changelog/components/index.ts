@@ -1,3 +1,7 @@
 export * from "./changelog-header"
 export * from "./changelog-footer"
 export * from "./command-search"
+export * from "./filter-bar"
+export * from "./release-card"
+export * from "./timeline-nav"
+export * from "./timeline-explorer"
