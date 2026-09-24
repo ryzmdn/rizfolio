@@ -235,6 +235,12 @@ export async function getCurrentUser() {
     const token = cookieStore.get(SESSION_COOKIE_NAME)?.value
     return await validateOwnerSession(token)
   } catch (error: unknown) {
+    if (
+      (error as { digest?: string })?.digest === "DYNAMIC_SERVER_USAGE" ||
+      (error instanceof Error && error.message.includes("Dynamic server usage"))
+    ) {
+      throw error
+    }
     console.error(
       "[Auth Actions] getCurrentUser validation failed:",
       error instanceof Error ? error.message : String(error)
