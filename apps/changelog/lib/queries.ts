@@ -1,129 +1,87 @@
 import { unstable_cache } from "next/cache"
 import { db, changelogs, changelogItems, eq, desc, asc } from "@workspace/db"
+import {
+  fallbackChangelogs,
+  roadmapItems,
+  type ChangelogCategory,
+  type ChangelogItemData,
+  type ChangelogReleaseData,
+  type RoadmapItemData,
+  type ReleaseMetric,
+} from "../data"
 
-export type ChangelogCategory = "FEATURE" | "IMPROVEMENT" | "FIX" | "BREAKING"
-
-export interface ChangelogItemData {
-  id: string
-  category: ChangelogCategory | string
-  description: string
-  displayOrder: number
+export type {
+  ChangelogCategory,
+  ChangelogItemData,
+  ChangelogReleaseData,
+  RoadmapItemData,
+  ReleaseMetric,
 }
 
-export interface ChangelogReleaseData {
-  id: string
-  version: string
-  title: string
-  releaseDate: string
-  summary: string | null
-  isPublished: boolean
-  createdAt: Date | string
-  items: ChangelogItemData[]
+export interface ChangelogFilterOptions {
+  category?: string
+  appScope?: string
+  query?: string
+  year?: string
 }
 
-export const fallbackChangelogs: ChangelogReleaseData[] = [
-  {
-    id: "cl-1",
-    version: "v1.2.0",
-    title: "Personal CMS & GitHub-Style Archive Explorer",
-    releaseDate: "August 2026",
-    summary:
-      "Major ecosystem upgrade introducing full dynamic CMS management, Shiki-powered open-source code explorer, and unified database layers.",
-    isPublished: true,
-    createdAt: "2026-08-20T00:00:00.000Z",
-    items: [
-      {
-        id: "item-1-1",
-        category: "FEATURE",
-        description:
-          "Launched apps/docs with Shiki server-side code highlighting, folder navigation, and technical documentation explorer.",
-        displayOrder: 1,
-      },
-      {
-        id: "item-1-2",
-        category: "FEATURE",
-        description:
-          "Launched apps/cms dashboard for owner-only dynamic content management across all 6 applications.",
-        displayOrder: 2,
-      },
-      {
-        id: "item-1-3",
-        category: "IMPROVEMENT",
-        description:
-          "Integrated Drizzle ORM and Supabase transaction pooler (@workspace/db) with full type-safe relational schemas.",
-        displayOrder: 3,
-      },
-      {
-        id: "item-1-4",
-        category: "FIX",
-        description:
-          "Resolved pnpm workspace symlink hoisting conflicts and standardized port allocations across all dev servers.",
-        displayOrder: 4,
-      },
-    ],
-  },
-  {
-    id: "cl-2",
-    version: "v1.1.0",
-    title: "Tailwind CSS v4 Migration & OKLCH Theme Parity",
-    releaseDate: "July 2026",
-    summary:
-      "Modernized design system token pipeline with zero runtime CSS overhead and seamless dark/light theme switching.",
-    isPublished: true,
-    createdAt: "2026-07-25T00:00:00.000Z",
-    items: [
-      {
-        id: "item-2-1",
-        category: "IMPROVEMENT",
-        description:
-          "Migrated entire @workspace/ui component library to Tailwind CSS v4 and native CSS variables.",
-        displayOrder: 1,
-      },
-      {
-        id: "item-2-2",
-        category: "FEATURE",
-        description:
-          "Added Base UI dialogs, dropdowns, and progressive blur animations across portfolio and store.",
-        displayOrder: 2,
-      },
-      {
-        id: "item-2-3",
-        category: "FIX",
-        description:
-          "Eliminated hydration mismatch on initial theme rendering via next-themes AppProvider wrapper.",
-        displayOrder: 3,
-      },
-    ],
-  },
-  {
-    id: "cl-3",
-    version: "v1.0.0",
-    title: "Initial Monorepo Architecture Setup",
-    releaseDate: "June 2026",
-    summary:
-      "Foundational release establishing Turborepo, Next.js 16, React 19, and shared TypeScript configurations.",
-    isPublished: true,
-    createdAt: "2026-06-15T00:00:00.000Z",
-    items: [
-      {
-        id: "item-3-1",
-        category: "FEATURE",
-        description:
-          "Configured Turborepo pipeline with remote caching, strict linting, and typecheck tasks.",
-        displayOrder: 1,
-      },
-      {
-        id: "item-3-2",
-        category: "FEATURE",
-        description:
-          "Scaffolded portfolio, blog, and shop public applications with shared layout primitives.",
-        displayOrder: 2,
-      },
-    ],
-  },
-]
+function filterFallbackReleases(
+  releases: ChangelogReleaseData[],
+  filters?: ChangelogFilterOptions
+): ChangelogReleaseData[] {
+  if (!filters) return releases
 
-async function fetchChangelogReleases(): Promise<ChangelogReleaseData[]> {
+  let filtered = [...releases]
+
+  if (filters.category && filters.category !== "ALL") {
+    const targetCat = filters.category.toUpperCase()
+    filtered = filtered
+      .map((rel) => ({
+        ...rel,
+        items: rel.items.filter(
+          (item) => item.category.toUpperCase() === targetCat
+        ),
+      }))
+      .filter((rel) => rel.items.length > 0)
+  }
+
+  if (filters.appScope && filters.appScope !== "ALL") {
+    const targetScope = filters.appScope.toLowerCase()
+    filtered = filtered.filter(
+      (rel) =>
+        rel.scope.some((s) => s.toLowerCase().includes(targetScope)) ||
+        rel.items.some(
+          (item) =>
+            item.scope && item.scope.toLowerCase().includes(targetScope)
+        )
+    )
+  }
+
+  if (filters.query && filters.query.trim()) {
+    const q = filters.query.toLowerCase().trim()
+    filtered = filtered.filter(
+      (rel) =>
+        rel.version.toLowerCase().includes(q) ||
+        rel.title.toLowerCase().includes(q) ||
+        (rel.summary && rel.summary.toLowerCase().includes(q)) ||
+        rel.items.some((item) => item.description.toLowerCase().includes(q))
+    )
+  }
+
+  if (filters.year && filters.year !== "ALL") {
+    filtered = filtered.filter(
+      (rel) =>
+        rel.releaseDate.includes(filters.year!) ||
+        new Date(rel.createdAt).getFullYear().toString() === filters.year
+    )
+  }
+
+  return filtered
+}
+
+async function fetchChangelogReleases(
+  filters?: ChangelogFilterOptions
+): Promise<ChangelogReleaseData[]> {
   try {
     const releaseRows = await db
       .select()
@@ -145,41 +103,194 @@ async function fetchChangelogReleases(): Promise<ChangelogReleaseData[]> {
             .where(eq(changelogItems.changelogId, rel.id))
             .orderBy(asc(changelogItems.displayOrder))
 
+          const fallbackMatch = fallbackChangelogs.find(
+            (fb) => fb.version.toLowerCase() === rel.version.toLowerCase()
+          )
+
           return {
             id: rel.id,
             version: rel.version,
+            slug: rel.version.toLowerCase().replace(/\./g, "-"),
             title: rel.title,
             releaseDate: rel.releaseDate,
             summary: rel.summary,
+            commitSha: fallbackMatch?.commitSha || "main",
+            scope: fallbackMatch?.scope || ["monorepo"],
+            metrics: fallbackMatch?.metrics,
             isPublished: rel.isPublished,
-            createdAt: rel.createdAt,
-            items,
+            createdAt:
+              rel.createdAt instanceof Date
+                ? rel.createdAt.toISOString()
+                : String(rel.createdAt),
+            items: items.map((it) => ({
+              ...it,
+              scope: fallbackMatch?.items.find((fbi) => fbi.id === it.id)?.scope,
+            })),
           }
         })
       )
 
-      return fullReleases
+      return filterFallbackReleases(fullReleases, filters)
     }
-  } catch (error) {
-    console.warn(
-      "[Changelog Data Layer] Failed to fetch changelog releases, using fallback:",
-      error instanceof Error ? error.message : "Unknown error"
-    )
+  } catch {
+    return filterFallbackReleases(fallbackChangelogs, filters)
   }
 
-  return fallbackChangelogs
+  return filterFallbackReleases(fallbackChangelogs, filters)
 }
 
-export const getChangelogReleases = unstable_cache(
-  fetchChangelogReleases,
-  ["changelog-releases"],
-  {
-    revalidate: 3600,
-    tags: ["changelog"],
+export async function getChangelogReleases(
+  filters?: ChangelogFilterOptions
+): Promise<ChangelogReleaseData[]> {
+  const cacheKey = `releases-${filters?.category || "all"}-${filters?.appScope || "all"}-${filters?.query || ""}-${filters?.year || "all"}`
+  return unstable_cache(
+    () => fetchChangelogReleases(filters),
+    ["changelog-releases", cacheKey],
+    {
+      revalidate: 3600,
+      tags: ["changelog"],
+    }
+  )()
+}
+
+async function fetchReleaseByVersion(
+  version: string
+): Promise<ChangelogReleaseData | null> {
+  const normalized = version.toLowerCase().trim()
+  const cleanVersion = normalized.startsWith("v")
+    ? normalized
+    : `v${normalized}`
+  const hyphenVersion = normalized.replace(/\./g, "-")
+
+  try {
+    const [row] = await db
+      .select()
+      .from(changelogs)
+      .where(eq(changelogs.version, cleanVersion))
+      .limit(1)
+
+    if (row) {
+      const items = await db
+        .select({
+          id: changelogItems.id,
+          category: changelogItems.category,
+          description: changelogItems.description,
+          displayOrder: changelogItems.displayOrder,
+        })
+        .from(changelogItems)
+        .where(eq(changelogItems.changelogId, row.id))
+        .orderBy(asc(changelogItems.displayOrder))
+
+      const fallbackMatch = fallbackChangelogs.find(
+        (fb) => fb.version.toLowerCase() === row.version.toLowerCase()
+      )
+
+      return {
+        id: row.id,
+        version: row.version,
+        slug: row.version.toLowerCase().replace(/\./g, "-"),
+        title: row.title,
+        releaseDate: row.releaseDate,
+        summary: row.summary,
+        commitSha: fallbackMatch?.commitSha || "main",
+        scope: fallbackMatch?.scope || ["monorepo"],
+        metrics: fallbackMatch?.metrics,
+        isPublished: row.isPublished,
+        createdAt:
+          row.createdAt instanceof Date
+            ? row.createdAt.toISOString()
+            : String(row.createdAt),
+        items,
+      }
+    }
+  } catch {
+    const fallbackMatch = fallbackChangelogs.find(
+      (rel) =>
+        rel.version.toLowerCase() === normalized ||
+        rel.version.toLowerCase() === cleanVersion ||
+        rel.slug.toLowerCase() === normalized ||
+        rel.slug.toLowerCase() === hyphenVersion
+    )
+    return fallbackMatch || null
   }
-)
+
+  const fallbackMatch = fallbackChangelogs.find(
+    (rel) =>
+      rel.version.toLowerCase() === normalized ||
+      rel.version.toLowerCase() === cleanVersion ||
+      rel.slug.toLowerCase() === normalized ||
+      rel.slug.toLowerCase() === hyphenVersion
+  )
+  return fallbackMatch || null
+}
+
+export async function getReleaseByVersion(
+  version: string
+): Promise<ChangelogReleaseData | null> {
+  return unstable_cache(
+    () => fetchReleaseByVersion(version),
+    ["changelog-release", version],
+    {
+      revalidate: 3600,
+      tags: ["changelog", `release-${version}`],
+    }
+  )()
+}
+
+export async function getAllReleaseVersions(): Promise<string[]> {
+  try {
+    const rows = await db
+      .select({ version: changelogs.version })
+      .from(changelogs)
+      .where(eq(changelogs.isPublished, true))
+
+    if (rows && rows.length > 0) {
+      return rows.map((r) => r.version)
+    }
+  } catch {
+    return fallbackChangelogs.map((r) => r.version)
+  }
+
+  return fallbackChangelogs.map((r) => r.version)
+}
 
 export async function getLatestRelease(): Promise<ChangelogReleaseData | null> {
   const releases = await getChangelogReleases()
   return releases[0] || null
+}
+
+export async function getRoadmapItems(
+  stage?: string
+): Promise<RoadmapItemData[]> {
+  if (stage && stage !== "ALL") {
+    return roadmapItems.filter(
+      (item) => item.stage.toUpperCase() === stage.toUpperCase()
+    )
+  }
+  return roadmapItems
+}
+
+export async function getChangelogStats(): Promise<{
+  totalReleases: number
+  shippedMilestones: number
+  appsCount: number
+  currentVersion: string
+}> {
+  const releases = await getChangelogReleases()
+  const allScopes = new Set<string>()
+  let totalItemsCount = 0
+
+  for (const rel of releases) {
+    for (const sc of rel.scope) {
+      allScopes.add(sc)
+    }
+    totalItemsCount += rel.items.length
+  }
+
+  return {
+    totalReleases: releases.length,
+    shippedMilestones: totalItemsCount,
+    appsCount: allScopes.size > 0 ? allScopes.size : 6,
+    currentVersion: releases[0]?.version || "v1.3.0",
+  }
 }
