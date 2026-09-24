@@ -259,6 +259,28 @@ export async function getLatestRelease(): Promise<ChangelogReleaseData | null> {
   return releases[0] || null
 }
 
+export async function getAdjacentReleases(version: string): Promise<{
+  newer: ChangelogReleaseData | null
+  older: ChangelogReleaseData | null
+}> {
+  const releases = await getChangelogReleases()
+  const cleanVersion = version.toLowerCase().trim()
+  const index = releases.findIndex(
+    (r) =>
+      r.version.toLowerCase() === cleanVersion ||
+      r.slug.toLowerCase() === cleanVersion
+  )
+
+  if (index === -1) {
+    return { newer: null, older: null }
+  }
+
+  return {
+    newer: index > 0 ? (releases[index - 1] ?? null) : null,
+    older: index < releases.length - 1 ? (releases[index + 1] ?? null) : null,
+  }
+}
+
 export async function getRoadmapItems(
   stage?: string
 ): Promise<RoadmapItemData[]> {
