@@ -101,3 +101,43 @@ export async function downloadFile(
 
   return data
 }
+
+export interface StorageFileItem {
+  name: string
+  id?: string
+  updated_at?: string
+  created_at?: string
+  last_accessed_at?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface ListFilesOptions {
+  bucket: StorageBucket
+  path?: string
+  limit?: number
+  offset?: number
+  sortBy?: {
+    column?: string
+    order?: "asc" | "desc"
+  }
+}
+
+export async function listFiles(
+  options: ListFilesOptions
+): Promise<StorageFileItem[]> {
+  const client = getStorageAdminClient()
+  const { data, error } = await client.storage
+    .from(options.bucket)
+    .list(options.path || "", {
+      limit: options.limit ?? 100,
+      offset: options.offset ?? 0,
+      sortBy: options.sortBy ?? { column: "created_at", order: "desc" },
+    })
+
+  if (error) {
+    throw new Error(`Failed to list files from storage: ${error.message}`)
+  }
+
+  return (data || []) as StorageFileItem[]
+}
+
