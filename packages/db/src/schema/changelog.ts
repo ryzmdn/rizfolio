@@ -29,3 +29,21 @@ export const changelogItems = pgTable("changelog_items", {
   description: text("description").notNull(),
   displayOrder: integer("display_order").notNull().default(0),
 })
+
+export const roadmapItems = pgTable("roadmap_items", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  stage: varchar("stage", { length: 50 }).notNull().default("PLANNED"),
+  quarter: varchar("quarter", { length: 50 }).notNull().default("Q4 2026"),
+  priority: varchar("priority", { length: 50 }).notNull().default("MEDIUM"),
+  scope: text("scope").array(),
+  relatedVersion: varchar("related_version", { length: 50 }),
+  displayOrder: integer("display_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
