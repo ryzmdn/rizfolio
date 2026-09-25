@@ -2,6 +2,7 @@ import { Settings, RefreshCw } from "lucide-react"
 import { CmsPageShell } from "@/components/cms-page-shell"
 import { RevalidationButton } from "@/components/revalidation-button"
 import { FormSubmitButton } from "@/components/form-submit-button"
+import { SystemHealthDiagnostics } from "@/components/settings/system-health-diagnostics"
 import {
   getSiteSettings,
   updateSiteSettings,
@@ -32,6 +33,8 @@ export default async function SettingsPage() {
       description="Konfigurasi parameter global situs, otentikasi, dan revalidasi cache ISR."
     >
       <div className="space-y-8">
+        <SystemHealthDiagnostics />
+
         <div className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
           <div className="flex items-center gap-2">
             <RefreshCw className="size-4 text-muted-foreground" />
