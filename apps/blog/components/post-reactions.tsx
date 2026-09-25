@@ -1,8 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Heart } from "lucide-react"
-import { buttonVariants } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
 
 interface PostReactionsProps {
@@ -15,18 +14,14 @@ export function PostReactions({
   initialCount = 12,
 }: PostReactionsProps) {
   const [likes, setLikes] = useState(initialCount)
-  const [hasLiked, setHasLiked] = useState(false)
-
-  useEffect(() => {
+  const [hasLiked, setHasLiked] = useState(() => {
+    if (typeof window === "undefined") return false
     try {
-      const stored = localStorage.getItem(`blog_reaction_${postId}`)
-      if (stored) {
-        setHasLiked(true)
-      }
+      return Boolean(localStorage.getItem(`blog_reaction_${postId}`))
     } catch {
-      // LocalStorage inaccessible
+      return false
     }
-  }, [postId])
+  })
 
   const handleToggleLike = () => {
     const nextState = !hasLiked
@@ -40,22 +35,22 @@ export function PostReactions({
         localStorage.removeItem(`blog_reaction_${postId}`)
       }
     } catch {
-      // LocalStorage inaccessible
+      // LocalStorage unavailable
     }
   }
 
   return (
-    <div className="flex items-center gap-x-2">
+    <div className="flex items-center gap-3">
       <button
         type="button"
         onClick={handleToggleLike}
         aria-label={hasLiked ? "Unlike this article" : "Like this article"}
+        aria-pressed={hasLiked}
         className={cn(
-          buttonVariants({
-            variant: hasLiked ? "default" : "outline",
-            size: "sm",
-          }),
-          "gap-x-2 text-xs h-8 px-3 rounded-lg transition-all"
+          "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-medium transition-all",
+          hasLiked
+            ? "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400"
+            : "border-border/60 text-muted-foreground hover:border-foreground/30 hover:text-foreground"
         )}
       >
         <Heart
@@ -66,8 +61,8 @@ export function PostReactions({
         />
         <span>{likes}</span>
       </button>
-      <span className="text-[11px] text-muted-foreground">
-        Found this insightful
+      <span className="text-xs text-muted-foreground">
+        Found this useful
       </span>
     </div>
   )

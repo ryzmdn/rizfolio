@@ -13,18 +13,18 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
   return (
     <nav
       aria-label="Article navigation"
-      className="grid grid-cols-1 gap-4 pt-8 sm:grid-cols-2 border-t border-border/40"
+      className="grid grid-cols-1 gap-px border-t border-border/40 pt-8 sm:grid-cols-2"
     >
       {prev ? (
         <Link
           href={`/blog/${prev.slug}`}
-          className="group flex flex-col justify-between rounded-xl border border-border/60 bg-card/40 p-4 transition-all hover:border-border hover:bg-card"
+          className="group flex flex-col gap-2 border-r border-border/30 pr-6"
         >
-          <span className="flex items-center gap-x-1.5 text-xs text-muted-foreground">
-            <ArrowLeft className="size-3 transition-transform group-hover:-translate-x-1" />
-            <span>Previous Article</span>
+          <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+            <ArrowLeft className="size-3 transition-transform group-hover:-translate-x-0.5" />
+            <span>Previous</span>
           </span>
-          <span className="mt-2 text-xs sm:text-sm font-medium text-foreground transition-colors group-hover:text-primary line-clamp-2">
+          <span className="text-sm font-medium leading-snug text-foreground line-clamp-2">
             {prev.title}
           </span>
         </Link>
@@ -35,13 +35,13 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
       {next ? (
         <Link
           href={`/blog/${next.slug}`}
-          className="group flex flex-col justify-between rounded-xl border border-border/60 bg-card/40 p-4 text-right transition-all hover:border-border hover:bg-card sm:text-right"
+          className="group flex flex-col gap-2 text-right sm:pl-6"
         >
-          <span className="flex items-center justify-end gap-x-1.5 text-xs text-muted-foreground">
-            <span>Next Article</span>
-            <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
+          <span className="flex items-center justify-end gap-1.5 text-xs font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+            <span>Next</span>
+            <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
           </span>
-          <span className="mt-2 text-xs sm:text-sm font-medium text-foreground transition-colors group-hover:text-primary line-clamp-2">
+          <span className="text-sm font-medium leading-snug text-foreground line-clamp-2">
             {next.title}
           </span>
         </Link>

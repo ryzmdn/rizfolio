@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useTransition, useEffect, useRef } from "react"
+import React, { useTransition, useEffect, useRef, useState } from "react"
 import { useRouter, useSearchParams, usePathname } from "next/navigation"
-import { Search, X, Layers, SlidersHorizontal, Sparkles, Tag } from "lucide-react"
+import { Search, X, Tag, SlidersHorizontal } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 import type { CategoryWithCount } from "@/lib/queries"
 
@@ -27,15 +27,11 @@ export function FilterSection({
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [isPending, startTransition] = useTransition()
-  const [query, setQuery] = React.useState(searchQuery)
+  const [query, setQuery] = useState(searchQuery)
+  const [sortOpen, setSortOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  // Sync query input with prop updates
-  useEffect(() => {
-    setQuery(searchQuery)
-  }, [searchQuery])
 
-  // Global keyboard shortcut ('/' to focus search)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
@@ -53,7 +49,6 @@ export function FilterSection({
 
   const createQueryString = (paramsToUpdate: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString())
-
     for (const [key, value] of Object.entries(paramsToUpdate)) {
       if (value && value !== "all") {
         params.set(key, value)
@@ -61,8 +56,7 @@ export function FilterSection({
         params.delete(key)
       }
     }
-
-    params.delete("page") // Always reset to page 1 on filter changes
+    params.delete("page")
     return params.toString()
   }
 
@@ -81,6 +75,7 @@ export function FilterSection({
   }
 
   const handleSortChange = (newSort: "latest" | "popular") => {
+    setSortOpen(false)
     startTransition(() => {
       const queryString = createQueryString({ sort: newSort === "latest" ? null : newSort })
       router.push(queryString ? `${pathname}?${queryString}` : pathname)
@@ -103,24 +98,38 @@ export function FilterSection({
     })
   }
 
+  const sortLabel = currentSort === "popular" ? "Popular" : "Latest"
+
   return (
     <div className="w-full space-y-3">
-      <div className="flex flex-col items-stretch justify-between gap-3 md:flex-row md:items-center">
-        {/* Category Pills Bar */}
-        <div className="flex scrollbar-none items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+      <div className="flex items-center justify-between gap-3">
+        <div
+          className="flex flex-1 items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none"
+          role="group"
+          aria-label="Filter by category"
+        >
           <button
             type="button"
             onClick={() => handleCategorySelect("all")}
             className={cn(
-              "inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all",
+              "inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
               activeCategory === "all" || !activeCategory
-                ? "bg-foreground text-background shadow-xs font-semibold"
-                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                ? "bg-foreground text-background"
+                : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
             )}
+            aria-pressed={activeCategory === "all" || !activeCategory}
           >
-            <Layers className="size-3.5" />
-            <span>All Articles</span>
-            <span className="text-[10px] opacity-70">({totalPosts})</span>
+            <span>All</span>
+            <span
+              className={cn(
+                "text-[10px] tabular-nums",
+                activeCategory === "all" || !activeCategory
+                  ? "opacity-60"
+                  : "opacity-50"
+              )}
+            >
+              {totalPosts}
+            </span>
           </button>
 
           {categories.map((cat) => {
@@ -131,72 +140,92 @@ export function FilterSection({
                 type="button"
                 onClick={() => handleCategorySelect(cat.slug)}
                 className={cn(
-                  "inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all",
+                  "inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
                   isActive
-                    ? "bg-foreground text-background shadow-xs font-semibold"
-                    : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                 )}
+                aria-pressed={isActive}
               >
                 <span>{cat.name}</span>
-                <span className="text-[10px] opacity-70">({cat.count})</span>
+                <span
+                  className={cn(
+                    "text-[10px] tabular-nums",
+                    isActive ? "opacity-60" : "opacity-50"
+                  )}
+                >
+                  {cat.count}
+                </span>
               </button>
             )
           })}
         </div>
 
-        {/* Search & Sort Controls */}
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center rounded-lg border border-border/70 bg-card/40 p-0.5 text-xs">
+        <div className="flex shrink-0 items-center gap-2">
+          <div className="relative">
             <button
               type="button"
-              onClick={() => handleSortChange("latest")}
-              className={cn(
-                "rounded-md px-2.5 py-1 text-[11px] font-medium transition-all",
-                currentSort === "latest" || !currentSort
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
+              id="sort-button"
+              aria-haspopup="true"
+              aria-expanded={sortOpen}
+              onClick={() => setSortOpen((prev) => !prev)}
+              className="inline-flex items-center gap-x-1.5 rounded-md border border-border/60 px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
             >
-              Latest
+              <SlidersHorizontal className="size-3.5" />
+              <span>{sortLabel}</span>
             </button>
-            <button
-              type="button"
-              onClick={() => handleSortChange("popular")}
-              className={cn(
-                "rounded-md px-2.5 py-1 text-[11px] font-medium transition-all",
-                currentSort === "popular"
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              Popular
-            </button>
+
+            {sortOpen && (
+              <div
+                role="menu"
+                aria-labelledby="sort-button"
+                className="absolute right-0 top-full z-10 mt-1.5 w-32 overflow-hidden rounded-lg border border-border/70 bg-card shadow-md"
+              >
+                {(["latest", "popular"] as const).map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    role="menuitem"
+                    onClick={() => handleSortChange(option)}
+                    className={cn(
+                      "w-full px-3 py-2 text-left text-xs transition-colors",
+                      currentSort === option || (!currentSort && option === "latest")
+                        ? "bg-muted font-medium text-foreground"
+                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                    )}
+                  >
+                    {option === "latest" ? "Latest first" : "Most viewed"}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <form
             onSubmit={handleSearchSubmit}
-            className="relative flex flex-1 md:w-60 items-center"
+            className="relative flex items-center"
           >
-            <Search className="pointer-events-none absolute left-3 size-3.5 text-muted-foreground" />
+            <Search className="pointer-events-none absolute left-2.5 size-3.5 text-muted-foreground" />
             <input
               ref={searchInputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search articles... (Press /)"
-              className="w-full rounded-lg border border-border/80 bg-background py-1.5 pr-8 pl-9 text-xs transition-all placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-primary/50"
+              placeholder="Search..."
+              aria-label="Search articles"
+              className="h-8 w-40 rounded-md border border-border/60 bg-background py-1.5 pr-7 pl-8 text-xs placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:outline-none sm:w-52"
             />
             {query ? (
               <button
                 type="button"
                 onClick={handleClearSearch}
                 aria-label="Clear search"
-                className="absolute right-2.5 cursor-pointer p-0.5 text-muted-foreground hover:text-foreground"
+                className="absolute right-2 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3.5" />
               </button>
             ) : (
-              <kbd className="pointer-events-none absolute right-2.5 hidden select-none rounded border border-border/60 bg-muted px-1.5 font-mono text-[9px] text-muted-foreground sm:inline-block">
+              <kbd className="pointer-events-none absolute right-2 hidden select-none rounded border border-border/40 bg-muted px-1 font-mono text-[9px] text-muted-foreground sm:inline">
                 /
               </kbd>
             )}
@@ -204,32 +233,31 @@ export function FilterSection({
         </div>
       </div>
 
-      {/* Active Filter Indicators (Tag or Query) */}
       {(activeTag || searchQuery) && (
-        <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
-          <span className="text-muted-foreground">Active filter:</span>
+        <div className="flex flex-wrap items-center gap-1.5 pt-0.5 text-xs">
+          <span className="text-muted-foreground/70">Filtered by:</span>
           {activeTag && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 text-primary text-[11px]">
+            <span className="inline-flex items-center gap-1 rounded-md border border-border/50 bg-muted/60 px-2 py-0.5 text-muted-foreground">
               <Tag className="size-3" />
               <span>#{activeTag}</span>
               <button
                 type="button"
                 onClick={handleClearTag}
                 aria-label="Remove tag filter"
-                className="cursor-pointer hover:opacity-75"
+                className="hover:text-foreground"
               >
                 <X className="size-3" />
               </button>
             </span>
           )}
           {searchQuery && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-border bg-muted px-2 py-0.5 text-muted-foreground text-[11px]">
+            <span className="inline-flex items-center gap-1 rounded-md border border-border/50 bg-muted/60 px-2 py-0.5 text-muted-foreground">
               <span>&ldquo;{searchQuery}&rdquo;</span>
               <button
                 type="button"
                 onClick={handleClearSearch}
-                aria-label="Remove query filter"
-                className="cursor-pointer hover:opacity-75"
+                aria-label="Remove search filter"
+                className="hover:text-foreground"
               >
                 <X className="size-3" />
               </button>
@@ -238,10 +266,9 @@ export function FilterSection({
         </div>
       )}
 
-      {/* Loading bar for transitions */}
       {isPending && (
-        <div className="h-0.5 w-full overflow-hidden rounded-full bg-primary/20">
-          <div className="h-full w-1/3 animate-pulse bg-primary" />
+        <div aria-hidden="true" className="h-px w-full overflow-hidden rounded-full bg-border/30">
+          <div className="h-full w-2/5 animate-pulse bg-foreground/30 rounded-full" />
         </div>
       )}
     </div>

@@ -1,144 +1,138 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X, Rss, ArrowLeft, ArrowUpRight } from "lucide-react"
+import { Menu, X, Rss, ArrowUpRight } from "lucide-react"
 import { Header } from "@workspace/ui/components/layouts"
-import { buttonVariants } from "@workspace/ui/components/button"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 import { cn } from "@workspace/ui/lib/utils"
 
-const navTopics = [
-  { href: "/", label: "All Articles" },
+const navItems = [
+  { href: "/", label: "All" },
   { href: "/?category=architecture", label: "Architecture" },
   { href: "/?category=frontend", label: "Frontend" },
   { href: "/?category=performance", label: "Performance" },
+  { href: "/?category=database", label: "Database" },
 ]
 
 export function BlogHeader() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const portfolioUrl =
     process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://rizkyramadhan.dev"
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <Header
       id="blog-header"
-      className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md"
+      className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        scrolled
+          ? "border-b border-zinc-200/80 bg-background/95 backdrop-blur-xl dark:border-zinc-800/80"
+          : "border-b border-transparent bg-transparent"
+      )}
     >
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand & Identity */}
-        <div className="flex items-center gap-x-3">
-          <Link
-            href="/"
-            className="flex items-center gap-x-2 text-sm font-medium tracking-tight text-foreground transition-opacity hover:opacity-80"
-          >
-            <span className="font-semibold text-primary">Rizky Ramadhan</span>
-            <span className="text-muted-foreground/60">/</span>
-            <span className="text-xs text-muted-foreground">Engineering Blog</span>
-          </Link>
-        </div>
+      <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-5 lg:px-8">
+        <Link
+          href="/"
+          className="group flex items-baseline gap-x-2"
+          aria-label="Rizky Ramadhan Engineering Blog"
+        >
+          <span className="font-semibold tracking-tight text-foreground transition-opacity group-hover:opacity-75">
+            Rizky Ramadhan
+          </span>
+          <span className="hidden text-[11px] font-medium uppercase tracking-widest text-muted-foreground sm:inline">
+            Engineering
+          </span>
+        </Link>
 
-        {/* Desktop Nav Topics */}
-        <nav className="hidden items-center gap-x-1 md:flex">
-          {navTopics.map((item) => (
+        <nav className="hidden items-center gap-x-0.5 md:flex" aria-label="Main navigation">
+          {navItems.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-x-2 sm:gap-x-2.5">
+        <div className="flex items-center gap-x-1.5">
           <a
             href="/rss.xml"
             target="_blank"
             rel="noreferrer"
             aria-label="RSS Feed"
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "icon-sm" }),
-              "text-muted-foreground hover:text-foreground"
-            )}
+            className="hidden rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground sm:flex"
           >
-            <Rss className="size-4" />
+            <Rss className="size-3.5" />
           </a>
 
-          <ThemeToggle
-            className={buttonVariants({
-              variant: "secondary",
-              size: "icon-sm",
-            })}
-          />
+          <ThemeToggle className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground" />
 
           <a
             href={portfolioUrl}
             target="_blank"
             rel="noreferrer"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "hidden gap-x-1.5 text-xs font-normal sm:inline-flex"
-            )}
+            className="hidden items-center gap-x-1 rounded-md border border-border/60 bg-muted/40 px-3 py-1.5 text-xs font-medium text-foreground transition-all hover:border-foreground/30 hover:bg-muted sm:inline-flex"
           >
-            <ArrowLeft className="size-3" />
             <span>Portfolio</span>
+            <ArrowUpRight className="size-3" />
           </a>
 
           <button
             type="button"
             onClick={() => setMobileOpen((prev) => !prev)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={mobileOpen}
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "icon-sm" }),
-              "md:hidden"
-            )}
+            className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground md:hidden"
           >
             {mobileOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="border-b border-border/60 bg-background/95 p-5 shadow-lg backdrop-blur-xl md:hidden">
-          <nav className="flex flex-col space-y-2">
-            {navTopics.map((item) => (
+        <div className="border-t border-border/50 bg-background/98 backdrop-blur-xl md:hidden">
+          <nav
+            aria-label="Mobile navigation"
+            className="mx-auto max-w-7xl divide-y divide-border/30 px-5"
+          >
+            {navItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-foreground hover:bg-muted"
+                className="flex items-center justify-between py-3 text-sm font-medium text-foreground"
               >
                 <span>{item.label}</span>
-                <span className="text-[10px] text-muted-foreground/60">&rarr;</span>
+                <ArrowUpRight className="size-3.5 text-muted-foreground" />
               </Link>
             ))}
-            <a
-              href="/rss.xml"
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
-            >
-              <span className="flex items-center gap-1.5">
-                <Rss className="size-3.5 text-amber-500" />
-                <span>RSS Syndication Feed</span>
-              </span>
-              <ArrowUpRight className="size-3.5" />
-            </a>
-            <a
-              href={portfolioUrl}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-between rounded-lg bg-primary/10 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/20"
-            >
-              <span>Back to Main Portfolio</span>
-              <ArrowUpRight className="size-3.5" />
-            </a>
+            <div className="flex items-center gap-x-4 py-4">
+              <a
+                href={portfolioUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-medium text-primary"
+              >
+                Portfolio
+              </a>
+              <a
+                href="/rss.xml"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-x-1 text-sm text-muted-foreground"
+              >
+                <Rss className="size-3.5" />
+                <span>RSS</span>
+              </a>
+            </div>
           </nav>
         </div>
       )}

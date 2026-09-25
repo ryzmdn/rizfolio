@@ -7,19 +7,19 @@ export function AuthorBio() {
     process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://rizkyramadhan.dev"
 
   return (
-    <div className="rounded-2xl border border-border/70 bg-card/60 p-6 sm:p-8 space-y-4">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-x-4">
-          <div className="relative size-12 shrink-0 overflow-hidden rounded-full ring-1 ring-border">
+    <div className="rounded-xl border border-border/50 bg-muted/20 p-6">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex items-center gap-4">
+          <div className="relative size-11 shrink-0 overflow-hidden rounded-full ring-1 ring-border/60">
             <Image
               src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
               alt="Rizky Ramadhan"
               fill
-              className="size-full object-cover"
+              className="object-cover"
             />
           </div>
           <div>
-            <h3 className="text-sm font-medium text-foreground">
+            <h3 className="text-sm font-semibold text-foreground">
               Rizky Ramadhan
             </h3>
             <p className="text-xs text-muted-foreground">
@@ -28,40 +28,40 @@ export function AuthorBio() {
           </div>
         </div>
 
-        <div className="flex items-center gap-x-3 text-xs">
+        <div className="flex items-center gap-3 text-xs">
           <a
             href={portfolioUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-x-1 text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-0.5 font-medium text-foreground underline underline-offset-2 hover:text-muted-foreground"
           >
             <span>Portfolio</span>
             <ArrowUpRight className="size-3" />
           </a>
-          <span className="text-muted-foreground/40">&bull;</span>
+          <span className="text-border">·</span>
           <a
             href="https://github.com/ryzmdn"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-x-1 text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
           >
-            <GitHub className="size-3" />
+            <GitHub className="size-3.5" />
             <span>GitHub</span>
           </a>
-          <span className="text-muted-foreground/40">&bull;</span>
+          <span className="text-border">·</span>
           <a
             href="https://linkedin.com/in/ryzmdn"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-x-1 text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
           >
-            <LinkedIn className="size-3" />
+            <LinkedIn className="size-3.5" />
             <span>LinkedIn</span>
           </a>
         </div>
       </div>
 
-      <p className="text-xs/relaxed text-muted-foreground">
+      <p className="mt-4 text-sm/relaxed text-muted-foreground">
         Architecting resilient digital systems at the intersection of robust full-stack engineering, accessible interface design, and observable cloud infrastructure.
       </p>
     </div>
