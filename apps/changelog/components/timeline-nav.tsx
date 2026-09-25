@@ -49,18 +49,21 @@ export function TimelineNav({ releases }: TimelineNavProps) {
   }
 
   return (
-    <aside className="sticky top-24 hidden h-fit w-64 shrink-0 rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs lg:block">
+    <aside
+      className="sticky top-24 hidden h-fit w-64 shrink-0 rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs lg:block"
+      aria-label="Release navigation"
+    >
       <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          <History className="size-3.5 text-primary" />
-          <span>Quick Jump</span>
+          <History className="size-3.5 text-foreground" />
+          <span>Timeline Index</span>
         </div>
         <span className="font-mono text-[11px] text-muted-foreground">
           {releases.length} releases
         </span>
       </div>
 
-      <nav className="my-3 space-y-1">
+      <nav className="my-3 space-y-1" aria-label="Version releases">
         {releases.map((rel) => {
           const isActive = activeVersion === rel.version
 
@@ -70,9 +73,9 @@ export function TimelineNav({ releases }: TimelineNavProps) {
               type="button"
               onClick={() => scrollToVersion(rel.version)}
               className={cn(
-                "group flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs transition-colors",
+                "group flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs transition-all",
                 isActive
-                  ? "bg-primary/10 font-semibold text-primary"
+                  ? "bg-foreground/10 font-bold text-foreground"
                   : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               )}
             >
@@ -80,12 +83,12 @@ export function TimelineNav({ releases }: TimelineNavProps) {
                 <span
                   className={cn(
                     "size-1.5 rounded-full transition-colors",
-                    isActive ? "bg-primary" : "bg-muted-foreground/40 group-hover:bg-foreground"
+                    isActive ? "bg-foreground" : "bg-muted-foreground/40 group-hover:bg-foreground"
                   )}
                 />
-                <span className="font-mono">{rel.version}</span>
+                <span className="font-mono font-medium">{rel.version}</span>
               </div>
-              <span className="text-[10px] text-muted-foreground">
+              <span className="font-mono text-[10px] text-muted-foreground">
                 {rel.releaseDate.split(" ")[0]}
               </span>
             </button>
@@ -93,26 +96,28 @@ export function TimelineNav({ releases }: TimelineNavProps) {
         })}
       </nav>
 
-      <div className="space-y-1.5 border-t border-border/60 pt-3">
+      <div className="space-y-1 border-t border-border/60 pt-3">
         <Link
           href="/roadmap"
-          className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+          className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground"
         >
           <div className="flex items-center gap-2">
-            <Milestone className="size-3.5 text-primary" />
+            <Milestone className="size-3.5" />
             <span>Product Roadmap</span>
           </div>
-          <span className="font-mono text-[10px] text-muted-foreground">Q1-Q4</span>
+          <span className="rounded border border-border/60 bg-muted/40 px-1 py-0.2 font-mono text-[10px] text-muted-foreground">
+            Upcoming
+          </span>
         </Link>
 
         <button
           type="button"
           onClick={scrollToTop}
-          className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+          className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground"
         >
           <div className="flex items-center gap-2">
             <ArrowUp className="size-3.5" />
-            <span>Scroll to Top</span>
+            <span>Back to top</span>
           </div>
         </button>
       </div>
