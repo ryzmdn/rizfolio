@@ -51,9 +51,10 @@ const client =
   globalThis.__postgresClient ??
   postgres(connectionString, {
     prepare: false,
-    max: isProduction ? 15 : 10,
-    idle_timeout: 20,
-    connect_timeout: 10,
+    max: isProduction ? 20 : 15,
+    idle_timeout: 30,
+    connect_timeout: 15,
+    max_lifetime: 300,
     ssl: isSupabase ? "require" : isProduction ? "require" : false,
   })
 

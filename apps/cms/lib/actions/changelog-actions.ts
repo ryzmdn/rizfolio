@@ -1,10 +1,20 @@
 "use server"
 
 import { db, eq, desc, asc } from "@workspace/db"
-import { changelogs, changelogItems } from "@workspace/db/schema"
+import {
+  changelogs,
+  changelogItems,
+  roadmapItems,
+} from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 import { dispatchBackgroundRevalidation } from "../revalidate"
+
+export type CreateChangelogInput = typeof changelogs.$inferInsert
+export type UpdateChangelogInput = Partial<typeof changelogs.$inferInsert>
+export type CreateChangelogItemInput = typeof changelogItems.$inferInsert
+export type CreateRoadmapItemInput = typeof roadmapItems.$inferInsert
+export type UpdateRoadmapItemInput = Partial<typeof roadmapItems.$inferInsert>
 
 export async function getChangelogs() {
   try {
@@ -46,7 +56,7 @@ export async function getChangelogById(id: string) {
   }
 }
 
-export async function createChangelog(values: typeof changelogs.$inferInsert) {
+export async function createChangelog(values: CreateChangelogInput) {
   const [created] = await db.insert(changelogs).values(values).returning()
   if (created) {
     logTransaction({
@@ -67,7 +77,7 @@ export async function createChangelog(values: typeof changelogs.$inferInsert) {
 
 export async function updateChangelog(
   id: string,
-  values: Partial<typeof changelogs.$inferInsert>
+  values: UpdateChangelogInput
 ) {
   const [updated] = await db
     .update(changelogs)
@@ -106,6 +116,27 @@ export async function deleteChangelog(id: string) {
   revalidatePath("/")
 }
 
+export async function getAllChangelogItems() {
+  try {
+    return await db
+      .select({
+        id: changelogItems.id,
+        changelogId: changelogItems.changelogId,
+        category: changelogItems.category,
+        description: changelogItems.description,
+        displayOrder: changelogItems.displayOrder,
+      })
+      .from(changelogItems)
+      .orderBy(asc(changelogItems.displayOrder))
+  } catch (error) {
+    console.error(
+      "[CMS Changelog] Failed to fetch all changelog items:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
+}
+
 export async function getChangelogItems(changelogId: string) {
   try {
     return await db
@@ -123,14 +154,102 @@ export async function getChangelogItems(changelogId: string) {
 }
 
 export async function createChangelogItem(
-  values: typeof changelogItems.$inferInsert
+  values: CreateChangelogItemInput
 ) {
   const [created] = await db.insert(changelogItems).values(values).returning()
+  dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   revalidatePath("/changelog")
   return created
 }
 
 export async function deleteChangelogItem(id: string) {
   await db.delete(changelogItems).where(eq(changelogItems.id, id))
+  dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
+  revalidatePath("/changelog")
+}
+
+export async function getRoadmapItems() {
+  try {
+    return await db
+      .select({
+        id: roadmapItems.id,
+        title: roadmapItems.title,
+        description: roadmapItems.description,
+        stage: roadmapItems.stage,
+        quarter: roadmapItems.quarter,
+        priority: roadmapItems.priority,
+        scope: roadmapItems.scope,
+        relatedVersion: roadmapItems.relatedVersion,
+        displayOrder: roadmapItems.displayOrder,
+        createdAt: roadmapItems.createdAt,
+        updatedAt: roadmapItems.updatedAt,
+      })
+      .from(roadmapItems)
+      .orderBy(asc(roadmapItems.displayOrder), desc(roadmapItems.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Changelog] Failed to fetch roadmap items:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
+}
+
+export async function createRoadmapItem(values: CreateRoadmapItemInput) {
+  const [created] = await db.insert(roadmapItems).values(values).returning()
+  if (created) {
+    logTransaction({
+      domain: "SYSTEM",
+      actionType: "ROADMAP_ITEM_CREATED",
+      status: "COMPLETED",
+      entityType: "roadmap_items",
+      entityId: created.id,
+      metadata: { title: created.title, stage: created.stage },
+    })
+    dispatchBackgroundRevalidation({ app: "changelog", path: "/roadmap" })
+  }
+  revalidatePath("/changelog")
+  return created
+}
+
+export async function updateRoadmapItem(
+  id: string,
+  values: UpdateRoadmapItemInput
+) {
+  const [updated] = await db
+    .update(roadmapItems)
+    .set({ ...values, updatedAt: new Date() })
+    .where(eq(roadmapItems.id, id))
+    .returning()
+  if (updated) {
+    logTransaction({
+      domain: "SYSTEM",
+      actionType: "ROADMAP_ITEM_UPDATED",
+      status: "COMPLETED",
+      entityType: "roadmap_items",
+      entityId: updated.id,
+      payloadAfter: values,
+    })
+    dispatchBackgroundRevalidation({ app: "changelog", path: "/roadmap" })
+  }
+  revalidatePath("/changelog")
+  return updated
+}
+
+export async function deleteRoadmapItem(id: string) {
+  const [deleted] = await db
+    .delete(roadmapItems)
+    .where(eq(roadmapItems.id, id))
+    .returning()
+  if (deleted) {
+    logTransaction({
+      domain: "SYSTEM",
+      actionType: "ROADMAP_ITEM_DELETED",
+      status: "COMPLETED",
+      entityType: "roadmap_items",
+      entityId: id,
+    })
+    dispatchBackgroundRevalidation({ app: "changelog", path: "/roadmap" })
+  }
   revalidatePath("/changelog")
 }

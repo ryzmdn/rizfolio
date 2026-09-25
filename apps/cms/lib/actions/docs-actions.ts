@@ -6,6 +6,9 @@ import { revalidatePath } from "next/cache"
 import { dispatchBackgroundRevalidation } from "../revalidate"
 import { logTransaction } from "./transaction-actions"
 
+export type CreateRepositoryInput = typeof repositories.$inferInsert
+export type UpdateRepositoryInput = Partial<typeof repositories.$inferInsert>
+
 export async function getAdminRepositories() {
   try {
     return await db
@@ -17,13 +20,17 @@ export async function getAdminRepositories() {
         category: repositories.category,
         courseName: repositories.courseName,
         semester: repositories.semester,
-        isPublic: repositories.isPublic,
-        starsCount: repositories.starsCount,
-        downloadsCount: repositories.downloadsCount,
+        techStack: repositories.techStack,
         githubUrl: repositories.githubUrl,
         demoUrl: repositories.demoUrl,
         license: repositories.license,
+        starsCount: repositories.starsCount,
+        viewsCount: repositories.viewsCount,
+        downloadsCount: repositories.downloadsCount,
+        readmeContent: repositories.readmeContent,
+        isPublic: repositories.isPublic,
         createdAt: repositories.createdAt,
+        updatedAt: repositories.updatedAt,
       })
       .from(repositories)
       .orderBy(desc(repositories.createdAt))
@@ -53,9 +60,7 @@ export async function getAdminRepoById(id: string) {
   }
 }
 
-export async function createRepository(
-  values: typeof repositories.$inferInsert
-) {
+export async function createRepository(values: CreateRepositoryInput) {
   const [created] = await db.insert(repositories).values(values).returning()
   if (created) {
     logTransaction({
@@ -74,10 +79,7 @@ export async function createRepository(
   return created
 }
 
-export async function updateRepository(
-  id: string,
-  values: Partial<typeof repositories.$inferInsert>
-) {
+export async function updateRepository(id: string, values: UpdateRepositoryInput) {
   const [updated] = await db
     .update(repositories)
     .set({ ...values, updatedAt: new Date() })
@@ -125,6 +127,30 @@ export async function deleteRepository(id: string) {
   revalidatePath("/")
 }
 
+export async function getAllAdminRepoFiles() {
+  try {
+    return await db
+      .select({
+        id: repoFiles.id,
+        repoId: repoFiles.repoId,
+        path: repoFiles.path,
+        filename: repoFiles.filename,
+        sizeBytes: repoFiles.sizeBytes,
+        isDirectory: repoFiles.isDirectory,
+        storageUrl: repoFiles.storageUrl,
+        contentText: repoFiles.contentText,
+      })
+      .from(repoFiles)
+      .orderBy(desc(repoFiles.isDirectory), asc(repoFiles.path))
+  } catch (error) {
+    console.error(
+      "[CMS Docs] Failed to fetch all repo files:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
+}
+
 export async function getAdminRepoFiles(repoId: string) {
   try {
     return await db
@@ -136,6 +162,7 @@ export async function getAdminRepoFiles(repoId: string) {
         sizeBytes: repoFiles.sizeBytes,
         isDirectory: repoFiles.isDirectory,
         storageUrl: repoFiles.storageUrl,
+        contentText: repoFiles.contentText,
       })
       .from(repoFiles)
       .where(eq(repoFiles.repoId, repoId))
@@ -183,6 +210,21 @@ export async function updateRepoFile(
 export async function deleteRepoFile(id: string) {
   await db.delete(repoFiles).where(eq(repoFiles.id, id))
   revalidatePath("/docs")
+}
+
+export async function getAllAdminRepoReleases() {
+  try {
+    return await db
+      .select()
+      .from(repoReleases)
+      .orderBy(desc(repoReleases.createdAt))
+  } catch (error) {
+    console.error(
+      "[CMS Docs] Failed to fetch all repo releases:",
+      error instanceof Error ? error.message : error
+    )
+    return []
+  }
 }
 
 export async function getAdminRepoReleases(repoId: string) {

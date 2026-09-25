@@ -151,7 +151,7 @@ async function fetchCmsDashboardSummary(): Promise<DashboardSummaryData> {
   }
 }
 
-export const getCachedCmsDashboardSummary = unstable_cache(
+const getCachedSummary = unstable_cache(
   fetchCmsDashboardSummary,
   ["cms-dashboard-summary"],
   {
@@ -159,3 +159,7 @@ export const getCachedCmsDashboardSummary = unstable_cache(
     tags: ["cms-overview-stats"],
   }
 )
+
+export async function getCachedCmsDashboardSummary(): Promise<DashboardSummaryData> {
+  return getCachedSummary()
+}

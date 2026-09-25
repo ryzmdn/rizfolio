@@ -1,10 +1,26 @@
 "use server"
 
 import { db, eq, desc, asc } from "@workspace/db"
-import { posts, categories, tags } from "@workspace/db/schema"
+import {
+  posts,
+  categories,
+  tags,
+  postCategories,
+  postTags,
+} from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 import { dispatchBackgroundRevalidation } from "../revalidate"
+
+export type CreatePostInput = typeof posts.$inferInsert & {
+  categoryIds?: string[]
+  tagIds?: string[]
+}
+
+export type UpdatePostInput = Partial<typeof posts.$inferInsert> & {
+  categoryIds?: string[]
+  tagIds?: string[]
+}
 
 export async function getPosts() {
   try {
@@ -14,11 +30,15 @@ export async function getPosts() {
         title: posts.title,
         slug: posts.slug,
         excerpt: posts.excerpt,
+        contentMd: posts.contentMd,
         coverImageUrl: posts.coverImageUrl,
         status: posts.status,
         readingTime: posts.readingTime,
         publishedAt: posts.publishedAt,
+        seoTitle: posts.seoTitle,
+        seoDesc: posts.seoDesc,
         createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
       })
       .from(posts)
       .orderBy(desc(posts.createdAt))
@@ -28,6 +48,39 @@ export async function getPosts() {
       error instanceof Error ? error.message : error
     )
     return []
+  }
+}
+
+export async function getPostRelationsMap() {
+  try {
+    const [allPostCategories, allPostTags] = await Promise.all([
+      db.select().from(postCategories),
+      db.select().from(postTags),
+    ])
+
+    const postCategoriesMap: Record<string, string[]> = {}
+    for (const item of allPostCategories) {
+      if (!postCategoriesMap[item.postId]) {
+        postCategoriesMap[item.postId] = []
+      }
+      postCategoriesMap[item.postId]?.push(item.categoryId)
+    }
+
+    const postTagsMap: Record<string, string[]> = {}
+    for (const item of allPostTags) {
+      if (!postTagsMap[item.postId]) {
+        postTagsMap[item.postId] = []
+      }
+      postTagsMap[item.postId]?.push(item.tagId)
+    }
+
+    return { postCategoriesMap, postTagsMap }
+  } catch (error) {
+    console.error(
+      "[CMS Blog] Failed to fetch post relations:",
+      error instanceof Error ? error.message : error
+    )
+    return { postCategoriesMap: {}, postTagsMap: {} }
   }
 }
 
@@ -48,9 +101,30 @@ export async function getPostById(id: string) {
   }
 }
 
-export async function createPost(values: typeof posts.$inferInsert) {
-  const [created] = await db.insert(posts).values(values).returning()
+export async function createPost(input: CreatePostInput) {
+  const { categoryIds, tagIds, ...postValues } = input
+
+  const [created] = await db.insert(posts).values(postValues).returning()
+
   if (created) {
+    if (categoryIds && categoryIds.length > 0) {
+      await db.insert(postCategories).values(
+        categoryIds.map((categoryId) => ({
+          postId: created.id,
+          categoryId,
+        }))
+      )
+    }
+
+    if (tagIds && tagIds.length > 0) {
+      await db.insert(postTags).values(
+        tagIds.map((tagId) => ({
+          postId: created.id,
+          tagId,
+        }))
+      )
+    }
+
     logTransaction({
       domain: "CONTENT",
       actionType:
@@ -72,16 +146,40 @@ export async function createPost(values: typeof posts.$inferInsert) {
   return created
 }
 
-export async function updatePost(
-  id: string,
-  values: Partial<typeof posts.$inferInsert>
-) {
+export async function updatePost(id: string, input: UpdatePostInput) {
+  const { categoryIds, tagIds, ...postValues } = input
+
   const [updated] = await db
     .update(posts)
-    .set({ ...values, updatedAt: new Date() })
+    .set({ ...postValues, updatedAt: new Date() })
     .where(eq(posts.id, id))
     .returning()
+
   if (updated) {
+    if (Array.isArray(categoryIds)) {
+      await db.delete(postCategories).where(eq(postCategories.postId, id))
+      if (categoryIds.length > 0) {
+        await db.insert(postCategories).values(
+          categoryIds.map((categoryId) => ({
+            postId: id,
+            categoryId,
+          }))
+        )
+      }
+    }
+
+    if (Array.isArray(tagIds)) {
+      await db.delete(postTags).where(eq(postTags.postId, id))
+      if (tagIds.length > 0) {
+        await db.insert(postTags).values(
+          tagIds.map((tagId) => ({
+            postId: id,
+            tagId,
+          }))
+        )
+      }
+    }
+
     logTransaction({
       domain: "CONTENT",
       actionType: "POST_UPDATED",

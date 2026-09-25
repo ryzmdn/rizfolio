@@ -73,3 +73,21 @@ export const orderItems = pgTable("order_items", {
   downloadToken: varchar("download_token", { length: 255 }),
   tokenExpiresAt: timestamp("token_expires_at", { withTimezone: true }),
 })
+
+export const coupons = pgTable("coupons", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  code: varchar("code", { length: 50 }).notNull().unique(),
+  discountPercent: integer("discount_percent").notNull(),
+  description: text("description"),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
+  minSpend: integer("min_spend").default(0),
+  maxUses: integer("max_uses"),
+  usedCount: integer("used_count").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})

@@ -3,151 +3,111 @@ import {
   db,
   products,
   productFiles,
+  orders,
+  orderItems,
   eq,
   desc,
+  asc,
   and,
   ilike,
   or,
   ne,
 } from "@workspace/db"
+import {
+  fallbackProducts,
+  fallbackReviews,
+  fallbackCoupons,
+  fallbackOrders,
+  type ShopProduct,
+  type ShopProductFile,
+  type ProductReview,
+  type PromoCoupon,
+  type DigitalOrder,
+} from "../data"
 
-export interface ShopProductFile {
-  id: string
-  fileName: string
-  fileSizeBytes: number
+export {
+  fallbackProducts,
+  fallbackReviews,
+  fallbackCoupons,
+  fallbackOrders,
 }
 
-export interface ShopProduct {
-  id: string
-  slug: string
-  title: string
-  description: string
-  price: number
-  currency: string
-  productType: "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL" | string
-  coverImageUrl: string | null
-  galleryUrls: string[] | null
-  stock: number
-  isActive: boolean
-  createdAt: Date | string
-  files?: ShopProductFile[]
+export type {
+  ShopProduct,
+  ShopProductFile,
+  ProductReview,
+  PromoCoupon,
+  DigitalOrder,
 }
 
-export const fallbackProducts: ShopProduct[] = [
-  {
-    id: "prod-1",
-    slug: "turborepo-nextjs16-starter-kit",
-    title: "Turborepo & Next.js 16 Enterprise Starter Kit",
-    description:
-      "Production-ready monorepo template featuring React 19, Tailwind CSS v4, Drizzle ORM, Supabase Auth, and pre-configured CI/CD pipelines for high-concurrency SaaS platforms.",
-    price: 249000,
-    currency: "IDR",
-    productType: "DIGITAL_DOWNLOAD",
-    coverImageUrl:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop",
-    galleryUrls: [
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop",
-    ],
-    stock: 999,
-    isActive: true,
-    createdAt: "2026-08-01T00:00:00.000Z",
-    files: [
-      {
-        id: "file-1",
-        fileName: "turborepo-enterprise-v1.0.0.zip",
-        fileSizeBytes: 2457600,
-      },
-    ],
-  },
-  {
-    id: "prod-2",
-    slug: "tailwind-v4-component-system",
-    title: "Tailwind CSS v4 & OKLCH Enterprise UI Kit",
-    description:
-      "A zero-runtime accessible design system component library with 60+ modular components, dark/light theme switching, and fluid typography tokens.",
-    price: 199000,
-    currency: "IDR",
-    productType: "DIGITAL_DOWNLOAD",
-    coverImageUrl:
-      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop",
-    galleryUrls: [
-      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop",
-    ],
-    stock: 999,
-    isActive: true,
-    createdAt: "2026-08-05T00:00:00.000Z",
-    files: [
-      {
-        id: "file-2",
-        fileName: "tailwind-v4-ui-kit.zip",
-        fileSizeBytes: 1843200,
-      },
-    ],
-  },
-  {
-    id: "prod-3",
-    slug: "drizzle-supabase-boilerplate",
-    title: "Drizzle ORM & Supabase Transaction Pooler Boilerplate",
-    description:
-      "Deterministic data access layer with type-safe schema definitions, automated migrations via Drizzle Kit, and high-throughput connection pooling handlers.",
-    price: 149000,
-    currency: "IDR",
-    productType: "DIGITAL_DOWNLOAD",
-    coverImageUrl:
-      "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=800&auto=format&fit=crop",
-    galleryUrls: [
-      "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=800&auto=format&fit=crop",
-    ],
-    stock: 999,
-    isActive: true,
-    createdAt: "2026-08-10T00:00:00.000Z",
-    files: [
-      {
-        id: "file-3",
-        fileName: "drizzle-supabase-kit.zip",
-        fileSizeBytes: 1228800,
-      },
-    ],
-  },
-  {
-    id: "prod-4",
-    slug: "fullstack-architecture-consultation",
-    title: "1-on-1 Full-Stack Architecture & Code Review Session",
-    description:
-      "A focused 60-minute technical consultation reviewing your system architecture, database modeling, query optimization, and frontend performance bottlenecks.",
-    price: 750000,
-    currency: "IDR",
-    productType: "SERVICE",
-    coverImageUrl:
-      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800&auto=format&fit=crop",
-    galleryUrls: [
-      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=800&auto=format&fit=crop",
-    ],
-    stock: 5,
-    isActive: true,
-    createdAt: "2026-08-12T00:00:00.000Z",
-  },
-]
-
-export function formatPrice(price: number, currency: string = "IDR"): string {
-  if (currency === "IDR") {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      maximumFractionDigits: 0,
-    }).format(price)
-  }
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency || "USD",
-  }).format(price)
-}
-
-async function fetchActiveProducts(params?: {
+export interface ProductFilterParams {
   productType?: string
+  category?: string
   query?: string
-}): Promise<ShopProduct[]> {
+  sortBy?: "featured" | "rating" | "price-low" | "price-high" | "newest"
+  minPrice?: number
+  maxPrice?: number
+}
+
+export { formatPrice } from "./utils"
+
+function filterFallbackProducts(params?: ProductFilterParams): ShopProduct[] {
+  let list = [...fallbackProducts]
+
+  if (params?.productType && params.productType !== "all") {
+    list = list.filter((p) => p.productType === params.productType)
+  }
+
+  if (params?.category && params.category !== "all") {
+    list = list.filter((p) => p.category === params.category)
+  }
+
+  if (params?.query && params.query.trim()) {
+    const q = params.query.toLowerCase().trim()
+    list = list.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.techStack.some((t) => t.toLowerCase().includes(q))
+    )
+  }
+
+  if (params?.minPrice !== undefined) {
+    list = list.filter((p) => p.price >= params.minPrice!)
+  }
+
+  if (params?.maxPrice !== undefined) {
+    list = list.filter((p) => p.price <= params.maxPrice!)
+  }
+
+  switch (params?.sortBy) {
+    case "price-low":
+      list.sort((a, b) => a.price - b.price)
+      break
+    case "price-high":
+      list.sort((a, b) => b.price - a.price)
+      break
+    case "rating":
+      list.sort((a, b) => b.rating - a.rating)
+      break
+    case "newest":
+      list.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      break
+    case "featured":
+    default:
+      list.sort((a, b) => b.reviewCount - a.reviewCount)
+      break
+  }
+
+  return list
+}
+
+async function fetchActiveProducts(
+  params?: ProductFilterParams
+): Promise<ShopProduct[]> {
   try {
     const conditions = [eq(products.isActive, true)]
 
@@ -162,58 +122,67 @@ async function fetchActiveProducts(params?: {
       )
     }
 
+    let orderByClause = desc(products.createdAt)
+    if (params?.sortBy === "price-low") {
+      orderByClause = asc(products.price)
+    } else if (params?.sortBy === "price-high") {
+      orderByClause = desc(products.price)
+    }
+
     const rows = await db
       .select()
       .from(products)
       .where(and(...conditions))
-      .orderBy(desc(products.createdAt))
+      .orderBy(orderByClause)
 
-    if (rows.length > 0) {
-      return rows.map((p) => ({
-        id: p.id,
-        slug: p.slug,
-        title: p.title,
-        description: p.description,
-        price: p.price,
-        currency: p.currency,
-        productType: p.productType,
-        coverImageUrl: p.coverImageUrl,
-        galleryUrls: p.galleryUrls,
-        stock: p.stock,
-        isActive: p.isActive,
-        createdAt: p.createdAt,
-      }))
+    if (rows && rows.length > 0) {
+      let result = rows.map((p) => {
+        const fallbackMatch = fallbackProducts.find((f) => f.slug === p.slug)
+        return {
+          id: p.id,
+          slug: p.slug,
+          title: p.title,
+          description: p.description,
+          price: p.price,
+          extendedPrice: fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
+          currency: p.currency,
+          productType: (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") || "DIGITAL_DOWNLOAD",
+          category: fallbackMatch?.category || "STARTER_KIT",
+          coverImageUrl: p.coverImageUrl || fallbackMatch?.coverImageUrl || "",
+          galleryUrls: p.galleryUrls || fallbackMatch?.galleryUrls || [],
+          features: fallbackMatch?.features || [],
+          techStack: fallbackMatch?.techStack || [],
+          rating: fallbackMatch?.rating || 4.9,
+          reviewCount: fallbackMatch?.reviewCount || 10,
+          stock: p.stock,
+          isActive: p.isActive,
+          createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+          demoUrl: fallbackMatch?.demoUrl,
+          faq: fallbackMatch?.faq || [],
+        }
+      })
+
+      if (params?.category && params.category !== "all") {
+        result = result.filter((p) => p.category === params.category)
+      }
+
+      return result
     }
+
+    return filterFallbackProducts(params)
   } catch (error) {
-    console.warn(
-      "[Shop Data Layer] Failed to fetch active products, using fallback:",
-      error instanceof Error ? error.message : "Unknown error"
+    console.error(
+      "Failed to fetch active products, serving resilient fallback data:",
+      error
     )
+    return filterFallbackProducts(params)
   }
-
-  let fallback = fallbackProducts
-  if (params?.productType && params.productType !== "all") {
-    fallback = fallback.filter(
-      (p: ShopProduct) => p.productType === params.productType
-    )
-  }
-  if (params?.query && params.query.trim()) {
-    const q = params.query.toLowerCase()
-    fallback = fallback.filter(
-      (p: ShopProduct) =>
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
-    )
-  }
-
-  return fallback
 }
 
-export async function getActiveProducts(params?: {
-  productType?: string
-  query?: string
-}): Promise<ShopProduct[]> {
-  const cacheKey = `shop-products-${params?.productType || "all"}-${params?.query || ""}`
+export async function getActiveProducts(
+  params?: ProductFilterParams
+): Promise<ShopProduct[]> {
+  const cacheKey = `shop-products-${params?.productType || "all"}-${params?.category || "all"}-${params?.sortBy || "featured"}-${params?.query || ""}`
   return unstable_cache(
     () => fetchActiveProducts(params),
     ["shop-products", cacheKey],
@@ -243,31 +212,41 @@ async function fetchProductBySlug(slug: string): Promise<ShopProduct | null> {
         .from(productFiles)
         .where(eq(productFiles.productId, p.id))
 
+      const fallbackMatch = fallbackProducts.find((f) => f.slug === slug)
+
       return {
         id: p.id,
         slug: p.slug,
         title: p.title,
         description: p.description,
         price: p.price,
+        extendedPrice: fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
         currency: p.currency,
-        productType: p.productType,
-        coverImageUrl: p.coverImageUrl,
-        galleryUrls: p.galleryUrls,
+        productType: (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") || "DIGITAL_DOWNLOAD",
+        category: fallbackMatch?.category || "STARTER_KIT",
+        coverImageUrl: p.coverImageUrl || fallbackMatch?.coverImageUrl || "",
+        galleryUrls: p.galleryUrls || fallbackMatch?.galleryUrls || [],
+        features: fallbackMatch?.features || [],
+        techStack: fallbackMatch?.techStack || [],
+        rating: fallbackMatch?.rating || 4.9,
+        reviewCount: fallbackMatch?.reviewCount || 10,
         stock: p.stock,
         isActive: p.isActive,
-        createdAt: p.createdAt,
-        files,
+        createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+        demoUrl: fallbackMatch?.demoUrl,
+        files: files && files.length > 0 ? files : fallbackMatch?.files,
+        faq: fallbackMatch?.faq || [],
       }
     }
-  } catch (error) {
-    console.warn(
-      "[Shop Data Layer] Failed to fetch product by slug, checking fallback:",
-      error instanceof Error ? error.message : "Unknown error"
-    )
-  }
 
-  const fallback = fallbackProducts.find((p) => p.slug === slug)
-  return fallback || null
+    return fallbackProducts.find((item) => item.slug === slug) || null
+  } catch (error) {
+    console.error(
+      `Failed to fetch product by slug (${slug}), serving resilient fallback data:`,
+      error
+    )
+    return fallbackProducts.find((item) => item.slug === slug) || null
+  }
 }
 
 export async function getProductBySlug(
@@ -295,32 +274,46 @@ async function fetchRelatedProducts(
       .orderBy(desc(products.createdAt))
       .limit(limit)
 
-    if (rows.length > 0) {
-      return rows.map((p) => ({
-        id: p.id,
-        slug: p.slug,
-        title: p.title,
-        description: p.description,
-        price: p.price,
-        currency: p.currency,
-        productType: p.productType,
-        coverImageUrl: p.coverImageUrl,
-        galleryUrls: p.galleryUrls,
-        stock: p.stock,
-        isActive: p.isActive,
-        createdAt: p.createdAt,
-      }))
+    if (rows && rows.length > 0) {
+      return rows.map((p) => {
+        const fallbackMatch = fallbackProducts.find((f) => f.slug === p.slug)
+        return {
+          id: p.id,
+          slug: p.slug,
+          title: p.title,
+          description: p.description,
+          price: p.price,
+          extendedPrice: fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
+          currency: p.currency,
+          productType: (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") || "DIGITAL_DOWNLOAD",
+          category: fallbackMatch?.category || "STARTER_KIT",
+          coverImageUrl: p.coverImageUrl || fallbackMatch?.coverImageUrl || "",
+          galleryUrls: p.galleryUrls || fallbackMatch?.galleryUrls || [],
+          features: fallbackMatch?.features || [],
+          techStack: fallbackMatch?.techStack || [],
+          rating: fallbackMatch?.rating || 4.9,
+          reviewCount: fallbackMatch?.reviewCount || 10,
+          stock: p.stock,
+          isActive: p.isActive,
+          createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+          demoUrl: fallbackMatch?.demoUrl,
+          faq: fallbackMatch?.faq || [],
+        }
+      })
     }
-  } catch (error) {
-    console.warn(
-      "[Shop Data Layer] Failed to fetch related products, using fallback:",
-      error instanceof Error ? error.message : "Unknown error"
-    )
-  }
 
-  return fallbackProducts
-    .filter((p: ShopProduct) => p.slug !== currentSlug)
-    .slice(0, limit)
+    return fallbackProducts
+      .filter((p) => p.slug !== currentSlug)
+      .slice(0, limit)
+  } catch (error) {
+    console.error(
+      `Failed to fetch related products for (${currentSlug}), serving fallback:`,
+      error
+    )
+    return fallbackProducts
+      .filter((p) => p.slug !== currentSlug)
+      .slice(0, limit)
+  }
 }
 
 export async function getRelatedProducts(
@@ -335,4 +328,112 @@ export async function getRelatedProducts(
       tags: ["shop"],
     }
   )()
+}
+
+export async function getAllProductSlugs(): Promise<string[]> {
+  try {
+    const rows = await db
+      .select({ slug: products.slug })
+      .from(products)
+      .where(eq(products.isActive, true))
+
+    if (rows && rows.length > 0) {
+      return rows.map((r) => r.slug)
+    }
+
+    return fallbackProducts.map((p) => p.slug)
+  } catch {
+    return fallbackProducts.map((p) => p.slug)
+  }
+}
+
+export async function getProductReviews(
+  productSlug: string
+): Promise<ProductReview[]> {
+  return fallbackReviews.filter((r) => r.productSlug === productSlug)
+}
+
+export async function getPromoCoupon(
+  code: string
+): Promise<PromoCoupon | null> {
+  const normalized = code.trim().toUpperCase()
+  const found = fallbackCoupons.find((c) => c.code === normalized)
+  if (!found) return null
+  if (new Date(found.expiresAt) < new Date()) return null
+  return found
+}
+
+export async function getOrderByNumber(
+  orderNumber: string
+): Promise<DigitalOrder | null> {
+  try {
+    const rows = await db
+      .select()
+      .from(orders)
+      .where(or(eq(orders.orderNumber, orderNumber), eq(orders.id, orderNumber))!)
+      .limit(1)
+
+    const ord = rows[0]
+    if (ord) {
+      const items = await db
+        .select()
+        .from(orderItems)
+        .where(eq(orderItems.orderId, ord.id))
+
+      return {
+        id: ord.id,
+        orderNumber: ord.orderNumber,
+        customerName: ord.customerName,
+        customerEmail: ord.customerEmail,
+        totalAmount: ord.totalAmount,
+        currency: ord.currency,
+        status: (ord.status as "COMPLETED" | "PENDING" | "FAILED") || "COMPLETED",
+        paymentMethod: ord.paymentProvider || "Simulated Instant Order",
+        createdAt: ord.createdAt.toISOString(),
+        items: items.map((it) => ({
+          productId: it.productId,
+          productTitle: "Purchased Engineering Asset",
+          productSlug: "product",
+          licenseType: "STANDARD",
+          pricePaid: it.pricePaid,
+          downloadToken: it.downloadToken || undefined,
+          licenseKey: `RZ-LIC-${it.id.slice(0, 8).toUpperCase()}`,
+        })),
+      }
+    }
+
+    return (
+      fallbackOrders.find(
+        (o) => o.orderNumber === orderNumber || o.id === orderNumber
+      ) || null
+    )
+  } catch {
+    return (
+      fallbackOrders.find(
+        (o) => o.orderNumber === orderNumber || o.id === orderNumber
+      ) || null
+    )
+  }
+}
+
+export async function getShopStats(): Promise<{
+  totalProducts: number
+  totalSales: number
+  averageRating: number
+  totalReviews: number
+}> {
+  const totalProducts = fallbackProducts.length
+  const totalReviews = fallbackProducts.reduce(
+    (acc, curr) => acc + curr.reviewCount,
+    0
+  )
+  const averageRating = 4.9
+  const totalSales = 340
+
+  return {
+    totalProducts,
+    totalSales,
+    averageRating,
+    totalReviews,
+  }
 }
