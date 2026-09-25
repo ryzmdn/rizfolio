@@ -1,7 +1,8 @@
 "use client"
 
+import { useState, useTransition } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard,
   User,
@@ -15,6 +16,7 @@ import {
   Activity,
   ShieldCheck,
   X,
+  Loader2,
 } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 import { logoutAdmin } from "@/lib/auth-actions"
@@ -43,6 +45,22 @@ export function CmsSidebar({
   onCloseMobile,
 }: CmsSidebarProps) {
   const pathname = usePathname()
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const [pendingHref, setPendingHref] = useState<string | null>(null)
+
+  function handleNavigation(href: string, isMobile: boolean) {
+    if (isPending) return
+    if (isMobile && onCloseMobile) {
+      onCloseMobile()
+    }
+    if (pathname === href) return
+
+    setPendingHref(href)
+    startTransition(() => {
+      router.push(href)
+    })
+  }
 
   const sidebarContent = (isMobile: boolean) => (
     <div className="flex h-full flex-col">
@@ -79,21 +97,32 @@ export function CmsSidebar({
           const isActive = item.exact
             ? pathname === item.href
             : pathname.startsWith(item.href)
+          const isTargetPending =
+            isPending && pendingHref === item.href && pathname !== item.href
           const Icon = item.icon
 
           return (
             <Link
               key={item.href}
               href={item.href}
-              onClick={isMobile ? onCloseMobile : undefined}
+              prefetch={false}
+              onClick={(e) => {
+                e.preventDefault()
+                handleNavigation(item.href, isMobile)
+              }}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                isTargetPending && "opacity-75"
               )}
             >
-              <Icon className="size-4 shrink-0" />
+              {isTargetPending ? (
+                <Loader2 className="size-4 shrink-0 animate-spin text-primary" />
+              ) : (
+                <Icon className="size-4 shrink-0" />
+              )}
               <span>{item.label}</span>
             </Link>
           )

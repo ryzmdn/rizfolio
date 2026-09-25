@@ -21,7 +21,11 @@ export default async function RootLayout({
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
       <body className={cn(fontVariables)}>
-        <AppProvider>
+        <AppProvider
+          disableSmoothScroll
+          disableAnimations
+          disableCookieConsent
+        >
           <CmsShell userEmail={user?.email}>{children}</CmsShell>
         </AppProvider>
       </body>

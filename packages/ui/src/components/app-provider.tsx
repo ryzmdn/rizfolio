@@ -10,7 +10,31 @@ import {
 import { CookieConsent } from "./cookie-consent"
 import { GSAPProvider } from "./animations/gsap-provider"
 
-export function AppProvider({ children }: { children: React.ReactNode }) {
+export interface AppProviderProps {
+  children: React.ReactNode
+  disableSmoothScroll?: boolean
+  disableAnimations?: boolean
+  disableCookieConsent?: boolean
+}
+
+export function AppProvider({
+  children,
+  disableSmoothScroll = false,
+  disableAnimations = false,
+  disableCookieConsent = false,
+}: AppProviderProps) {
+  const animatedContent = disableAnimations ? (
+    children
+  ) : (
+    <GSAPProvider>{children}</GSAPProvider>
+  )
+
+  const scrollContent = disableSmoothScroll ? (
+    animatedContent
+  ) : (
+    <SmoothScrollProvider>{animatedContent}</SmoothScrollProvider>
+  )
+
   return (
     <ThemeProvider
       attribute="class"
@@ -20,10 +44,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       disableTransitionOnChange
     >
       <ThemeSynchronizer />
-      <SmoothScrollProvider>
-        <GSAPProvider>{children}</GSAPProvider>
-      </SmoothScrollProvider>
-      <CookieConsent />
+      {scrollContent}
+      {!disableCookieConsent && <CookieConsent />}
     </ThemeProvider>
   )
 }

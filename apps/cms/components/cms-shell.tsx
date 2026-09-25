@@ -14,14 +14,8 @@ interface CmsShellProps {
 export function CmsShell({ children, userEmail }: CmsShellProps) {
   const pathname = usePathname()
   const isLoginPage = pathname === "/login"
-  const [prevPathname, setPrevPathname] = useState(pathname)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
-
-  if (pathname !== prevPathname) {
-    setPrevPathname(pathname)
-    setMobileMenuOpen(false)
-  }
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
