@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Layers } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
+import { useCurrency } from "./currency-context"
 import { formatPrice } from "../lib/utils"
 import { AddToCartButton } from "./add-to-cart-button"
 import type { ShopProduct } from "../lib/queries"
@@ -15,6 +16,7 @@ interface StickyBuyBarProps {
 
 export function StickyBuyBar({ product }: StickyBuyBarProps) {
   const [isVisible, setIsVisible] = useState(false)
+  const { format } = useCurrency()
 
   useEffect(() => {
     function handleScroll() {
@@ -63,7 +65,7 @@ export function StickyBuyBar({ product }: StickyBuyBarProps) {
             </h3>
             <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
               <span className="font-mono font-bold text-foreground">
-                {formatPrice(product.price, product.currency)}
+                {format(product.price)}
               </span>
               <span>•</span>
               <span>Standard Tier</span>
