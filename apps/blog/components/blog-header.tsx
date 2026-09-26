@@ -33,7 +33,7 @@ export function BlogHeader() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
-          ? "border-b border-zinc-200/80 bg-background/95 backdrop-blur-xl dark:border-zinc-800/80"
+          ? "border-b border-border/60 bg-background/95 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       )}
     >

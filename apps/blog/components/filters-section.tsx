@@ -179,7 +179,7 @@ export function FilterSection({
               <div
                 role="menu"
                 aria-labelledby="sort-button"
-                className="absolute right-0 top-full z-10 mt-1.5 w-32 overflow-hidden rounded-lg border border-border/70 bg-card shadow-md"
+                className="absolute right-0 top-full z-10 mt-1.5 w-32 overflow-hidden rounded-md border border-border/70 bg-card shadow-sm"
               >
                 {(["latest", "popular"] as const).map((option) => (
                   <button

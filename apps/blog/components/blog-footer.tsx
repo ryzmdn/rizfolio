@@ -133,8 +133,8 @@ export function BlogFooter() {
             </div>
 
             {subscribed ? (
-              <div className="flex items-center gap-x-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5 text-sm text-emerald-600 dark:text-emerald-400">
-                <Check className="size-4 shrink-0" />
+              <div className="flex items-center gap-x-2 border border-border/60 bg-muted/40 px-3 py-2.5 text-sm text-foreground">
+                <Check className="size-4 shrink-0 text-muted-foreground" />
                 <span>Thank you. You are subscribed.</span>
               </div>
             ) : (
@@ -145,13 +145,13 @@ export function BlogFooter() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@domain.com"
-                  className="min-w-0 flex-1 rounded-lg border border-border/70 bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:outline-none focus:ring-0"
+                  className="min-w-0 flex-1 rounded-md border border-border/70 bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:outline-none focus:ring-0"
                 />
                 <button
                   type="submit"
                   aria-label="Subscribe to updates"
                   className={cn(
-                    "inline-flex shrink-0 items-center gap-x-1.5 rounded-lg bg-foreground px-3 py-2 text-xs font-medium text-background transition-opacity hover:opacity-80"
+                    "inline-flex shrink-0 items-center gap-x-1.5 rounded-md bg-foreground px-3 py-2 text-xs font-medium text-background transition-opacity hover:opacity-80"
                   )}
                 >
                   <span>Join</span>

@@ -7,7 +7,7 @@ export function AuthorBio() {
     process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://rizkyramadhan.dev"
 
   return (
-    <div className="rounded-xl border border-border/50 bg-muted/20 p-6">
+    <div className="border-t border-border/40 pt-8">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-center gap-4">
           <div className="relative size-11 shrink-0 overflow-hidden rounded-full ring-1 ring-border/60">

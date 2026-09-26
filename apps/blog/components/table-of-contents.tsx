@@ -92,7 +92,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
           type="button"
           onClick={() => setMobileExpanded((prev) => !prev)}
           aria-expanded={mobileExpanded}
-          className="flex w-full items-center justify-between rounded-lg border border-border/50 bg-muted/20 px-4 py-3 text-xs font-medium text-foreground"
+          className="flex w-full items-center justify-between rounded-md border border-border/50 bg-muted/20 px-4 py-3 text-xs font-medium text-foreground"
         >
           <span className="flex items-center gap-2">
             <ListCollapse className="size-3.5 text-muted-foreground" />
@@ -107,7 +107,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
         </button>
 
         {mobileExpanded && (
-          <ul className="mt-1 space-y-1 rounded-lg border border-border/50 bg-muted/10 p-3">
+          <ul className="mt-1 space-y-1 rounded-md border border-border/50 bg-muted/10 p-3">
             {headings.map((item) => (
               <li key={item.id} className={item.level === 3 ? "pl-3" : ""}>
                 <a
