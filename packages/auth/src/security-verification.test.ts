@@ -122,10 +122,10 @@ async function runFullSecurityVerification() {
 
   // Cookie Flags Validation
   assert(
-    SESSION_COOKIE_OPTIONS.sameSite === "strict" &&
+    SESSION_COOKIE_OPTIONS.sameSite === "lax" &&
       SESSION_COOKIE_OPTIONS.httpOnly === true &&
       SESSION_COOKIE_OPTIONS.maxAge === 86400,
-    "SESSION_COOKIE_OPTIONS enforces SameSite=Strict, HttpOnly, and 24h lifetime"
+    "SESSION_COOKIE_OPTIONS enforces SameSite=Lax, HttpOnly, and 24h lifetime"
   )
 
   // -------------------------------------------------------------

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
-import { AlertCircle, RotateCcw, Home, Milestone } from "lucide-react"
+import { RotateCcw, ArrowLeft, Milestone } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
 
 export default function ChangelogError({
@@ -17,53 +17,51 @@ export default function ChangelogError({
   }, [error])
 
   return (
-    <Container className="max-w-xl py-20 sm:py-28">
-      <div className="flex flex-col items-center text-center">
-        <div className="flex size-14 items-center justify-center rounded-2xl border border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-xs">
-          <AlertCircle className="size-7" />
+    <Container className="flex min-h-[60vh] flex-col items-center justify-center py-20 text-center sm:py-28">
+      <span className="font-mono text-xs font-semibold tracking-wider text-rose-500 uppercase">
+        Error : Runtime Exception
+      </span>
+
+      <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+        Failed to Compile Release Notes
+      </h1>
+
+      <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+        An error occurred while compiling or retrieving release note records.
+        You can attempt to reload the view or return to the main timeline.
+      </p>
+
+      {error.digest && (
+        <div className="mt-4 rounded-lg border border-border/70 bg-muted/40 px-3 py-1 font-mono text-[11px] text-muted-foreground">
+          Digest: {error.digest}
         </div>
+      )}
 
-        <h1 className="mt-6 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          Unexpected Error Occurred
-        </h1>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <button
+          type="button"
+          onClick={() => reset()}
+          className="inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 text-xs font-semibold text-background shadow-xs transition-opacity hover:opacity-90"
+        >
+          <RotateCcw className="size-3.5" />
+          <span>Try Again</span>
+        </button>
 
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          An error occurred while compiling or retrieving release note records.
-          You can attempt to reload the view or return to the main timeline.
-        </p>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
+        >
+          <ArrowLeft className="size-3.5" />
+          <span>Timeline Home</span>
+        </Link>
 
-        {error.digest && (
-          <div className="mt-4 rounded-lg border border-border/70 bg-muted/40 px-3 py-1 font-mono text-[11px] text-muted-foreground">
-            Digest: {error.digest}
-          </div>
-        )}
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-xs font-medium text-primary-foreground shadow-xs transition-opacity hover:opacity-90"
-          >
-            <RotateCcw className="size-3.5" />
-            <span>Try Again</span>
-          </button>
-
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-medium text-foreground transition-colors hover:bg-muted"
-          >
-            <Home className="size-3.5" />
-            <span>Timeline Home</span>
-          </Link>
-
-          <Link
-            href="/roadmap"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-medium text-foreground transition-colors hover:bg-muted"
-          >
-            <Milestone className="size-3.5" />
-            <span>Product Roadmap</span>
-          </Link>
-        </div>
+        <Link
+          href="/roadmap"
+          className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
+        >
+          <Milestone className="size-3.5" />
+          <span>Product Roadmap</span>
+        </Link>
       </div>
     </Container>
   )

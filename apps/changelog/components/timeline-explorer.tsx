@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import {
-  History,
+  GitBranch,
   GitCommit,
   CheckCircle2,
   Box,
@@ -92,28 +92,27 @@ export function TimelineExplorer({
   }
 
   return (
-    <div className="space-y-12">
-      <div className="space-y-6">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground backdrop-blur-xs">
-          <History className="size-3.5 text-primary" />
-          <span>Continuous Architecture & Dev Log</span>
+    <div className="space-y-10 sm:space-y-12">
+      <header className="space-y-6">
+        <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-muted/30 px-3 py-1 text-xs text-muted-foreground">
+          <GitBranch className="size-3.5 text-foreground" />
+          <span>Engineering Architecture & Dev Log</span>
         </div>
 
         <div className="max-w-3xl space-y-3">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-5xl">
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
             Changelog & Releases
           </h1>
           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            An open timeline tracking architectural milestones, new product
-            capabilities, performance optimizations, and infrastructure upgrades
-            across the monorepo digital ecosystem.
+            An open chronological log tracking architectural iterations, new feature
+            deliveries, performance tunings, and infrastructure updates across the monorepo ecosystem.
           </p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs">
             <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <GitCommit className="size-3.5 text-primary" />
+              <GitCommit className="size-3.5 text-foreground" />
               <span>Total Releases</span>
             </div>
             <div className="mt-2 font-mono text-2xl font-bold text-foreground">
@@ -153,17 +152,17 @@ export function TimelineExplorer({
           <div className="rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs">
             <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
               <Tag className="size-3.5 text-amber-500" />
-              <span>Current Version</span>
+              <span>Active Version</span>
             </div>
             <div className="mt-2 font-mono text-2xl font-bold text-foreground">
               {stats.currentVersion}
             </div>
             <div className="mt-1 text-[11px] text-muted-foreground">
-              Active production release
+              Production deployment
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       <FilterBar
         filters={filters}
@@ -181,14 +180,13 @@ export function TimelineExplorer({
                 No matching releases found
               </h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                No release updates or items matched your active search or filter
-                criteria.
+                No release updates or items matched your active search or filter criteria.
               </p>
               {hasActiveFilters && (
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-foreground transition-all hover:bg-muted"
                 >
                   <RotateCcw className="size-3" />
                   <span>Reset All Filters</span>
@@ -201,8 +199,8 @@ export function TimelineExplorer({
 
               {filteredReleases.map((release, idx) => (
                 <div key={release.id} className="relative">
-                  <div className="absolute top-8 -left-6 flex size-4 items-center justify-center rounded-full border-2 border-background bg-primary shadow-xs sm:-left-8 sm:size-5">
-                    <span className="size-1.5 rounded-full bg-primary-foreground" />
+                  <div className="absolute top-8 -left-6 flex size-4 items-center justify-center rounded-full border-2 border-background bg-foreground shadow-xs sm:-left-8 sm:size-5">
+                    <span className="size-1.5 rounded-full bg-background" />
                   </div>
                   <ReleaseCard
                     release={release}

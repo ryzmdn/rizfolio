@@ -46,7 +46,7 @@ export function RoadmapColumn({ stage, items }: RoadmapColumnProps) {
             <div className={cn("flex size-7 items-center justify-center rounded-lg border", config.badgeColor)}>
               <Icon className="size-4" />
             </div>
-            <h2 className="text-base font-semibold tracking-tight text-foreground">
+            <h2 className="text-base font-bold tracking-tight text-foreground">
               {config.title}
             </h2>
           </div>

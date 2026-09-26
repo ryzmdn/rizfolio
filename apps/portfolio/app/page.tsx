@@ -31,7 +31,7 @@ export default async function Home() {
       <NowSection />
       <PrinciplesSection />
       <ProcessSection />
-      <ServicesSection services={services} />
+      <ServicesSection />
       <CaseStudiesSection />
       <EducationSection education={education} />
       <ExperienceSection experiences={experiences} />
