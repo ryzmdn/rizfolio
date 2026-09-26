@@ -1,13 +1,20 @@
-export function formatPrice(price: number, currency: string = "IDR"): string {
-  if (currency === "IDR") {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      maximumFractionDigits: 0,
-    }).format(price)
+import {
+  convertFromIdr,
+  formatCurrencyAmount,
+  formatPriceFromIdr,
+} from "./currencies"
+
+export function formatPrice(
+  price: number,
+  currency: string = "IDR",
+  isAlreadyConverted: boolean = false
+): string {
+  if (isAlreadyConverted || currency === "IDR") {
+    return formatCurrencyAmount(price, currency)
   }
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency || "USD",
-  }).format(price)
+  return formatPriceFromIdr(price, currency)
+}
+
+export function formatRawPrice(amount: number, currency: string = "IDR"): string {
+  return formatCurrencyAmount(amount, currency)
 }
