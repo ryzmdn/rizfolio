@@ -22,8 +22,8 @@ export default async function ShopManagerPage() {
 
   return (
     <CmsPageShell
-      title="Shop, Orders & Coupon Manager"
-      description="Kelola katalog produk digital, status pesanan pelanggan, berkas unduhan, dan kupon diskon promo."
+      title="Shop & Digital Fulfillment"
+      description="Pusat kelola katalog produk digital, file unduhan lisensi, kupon diskon, dan audit pesanan masuk."
     >
       <ShopManagerView
         products={products}

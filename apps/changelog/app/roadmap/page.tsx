@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "Explore shipped milestones, current engineering priorities, and future architectural initiatives across the Rizfolio monorepo ecosystem.",
   openGraph: {
     type: "website",
-    title: "Product Roadmap & Architecture Milestones — Rizfolio",
+    title: "Product Roadmap & Architecture Milestones: Rizfolio",
     description:
       "Explore shipped milestones, current engineering priorities, and future architectural initiatives across the Rizfolio monorepo.",
     url: `${baseUrl}/roadmap`,
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Product Roadmap & Architecture Milestones — Rizfolio",
+    title: "Product Roadmap & Architecture Milestones: Rizfolio",
     description:
       "Explore shipped milestones, current engineering priorities, and future architectural initiatives across the Rizfolio monorepo.",
   },

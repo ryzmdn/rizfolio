@@ -1,56 +1,66 @@
-import React from "react"
+function SkeletonBlock({ className }: { className?: string }) {
+  return (
+    <div
+      className={`animate-pulse rounded bg-muted/60 ${className ?? ""}`}
+      aria-hidden="true"
+    />
+  )
+}
 
 export default function CmsLoading() {
   return (
-    <div className="mx-auto max-w-6xl animate-pulse space-y-8 p-6 md:p-8">
-      <div className="flex flex-col gap-3 border-b border-border/70 pb-5 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mx-auto max-w-7xl space-y-8 p-4 sm:p-6 md:p-8 lg:p-10">
+      <div className="flex flex-col gap-3 border-b border-border/70 pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
-          <div className="h-7 w-48 rounded-lg bg-muted/60" />
-          <div className="h-4 w-72 rounded-md bg-muted/40" />
+          <SkeletonBlock className="h-8 w-48 rounded-xl sm:w-64" />
+          <SkeletonBlock className="h-4 w-72 rounded-md sm:w-96" />
         </div>
-        <div className="h-9 w-32 rounded-lg bg-muted/50" />
+        <SkeletonBlock className="h-9 w-32 rounded-lg" />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((i) => (
+        {[1, 2, 3, 4, 5, 6].map((i) => (
           <div
             key={i}
-            className="flex h-32 flex-col justify-between rounded-xl border border-border/60 bg-card p-5"
+            className="flex h-36 flex-col justify-between rounded-2xl border border-border/60 bg-card/60 p-6"
           >
             <div className="flex items-center justify-between">
-              <div className="h-3.5 w-24 rounded bg-muted/60" />
-              <div className="size-4 rounded bg-muted/50" />
+              <SkeletonBlock className="h-3.5 w-24 rounded" />
+              <SkeletonBlock className="size-7 rounded-lg" />
             </div>
             <div className="space-y-1.5">
-              <div className="h-7 w-16 rounded bg-muted/70" />
-              <div className="h-3 w-28 rounded bg-muted/40" />
+              <SkeletonBlock className="h-8 w-16 rounded" />
+              <SkeletonBlock className="h-3.5 w-28 rounded" />
             </div>
           </div>
         ))}
       </div>
 
-      <div className="space-y-4 rounded-xl border border-border/60 bg-card p-6">
-        <div className="h-5 w-36 rounded bg-muted/60" />
-        <div className="space-y-3 pt-2">
-          <div className="h-10 w-full rounded-lg bg-muted/40" />
-          <div className="h-10 w-full rounded-lg bg-muted/40" />
-          <div className="h-24 w-full rounded-lg bg-muted/30" />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="h-80 rounded-2xl border border-border/60 bg-card/60 p-6 lg:col-span-7">
+          <SkeletonBlock className="h-4 w-36 rounded" />
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {[1, 2, 3, 4].map((i) => (
+              <SkeletonBlock key={i} className="h-20 rounded-xl" />
+            ))}
+          </div>
+        </div>
+
+        <div className="h-80 rounded-2xl border border-border/60 bg-card/60 p-6 lg:col-span-5">
+          <SkeletonBlock className="h-4 w-36 rounded" />
+          <div className="mt-6 space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <SkeletonBlock key={i} className="h-12 rounded-xl" />
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border/60 bg-card">
-        <div className="border-b border-border/60 bg-muted/30 p-4">
-          <div className="h-4 w-32 rounded bg-muted/60" />
-        </div>
-        <div className="space-y-3 divide-y divide-border/40 p-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="flex items-center justify-between py-2">
-              <div className="space-y-1">
-                <div className="h-4 w-44 rounded bg-muted/60" />
-                <div className="h-3 w-28 rounded bg-muted/40" />
-              </div>
-              <div className="h-7 w-16 rounded-md bg-muted/50" />
-            </div>
+      <div className="h-64 rounded-2xl border border-border/60 bg-card/60 p-6">
+        <SkeletonBlock className="h-5 w-44 rounded" />
+        <div className="mt-6 space-y-3">
+          {[1, 2, 3].map((i) => (
+            <SkeletonBlock key={i} className="h-12 rounded-xl" />
           ))}
         </div>
       </div>

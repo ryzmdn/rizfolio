@@ -27,7 +27,7 @@ export default async function ChangelogPage() {
       itemListElement: releases.map((release, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        name: `${release.version} - ${release.title}`,
+        name: `${release.version}: ${release.title}`,
         url: `${baseUrl}/release/${release.version}`,
       })),
     },

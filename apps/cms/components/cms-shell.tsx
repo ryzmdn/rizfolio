@@ -6,17 +6,13 @@ import { CmsSidebar } from "./cms-sidebar"
 import { CmsHeader } from "./cms-header"
 import { CmsCommandPalette } from "./cms-command-palette"
 
-interface CmsShellProps {
-  children: ReactNode
-  userEmail?: string
-}
-
-export function CmsShell({ children, userEmail }: CmsShellProps) {
+export function CmsShell({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const isLoginPage = pathname === "/login"
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
 
+  // Global keyboard shortcut for Ctrl+K or Cmd+K
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -34,21 +30,27 @@ export function CmsShell({ children, userEmail }: CmsShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
+      {/* Desktop Persistent Sidebar */}
+      <CmsSidebar />
+
+      {/* Mobile Accessible Navigation Drawer */}
       <CmsSidebar
-        userEmail={userEmail}
-        mobileOpen={mobileMenuOpen}
-        onCloseMobile={() => setMobileMenuOpen(false)}
+        isMobile
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
       />
 
+      {/* Main Content Area */}
       <div className="flex flex-col md:pl-64">
         <CmsHeader
-          onOpenMobile={() => setMobileMenuOpen(true)}
-          onOpenCommand={() => setCommandPaletteOpen(true)}
+          onOpenMobileMenu={() => setMobileMenuOpen(true)}
+          onOpenCommandPalette={() => setCommandPaletteOpen(true)}
         />
         <main className="flex-1 pb-16">{children}</main>
       </div>
 
+      {/* Global Command Palette */}
       <CmsCommandPalette
         isOpen={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}

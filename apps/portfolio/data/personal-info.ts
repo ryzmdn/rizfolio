@@ -8,7 +8,7 @@ export const personalInfo = {
   subheadline:
     "Bridging the gap between deterministic software architecture, refined interface design, and scalable cloud performance to turn complex product ideas into reality.",
   bio: [
-    "I am a Software Engineer specialized in building high-performance web applications, resilient backend architectures, and developer-friendly toolkits. I work across the full lifecycle—from database modeling and serverless deployments to pixel-perfect, accessible user interfaces.",
+    "I am a Software Engineer specialized in building high-performance web applications, resilient backend architectures, and developer-friendly toolkits. I work across the full lifecycle: from database modeling and serverless deployments to pixel-perfect, accessible user interfaces.",
     "I view engineering through the lens of product viability: every abstraction should deliver measurable value, every interface should reduce user friction, and every query must be optimized for scale. When I'm not shipping production systems, I contribute to open source, explore applied AI models, and share technical insights with the developer community.",
   ],
   emails: ["rizky@devmail.com", "github.com/ryzmdn", "linkedin.com/in/ryzmdn"],

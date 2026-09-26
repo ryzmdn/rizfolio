@@ -5,7 +5,7 @@ import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 
 export const metadata: Metadata = {
-  title: "Rizky Ramadhan — Links & Connect",
+  title: "Rizky Ramadhan | Links & Connect",
   description:
     "Official directory of links, portfolios, products, writings, and social profiles by Rizky Ramadhan.",
 }
