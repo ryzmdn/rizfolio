@@ -13,12 +13,12 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
   return (
     <nav
       aria-label="Article navigation"
-      className="grid grid-cols-1 gap-px border-t border-border/40 pt-8 sm:grid-cols-2"
+      className="grid grid-cols-1 gap-8 border-t border-border/40 pt-8 sm:grid-cols-2 sm:gap-0"
     >
       {prev ? (
         <Link
           href={`/blog/${prev.slug}`}
-          className="group flex flex-col gap-2 border-r border-border/30 pr-6"
+          className="group flex flex-col gap-2 sm:border-r sm:border-border/30 sm:pr-6"
         >
           <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors group-hover:text-foreground">
             <ArrowLeft className="size-3 transition-transform group-hover:-translate-x-0.5" />

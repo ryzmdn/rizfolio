@@ -186,9 +186,9 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
       <section className="w-full py-12 sm:py-16">
         <Container>
           {gridPosts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 py-24 text-center">
-              <BookOpen className="mb-4 size-10 text-muted-foreground/30" />
-              <h2 className="text-base font-semibold text-foreground">
+            <div className="flex flex-col items-center justify-center border border-dashed border-border/50 py-24 text-center">
+              <BookOpen className="mb-4 size-8 text-muted-foreground/30" />
+              <h2 className="text-sm font-semibold text-foreground">
                 No articles found
               </h2>
               <p className="mt-2 max-w-xs text-sm text-muted-foreground">
@@ -320,7 +320,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 {currentPage > 1 && (
                   <Link
                     href={`/?page=${currentPage - 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 px-3 py-2 text-xs font-medium text-foreground transition-all hover:border-foreground/30 hover:bg-muted/50"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-border/60 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/50"
                   >
                     <ArrowLeft className="size-3" />
                     <span>Previous</span>
@@ -329,7 +329,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 {currentPage < totalPages && (
                   <Link
                     href={`/?page=${currentPage + 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 px-3 py-2 text-xs font-medium text-foreground transition-all hover:border-foreground/30 hover:bg-muted/50"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-border/60 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/50"
                   >
                     <span>Next</span>
                     <ArrowRight className="size-3" />
