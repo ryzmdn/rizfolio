@@ -2,11 +2,15 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { Container } from "@workspace/ui/components/layouts/container"
 import { getOrderByNumber } from "@/lib/queries"
+import { verifyAndFulfillStripeSession } from "@/lib/stripe-actions"
 import { OrderFulfillmentHub } from "@/components/order-fulfillment-hub"
 
 interface OrderPageProps {
   params: Promise<{
     orderId: string
+  }>
+  searchParams?: Promise<{
+    session_id?: string
   }>
 }
 
@@ -32,8 +36,18 @@ export async function generateMetadata({
   }
 }
 
-export default async function OrderDetailPage({ params }: OrderPageProps) {
+export default async function OrderDetailPage({
+  params,
+  searchParams,
+}: OrderPageProps) {
   const { orderId } = await params
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+  const sessionId = resolvedSearchParams?.session_id
+
+  if (sessionId) {
+    await verifyAndFulfillStripeSession(sessionId, orderId)
+  }
+
   const order = await getOrderByNumber(orderId)
 
   if (!order) {
