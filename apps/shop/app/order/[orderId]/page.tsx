@@ -18,12 +18,12 @@ export async function generateMetadata({
 
   if (!order) {
     return {
-      title: "Order Not Found — Rizfolio Store",
+      title: "Order Not Found | Rizfolio Store",
     }
   }
 
   return {
-    title: `Order Receipt #${order.orderNumber} — Rizfolio Store`,
+    title: `Order Receipt #${order.orderNumber} | Rizfolio Store`,
     description: `Order fulfillment, license certificate keys, and digital asset downloads for order ${order.orderNumber}.`,
     robots: {
       index: false,
