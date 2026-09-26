@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Rizfolio Documentation — Open Source & Code Explorer",
+    name: "Rizfolio Documentation | Open Source & Code Explorer",
     short_name: "RizDocs",
     description:
       "Interactive technical documentation, open-source projects, and source code explorer.",

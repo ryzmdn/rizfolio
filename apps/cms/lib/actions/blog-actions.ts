@@ -193,11 +193,10 @@ export async function updatePost(id: string, input: UpdatePostInput) {
         status: updated.status,
       },
     })
-    dispatchBackgroundRevalidation({
-      app: "blog",
-      slug: updated.slug,
-      path: `/blog/${updated.slug}`,
-    })
+    dispatchBackgroundRevalidation([
+      { app: "blog", path: "/" },
+      { app: "blog", slug: updated.slug, path: `/blog/${updated.slug}` },
+    ])
   }
   revalidatePath("/blog")
   revalidatePath("/")
@@ -243,6 +242,7 @@ export async function createBlogCategory(
       entityType: "categories",
       entityId: created.id,
     })
+    dispatchBackgroundRevalidation({ app: "blog", path: "/" })
   }
   revalidatePath("/blog")
   return created
@@ -257,6 +257,7 @@ export async function deleteBlogCategory(id: string) {
     entityType: "categories",
     entityId: id,
   })
+  dispatchBackgroundRevalidation({ app: "blog", path: "/" })
   revalidatePath("/blog")
 }
 
@@ -282,6 +283,7 @@ export async function createBlogTag(values: typeof tags.$inferInsert) {
       entityType: "tags",
       entityId: created.id,
     })
+    dispatchBackgroundRevalidation({ app: "blog", path: "/" })
   }
   revalidatePath("/blog")
   return created
@@ -296,5 +298,6 @@ export async function deleteBlogTag(id: string) {
     entityType: "tags",
     entityId: id,
   })
+  dispatchBackgroundRevalidation({ app: "blog", path: "/" })
   revalidatePath("/blog")
 }
