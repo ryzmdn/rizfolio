@@ -17,7 +17,7 @@ const baseUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Digital Tools & Engineering Starter Kits — Rizfolio Store",
+    default: "Digital Tools & Engineering Starter Kits | Rizfolio Store",
     template: "%s | Rizfolio Store",
   },
   description:
@@ -39,13 +39,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: baseUrl,
     siteName: "Rizfolio Store",
-    title: "Digital Tools & Engineering Starter Kits — Rizfolio Store",
+    title: "Digital Tools & Engineering Starter Kits | Rizfolio Store",
     description:
       "Production-ready architectures, monorepo starter kits, UI design systems, and specialized senior engineering consultation sessions.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Digital Tools & Engineering Starter Kits — Rizfolio Store",
+    title: "Digital Tools & Engineering Starter Kits | Rizfolio Store",
     description:
       "Production-ready architectures, monorepo starter kits, UI design systems, and specialized senior engineering consultation sessions.",
   },
