@@ -151,7 +151,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {primaryCategory && (
                 <Link
                   href={`/?category=${primaryCategory.slug}`}
-                  className="rounded-md border border-border/60 bg-muted/50 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-muted"
+                  className="font-medium text-foreground transition-colors hover:text-muted-foreground"
                 >
                   {primaryCategory.name}
                 </Link>
@@ -205,7 +205,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
 
           {post.coverImageUrl && (
-            <div className="mb-12 overflow-hidden rounded-xl border border-border/40 bg-muted">
+            <div className="mb-12 overflow-hidden border border-border/40 bg-muted">
               <div className="relative aspect-video w-full">
                 <Image
                   src={post.coverImageUrl}
@@ -247,7 +247,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               )}
 
-              <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border/50 bg-muted/20 p-4 sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/40 pt-6">
                 <PostReactions postId={post.id} initialCount={14} />
                 <ShareToolbar title={post.title} url={postUrl} />
               </div>
@@ -259,9 +259,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             <aside className="hidden lg:col-span-4 lg:block">
               <div className="sticky top-28">
-                <div className="rounded-xl border border-border/50 bg-muted/10 p-5">
-                  <TableOfContents content={post.contentMd} />
-                </div>
+                <TableOfContents content={post.contentMd} />
               </div>
             </aside>
           </div>
