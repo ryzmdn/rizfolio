@@ -203,12 +203,14 @@ export async function updateRepoFile(
     .set(values)
     .where(eq(repoFiles.id, id))
     .returning()
+  dispatchBackgroundRevalidation({ app: "docs", path: "/" })
   revalidatePath("/docs")
   return updated
 }
 
 export async function deleteRepoFile(id: string) {
   await db.delete(repoFiles).where(eq(repoFiles.id, id))
+  dispatchBackgroundRevalidation({ app: "docs", path: "/" })
   revalidatePath("/docs")
 }
 
@@ -265,5 +267,6 @@ export async function createRepoRelease(
 
 export async function deleteRepoRelease(id: string) {
   await db.delete(repoReleases).where(eq(repoReleases.id, id))
+  dispatchBackgroundRevalidation({ app: "docs", path: "/" })
   revalidatePath("/docs")
 }

@@ -12,6 +12,7 @@ import {
 } from "lucide-react"
 import { formatPrice } from "../lib/utils"
 import { AddToCartButton } from "./add-to-cart-button"
+import { PriceDisplay } from "./price-display"
 import type { ShopProduct } from "../lib/queries"
 import { cn } from "@workspace/ui/lib/utils"
 
@@ -111,9 +112,10 @@ export function ProductCard({ product, className }: ProductCardProps) {
           </div>
 
           <div className="text-right">
-            <span className="font-mono text-base font-bold text-foreground">
-              {formatPrice(product.price, product.currency)}
-            </span>
+            <PriceDisplay
+              amount={product.price}
+              className="font-mono text-base font-bold text-foreground"
+            />
           </div>
         </div>
 

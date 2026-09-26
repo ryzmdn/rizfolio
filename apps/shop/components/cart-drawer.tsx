@@ -15,6 +15,7 @@ import {
   Zap,
 } from "lucide-react"
 import { useCart } from "./cart-provider"
+import { useCurrency } from "./currency-context"
 import { formatPrice } from "../lib/utils"
 import { validatePromoCodeAction } from "../lib/actions"
 import { cn } from "@workspace/ui/lib/utils"
@@ -34,6 +35,7 @@ export function CartDrawer() {
     applyCoupon,
     removeCoupon,
   } = useCart()
+  const { currency, format } = useCurrency()
 
   const [couponInput, setCouponInput] = useState("")
   const [couponError, setCouponError] = useState<string | null>(null)
@@ -177,7 +179,7 @@ export function CartDrawer() {
                           </Link>
                           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                             <span className="font-medium text-foreground">
-                              {formatPrice(item.price, item.currency)}
+                              {format(item.price)}
                             </span>
                             <span>•</span>
                             <span className="rounded bg-muted px-1.5 py-0.2 text-[10px] font-medium text-muted-foreground">
@@ -314,21 +316,21 @@ export function CartDrawer() {
                 <div className="flex items-center justify-between text-muted-foreground">
                   <span>Subtotal</span>
                   <span className="font-mono text-foreground">
-                    {formatPrice(subtotal)}
+                    {format(subtotal)}
                   </span>
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
                     <span>Discount</span>
                     <span className="font-mono">
-                      -{formatPrice(discountAmount)}
+                      -{format(discountAmount)}
                     </span>
                   </div>
                 )}
                 <div className="flex items-center justify-between border-t border-border/60 pt-2 text-sm font-semibold text-foreground">
                   <span>Grand Total</span>
                   <span className="font-mono text-base">
-                    {formatPrice(grandTotal)}
+                    {format(grandTotal)}
                   </span>
                 </div>
               </div>

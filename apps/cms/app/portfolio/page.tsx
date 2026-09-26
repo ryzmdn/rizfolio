@@ -33,8 +33,8 @@ export default async function PortfolioManagerPage() {
 
   return (
     <CmsPageShell
-      title="Complete Portfolio Showcase Suite"
-      description="Kelola profil publik, riwayat karir, rekam akademik, studi kasus mendalam, penawaran layanan, lisensi sertifikasi, dan testimoni klien."
+      title="Portfolio Studio"
+      description="Pusat kendali profil publik, riwayat karir, pendidikan, studi kasus teknik, layanan, sertifikasi, dan testimoni."
     >
       <PortfolioManagerView
         profileData={profileData}

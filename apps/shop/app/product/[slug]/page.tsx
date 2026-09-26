@@ -45,7 +45,7 @@ export async function generateMetadata({
 
   if (!product) {
     return {
-      title: "Product Not Found — Rizfolio Store",
+      title: "Product Not Found | Rizfolio Store",
     }
   }
 
@@ -53,7 +53,7 @@ export async function generateMetadata({
   const description = product.description
 
   return {
-    title: `${title} — Rizfolio Store`,
+    title: `${title} | Rizfolio Store`,
     description,
     openGraph: {
       title,

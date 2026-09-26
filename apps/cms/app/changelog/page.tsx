@@ -17,8 +17,8 @@ export default async function ChangelogManagerPage() {
 
   return (
     <CmsPageShell
-      title="Changelog Engine & Interactive Roadmap Hub"
-      description="Catat riwayat rilis pembaruan, rincian butir fitur sorotan, dan lini masa target peta jalan pengembangan."
+      title="Changelog & Roadmap Manager"
+      description="Record release notes, feature highlights, and public product roadmap milestones."
     >
       <ChangelogManagerView
         changelogs={changelogs}

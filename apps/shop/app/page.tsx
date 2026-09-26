@@ -16,7 +16,7 @@ import { StoreFaq } from "@/components/store-faq"
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: "Digital Tools & Engineering Starter Kits — Rizfolio Store",
+  title: "Digital Tools & Engineering Starter Kits | Rizfolio Store",
   description:
     "Explore production-tested software architectures, Next.js 16 starter kits, Tailwind v4 UI systems, and specialized senior engineering consultations.",
 }

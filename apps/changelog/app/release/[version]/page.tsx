@@ -62,7 +62,7 @@ export async function generateMetadata({
     description,
     openGraph: {
       type: "article",
-      title: `${release.title} (${release.version}) — Rizfolio Changelog`,
+      title: `${release.title} (${release.version}): Rizfolio Changelog`,
       description,
       url: `${baseUrl}/release/${release.version}`,
       publishedTime: release.createdAt,
@@ -70,7 +70,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${release.title} (${release.version}) — Rizfolio Changelog`,
+      title: `${release.title} (${release.version}): Rizfolio Changelog`,
       description,
     },
   }
@@ -194,7 +194,7 @@ export default async function ReleaseDetailPage({
           <ChevronRight className="size-3 text-muted-foreground/60" />
           <span>Releases</span>
           <ChevronRight className="size-3 text-muted-foreground/60" />
-          <span className="font-mono font-medium text-foreground">
+          <span className="font-mono font-semibold text-foreground">
             {release.version}
           </span>
         </nav>
@@ -202,20 +202,20 @@ export default async function ReleaseDetailPage({
         <header className="space-y-6 rounded-2xl border border-border/80 bg-card/60 p-6 shadow-xs backdrop-blur-xs sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="rounded-lg bg-primary px-3 py-1 font-mono text-xs font-semibold text-primary-foreground shadow-xs">
+              <span className="rounded-lg bg-foreground px-3 py-1 font-mono text-xs font-bold text-background shadow-xs">
                 {release.version}
               </span>
 
               {!adjacent.newer && (
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                  <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span className="size-1.5 rounded-full bg-emerald-500" />
                   Latest Release
                 </span>
               )}
 
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Calendar className="size-3.5" />
-                <span>{release.releaseDate}</span>
+                <time dateTime={release.createdAt}>{release.releaseDate}</time>
               </div>
             </div>
 
@@ -227,7 +227,7 @@ export default async function ReleaseDetailPage({
           </div>
 
           <div className="space-y-3 border-t border-border/60 pt-6">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-4xl">
               {release.title}
             </h1>
             {release.summary && (
@@ -241,7 +241,7 @@ export default async function ReleaseDetailPage({
             <div className="flex flex-wrap items-center gap-2 pt-2">
               <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
                 <Layers className="size-3.5" />
-                Monorepo Scopes:
+                Affected Packages:
               </span>
               {release.scope.map((sc) => (
                 <span
@@ -262,10 +262,10 @@ export default async function ReleaseDetailPage({
                   className="rounded-xl border border-border/60 bg-background/60 p-3.5"
                 >
                   <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                    <Gauge className="size-3.5 text-primary" />
+                    <Gauge className="size-3.5 text-muted-foreground" />
                     <span>{metric.label}</span>
                   </div>
-                  <div className="mt-1.5 font-mono text-base font-semibold text-foreground">
+                  <div className="mt-1.5 font-mono text-base font-bold text-foreground">
                     {metric.value}
                   </div>
                 </div>
@@ -290,7 +290,7 @@ export default async function ReleaseDetailPage({
                 className="space-y-4 rounded-2xl border border-border/80 bg-card/40 p-6 backdrop-blur-xs sm:p-8"
               >
                 <div className="flex items-center justify-between border-b border-border/60 pb-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     <div
                       className={cn(
                         "flex size-7 items-center justify-center rounded-lg border",
@@ -299,7 +299,7 @@ export default async function ReleaseDetailPage({
                     >
                       <Icon className="size-3.5" />
                     </div>
-                    <h2 className="text-base font-semibold tracking-tight text-foreground sm:text-lg">
+                    <h2 className="text-base font-bold tracking-tight text-foreground sm:text-lg">
                       {config.label}
                     </h2>
                   </div>
@@ -314,7 +314,7 @@ export default async function ReleaseDetailPage({
                       key={item.id}
                       className="group flex items-start gap-3 rounded-xl p-2 transition-colors hover:bg-muted/40"
                     >
-                      <div className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                      <div className="mt-2 size-1.5 shrink-0 rounded-full bg-foreground" />
                       <div className="min-w-0 flex-1 space-y-1">
                         <p className="text-xs leading-relaxed text-foreground sm:text-sm">
                           {item.description}
@@ -344,7 +344,7 @@ export default async function ReleaseDetailPage({
                   <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-0.5" />
                   <span>Previous Release</span>
                 </div>
-                <div className="mt-2 font-mono text-sm font-semibold text-foreground">
+                <div className="mt-2 font-mono text-sm font-bold text-foreground">
                   {adjacent.older.version}
                 </div>
                 <div className="mt-1 line-clamp-1 text-xs text-muted-foreground">
@@ -353,7 +353,7 @@ export default async function ReleaseDetailPage({
               </Link>
             ) : (
               <div className="rounded-2xl border border-dashed border-border/50 p-4 text-center text-xs text-muted-foreground">
-                First monorepo release
+                Initial Monorepo Release
               </div>
             )}
 
@@ -366,7 +366,7 @@ export default async function ReleaseDetailPage({
                   <span>Next Release</span>
                   <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
                 </div>
-                <div className="mt-2 font-mono text-sm font-semibold text-foreground">
+                <div className="mt-2 font-mono text-sm font-bold text-foreground">
                   {adjacent.newer.version}
                 </div>
                 <div className="mt-1 line-clamp-1 text-xs text-muted-foreground">
@@ -375,7 +375,7 @@ export default async function ReleaseDetailPage({
               </Link>
             ) : (
               <div className="rounded-2xl border border-dashed border-border/50 p-4 text-center text-xs text-muted-foreground">
-                Latest stable release
+                Latest Production Release
               </div>
             )}
           </div>

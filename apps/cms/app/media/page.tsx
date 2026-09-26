@@ -5,12 +5,12 @@ import { listMediaAssets } from "@/lib/actions/media-browser-actions"
 export const dynamic = "force-dynamic"
 
 export default async function MediaLibraryPage() {
-  const assets = await listMediaAssets()
+  const assets = await listMediaAssets("all")
 
   return (
     <CmsPageShell
-      title="Media Library Asset Browser & Storage Hub"
-      description="Kelola aset visual, penjelajah folder penyimpanan, tautan CDN global, dan utilitas unggah drag-and-drop."
+      title="Media & Storage Assets"
+      description="Upload, organize, and manage media assets stored on Supabase Storage global CDN."
     >
       <MediaBrowserView initialAssets={assets} />
     </CmsPageShell>

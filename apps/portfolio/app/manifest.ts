@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Rizky Ramadhan — Portfolio & Engineering",
+    name: "Rizky Ramadhan | Portfolio & Engineering",
     short_name: "Rizfolio",
     description:
       "Full-Stack Software Engineer & Distributed Systems Architect Portfolio",

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Rizfolio CMS — Admin Dashboard",
+    name: "Rizfolio CMS: Admin Dashboard",
     short_name: "RizCMS",
     description:
       "Internal content management portal and administration workspace.",

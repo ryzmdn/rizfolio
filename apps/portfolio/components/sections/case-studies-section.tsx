@@ -1,8 +1,20 @@
 import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
-import { caseStudies } from "@/data"
+import { caseStudies as fallbackCaseStudies } from "@/data"
+import type { CaseStudyItem } from "@/lib/queries"
 
-export function CaseStudiesSection() {
+interface CaseStudiesSectionProps {
+  caseStudies?: CaseStudyItem[]
+}
+
+export function CaseStudiesSection({
+  caseStudies: propCaseStudies,
+}: CaseStudiesSectionProps) {
+  const items =
+    propCaseStudies && propCaseStudies.length > 0
+      ? propCaseStudies
+      : fallbackCaseStudies
+
   return (
     <Container id="case-studies" className="space-y-12 py-20">
       <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
@@ -17,7 +29,7 @@ export function CaseStudiesSection() {
       </hgroup>
 
       <div className="grid w-full gap-y-10 py-10 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12">
-        {caseStudies.map((item) => (
+        {items.map((item) => (
           <div key={item.id} className="group relative overflow-hidden">
             <div className="relative aspect-3/2 overflow-hidden rounded-xl bg-muted shadow-lg ring-1 ring-border">
               <Image

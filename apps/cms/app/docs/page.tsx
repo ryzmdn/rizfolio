@@ -17,8 +17,8 @@ export default async function DocsManagerPage() {
 
   return (
     <CmsPageShell
-      title="Documentation & Code Explorer Manager"
-      description="Kelola repositori sumber terbuka, penjelajah pohon berkas kode, dan arsip rilis perangkat lunak."
+      title="Documentation & Repositories Manager"
+      description="Manage open-source repositories, technical documentation, releases, and files."
     >
       <DocsManagerView
         repositories={repositories}

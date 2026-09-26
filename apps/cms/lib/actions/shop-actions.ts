@@ -194,6 +194,7 @@ export async function createProductFile(values: CreateProductFileInput) {
 
 export async function deleteProductFile(id: string) {
   await db.delete(productFiles).where(eq(productFiles.id, id))
+  dispatchBackgroundRevalidation({ app: "shop", path: "/" })
   revalidatePath("/shop")
 }
 
@@ -288,6 +289,7 @@ export async function updateOrderStatus(
       currency: updated.currency,
       payloadAfter: { status },
     })
+    dispatchBackgroundRevalidation({ app: "shop", path: "/" })
   }
   revalidatePath("/shop")
   revalidatePath("/")

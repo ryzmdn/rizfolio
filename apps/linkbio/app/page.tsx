@@ -18,9 +18,12 @@ import {
   Mail,
   ArrowUpRight,
   Sparkles,
-  Phone,
 } from "lucide-react"
-import { Button } from "@workspace/ui/components/button"
+import { db } from "@workspace/db"
+import { profile } from "@workspace/db/schema"
+import { unstable_cache } from "next/cache"
+
+export const revalidate = 3600
 
 const portfolioUrl =
   process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://rizkyramadhan.dev"
@@ -69,7 +72,7 @@ const SOCIAL_LINKS = [
 const ECOSYSTEM_LINKS = [
   {
     title: "Personal Portfolio",
-    description: "Full case studies, career journey, and solutions",
+    description: "Full case studies, career journey, and technical solutions",
     href: portfolioUrl,
     icon: Globe,
     badge: "Main",
@@ -81,7 +84,7 @@ const ECOSYSTEM_LINKS = [
     href: blogUrl,
     icon: FileText,
     badge: "Articles",
-    badgeColor: "bg-chart-1/10 text-chart-1 border-chart-1/20",
+    badgeColor: "bg-blue-500/10 text-blue-500 border-blue-500/20",
   },
   {
     title: "Digital Store & UI Kits",
@@ -89,7 +92,7 @@ const ECOSYSTEM_LINKS = [
     href: shopUrl,
     icon: ShoppingBag,
     badge: "Shop",
-    badgeColor: "bg-chart-2/10 text-chart-2 border-chart-2/20",
+    badgeColor: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
   },
   {
     title: "Documentation & Code Explorer",
@@ -97,7 +100,7 @@ const ECOSYSTEM_LINKS = [
     href: docsUrl,
     icon: BookOpen,
     badge: "Docs",
-    badgeColor: "bg-chart-4/10 text-chart-4 border-chart-4/20",
+    badgeColor: "bg-purple-500/10 text-purple-500 border-purple-500/20",
   },
   {
     title: "Ecosystem Changelog",
@@ -109,53 +112,164 @@ const ECOSYSTEM_LINKS = [
   },
 ]
 
-export default function LinkBioPage() {
+const getBioProfile = unstable_cache(
+  async () => {
+    try {
+      const [data] = await db.select().from(profile).limit(1)
+      return data || null
+    } catch {
+      return null
+    }
+  },
+  ["linkbio-profile-data"],
+  {
+    revalidate: 3600,
+    tags: ["linkbio", "portfolio"],
+  }
+)
+
+export default async function LinkBioPage() {
+  const profileData = await getBioProfile()
+
+  const socialLinks =
+    (profileData?.socialLinks as Record<string, string> | null) || {}
+  const name = profileData?.fullName || "Rizky Ramadhan"
+  const headline = profileData?.headline || "Software Engineer & System Architect"
+  const bio =
+    profileData?.bio ||
+    "Building scalable web applications, open-source development tools, and performant design systems across the modern web ecosystem."
+  const avatarUrl =
+    socialLinks?.avatarUrl ||
+    "https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
+
   return (
-    <>
-      <div className="mx-auto max-w-xl py-10">
-        <div className="relative h-56 w-full overflow-hidden rounded-2xl sm:h-60 lg:h-64">
-          <Image
-            src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1775372259/samples/animals/three-dogs.jpg"
-            alt=""
-            fill
-            className="object-cover"
-          />
+    <main className="min-h-screen bg-background py-10 px-4 sm:px-6">
+      <div className="mx-auto max-w-xl space-y-8">
+        {/* Cover Banner */}
+        <div className="relative h-44 w-full overflow-hidden rounded-2xl sm:h-52 bg-gradient-to-tr from-muted via-card to-secondary border border-border/80 shadow-xs">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
+          <div className="absolute top-4 right-4 z-10">
+            <ThemeToggle />
+          </div>
         </div>
-        <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
-          <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:gap-x-5">
-            <div className="relative flex size-24 shrink-0 overflow-hidden rounded-full ring-4 ring-background sm:size-32">
+
+        {/* Profile Card Header */}
+        <div className="relative -mt-16 sm:-mt-20 px-2 sm:px-4">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-full ring-4 ring-background shadow-lg bg-card">
               <Image
-                src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
-                alt=""
+                src={avatarUrl}
+                alt={name}
                 fill
+                priority
                 className="object-cover"
               />
             </div>
-            <div className="mt-6 flex w-full flex-col justify-end gap-y-3 sm:flex-row sm:gap-x-4 sm:gap-y-0">
-              <Button>
-                <Mail data-icon="inline-start" /> New Branch
-              </Button>
-              <Button variant="outline">
-                <Phone data-icon="inline-start" /> New Branch
-              </Button>
+
+            <div className="flex items-center gap-2">
+              <a
+                href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contact@rizkyramadhan.dev"}`}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-opacity hover:opacity-90"
+              >
+                <Mail className="size-3.5" />
+                <span>Contact Email</span>
+              </a>
             </div>
           </div>
-          <div className="mt-6 flex-1">
-            <h1 className="scroll-m-20 truncate text-2xl font-bold text-primary lg:text-3xl">
-              Rizky Ramadhan
-            </h1>
-            <p className="mt-1 mb-3 leading-7 text-secondary-foreground lg:text-lg">
-              I&apos;m a Software Engineer
-            </p>
-            <p className="leading-7 text-muted-foreground">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque
-              natus odio saepe veritatis ex fugiat, molestiae aperiam,
-              doloremque magnam porro non vero obcaecati distinctio commodi at
-              corporis, voluptate ab facere?
+
+          <div className="mt-4 space-y-1.5">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                {name}
+              </h1>
+              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-500">
+                <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Available
+              </span>
+            </div>
+            <p className="text-sm font-medium text-muted-foreground">{headline}</p>
+            <p className="text-xs leading-relaxed text-muted-foreground/90 pt-1">
+              {bio}
             </p>
           </div>
         </div>
+
+        {/* Social Links Bar */}
+        <div className="flex items-center justify-center gap-2 rounded-2xl border border-border/70 bg-card/60 p-2.5 backdrop-blur-xs">
+          {SOCIAL_LINKS.map((soc) => {
+            const Icon = soc.icon
+            return (
+              <a
+                key={soc.name}
+                href={soc.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={soc.name}
+                className="flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <Icon className="size-4" />
+              </a>
+            )
+          })}
+        </div>
+
+        {/* Ecosystem Applications List */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Monorepo Ecosystem
+            </span>
+            <span className="font-mono text-[11px] text-muted-foreground/60">
+              5 Live Apps
+            </span>
+          </div>
+
+          <div className="space-y-2.5">
+            {ECOSYSTEM_LINKS.map((link) => {
+              const Icon = link.icon
+              return (
+                <a
+                  key={link.title}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center justify-between rounded-2xl border border-border/80 bg-card/60 p-4 transition-all hover:border-foreground/30 hover:bg-card/90 hover:shadow-md"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-muted/30 text-foreground transition-colors group-hover:border-foreground/30">
+                      <Icon className="size-5" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                          {link.title}
+                        </span>
+                        <span
+                          className={`rounded-md border px-1.5 py-0.5 font-mono text-[10px] font-medium ${link.badgeColor}`}
+                        >
+                          {link.badge}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {link.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <ArrowUpRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground shrink-0" />
+                </a>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="pt-6 pb-12 text-center">
+          <p className="font-mono text-[11px] text-muted-foreground/70">
+            Powered by Rizfolio Dynamic Architecture &bull; {new Date().getFullYear()}
+          </p>
+        </footer>
       </div>
-    </>
+    </main>
   )
 }

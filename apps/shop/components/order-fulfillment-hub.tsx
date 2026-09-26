@@ -14,7 +14,7 @@ import {
   ShieldCheck,
   Terminal,
 } from "lucide-react"
-import { formatPrice } from "../lib/utils"
+import { formatPrice, formatRawPrice } from "../lib/utils"
 import type { DigitalOrder } from "../lib/queries"
 
 interface OrderFulfillmentHubProps {
@@ -108,7 +108,7 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                   </div>
 
                   <div className="font-mono text-sm font-bold text-foreground sm:text-base">
-                    {formatPrice(item.pricePaid, order.currency)}
+                    {formatRawPrice(item.pricePaid, order.currency)}
                   </div>
                 </div>
 
@@ -252,7 +252,7 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
           <div className="flex items-center justify-between pt-3 text-sm font-bold text-foreground">
             <span>Total Paid</span>
             <span className="font-mono text-base">
-              {formatPrice(order.totalAmount, order.currency)}
+              {formatRawPrice(order.totalAmount, order.currency)}
             </span>
           </div>
         </div>

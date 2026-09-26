@@ -10,7 +10,7 @@ import {
 export const dynamic = "force-dynamic"
 
 export default async function BlogManagerPage() {
-  const [postList, categoryList, tagList, relations] = await Promise.all([
+  const [posts, categories, tags, relations] = await Promise.all([
     getPosts(),
     getBlogCategories(),
     getBlogTags(),
@@ -20,12 +20,12 @@ export default async function BlogManagerPage() {
   return (
     <CmsPageShell
       title="Blog Manager"
-      description="Tulis artikel teknis, kelola draf, publikasi, taksonomi kategori, dan optimasi SEO."
+      description="Tulis artikel teknis dengan live Markdown editor, kelola status publikasi, dan atur taksonomi kategori."
     >
       <BlogManagerView
-        initialPosts={postList}
-        categories={categoryList}
-        tags={tagList}
+        initialPosts={posts}
+        categories={categories}
+        tags={tags}
         postCategoriesMap={relations.postCategoriesMap}
         postTagsMap={relations.postTagsMap}
       />

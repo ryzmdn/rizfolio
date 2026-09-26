@@ -1,19 +1,74 @@
 import { unstable_cache } from "next/cache"
 import { db, eq, and, or, ilike, desc, asc } from "@workspace/db"
 import { repositories, repoFiles, repoReleases } from "@workspace/db/schema"
+import {
+  getFallbackRepositories,
+  getFallbackRepository,
+  getFallbackRepoFiles,
+  getFallbackFileContent,
+  getFallbackReleases,
+  getFallbackStats,
+  getFallbackCategoriesAndCourses,
+  getAllFallbackSlugs,
+  getAllFallbackFilePaths,
+  type FallbackRepository,
+  type FallbackRepoFile,
+  type FallbackRepoRelease,
+} from "../data"
+
+export type { FallbackRepository, FallbackRepoFile, FallbackRepoRelease }
 
 export interface RepositoryFilters {
   category?: string
   search?: string
   courseName?: string
   techStack?: string
-  sortBy?: "latest" | "stars" | "downloads"
+  sortBy?: "latest" | "stars" | "downloads" | "alphabetical"
   limit?: number
   offset?: number
 }
 
-async function fetchRepositories(filters: RepositoryFilters = {}) {
+const dbHealth = {
+  isHealthy: true,
+  lastCheck: 0,
+}
+
+const CIRCUIT_BREAKER_COOLDOWN_MS = 60_000
+
+async function safeDbQuery<T>(queryFn: () => Promise<T>): Promise<T | null> {
+  const now = Date.now()
+  if (!dbHealth.isHealthy && now - dbHealth.lastCheck < CIRCUIT_BREAKER_COOLDOWN_MS) {
+    return null
+  }
+
+  let timer: NodeJS.Timeout
+  const timeoutPromise = new Promise<null>((resolve) => {
+    timer = setTimeout(() => {
+      resolve(null)
+    }, 1500)
+  })
+
   try {
+    const result = await Promise.race([queryFn(), timeoutPromise])
+    if (result !== null) {
+      dbHealth.isHealthy = true
+      return result
+    } else {
+      dbHealth.isHealthy = false
+      dbHealth.lastCheck = Date.now()
+      return null
+    }
+  } catch {
+    dbHealth.isHealthy = false
+    dbHealth.lastCheck = Date.now()
+    return null
+  } finally {
+    clearTimeout(timer!)
+  }
+}
+
+async function fetchRepositories(filters: RepositoryFilters = {}) {
+  const rows = await safeDbQuery(async () => {
     const conditions = [eq(repositories.isPublic, true)]
 
     if (filters.category && filters.category !== "ALL") {
@@ -40,6 +95,8 @@ async function fetchRepositories(filters: RepositoryFilters = {}) {
       orderByClause = desc(repositories.starsCount)
     } else if (filters.sortBy === "downloads") {
       orderByClause = desc(repositories.downloadsCount)
+    } else if (filters.sortBy === "alphabetical") {
+      orderByClause = asc(repositories.name)
     }
 
     const query = db
@@ -56,10 +113,13 @@ async function fetchRepositories(filters: RepositoryFilters = {}) {
     }
 
     return await query
-  } catch (error) {
-    console.error("Failed to fetch repositories:", error)
-    return []
+  })
+
+  if (rows && rows.length > 0) {
+    return rows
   }
+
+  return getFallbackRepositories(filters)
 }
 
 export async function getRepositories(filters: RepositoryFilters = {}) {
@@ -75,24 +135,19 @@ export async function getRepositories(filters: RepositoryFilters = {}) {
 }
 
 async function fetchRepositoryBySlug(slug: string) {
-  try {
-    const repo = await db.query?.repositories?.findFirst?.({
-      where: eq(repositories.slug, slug),
-    })
-
-    if (repo) return repo
-
-    const [found] = await db
+  const rows = await safeDbQuery(() =>
+    db
       .select()
       .from(repositories)
       .where(eq(repositories.slug, slug))
       .limit(1)
+  )
 
-    return found || null
-  } catch (error) {
-    console.error(`Failed to fetch repository by slug (${slug}):`, error)
-    return null
+  if (rows && rows[0]) {
+    return rows[0]
   }
+
+  return getFallbackRepository(slug)
 }
 
 export async function getRepositoryBySlug(slug: string) {
@@ -107,59 +162,58 @@ export async function getRepositoryBySlug(slug: string) {
 }
 
 export async function getRepoFiles(repoId: string, parentPath = "") {
-  try {
-    const files = await db
+  const files = await safeDbQuery(() =>
+    db
       .select()
       .from(repoFiles)
       .where(
         and(eq(repoFiles.repoId, repoId), eq(repoFiles.parentPath, parentPath))
       )
       .orderBy(desc(repoFiles.isDirectory), asc(repoFiles.filename))
+  )
 
+  if (files && files.length > 0) {
     return files
-  } catch (error) {
-    console.error(
-      `Failed to fetch repo files (${repoId}, ${parentPath}):`,
-      error
-    )
-    return []
   }
+
+  return getFallbackRepoFiles(repoId, parentPath)
 }
 
 export async function getFileContent(repoId: string, filePath: string) {
-  try {
-    const [file] = await db
+  const rows = await safeDbQuery(() =>
+    db
       .select()
       .from(repoFiles)
       .where(and(eq(repoFiles.repoId, repoId), eq(repoFiles.path, filePath)))
       .limit(1)
+  )
 
-    return file || null
-  } catch (error) {
-    console.error(
-      `Failed to fetch file content (${repoId}, ${filePath}):`,
-      error
-    )
-    return null
+  if (rows && rows[0]) {
+    return rows[0]
   }
+
+  return getFallbackFileContent(repoId, filePath)
 }
 
 export async function getRepoReleases(repoId: string) {
-  try {
-    return await db
+  const releases = await safeDbQuery(() =>
+    db
       .select()
       .from(repoReleases)
       .where(eq(repoReleases.repoId, repoId))
       .orderBy(desc(repoReleases.createdAt))
-  } catch (error) {
-    console.error(`Failed to fetch releases (${repoId}):`, error)
-    return []
+  )
+
+  if (releases && releases.length > 0) {
+    return releases
   }
+
+  return getFallbackReleases(repoId)
 }
 
 async function fetchRepoStats() {
-  try {
-    const allRepos = await db
+  const allRepos = await safeDbQuery(() =>
+    db
       .select({
         category: repositories.category,
         stars: repositories.starsCount,
@@ -168,7 +222,9 @@ async function fetchRepoStats() {
       })
       .from(repositories)
       .where(eq(repositories.isPublic, true))
+  )
 
+  if (allRepos && allRepos.length > 0) {
     const total = allRepos.length
     const assignments = allRepos.filter(
       (r) => r.category === "ASSIGNMENT"
@@ -197,17 +253,9 @@ async function fetchRepoStats() {
       totalStars,
       totalDownloads,
     }
-  } catch (error) {
-    console.error("Failed to fetch docs repo stats:", error)
-    return {
-      total: 0,
-      assignments: 0,
-      experiments: 0,
-      openSource: 0,
-      totalStars: 0,
-      totalDownloads: 0,
-    }
   }
+
+  return getFallbackStats()
 }
 
 export const getRepoStats = unstable_cache(
@@ -220,8 +268,8 @@ export const getRepoStats = unstable_cache(
 )
 
 async function fetchCategoriesAndCourses() {
-  try {
-    const repos = await db
+  const repos = await safeDbQuery(() =>
+    db
       .select({
         courseName: repositories.courseName,
         semester: repositories.semester,
@@ -229,7 +277,9 @@ async function fetchCategoriesAndCourses() {
       })
       .from(repositories)
       .where(eq(repositories.isPublic, true))
+  )
 
+  if (repos && repos.length > 0) {
     const coursesMap = new Map<string, { semester?: string; count: number }>()
 
     for (const r of repos) {
@@ -249,11 +299,12 @@ async function fetchCategoriesAndCourses() {
       count: val.count,
     }))
 
-    return { courses }
-  } catch (error) {
-    console.error("Failed to fetch categories & courses:", error)
-    return { courses: [] }
+    if (courses.length > 0) {
+      return { courses }
+    }
   }
+
+  return getFallbackCategoriesAndCourses()
 }
 
 export const getCategoriesAndCourses = unstable_cache(
@@ -264,3 +315,36 @@ export const getCategoriesAndCourses = unstable_cache(
     tags: ["docs"],
   }
 )
+
+export async function getAllRepoSlugs(): Promise<string[]> {
+  const rows = await safeDbQuery(() =>
+    db
+      .select({ slug: repositories.slug })
+      .from(repositories)
+      .where(eq(repositories.isPublic, true))
+  )
+
+  if (rows && rows.length > 0) {
+    return rows.map((r) => r.slug)
+  }
+
+  return getAllFallbackSlugs()
+}
+
+export async function getAllRepoFilePaths(slug: string): Promise<string[]> {
+  const repo = await getRepositoryBySlug(slug)
+  if (!repo) return getAllFallbackFilePaths(slug)
+
+  const files = await safeDbQuery(() =>
+    db
+      .select({ path: repoFiles.path, isDirectory: repoFiles.isDirectory })
+      .from(repoFiles)
+      .where(and(eq(repoFiles.repoId, repo.id), eq(repoFiles.isDirectory, false)))
+  )
+
+  if (files && files.length > 0) {
+    return files.map((f) => f.path)
+  }
+
+  return getAllFallbackFilePaths(slug)
+}

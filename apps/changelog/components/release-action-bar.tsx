@@ -42,7 +42,7 @@ export function ReleaseActionBar({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${title} (${version}) — Rizfolio Changelog`,
+          title: `${title} (${version}): Rizfolio Changelog`,
           url: window.location.href,
         })
       } catch {
@@ -59,14 +59,15 @@ export function ReleaseActionBar({
         type="button"
         onClick={handleCopySha}
         title="Copy Git commit SHA"
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        aria-label={`Copy Git commit ${commitSha}`}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 font-mono text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
       >
-        <GitCommit className="size-3.5 text-primary" />
+        <GitCommit className="size-3.5 text-foreground" />
         <span>{commitSha}</span>
         {copiedSha ? (
           <Check className="size-3 text-emerald-500" />
         ) : (
-          <Copy className="size-3 text-muted-foreground/70" />
+          <Copy className="size-3 opacity-60" />
         )}
       </button>
 
@@ -75,18 +76,20 @@ export function ReleaseActionBar({
         target="_blank"
         rel="noreferrer"
         title="View commit diff on GitHub"
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        aria-label="View commit diff on GitHub"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
       >
         <GitHub size={13} />
         <span>GitHub Diff</span>
-        <ExternalLink className="size-2.5 text-muted-foreground/70" />
+        <ExternalLink className="size-2.5 opacity-60" />
       </a>
 
       <button
         type="button"
         onClick={handleCopyLink}
         title="Copy permanent URL"
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        aria-label="Copy release permanent URL"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
       >
         {copiedLink ? (
           <>
@@ -95,7 +98,7 @@ export function ReleaseActionBar({
           </>
         ) : (
           <>
-            <Copy className="size-3.5" />
+            <Copy className="size-3.5 opacity-60" />
             <span>Copy Link</span>
           </>
         )}
@@ -105,9 +108,10 @@ export function ReleaseActionBar({
         type="button"
         onClick={handleShare}
         title="Share release notes"
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        aria-label="Share release notes"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
       >
-        <Share2 className="size-3.5" />
+        <Share2 className="size-3.5 opacity-70" />
         <span>Share</span>
       </button>
     </div>

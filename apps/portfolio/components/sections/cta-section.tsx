@@ -20,7 +20,7 @@ export function CtaSection() {
         <p className="mx-auto mt-6 max-w-2xl text-base/relaxed text-pretty text-muted sm:text-lg/8">
           Whether you&apos;re launching a new digital venture, scaling existing
           cloud systems, or seeking high-caliber engineering
-          leadership—let&apos;s turn ambitious visions into deterministic
+          leadership. Let&apos;s turn ambitious visions into deterministic
           reality.
         </p>
 

@@ -15,7 +15,7 @@ const baseUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Rizky Ramadhan — Engineering Blog",
+    default: "Rizky Ramadhan | Engineering Blog",
     template: "%s | Rizky Ramadhan",
   },
   description:
@@ -38,14 +38,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: baseUrl,
-    siteName: "Rizky Ramadhan — Engineering Blog",
-    title: "Rizky Ramadhan — Engineering Blog",
+    siteName: "Rizky Ramadhan | Engineering Blog",
+    title: "Rizky Ramadhan | Engineering Blog",
     description:
       "Articles, architecture, and notes on modern full-stack systems, monorepos, and UI engineering.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rizky Ramadhan — Engineering Blog",
+    title: "Rizky Ramadhan | Engineering Blog",
     description:
       "Articles, architecture, and notes on modern full-stack systems, monorepos, and UI engineering.",
   },
@@ -71,7 +71,7 @@ export default function RootLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
-          title="Rizky Ramadhan — Engineering Blog RSS Feed"
+          title="Rizky Ramadhan | Engineering Blog RSS Feed"
           href="/rss.xml"
         />
       </head>

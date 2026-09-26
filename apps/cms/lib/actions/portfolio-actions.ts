@@ -12,6 +12,14 @@ import {
 } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
+import { dispatchBackgroundRevalidation } from "../revalidate"
+
+function dispatchPortfolioRevalidation() {
+  dispatchBackgroundRevalidation([
+    { app: "portfolio", path: "/" },
+    { app: "linkbio", path: "/" },
+  ])
+}
 
 export async function getProfile() {
   try {
@@ -51,7 +59,9 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
       })
     }
   }
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function getExperiences() {
@@ -82,8 +92,10 @@ export async function createExperience(
       entityId: created.id,
       payloadAfter: { company: created.company, role: created.role },
     })
+    dispatchPortfolioRevalidation()
   }
   revalidatePath("/portfolio")
+  revalidatePath("/")
   return created
 }
 
@@ -100,7 +112,9 @@ export async function updateExperience(
     entityId: id,
     payloadAfter: values,
   })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function deleteExperience(id: string) {
@@ -112,7 +126,9 @@ export async function deleteExperience(id: string) {
     entityType: "experiences",
     entityId: id,
   })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function getEducation() {
@@ -140,8 +156,10 @@ export async function createEducation(values: typeof education.$inferInsert) {
       entityType: "education",
       entityId: created.id,
     })
+    dispatchPortfolioRevalidation()
   }
   revalidatePath("/portfolio")
+  revalidatePath("/")
   return created
 }
 
@@ -150,12 +168,16 @@ export async function updateEducation(
   values: Partial<typeof education.$inferInsert>
 ) {
   await db.update(education).set(values).where(eq(education.id, id))
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function deleteEducation(id: string) {
   await db.delete(education).where(eq(education.id, id))
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function getCertifications() {
@@ -186,8 +208,10 @@ export async function createCertification(
       entityId: created.id,
       payloadAfter: { title: created.title, issuer: created.issuer },
     })
+    dispatchPortfolioRevalidation()
   }
   revalidatePath("/portfolio")
+  revalidatePath("/")
   return created
 }
 
@@ -196,12 +220,16 @@ export async function updateCertification(
   values: Partial<typeof certifications.$inferInsert>
 ) {
   await db.update(certifications).set(values).where(eq(certifications.id, id))
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function deleteCertification(id: string) {
   await db.delete(certifications).where(eq(certifications.id, id))
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function getServices() {
@@ -228,8 +256,10 @@ export async function createService(values: typeof services.$inferInsert) {
       amount: created.startingPrice || 0,
       currency: "IDR",
     })
+    dispatchPortfolioRevalidation()
   }
   revalidatePath("/portfolio")
+  revalidatePath("/")
   return created
 }
 
@@ -238,12 +268,16 @@ export async function updateService(
   values: Partial<typeof services.$inferInsert>
 ) {
   await db.update(services).set(values).where(eq(services.id, id))
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function deleteService(id: string) {
   await db.delete(services).where(eq(services.id, id))
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function getCaseStudies() {
@@ -275,8 +309,10 @@ export async function createCaseStudy(values: typeof caseStudies.$inferInsert) {
       caseStudyId: created.id,
       payloadAfter: { slug: created.slug, title: created.title },
     })
+    dispatchPortfolioRevalidation()
   }
   revalidatePath("/portfolio")
+  revalidatePath("/")
   return created
 }
 
@@ -294,7 +330,9 @@ export async function updateCaseStudy(
     caseStudyId: id,
     payloadAfter: values,
   })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function deleteCaseStudy(id: string) {
@@ -307,7 +345,9 @@ export async function deleteCaseStudy(id: string) {
     entityId: id,
     caseStudyId: id,
   })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function getTestimonials() {
@@ -337,8 +377,10 @@ export async function createTestimonial(
       entityType: "testimonials",
       entityId: created.id,
     })
+    dispatchPortfolioRevalidation()
   }
   revalidatePath("/portfolio")
+  revalidatePath("/")
   return created
 }
 
@@ -347,10 +389,14 @@ export async function updateTestimonial(
   values: Partial<typeof testimonials.$inferInsert>
 ) {
   await db.update(testimonials).set(values).where(eq(testimonials.id, id))
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }
 
 export async function deleteTestimonial(id: string) {
   await db.delete(testimonials).where(eq(testimonials.id, id))
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
+  revalidatePath("/")
 }

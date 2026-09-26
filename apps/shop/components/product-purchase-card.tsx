@@ -13,6 +13,7 @@ import {
   Zap,
 } from "lucide-react"
 import { useCart } from "./cart-provider"
+import { useCurrency } from "./currency-context"
 import { LicenseSelector, type LicenseTier } from "./license-selector"
 import { formatPrice } from "../lib/utils"
 import type { ShopProduct } from "../lib/queries"
@@ -24,6 +25,7 @@ interface ProductPurchaseCardProps {
 export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
   const router = useRouter()
   const { addItem } = useCart()
+  const { currency, format } = useCurrency()
 
   const [selectedLicense, setSelectedLicense] = useState<LicenseTier>("STANDARD")
 
@@ -77,7 +79,7 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
       <div className="space-y-1">
         <div className="flex items-baseline gap-2">
           <span className="font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            {formatPrice(currentPrice, product.currency)}
+            {format(currentPrice)}
           </span>
           <span className="text-xs text-muted-foreground">
             {selectedLicense === "EXTENDED" ? "Extended Tier" : "Standard Tier"}
@@ -92,7 +94,7 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
         <LicenseSelector
           standardPrice={product.price}
           extendedPrice={product.extendedPrice}
-          currency={product.currency}
+          currency={currency}
           selectedLicense={selectedLicense}
           onSelectLicense={setSelectedLicense}
         />

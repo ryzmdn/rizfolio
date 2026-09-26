@@ -1,12 +1,14 @@
 "use client"
 
 import Image from "next/image"
-import { ShieldCheck, Zap, Lock, ShoppingBag, Tag } from "lucide-react"
+import { ShieldCheck, Zap, Lock, ShoppingBag, Tag, Globe } from "lucide-react"
 import { useCart } from "./cart-provider"
+import { useCurrency } from "./currency-context"
 import { formatPrice } from "../lib/utils"
 
 export function OrderSummaryCard() {
   const { items, subtotal, discountAmount, grandTotal, coupon } = useCart()
+  const { currency, currencyInfo, format } = useCurrency()
 
   return (
     <div className="space-y-6 rounded-3xl border border-border/80 bg-card/60 p-6 shadow-sm backdrop-blur-md sm:p-8">
@@ -14,9 +16,15 @@ export function OrderSummaryCard() {
         <h2 className="text-base font-semibold text-foreground">
           Order Summary
         </h2>
-        <span className="font-mono text-xs text-muted-foreground">
-          {items.reduce((acc, it) => acc + it.quantity, 0)} item(s)
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 rounded-md border border-border/80 bg-background px-2 py-0.5 font-mono text-[11px] font-medium text-foreground">
+            <span>{currencyInfo.flag}</span>
+            <span>{currency}</span>
+          </span>
+          <span className="font-mono text-xs text-muted-foreground">
+            {items.reduce((acc, it) => acc + it.quantity, 0)} item(s)
+          </span>
+        </div>
       </div>
 
       <div className="divide-y divide-border/50">
@@ -56,7 +64,7 @@ export function OrderSummaryCard() {
                 </div>
 
                 <div className="font-mono text-xs font-bold text-foreground">
-                  {formatPrice(item.price * item.quantity, item.currency)}
+                  {format(item.price * item.quantity)}
                 </div>
               </div>
             </div>
@@ -78,20 +86,20 @@ export function OrderSummaryCard() {
         <div className="flex items-center justify-between text-muted-foreground">
           <span>Subtotal</span>
           <span className="font-mono text-foreground">
-            {formatPrice(subtotal)}
+            {format(subtotal)}
           </span>
         </div>
 
         {discountAmount > 0 && (
           <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
             <span>Promotional Discount</span>
-            <span className="font-mono">-{formatPrice(discountAmount)}</span>
+            <span className="font-mono">-{format(discountAmount)}</span>
           </div>
         )}
 
         <div className="flex items-center justify-between border-t border-border/60 pt-3 text-base font-bold text-foreground">
           <span>Total Amount</span>
-          <span className="font-mono text-lg">{formatPrice(grandTotal)}</span>
+          <span className="font-mono text-lg">{format(grandTotal)}</span>
         </div>
       </div>
 

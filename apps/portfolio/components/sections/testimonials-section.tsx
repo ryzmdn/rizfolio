@@ -1,8 +1,20 @@
 import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
-import { testimonials } from "@/data"
+import { testimonials as fallbackTestimonials } from "@/data"
+import type { TestimonialItem } from "@/lib/queries"
 
-export function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  testimonials?: TestimonialItem[]
+}
+
+export function TestimonialsSection({
+  testimonials: propTestimonials,
+}: TestimonialsSectionProps) {
+  const items =
+    propTestimonials && propTestimonials.length > 0
+      ? propTestimonials
+      : fallbackTestimonials
+
   return (
     <Container id="testimonials" className="py-20">
       <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
@@ -17,7 +29,7 @@ export function TestimonialsSection() {
       </hgroup>
 
       <div className="grid gap-6 py-10 sm:grid-cols-2">
-        {testimonials.map((item) => (
+        {items.map((item) => (
           <div
             key={item.name}
             className="pt-6 sm:inline-block sm:w-full sm:px-4"

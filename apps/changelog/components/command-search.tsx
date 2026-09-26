@@ -86,7 +86,7 @@ export function CommandSearch() {
       ...matchedReleases.map((r) => ({
         type: "release" as const,
         url: `/release/${r.version}`,
-        title: `${r.version} - ${r.title}`,
+        title: `${r.version}: ${r.title}`,
         subtitle: r.summary || r.releaseDate,
         tag: r.version,
       })),
@@ -137,11 +137,11 @@ export function CommandSearch() {
       role="dialog"
       aria-modal="true"
       aria-label="Search release notes and roadmap"
-      className="fixed inset-0 z-50 flex items-start justify-center bg-background/80 p-4 pt-16 backdrop-blur-sm sm:pt-24"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-background/80 p-4 pt-16 backdrop-blur-sm sm:pt-24 animate-in fade-in duration-150"
       onClick={handleClose}
     >
       <div
-        className="w-full max-w-2xl overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xl"
+        className="w-full max-w-2xl overflow-hidden rounded-2xl border border-border/90 bg-card shadow-2xl ring-1 ring-border/50 animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 border-b border-border/80 px-4 py-3">
@@ -161,12 +161,13 @@ export function CommandSearch() {
             <button
               type="button"
               onClick={() => setQuery("")}
-              className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              aria-label="Clear query"
+              className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X className="size-4" />
             </button>
           ) : (
-            <kbd className="hidden rounded-md border border-border bg-muted/60 px-2 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
+            <kbd className="hidden rounded border border-border/80 bg-muted/60 px-2 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
               ESC
             </kbd>
           )}
@@ -195,16 +196,16 @@ export function CommandSearch() {
                           type="button"
                           onClick={() => handleSelect(`/release/${rel.version}`)}
                           className={cn(
-                            "flex w-full items-start gap-3 rounded-xl p-3 text-left transition-colors",
+                            "flex w-full items-start gap-3 rounded-xl p-3 text-left transition-all",
                             isSelected
-                              ? "bg-primary/10 text-primary"
+                              ? "bg-foreground/10 text-foreground"
                               : "text-foreground hover:bg-muted/50"
                           )}
                         >
-                          <GitCommit className="mt-0.5 size-4 shrink-0 text-primary" />
+                          <GitCommit className="mt-0.5 size-4 shrink-0 text-foreground" />
                           <div className="min-w-0 flex-1 space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className="font-mono text-xs font-semibold">
+                              <span className="font-mono text-xs font-bold">
                                 {rel.version}
                               </span>
                               <span className="text-xs text-muted-foreground">
@@ -244,16 +245,16 @@ export function CommandSearch() {
                           type="button"
                           onClick={() => handleSelect("/roadmap")}
                           className={cn(
-                            "flex w-full items-start gap-3 rounded-xl p-3 text-left transition-colors",
+                            "flex w-full items-start gap-3 rounded-xl p-3 text-left transition-all",
                             isSelected
-                              ? "bg-primary/10 text-primary"
+                              ? "bg-foreground/10 text-foreground"
                               : "text-foreground hover:bg-muted/50"
                           )}
                         >
-                          <Milestone className="mt-0.5 size-4 shrink-0 text-primary" />
+                          <Milestone className="mt-0.5 size-4 shrink-0 text-foreground" />
                           <div className="min-w-0 flex-1 space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className="rounded-md bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground">
+                              <span className="rounded-md border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px] font-semibold text-muted-foreground">
                                 {rm.stage}
                               </span>
                               <span className="font-mono text-[11px] text-muted-foreground">
@@ -281,9 +282,9 @@ export function CommandSearch() {
         <div className="flex items-center justify-between border-t border-border/80 bg-muted/30 px-4 py-2 text-[11px] text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>Navigation:</span>
-            <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px]">UP</kbd>
-            <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px]">DOWN</kbd>
-            <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px]">ENTER</kbd>
+            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">UP</kbd>
+            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">DOWN</kbd>
+            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">ENTER</kbd>
           </div>
           <span>Press ESC to dismiss</span>
         </div>

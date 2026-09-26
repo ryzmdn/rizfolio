@@ -20,8 +20,15 @@ import { getPortfolioPageData } from "@/lib/queries"
 export const revalidate = 3600
 
 export default async function Home() {
-  const { profile, experiences, education, certifications, services } =
-    await getPortfolioPageData()
+  const {
+    profile,
+    experiences,
+    education,
+    certifications,
+    services,
+    caseStudies,
+    testimonials,
+  } = await getPortfolioPageData()
 
   return (
     <>
@@ -31,13 +38,13 @@ export default async function Home() {
       <NowSection />
       <PrinciplesSection />
       <ProcessSection />
-      <ServicesSection />
-      <CaseStudiesSection />
+      <ServicesSection services={services} />
+      <CaseStudiesSection caseStudies={caseStudies} />
       <EducationSection education={education} />
       <ExperienceSection experiences={experiences} />
       <CapabilitiesSection />
       <OpenSourceSection />
-      <TestimonialsSection />
+      <TestimonialsSection testimonials={testimonials} />
       <CertificationsSection certifications={certifications} />
       <CtaSection />
     </>

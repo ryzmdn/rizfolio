@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ShoppingBag, Menu, X, Layers, Sparkles } from "lucide-react"
 import { useCart } from "./cart-provider"
+import { CurrencySelector } from "./currency-selector"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 import { Container } from "@workspace/ui/components/layouts/container"
 import { cn } from "@workspace/ui/lib/utils"
@@ -66,10 +67,7 @@ export function ShopHeader() {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-2.5">
-          <div className="hidden sm:inline-flex items-center gap-1 rounded-lg border border-border/70 bg-card px-2.5 py-1 text-[11px] font-mono font-medium text-muted-foreground">
-            <Sparkles className="size-3 text-primary" />
-            <span>IDR Store</span>
-          </div>
+          <CurrencySelector />
 
           <button
             type="button"
