@@ -2,31 +2,42 @@ import type { Metadata } from "next"
 import { Container } from "@workspace/ui/components/layouts/container"
 import { getRoadmapItems } from "@/lib/queries"
 import { RoadmapView } from "@/components"
+import { getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_CHANGELOG_URL ||
-  process.env.NEXT_PUBLIC_APP_URL ||
-  "https://changelog.rizkyramadhan.dev"
+const baseUrl = getBaseUrl("changelog")
+const roadmapUrl = `${baseUrl}/roadmap`
 
 export const metadata: Metadata = {
-  title: "Product Roadmap & Architecture Milestones",
+  title: "Product Roadmap & Architecture Milestones | Rizfolio Changelog",
   description:
     "Explore shipped milestones, current engineering priorities, and future architectural initiatives across the Rizfolio monorepo ecosystem.",
+  alternates: {
+    canonical: roadmapUrl,
+  },
   openGraph: {
     type: "website",
-    title: "Product Roadmap & Architecture Milestones: Rizfolio",
+    title: "Product Roadmap & Architecture Milestones | Rizfolio Changelog",
     description:
       "Explore shipped milestones, current engineering priorities, and future architectural initiatives across the Rizfolio monorepo.",
-    url: `${baseUrl}/roadmap`,
-    siteName: "Rizfolio Changelog",
+    url: roadmapUrl,
+    siteName: SEO_CONFIG.sites.changelog.name,
+    images: [
+      {
+        url: SEO_CONFIG.author.avatar,
+        width: 800,
+        height: 800,
+        alt: "Rizfolio Product Roadmap",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Product Roadmap & Architecture Milestones: Rizfolio",
+    title: "Product Roadmap & Architecture Milestones | Rizfolio Changelog",
     description:
       "Explore shipped milestones, current engineering priorities, and future architectural initiatives across the Rizfolio monorepo.",
+    images: [SEO_CONFIG.author.avatar],
   },
 }
 
@@ -42,8 +53,8 @@ export default async function RoadmapPage() {
     url: `${baseUrl}/roadmap`,
     publisher: {
       "@type": "Person",
-      name: "Rizky Ramadhan",
-      url: "https://rizkyramadhan.dev",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
     },
   }
 

@@ -22,13 +22,9 @@ import {
   getAdjacentReleases,
 } from "@/lib/queries"
 import { ReleaseActionBar } from "@/components"
+import { getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
-
-const baseUrl =
-  process.env.NEXT_PUBLIC_CHANGELOG_URL ||
-  process.env.NEXT_PUBLIC_APP_URL ||
-  "https://changelog.rizkyramadhan.dev"
 
 export async function generateStaticParams() {
   const versions = await getAllReleaseVersions()
@@ -52,26 +48,40 @@ export async function generateMetadata({
     }
   }
 
-  const title = `${release.title} (Version ${release.version})`
+  const baseUrl = getBaseUrl("changelog")
+  const releaseUrl = `${baseUrl}/release/${release.version}`
+  const title = `${release.title} (v${release.version})`
   const description =
     release.summary ||
     `Detailed release notes and architecture changes for version ${release.version}.`
 
   return {
-    title,
+    title: `${title} | ${SEO_CONFIG.sites.changelog.name}`,
     description,
+    alternates: {
+      canonical: releaseUrl,
+    },
     openGraph: {
       type: "article",
       title: `${release.title} (${release.version}): Rizfolio Changelog`,
       description,
-      url: `${baseUrl}/release/${release.version}`,
+      url: releaseUrl,
       publishedTime: release.createdAt,
-      siteName: "Rizfolio Changelog",
+      siteName: SEO_CONFIG.sites.changelog.name,
+      images: [
+        {
+          url: SEO_CONFIG.author.avatar,
+          width: 800,
+          height: 800,
+          alt: release.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${release.title} (${release.version}): Rizfolio Changelog`,
       description,
+      images: [SEO_CONFIG.author.avatar],
     },
   }
 }
@@ -129,6 +139,8 @@ export default async function ReleaseDetailPage({
     (cat) => itemsByCategory[cat] && itemsByCategory[cat].length > 0
   )
 
+  const baseUrl = getBaseUrl("changelog")
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -138,8 +150,8 @@ export default async function ReleaseDetailPage({
     releaseNotes: release.summary || release.title,
     author: {
       "@type": "Person",
-      name: "Rizky Ramadhan",
-      url: "https://rizkyramadhan.dev",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
     },
   }
 

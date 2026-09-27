@@ -1,13 +1,11 @@
 import type { MetadataRoute } from "next"
 import { getChangelogReleases } from "@/lib/queries"
+import { getBaseUrl } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_CHANGELOG_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://changelog.rizkyramadhan.dev"
+  const baseUrl = getBaseUrl("changelog")
 
   const releases = await getChangelogReleases()
 

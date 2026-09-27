@@ -5,52 +5,59 @@ import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { ChangelogHeader, ChangelogFooter, CommandSearch } from "../components"
+import { SEO_CONFIG, getBaseUrl } from "@workspace/ui/lib/seo"
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_CHANGELOG_URL ||
-  process.env.NEXT_PUBLIC_APP_URL ||
-  "https://changelog.rizkyramadhan.dev"
+const baseUrl = getBaseUrl("changelog")
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Changelog & Dev Log: Rizky Ramadhan",
-    template: "%s | Rizfolio Changelog",
+    default: SEO_CONFIG.sites.changelog.defaultTitle,
+    template: SEO_CONFIG.sites.changelog.titleTemplate,
   },
-  description:
-    "Continuous timeline of architectural milestones, feature additions, performance tunings, and version releases across the Rizfolio monorepo ecosystem.",
-  keywords: [
-    "Changelog",
-    "Release Notes",
-    "Dev Log",
-    "Software Architecture",
-    "Next.js 16",
-    "React 19",
-    "Turborepo",
-    "Drizzle ORM",
-    "Tailwind CSS v4",
-    "Rizky Ramadhan",
-  ],
-  authors: [{ name: "Rizky Ramadhan", url: "https://rizkyramadhan.dev" }],
-  creator: "Rizky Ramadhan",
+  description: SEO_CONFIG.sites.changelog.description,
+  keywords: [...SEO_CONFIG.sites.changelog.keywords],
+  authors: [{ name: SEO_CONFIG.author.name, url: SEO_CONFIG.author.url }],
+  creator: SEO_CONFIG.author.name,
+  alternates: {
+    canonical: baseUrl,
+    types: {
+      "application/rss+xml": "/rss.xml",
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: baseUrl,
-    siteName: "Rizfolio Changelog",
-    title: "Changelog & Dev Log: Rizky Ramadhan",
-    description:
-      "Continuous timeline of architectural milestones, feature additions, and version releases across the Rizfolio monorepo.",
+    siteName: SEO_CONFIG.sites.changelog.name,
+    title: SEO_CONFIG.sites.changelog.defaultTitle,
+    description: SEO_CONFIG.sites.changelog.description,
+    images: [
+      {
+        url: SEO_CONFIG.author.avatar,
+        width: 800,
+        height: 800,
+        alt: SEO_CONFIG.sites.changelog.name,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Changelog & Dev Log: Rizky Ramadhan",
-    description:
-      "Continuous timeline of architectural milestones, feature additions, and version releases across the Rizfolio monorepo.",
+    title: SEO_CONFIG.sites.changelog.defaultTitle,
+    description: SEO_CONFIG.sites.changelog.description,
+    images: [SEO_CONFIG.author.avatar],
+    creator: "@ryzmdn",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 }
 
