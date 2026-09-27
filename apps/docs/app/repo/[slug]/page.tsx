@@ -11,6 +11,7 @@ import { RepoHeader } from "../../../components/repo-header"
 import { FileTreeBrowser } from "../../../components/file-tree-browser"
 import { ReadmeViewer } from "../../../components/readme-viewer"
 import { Code2, BookOpen } from "lucide-react"
+import { getBaseUrl, SEO_CONFIG, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
@@ -33,10 +34,8 @@ export async function generateMetadata({
     }
   }
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOCS_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://docs.rizkyramadhan.dev"
+  const baseUrl = getBaseUrl("docs")
+  const repoUrl = `${baseUrl}/repo/${slug}`
 
   const title = `${repo.name} — Technical Architecture & Code`
   const description =
@@ -44,18 +43,30 @@ export async function generateMetadata({
     `Interactive documentation and source code for ${repo.name}.`
 
   return {
-    title,
+    title: `${title} | ${SEO_CONFIG.sites.docs.name}`,
     description,
+    alternates: {
+      canonical: repoUrl,
+    },
     openGraph: {
       title,
       description,
-      url: `${baseUrl}/repo/${slug}`,
+      url: repoUrl,
       type: "article",
+      images: [
+        {
+          url: SEO_CONFIG.author.avatar,
+          width: 800,
+          height: 800,
+          alt: repo.name,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [SEO_CONFIG.author.avatar],
     },
   }
 }
@@ -85,6 +96,9 @@ export default async function RepoDetailPage({
 
   const files = await getRepoFiles(repo.id, path)
 
+  const baseUrl = getBaseUrl("docs")
+  const repoUrl = `${baseUrl}/repo/${slug}`
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
@@ -93,12 +107,19 @@ export default async function RepoDetailPage({
     codeRepository: repo.githubUrl || undefined,
     programmingLanguage: repo.techStack || undefined,
     license: repo.license || "MIT",
+    url: repoUrl,
     author: {
       "@type": "Person",
-      name: "Rizky Ramadhan",
-      url: "https://rizkyramadhan.dev",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
     },
   }
+
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: "Docs", url: baseUrl },
+    { name: "Repositories", url: `${baseUrl}/categories` },
+    { name: repo.name, url: repoUrl },
+  ])
 
   return (
     <Container className="space-y-10 py-10">
@@ -106,6 +127,10 @@ export default async function RepoDetailPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       {/* Repository Header */}

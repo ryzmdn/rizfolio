@@ -8,6 +8,7 @@ import {
 } from "../lib/queries"
 import { FilterBar } from "../components/filter-bar"
 import { RepoCard } from "../components/repo-card"
+import { getBaseUrl, SEO_CONFIG, createWebSiteJsonLd } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
@@ -52,22 +53,23 @@ export default async function DocsPage({
       (params.sort && params.sort !== "latest")
   )
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOCS_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://docs.rizkyramadhan.dev"
+  const baseUrl = getBaseUrl("docs")
+
+  const websiteSchema = createWebSiteJsonLd({
+    siteKey: "docs",
+    url: baseUrl,
+  })
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Documentation & Code Explorer — Rizky Ramadhan",
-    description:
-      "Interactive technical documentation, open-source repositories, academic coursework archive, and source code explorer.",
+    name: SEO_CONFIG.sites.docs.name,
+    description: SEO_CONFIG.sites.docs.description,
     url: baseUrl,
     author: {
       "@type": "Person",
-      name: "Rizky Ramadhan",
-      url: "https://rizkyramadhan.dev",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
     },
     hasPart: repos.map((repo) => ({
       "@type": "SoftwareSourceCode",
@@ -81,6 +83,10 @@ export default async function DocsPage({
 
   return (
     <Container className="space-y-10 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

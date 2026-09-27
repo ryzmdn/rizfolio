@@ -12,6 +12,7 @@ import {
 import { highlightCode } from "../../../../../lib/shiki"
 import { CodeViewer } from "../../../../../components/code-viewer"
 import { CopyPathButton } from "../../../../../components/copy-path-button"
+import { getBaseUrl, SEO_CONFIG, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
@@ -48,27 +49,37 @@ export async function generateMetadata({
     }
   }
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOCS_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://docs.rizkyramadhan.dev"
+  const baseUrl = getBaseUrl("docs")
+  const fileUrl = `${baseUrl}/repo/${slug}/blob/${filePath}`
 
   const title = `${filename} (${filePath}) — ${repo.name}`
   const description = `Technical source code inspection for ${filePath} in repository ${repo.name}.`
 
   return {
-    title,
+    title: `${title} | ${SEO_CONFIG.sites.docs.name}`,
     description,
+    alternates: {
+      canonical: fileUrl,
+    },
     openGraph: {
       title,
       description,
-      url: `${baseUrl}/repo/${slug}/blob/${filePath}`,
+      url: fileUrl,
       type: "article",
+      images: [
+        {
+          url: SEO_CONFIG.author.avatar,
+          width: 800,
+          height: 800,
+          alt: filename,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [SEO_CONFIG.author.avatar],
     },
   }
 }
@@ -96,10 +107,9 @@ export default async function FileViewPage({
 
   const parentPath = path.length > 1 ? path.slice(0, -1).join("/") : ""
   const parentName = path.length > 1 ? path[path.length - 2] : repo.name
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOCS_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://docs.rizkyramadhan.dev"
+  const baseUrl = getBaseUrl("docs")
+  const repoUrl = `${baseUrl}/repo/${slug}`
+  const fileUrl = `${baseUrl}/repo/${slug}/blob/${filePath}`
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -107,23 +117,35 @@ export default async function FileViewPage({
     name: file.filename,
     programmingLanguage: file.filename.split(".").pop() || undefined,
     codeSampleType: "full snippet",
+    url: fileUrl,
     isPartOf: {
       "@type": "SoftwareSourceCode",
       name: repo.name,
-      url: `${baseUrl}/repo/${slug}`,
+      url: repoUrl,
     },
     author: {
       "@type": "Person",
-      name: "Rizky Ramadhan",
-      url: "https://rizkyramadhan.dev",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
     },
   }
+
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: "Docs", url: baseUrl },
+    { name: "Repositories", url: `${baseUrl}/categories` },
+    { name: repo.name, url: repoUrl },
+    { name: file.filename, url: fileUrl },
+  ])
 
   return (
     <Container className="space-y-6 py-10">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <div className="flex flex-col gap-4 border-b border-border/70 pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">

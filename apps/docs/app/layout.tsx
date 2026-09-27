@@ -7,54 +7,56 @@ import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { DocsHeader } from "../components/docs-header"
 import { DocsFooter } from "../components/docs-footer"
 import { CommandSearch } from "../components/command-search"
+import { SEO_CONFIG, getBaseUrl } from "@workspace/ui/lib/seo"
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_DOCS_URL ||
-  process.env.NEXT_PUBLIC_APP_URL ||
-  "https://docs.rizkyramadhan.dev"
+const baseUrl = getBaseUrl("docs")
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Documentation & Code Explorer — Rizky Ramadhan",
-    template: "%s | Rizfolio Docs",
+    default: SEO_CONFIG.sites.docs.defaultTitle,
+    template: SEO_CONFIG.sites.docs.titleTemplate,
   },
-  description:
-    "Interactive technical documentation, open-source repositories, academic coursework archive, and source code explorer.",
-  keywords: [
-    "Software Architecture",
-    "Systems Design",
-    "Code Explorer",
-    "Algorithms",
-    "Open Source",
-    "Next.js",
-    "React 19",
-    "Go",
-    "TypeScript",
-    "C",
-    "Turborepo",
-    "Drizzle ORM",
-  ],
-  authors: [{ name: "Rizky Ramadhan", url: "https://rizkyramadhan.dev" }],
-  creator: "Rizky Ramadhan",
+  description: SEO_CONFIG.sites.docs.description,
+  keywords: [...SEO_CONFIG.sites.docs.keywords],
+  authors: [{ name: SEO_CONFIG.author.name, url: SEO_CONFIG.author.url }],
+  creator: SEO_CONFIG.author.name,
+  alternates: {
+    canonical: baseUrl,
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: baseUrl,
-    siteName: "Rizfolio Documentation & Code Explorer",
-    title: "Documentation & Code Explorer — Rizky Ramadhan",
-    description:
-      "Explore technical repositories, systems architectures, coursework codebases, and experiments.",
+    siteName: SEO_CONFIG.sites.docs.name,
+    title: SEO_CONFIG.sites.docs.defaultTitle,
+    description: SEO_CONFIG.sites.docs.description,
+    images: [
+      {
+        url: SEO_CONFIG.author.avatar,
+        width: 800,
+        height: 800,
+        alt: SEO_CONFIG.sites.docs.name,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Documentation & Code Explorer — Rizky Ramadhan",
-    description:
-      "Explore technical repositories, systems architectures, coursework codebases, and experiments.",
+    title: SEO_CONFIG.sites.docs.defaultTitle,
+    description: SEO_CONFIG.sites.docs.description,
+    images: [SEO_CONFIG.author.avatar],
+    creator: "@ryzmdn",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 }
 

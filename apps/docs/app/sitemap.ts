@@ -1,14 +1,11 @@
 import type { MetadataRoute } from "next"
 import { getRepositories, getAllRepoFilePaths } from "../lib/queries"
+import { getBaseUrl } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOCS_URL ||
-    process.env.NEXT_PUBLIC_ARCHIVE_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://docs.rizkyramadhan.dev"
+  const baseUrl = getBaseUrl("docs")
 
   const repos = await getRepositories({ limit: 100 })
 

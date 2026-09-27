@@ -17,17 +17,24 @@ import {
   getRepoStats,
   getRepositories,
 } from "../../lib/queries"
+import { getBaseUrl, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
+const categoriesUrl = `${getBaseUrl("docs")}/categories`
+
 export const metadata: Metadata = {
-  title: "Curriculum Taxonomy & Categories",
+  title: "Curriculum Taxonomy & Categories | Rizfolio Docs",
   description:
     "Eksplorasi taksonomi kurikulum akademik, domain repositori kode sumber, dan indeks teknologi monorepo Rizfolio.",
+  alternates: {
+    canonical: categoriesUrl,
+  },
   openGraph: {
     title: "Curriculum Taxonomy & Categories — Rizfolio Docs",
     description:
       "Arsip kurikulum akademik universitas, riset eksperimental, dan pustaka open source.",
+    url: categoriesUrl,
   },
 }
 
@@ -102,10 +109,7 @@ export default async function CategoriesIndexPage() {
     },
   ]
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOCS_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://docs.rizkyramadhan.dev"
+  const baseUrl = getBaseUrl("docs")
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -113,19 +117,28 @@ export default async function CategoriesIndexPage() {
     name: "Curriculum Taxonomy & Categories — Rizfolio Docs",
     description:
       "Arsip kurikulum akademik universitas, riset eksperimental, dan pustaka open source.",
-    url: `${baseUrl}/categories`,
+    url: categoriesUrl,
     author: {
       "@type": "Person",
       name: "Rizky Ramadhan",
-      url: "https://rizkyramadhan.dev",
+      url: "https://ryzmdn.me",
     },
   }
+
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: "Docs", url: baseUrl },
+    { name: "Categories", url: categoriesUrl },
+  ])
 
   return (
     <Container className="space-y-14 py-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <Link href="/" className="transition-colors hover:text-foreground">
