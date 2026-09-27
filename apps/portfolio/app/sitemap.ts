@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next"
+import { getBaseUrl } from "@workspace/ui/lib/seo"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_PORTFOLIO_URL || process.env.NEXT_PUBLIC_APP_URL
+  const baseUrl = getBaseUrl("portfolio")
 
   return [
     {
-      url: baseUrl!,
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1.0,
