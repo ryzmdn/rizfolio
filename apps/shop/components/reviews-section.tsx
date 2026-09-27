@@ -77,14 +77,12 @@ export function ReviewsSection({
   })
 
   return (
-    <section className="space-y-8 rounded-3xl border border-border/70 bg-card/40 p-6 sm:p-10">
+    <section className="space-y-8 border-t border-border/60 pt-10 sm:pt-12">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-              Customer Reviews & Feedback
-            </span>
-          </div>
+          <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+            Customer Reviews & Feedback
+          </h2>
           <p className="text-xs text-muted-foreground sm:text-sm">
             Verified ratings and architectural reviews from software engineers.
           </p>
@@ -93,14 +91,14 @@ export function ReviewsSection({
         <button
           type="button"
           onClick={() => setIsFormOpen((prev) => !prev)}
-          className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted active:scale-[0.99]"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border bg-background px-3.5 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted active:scale-[0.99]"
         >
-          <MessageSquarePlus className="size-4 text-primary" />
+          <MessageSquarePlus className="size-3.5 text-muted-foreground" />
           <span>Write a Review</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 rounded-2xl border border-border/60 bg-muted/20 p-6 sm:grid-cols-12 sm:items-center sm:gap-8">
+      <div className="grid grid-cols-1 gap-6 rounded-lg border border-border/60 bg-muted/20 p-5 sm:grid-cols-12 sm:items-center sm:gap-8 sm:p-6">
         <div className="flex flex-col items-center justify-center text-center sm:col-span-4 sm:items-start sm:text-left">
           <span className="font-mono text-4xl font-bold text-foreground sm:text-5xl">
             {averageRating.toFixed(1)}
@@ -149,7 +147,7 @@ export function ReviewsSection({
       {isFormOpen && (
         <form
           onSubmit={handleSubmitReview}
-          className="space-y-4 rounded-2xl border border-primary/30 bg-card p-6 shadow-sm"
+          className="space-y-4 rounded-lg border border-border/70 bg-card p-5 shadow-xs sm:p-6"
         >
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <h3 className="text-sm font-semibold text-foreground">
@@ -158,14 +156,14 @@ export function ReviewsSection({
             <button
               type="button"
               onClick={() => setIsFormOpen(false)}
-              className="rounded-lg p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <X className="size-4" />
             </button>
           </div>
 
           {formSuccess ? (
-            <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+            <div className="flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 p-4 text-xs font-medium text-emerald-600 dark:text-emerald-400">
               <CheckCircle2 className="size-4" />
               <span>Review submitted successfully. Thank you for your feedback.</span>
             </div>
@@ -182,7 +180,7 @@ export function ReviewsSection({
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                     placeholder="e.g. Alex Pratama"
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs placeholder:text-muted-foreground focus:ring-1 focus:ring-primary focus:outline-hidden"
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-xs placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring focus:outline-hidden"
                   />
                 </div>
 
@@ -195,7 +193,7 @@ export function ReviewsSection({
                     value={formRole}
                     onChange={(e) => setFormRole(e.target.value)}
                     placeholder="e.g. Senior Frontend Architect"
-                    className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs placeholder:text-muted-foreground focus:ring-1 focus:ring-primary focus:outline-hidden"
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-xs placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -214,7 +212,7 @@ export function ReviewsSection({
                     >
                       <Star
                         className={cn(
-                          "size-5",
+                          "size-4 sm:size-4.5",
                           star <= formRating
                             ? "fill-current"
                             : "text-muted-foreground/30"
@@ -238,7 +236,7 @@ export function ReviewsSection({
                   value={formContent}
                   onChange={(e) => setFormContent(e.target.value)}
                   placeholder="Share details about the code structure, performance, or developer experience..."
-                  className="w-full rounded-xl border border-border bg-background p-3 text-xs placeholder:text-muted-foreground focus:ring-1 focus:ring-primary focus:outline-hidden"
+                  className="w-full rounded-md border border-border bg-background p-3 text-xs placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring focus:outline-hidden"
                 />
               </div>
 
@@ -250,14 +248,14 @@ export function ReviewsSection({
                 <button
                   type="button"
                   onClick={() => setIsFormOpen(false)}
-                  className="rounded-xl px-4 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                  className="rounded-md px-3.5 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="rounded-xl bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-50"
+                  className="rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-50"
                 >
                   {isPending ? "Submitting..." : "Submit Review"}
                 </button>
@@ -280,8 +278,8 @@ export function ReviewsSection({
                   {rev.authorRole}
                 </span>
                 {rev.verifiedPurchase && (
-                  <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.2 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
-                    <CheckCircle2 className="size-3" />
+                  <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-muted/40 px-1.5 py-0.5 text-[10px] font-medium text-foreground">
+                    <CheckCircle2 className="size-3 text-foreground" />
                     <span>Verified Buyer</span>
                   </span>
                 )}

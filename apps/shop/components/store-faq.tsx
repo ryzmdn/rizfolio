@@ -59,14 +59,10 @@ export function StoreFaq() {
   }
 
   return (
-    <section className="space-y-6 rounded-3xl border border-border/70 bg-card/40 p-6 sm:p-10">
-      <div className="flex flex-col gap-2">
-        <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-border/80 bg-background/80 px-3 py-1 text-xs text-muted-foreground">
-          <HelpCircle className="size-3.5 text-primary" />
-          <span>Frequently Asked Questions</span>
-        </div>
-        <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-          Everything You Need to Know
+    <section className="space-y-6 border-t border-border/60 pt-12">
+      <div className="flex flex-col gap-1.5">
+        <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+          Frequently Asked Questions
         </h2>
         <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground sm:text-sm">
           Transparent licensing terms, instant digital delivery workflows, and
@@ -74,31 +70,31 @@ export function StoreFaq() {
         </p>
       </div>
 
-      <div className="divide-y divide-border/60">
+      <div className="divide-y divide-border/50">
         {FAQ_ITEMS.map((item) => {
           const isOpen = openIds.has(item.id)
 
           return (
-            <div key={item.id} className="py-4">
+            <div key={item.id} className="py-3.5">
               <button
                 type="button"
                 onClick={() => toggleFaq(item.id)}
                 aria-expanded={isOpen}
-                className="flex w-full cursor-pointer items-center justify-between gap-4 text-left transition-colors hover:text-primary"
+                className="flex w-full cursor-pointer items-center justify-between gap-4 text-left transition-colors hover:text-foreground"
               >
-                <span className="text-sm font-medium text-foreground">
+                <span className="text-xs font-semibold text-foreground sm:text-sm">
                   {item.question}
                 </span>
                 <ChevronDown
                   className={cn(
                     "size-4 shrink-0 text-muted-foreground transition-transform duration-200",
-                    isOpen && "rotate-180 text-primary"
+                    isOpen && "rotate-180 text-foreground"
                   )}
                 />
               </button>
 
               {isOpen && (
-                <div className="pt-3 text-xs leading-relaxed text-muted-foreground">
+                <div className="pt-2 text-xs leading-relaxed text-muted-foreground">
                   <p>{item.answer}</p>
                 </div>
               )}

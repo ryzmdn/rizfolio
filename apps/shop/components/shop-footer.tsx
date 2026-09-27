@@ -1,7 +1,7 @@
 "use client"
 
 import {
-  Zap,
+  Download,
   ShieldCheck,
   FileCode,
   Clock,
@@ -17,7 +17,7 @@ export function ShopFooter() {
 
   const guarantees = [
     {
-      icon: Zap,
+      icon: Download,
       title: "Instant Digital Fulfillment",
       description: "Direct download links and license keys provisioned upon purchase.",
     },
@@ -45,23 +45,23 @@ export function ShopFooter() {
   ]
 
   const legalLinks = [
-    { label: "Standard License", href: "#" },
-    { label: "Extended License", href: "#" },
-    { label: "Refund Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
+    { label: "Standard License Terms", href: "/#faq" },
+    { label: "Extended License Terms", href: "/#faq" },
+    { label: "Refund & Resolution Policy", href: "/#faq" },
+    { label: "Delivery & Fulfillment FAQ", href: "/#faq" },
   ]
 
   return (
-    <footer className="border-t border-border/80 bg-card/40">
-      <div className="border-b border-border/60 py-10">
+    <footer className="border-t border-border/60 bg-muted/10">
+      <div className="border-b border-border/50 py-10">
         <Container>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {guarantees.map((g) => {
               const Icon = g.icon
               return (
                 <div key={g.title} className="flex items-start gap-3.5">
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
-                    <Icon className="size-4.5" />
+                  <div className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-foreground">
+                    <Icon className="size-4" />
                   </div>
                   <div className="space-y-1">
                     <h3 className="text-xs font-semibold text-foreground">
@@ -82,10 +82,10 @@ export function ShopFooter() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           <div className="space-y-3 md:col-span-6">
             <div className="flex items-center gap-2">
-              <div className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <div className="flex size-7 items-center justify-center rounded-md border border-border/80 bg-muted/40 text-foreground">
                 <Layers className="size-3.5" />
               </div>
-              <span className="font-mono text-sm font-bold text-foreground">
+              <span className="font-semibold text-sm text-foreground">
                 Rizfolio Store
               </span>
             </div>
@@ -140,7 +140,7 @@ export function ShopFooter() {
           <button
             type="button"
             onClick={scrollToTop}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 transition-colors hover:bg-muted hover:text-foreground"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/20 px-3 py-1.5 transition-colors hover:border-foreground/30 hover:bg-muted hover:text-foreground"
           >
             <span>Back to top</span>
             <ArrowUp className="size-3.5" />

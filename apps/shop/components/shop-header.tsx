@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ShoppingBag, Menu, X, Layers, Sparkles } from "lucide-react"
+import { ShoppingBag, Menu, X, Layers } from "lucide-react"
 import { useCart } from "./cart-provider"
 import { CurrencySelector } from "./currency-selector"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
@@ -24,27 +24,28 @@ export function ShopHeader() {
   ]
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur-md">
-      <Container className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur-xl">
+      <Container className="flex h-15 items-center justify-between gap-4">
         <div className="flex items-center gap-6">
           <Link
             href="/"
-            className="flex items-center gap-2.5 transition-opacity hover:opacity-90"
+            className="group flex items-center gap-2.5 transition-opacity hover:opacity-85"
+            aria-label="Rizfolio Store Home"
           >
-            <div className="flex size-9 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary shadow-xs">
-              <Layers className="size-4.5" />
+            <div className="flex size-8 items-center justify-center rounded-md border border-border/80 bg-muted/40 text-foreground transition-colors group-hover:border-foreground/30">
+              <Layers className="size-4" />
             </div>
             <div className="flex flex-col">
-              <span className="font-mono text-sm font-bold tracking-tight text-foreground">
+              <span className="font-semibold text-xs tracking-tight text-foreground sm:text-sm">
                 RizShop
               </span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-widest">
+              <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
                 Software & Assets
               </span>
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1 pl-4">
+          <nav className="hidden md:flex items-center gap-1 pl-4" aria-label="Store navigation">
             {navLinks.map((link) => {
               const isActive = pathname === link.href
 
@@ -53,7 +54,7 @@ export function ShopHeader() {
                   key={link.label}
                   href={link.href}
                   className={cn(
-                    "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
+                    "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
                     isActive
                       ? "bg-muted text-foreground"
                       : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
@@ -66,19 +67,19 @@ export function ShopHeader() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-2.5">
+        <div className="flex items-center gap-2">
           <CurrencySelector />
 
           <button
             type="button"
             onClick={openCart}
             aria-label={`View cart with ${totalCount} items`}
-            className="relative inline-flex items-center gap-1.5 rounded-xl border border-border/80 bg-card px-3 py-2 text-xs font-medium text-foreground transition-all hover:bg-muted/60 hover:border-primary/40 shadow-xs"
+            className="relative inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/20 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/60"
           >
-            <ShoppingBag className="size-4 text-primary" />
+            <ShoppingBag className="size-3.5 text-muted-foreground" />
             <span className="hidden sm:inline">Cart</span>
             {totalCount > 0 && (
-              <span className="flex size-5 items-center justify-center rounded-full bg-primary font-mono text-[10px] font-bold text-primary-foreground">
+              <span className="flex size-4.5 items-center justify-center rounded-full bg-foreground font-mono text-[10px] font-bold text-background">
                 {totalCount}
               </span>
             )}
@@ -89,8 +90,9 @@ export function ShopHeader() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            aria-label="Toggle mobile menu"
-            className="flex size-9 items-center justify-center rounded-xl border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            className="flex size-8 items-center justify-center rounded-md border border-border/70 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
           >
             {mobileMenuOpen ? (
               <X className="size-4" />
@@ -102,14 +104,14 @@ export function ShopHeader() {
       </Container>
 
       {mobileMenuOpen && (
-        <div className="border-t border-border bg-card/95 px-6 py-4 backdrop-blur-md md:hidden">
-          <nav className="flex flex-col gap-2">
+        <div className="border-t border-border/60 bg-background/98 px-5 py-4 backdrop-blur-xl md:hidden">
+          <nav className="flex flex-col gap-1.5" aria-label="Mobile store navigation">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="rounded-md px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 {link.label}
               </Link>
