@@ -16,6 +16,7 @@ import {
   ArrowRight,
   ArrowUpRight,
 } from "lucide-react"
+import { createWebSiteJsonLd, getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -70,8 +71,45 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
       ? posts.filter((p) => p.slug !== featuredPost.slug)
       : posts
 
+  const blogUrl = getBaseUrl("blog")
+  const websiteSchema = createWebSiteJsonLd({
+    siteKey: "blog",
+    url: blogUrl,
+  })
+
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${blogUrl}/#blog`,
+    name: SEO_CONFIG.sites.blog.name,
+    description: SEO_CONFIG.sites.blog.description,
+    url: blogUrl,
+    publisher: {
+      "@type": "Person",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
+    },
+    blogPost: posts.slice(0, 10).map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.excerpt,
+      url: `${blogUrl}/blog/${post.slug}`,
+      datePublished: post.publishedAt
+        ? new Date(post.publishedAt).toISOString()
+        : undefined,
+    })),
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
       <section className="w-full border-b border-border/40 pb-0 pt-10 sm:pt-16">
         <Container>
           {isDefaultView && featuredPost ? (

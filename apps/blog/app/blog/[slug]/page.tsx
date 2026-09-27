@@ -17,7 +17,8 @@ import { ShareToolbar } from "@/components/share-toolbar"
 import { PostReactions } from "@/components/post-reactions"
 import { AuthorBio } from "@/components/author-bio"
 import { PostNavigation } from "@/components/post-navigation"
-import { ArrowLeft, Calendar, Clock, Eye } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, Eye, ChevronRight } from "lucide-react"
+import { getBaseUrl, SEO_CONFIG, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -42,14 +43,12 @@ export async function generateMetadata({
     return { title: "Article Not Found" }
   }
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BLOG_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://rizkyramadhan.dev/blog"
+  const baseUrl = getBaseUrl("blog")
   const postUrl = `${baseUrl}/blog/${post.slug}`
+  const coverImage = post.coverImageUrl || SEO_CONFIG.author.avatar
 
   return {
-    title: `${post.title} | Rizky Ramadhan`,
+    title: `${post.title} | ${SEO_CONFIG.author.name}`,
     description: post.excerpt,
     alternates: { canonical: postUrl },
     openGraph: {
@@ -60,13 +59,13 @@ export async function generateMetadata({
       publishedTime: post.publishedAt
         ? new Date(post.publishedAt).toISOString()
         : undefined,
-      images: post.coverImageUrl ? [{ url: post.coverImageUrl }] : [],
+      images: [{ url: coverImage, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt,
-      images: post.coverImageUrl ? [post.coverImageUrl] : [],
+      images: [coverImage],
     },
   }
 }
@@ -96,13 +95,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     .filter((p) => p.slug !== post.slug)
     .slice(0, 3)
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BLOG_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "https://rizkyramadhan.dev/blog"
+  const baseUrl = getBaseUrl("blog")
   const postUrl = `${baseUrl}/blog/${post.slug}`
 
-  const jsonLd = {
+  const blogPostJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
@@ -113,24 +109,43 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       : undefined,
     dateModified: post.createdAt
       ? new Date(post.createdAt).toISOString()
-      : undefined,
-    image: post.coverImageUrl || undefined,
+      : post.publishedAt
+        ? new Date(post.publishedAt).toISOString()
+        : undefined,
+    image: post.coverImageUrl || SEO_CONFIG.author.avatar,
     author: {
       "@type": "Person",
-      name: "Rizky Ramadhan",
-      url: "https://rizkyramadhan.dev",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
     },
     publisher: {
       "@type": "Person",
-      name: "Rizky Ramadhan",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": postUrl,
     },
   }
+
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: "Articles", url: baseUrl },
+    ...(primaryCategory
+      ? [{ name: primaryCategory.name, url: `${baseUrl}/?category=${primaryCategory.slug}` }]
+      : []),
+    { name: post.title, url: postUrl },
+  ])
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <ReadingProgressBar />
@@ -138,13 +153,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <article className="w-full pt-10 pb-24 sm:pt-16 sm:pb-32">
         <Container className="max-w-5xl">
-          <Link
-            href="/"
-            className="mb-8 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft className="size-3.5" />
-            <span>Back to Articles</span>
-          </Link>
+          <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <ArrowLeft className="size-3.5" />
+              <span>Articles</span>
+            </Link>
+            {primaryCategory && (
+              <>
+                <ChevronRight className="size-3 text-muted-foreground/40" />
+                <Link
+                  href={`/?category=${primaryCategory.slug}`}
+                  className="transition-colors hover:text-foreground"
+                >
+                  {primaryCategory.name}
+                </Link>
+              </>
+            )}
+            <ChevronRight className="size-3 text-muted-foreground/40" />
+            <span className="truncate max-w-[200px] sm:max-w-xs text-foreground font-medium">
+              {post.title}
+            </span>
+          </nav>
 
           <header className="mb-10 space-y-6 border-b border-border/40 pb-10">
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
