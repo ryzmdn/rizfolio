@@ -17,12 +17,12 @@ export default function ShopError({ error, reset }: ErrorProps) {
 
   return (
     <Container className="max-w-2xl py-20 text-center">
-      <div className="flex flex-col items-center justify-center rounded-3xl border border-destructive/30 bg-destructive/5 p-8 py-16 backdrop-blur-md sm:p-12">
-        <div className="flex size-14 items-center justify-center rounded-2xl border border-destructive/40 bg-destructive/10 text-destructive">
-          <AlertTriangle className="size-7" />
+      <div className="flex flex-col items-center justify-center rounded-lg border border-border/70 bg-card/40 p-6 py-14 sm:p-10">
+        <div className="flex size-12 items-center justify-center rounded-md border border-destructive/30 bg-destructive/10 text-destructive">
+          <AlertTriangle className="size-6" />
         </div>
 
-        <span className="mt-4 font-mono text-xs font-semibold uppercase tracking-widest text-destructive">
+        <span className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-widest text-destructive">
           Runtime Exception
         </span>
 
@@ -36,16 +36,16 @@ export default function ShopError({ error, reset }: ErrorProps) {
         </p>
 
         {error.digest && (
-          <div className="mt-4 rounded-lg border border-border/80 bg-background/80 px-3 py-1 font-mono text-[11px] text-muted-foreground">
+          <div className="mt-4 rounded-md border border-border/70 bg-background/80 px-2.5 py-1 font-mono text-[11px] text-muted-foreground">
             Error Reference ID: {error.digest}
           </div>
         )}
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
           <button
             type="button"
             onClick={reset}
-            className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
           >
             <RotateCcw className="size-3.5" />
             <span>Try Again</span>
@@ -53,7 +53,7 @@ export default function ShopError({ error, reset }: ErrorProps) {
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-2.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+            className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-4 py-2 text-xs font-medium text-foreground transition-colors hover:bg-muted"
           >
             <span>Return to Catalog</span>
             <ArrowRight className="size-3.5" />

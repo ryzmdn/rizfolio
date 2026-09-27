@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
-import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { CurrencyProvider } from "../components/currency-context"
 import { CartProvider } from "../components/cart-provider"
 import { CartDrawer } from "../components/cart-drawer"
@@ -80,8 +79,6 @@ export default function RootLayout({
               >
                 {children}
               </main>
-              <ProgressiveBlur position="top" height="24px" />
-              <ProgressiveBlur height="32px" />
               <ShopFooter />
               <CartDrawer />
             </CartProvider>
