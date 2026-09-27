@@ -63,14 +63,14 @@ export function FilterSection({
   const handleCategorySelect = (slug: string) => {
     startTransition(() => {
       const queryString = createQueryString({ category: slug })
-      router.push(queryString ? `${pathname}?${queryString}` : pathname)
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
     })
   }
 
   const handleClearTag = () => {
     startTransition(() => {
       const queryString = createQueryString({ tag: null })
-      router.push(queryString ? `${pathname}?${queryString}` : pathname)
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
     })
   }
 
@@ -78,7 +78,7 @@ export function FilterSection({
     setSortOpen(false)
     startTransition(() => {
       const queryString = createQueryString({ sort: newSort === "latest" ? null : newSort })
-      router.push(queryString ? `${pathname}?${queryString}` : pathname)
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
     })
   }
 
@@ -86,7 +86,7 @@ export function FilterSection({
     e.preventDefault()
     startTransition(() => {
       const queryString = createQueryString({ q: query.trim() || null })
-      router.push(queryString ? `${pathname}?${queryString}` : pathname)
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
     })
   }
 
@@ -94,7 +94,7 @@ export function FilterSection({
     setQuery("")
     startTransition(() => {
       const queryString = createQueryString({ q: null })
-      router.push(queryString ? `${pathname}?${queryString}` : pathname)
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
     })
   }
 

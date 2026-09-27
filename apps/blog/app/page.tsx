@@ -3,7 +3,6 @@ import { FilterSection } from "@/components/filters-section"
 import {
   getPublishedPosts,
   getCategoriesWithCount,
-  getFeaturedPost,
 } from "@/lib/queries"
 import Image from "next/image"
 import Link from "next/link"
@@ -49,7 +48,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
 
   const isDefaultView = !category && !tag && !q && currentPage === 1
 
-  const [{ posts, total, totalPages }, categories, featuredPost] =
+  const [{ posts, total, totalPages }, categories] =
     await Promise.all([
       getPublishedPosts({
         categorySlug: category,
@@ -60,8 +59,11 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
         limit: 9,
       }),
       getCategoriesWithCount(),
-      getFeaturedPost(),
     ])
+
+  const featuredPost = isDefaultView
+    ? posts.find((p) => p.featured) || posts[0] || null
+    : null
 
   const totalAllPosts =
     categories.reduce((acc, cat) => acc + cat.count, 0) || total

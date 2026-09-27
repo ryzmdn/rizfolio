@@ -12,6 +12,7 @@ import {
   asc,
   and,
   or,
+  ne,
   ilike,
   sql,
 } from "@workspace/db"
@@ -50,7 +51,7 @@ export interface PaginatedPostsResult {
 
 export { fallbackCategories, fallbackPosts }
 
-export async function getPublishedPosts({
+async function fetchPublishedPosts({
   categorySlug,
   tagSlug,
   query,
@@ -62,6 +63,26 @@ export async function getPublishedPosts({
 
   try {
     const conditions = [eq(posts.status, "PUBLISHED")]
+
+    if (categorySlug && categorySlug !== "all") {
+      conditions.push(
+        sql`${posts.id} IN (
+          SELECT ${postCategories.postId} FROM ${postCategories}
+          INNER JOIN ${categories} ON ${postCategories.categoryId} = ${categories.id}
+          WHERE LOWER(${categories.slug}) = LOWER(${categorySlug})
+        )`
+      )
+    }
+
+    if (tagSlug) {
+      conditions.push(
+        sql`${posts.id} IN (
+          SELECT ${postTags.postId} FROM ${postTags}
+          INNER JOIN ${tags} ON ${postTags.tagId} = ${tags.id}
+          WHERE LOWER(${tags.slug}) = LOWER(${tagSlug})
+        )`
+      )
+    }
 
     if (query && query.trim()) {
       const q = `%${query.trim()}%`
@@ -76,7 +97,6 @@ export async function getPublishedPosts({
         slug: posts.slug,
         title: posts.title,
         excerpt: posts.excerpt,
-        contentMd: posts.contentMd,
         coverImageUrl: posts.coverImageUrl,
         readingTime: posts.readingTime,
         publishedAt: posts.publishedAt,
@@ -92,10 +112,18 @@ export async function getPublishedPosts({
         ? [desc(sql`coalesce(${postViews.viewCount}, 0)`), desc(posts.publishedAt)]
         : [desc(posts.publishedAt), desc(posts.createdAt)]
 
-    const rows = await baseQuery
-      .orderBy(...orderByClause)
-      .limit(limit)
-      .offset(offset)
+    const [rows, countRows] = await Promise.all([
+      baseQuery
+        .orderBy(...orderByClause)
+        .limit(limit)
+        .offset(offset),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(posts)
+        .where(and(...conditions)),
+    ])
+
+    const totalCount = countRows[0]?.count || 0
 
     if (rows.length > 0) {
       const postIds = rows.map((r) => r.id)
@@ -140,14 +168,14 @@ export async function getPublishedPosts({
         tagsByPost.get(row.postId)!.push(row.tag)
       }
 
-      let populatedPosts: BlogPostItem[] = rows.map((r) => ({
+      const populatedPosts: BlogPostItem[] = rows.map((r) => ({
         id: r.id,
         slug: r.slug,
         title: r.title,
         excerpt: r.excerpt,
-        contentMd: r.contentMd,
+        contentMd: "",
         coverImageUrl: r.coverImageUrl,
-        readingTime: r.readingTime || Math.ceil((r.contentMd?.length || 500) / 900),
+        readingTime: r.readingTime || 5,
         publishedAt: r.publishedAt,
         createdAt: r.createdAt,
         categories: catsByPost.get(r.id) || [],
@@ -155,23 +183,11 @@ export async function getPublishedPosts({
         viewsCount: Number(r.viewsCount || 0),
       }))
 
-      if (categorySlug && categorySlug !== "all") {
-        populatedPosts = populatedPosts.filter((p) =>
-          p.categories.some((c) => c.slug.toLowerCase() === categorySlug.toLowerCase())
-        )
-      }
-
-      if (tagSlug) {
-        populatedPosts = populatedPosts.filter((p) =>
-          p.tags.some((t) => t.slug.toLowerCase() === tagSlug.toLowerCase())
-        )
-      }
-
       return {
         posts: populatedPosts,
-        total: populatedPosts.length,
+        total: totalCount,
         page,
-        totalPages: Math.max(1, Math.ceil(populatedPosts.length / limit)),
+        totalPages: Math.max(1, Math.ceil(totalCount / limit)),
         limit,
       }
     }
@@ -182,7 +198,6 @@ export async function getPublishedPosts({
     )
   }
 
-  // Fallback in-memory processing
   let filtered = [...fallbackPosts]
 
   if (categorySlug && categorySlug !== "all") {
@@ -229,7 +244,21 @@ export async function getPublishedPosts({
   }
 }
 
-export async function getPostBySlug(slug: string): Promise<BlogPostItem | null> {
+export async function getPublishedPosts(
+  params: GetPostsParams = {}
+): Promise<PaginatedPostsResult> {
+  const cacheKey = `posts-${params.categorySlug || "all"}-${params.tagSlug || "all"}-${params.query || ""}-${params.sort || "latest"}-${params.page || 1}-${params.limit || 9}`
+  return unstable_cache(
+    () => fetchPublishedPosts(params),
+    ["blog-published-posts", cacheKey],
+    {
+      revalidate: 3600,
+      tags: ["blog"],
+    }
+  )()
+}
+
+async function fetchPostBySlug(slug: string): Promise<BlogPostItem | null> {
   try {
     const rows = await db
       .select({
@@ -298,7 +327,18 @@ export async function getPostBySlug(slug: string): Promise<BlogPostItem | null> 
   return fallbackPosts.find((p) => p.slug === slug) || null
 }
 
-export async function getAllPostSlugs(): Promise<string[]> {
+export async function getPostBySlug(slug: string): Promise<BlogPostItem | null> {
+  return unstable_cache(
+    () => fetchPostBySlug(slug),
+    ["blog-post", slug],
+    {
+      revalidate: 3600,
+      tags: ["blog", `post-${slug}`],
+    }
+  )()
+}
+
+async function fetchAllPostSlugs(): Promise<string[]> {
   try {
     const rows = await db
       .select({ slug: posts.slug })
@@ -315,21 +355,136 @@ export async function getAllPostSlugs(): Promise<string[]> {
   return fallbackPosts.map((p) => p.slug)
 }
 
-export async function getAdjacentPosts(currentSlug: string): Promise<{
+export const getAllPostSlugs = unstable_cache(
+  fetchAllPostSlugs,
+  ["blog-all-post-slugs"],
+  {
+    revalidate: 3600,
+    tags: ["blog"],
+  }
+)
+
+async function fetchAdjacentPosts(currentSlug: string): Promise<{
   prev: BlogPostItem | null
   next: BlogPostItem | null
 }> {
-  const { posts: allPosts } = await getPublishedPosts({ limit: 100 })
-  const index = allPosts.findIndex((p) => p.slug === currentSlug)
+  try {
+    const currentPost = await db
+      .select({ publishedAt: posts.publishedAt, createdAt: posts.createdAt })
+      .from(posts)
+      .where(and(eq(posts.slug, currentSlug), eq(posts.status, "PUBLISHED")))
+      .limit(1)
 
+    if (currentPost[0]) {
+      const pubDate = currentPost[0].publishedAt || currentPost[0].createdAt
+
+      const [prevRows, nextRows] = await Promise.all([
+        db
+          .select({
+            id: posts.id,
+            slug: posts.slug,
+            title: posts.title,
+            excerpt: posts.excerpt,
+            coverImageUrl: posts.coverImageUrl,
+            publishedAt: posts.publishedAt,
+            createdAt: posts.createdAt,
+          })
+          .from(posts)
+          .where(
+            and(
+              eq(posts.status, "PUBLISHED"),
+              pubDate ? sql`${posts.publishedAt} < ${pubDate}` : sql`1=1`,
+              ne(posts.slug, currentSlug)
+            )
+          )
+          .orderBy(desc(posts.publishedAt))
+          .limit(1),
+
+        db
+          .select({
+            id: posts.id,
+            slug: posts.slug,
+            title: posts.title,
+            excerpt: posts.excerpt,
+            coverImageUrl: posts.coverImageUrl,
+            publishedAt: posts.publishedAt,
+            createdAt: posts.createdAt,
+          })
+          .from(posts)
+          .where(
+            and(
+              eq(posts.status, "PUBLISHED"),
+              pubDate ? sql`${posts.publishedAt} > ${pubDate}` : sql`1=1`,
+              ne(posts.slug, currentSlug)
+            )
+          )
+          .orderBy(asc(posts.publishedAt))
+          .limit(1),
+      ])
+
+      const prev = prevRows[0]
+        ? ({
+            id: prevRows[0].id,
+            slug: prevRows[0].slug,
+            title: prevRows[0].title,
+            excerpt: prevRows[0].excerpt || "",
+            contentMd: "",
+            coverImageUrl: prevRows[0].coverImageUrl || null,
+            readingTime: 3,
+            publishedAt: prevRows[0].publishedAt,
+            createdAt: prevRows[0].createdAt,
+            categories: [],
+            tags: [],
+            viewsCount: 0,
+          } as BlogPostItem)
+        : null
+
+      const next = nextRows[0]
+        ? ({
+            id: nextRows[0].id,
+            slug: nextRows[0].slug,
+            title: nextRows[0].title,
+            excerpt: nextRows[0].excerpt || "",
+            contentMd: "",
+            coverImageUrl: nextRows[0].coverImageUrl || null,
+            readingTime: 3,
+            publishedAt: nextRows[0].publishedAt,
+            createdAt: nextRows[0].createdAt,
+            categories: [],
+            tags: [],
+            viewsCount: 0,
+          } as BlogPostItem)
+        : null
+
+      return { prev, next }
+    }
+  } catch (error) {
+    console.warn("[Blog Data Layer] Failed to fetch adjacent posts from DB:", error)
+  }
+
+  const index = fallbackPosts.findIndex((p) => p.slug === currentSlug)
   if (index === -1) {
     return { prev: null, next: null }
   }
 
   return {
-    prev: index > 0 ? allPosts[index - 1] ?? null : null,
-    next: index < allPosts.length - 1 ? allPosts[index + 1] ?? null : null,
+    prev: index > 0 ? fallbackPosts[index - 1] ?? null : null,
+    next: index < fallbackPosts.length - 1 ? fallbackPosts[index + 1] ?? null : null,
   }
+}
+
+export async function getAdjacentPosts(currentSlug: string): Promise<{
+  prev: BlogPostItem | null
+  next: BlogPostItem | null
+}> {
+  return unstable_cache(
+    () => fetchAdjacentPosts(currentSlug),
+    ["blog-adjacent-posts", currentSlug],
+    {
+      revalidate: 3600,
+      tags: ["blog", `post-${currentSlug}`],
+    }
+  )()
 }
 
 export async function getFeaturedPost(): Promise<BlogPostItem | null> {
@@ -342,7 +497,7 @@ export async function getFeaturedOrRecentPosts(limit = 3): Promise<BlogPostItem[
   return posts
 }
 
-export async function getCategoriesWithCount(): Promise<CategoryWithCount[]> {
+async function fetchCategoriesWithCount(): Promise<CategoryWithCount[]> {
   try {
     const rows = await db
       .select({
@@ -377,7 +532,16 @@ export async function getCategoriesWithCount(): Promise<CategoryWithCount[]> {
   return fallbackCategories
 }
 
-export async function getTagsWithCount(): Promise<TagWithCount[]> {
+export const getCategoriesWithCount = unstable_cache(
+  fetchCategoriesWithCount,
+  ["blog-categories-count"],
+  {
+    revalidate: 3600,
+    tags: ["blog"],
+  }
+)
+
+async function fetchTagsWithCount(): Promise<TagWithCount[]> {
   try {
     const rows = await db
       .select({
@@ -417,3 +581,12 @@ export async function getTagsWithCount(): Promise<TagWithCount[]> {
 
   return Array.from(tagMap.values())
 }
+
+export const getTagsWithCount = unstable_cache(
+  fetchTagsWithCount,
+  ["blog-tags-count"],
+  {
+    revalidate: 3600,
+    tags: ["blog"],
+  }
+)
