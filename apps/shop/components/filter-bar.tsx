@@ -6,7 +6,7 @@ import {
   Search,
   X,
   Layers,
-  Sparkles,
+  LayoutGrid,
   Download,
   Code2,
   Cpu,
@@ -22,7 +22,7 @@ interface FilterBarProps {
 const CATEGORIES = [
   { id: "all", label: "All Items", icon: Layers },
   { id: "STARTER_KIT", label: "Starter Kits", icon: Code2 },
-  { id: "UI_SYSTEM", label: "UI Systems", icon: Sparkles },
+  { id: "UI_SYSTEM", label: "UI Systems", icon: LayoutGrid },
   { id: "BACKEND", label: "Backend & Cloud", icon: Cpu },
   { id: "CONSULTATION", label: "Consultation", icon: Download },
 ]
@@ -100,20 +100,20 @@ export function FilterBar({ totalCount }: FilterBarProps) {
     Boolean(currentType)
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 rounded-2xl border border-border/80 bg-card/60 p-3.5 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
+    <div className="space-y-3">
+      <div className="flex flex-col gap-2.5 rounded-lg border border-border/60 bg-muted/20 p-2.5 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1">
           <label htmlFor={searchInputId} className="sr-only">
             Search products and architectures
           </label>
-          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
           <input
             id={searchInputId}
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search by keywords, architecture, or tech stack..."
-            className="w-full rounded-xl border border-border/80 bg-background/80 py-2 pr-9 pl-9 text-xs transition-colors placeholder:text-muted-foreground focus:border-primary/60 focus:ring-1 focus:ring-primary/40 focus:outline-hidden"
+            className="w-full rounded-md border border-border/70 bg-background py-1.5 pr-8 pl-9 text-xs text-foreground transition-colors placeholder:text-muted-foreground/70 focus:border-foreground/40 focus:outline-hidden"
           />
           {searchInput && (
             <button
@@ -123,7 +123,7 @@ export function FilterBar({ totalCount }: FilterBarProps) {
                 updateParams({ q: null })
               }}
               aria-label="Clear search"
-              className="absolute top-1/2 right-2.5 flex size-5 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="absolute top-1/2 right-2 flex size-5 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X className="size-3" />
             </button>
@@ -148,7 +148,7 @@ export function FilterBar({ totalCount }: FilterBarProps) {
                 id={sortSelectId}
                 value={currentSort}
                 onChange={(e) => updateParams({ sortBy: e.target.value })}
-                className="cursor-pointer appearance-none rounded-xl border border-border/80 bg-background/80 py-2 pr-8 pl-8 text-xs font-medium text-foreground transition-colors hover:bg-muted/50 focus:border-primary/60 focus:outline-hidden"
+                className="cursor-pointer appearance-none rounded-md border border-border/70 bg-background py-1.5 pr-8 pl-8 text-xs font-medium text-foreground transition-colors hover:bg-muted/50 focus:border-foreground/40 focus:outline-hidden"
               >
                 {SORT_OPTIONS.map((opt) => (
                   <option key={opt.id} value={opt.id}>
@@ -173,10 +173,10 @@ export function FilterBar({ totalCount }: FilterBarProps) {
                 type="button"
                 onClick={() => updateParams({ category: cat.id })}
                 className={cn(
-                  "inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium transition-all",
+                  "inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-xs"
-                    : "border border-border/60 bg-card/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-foreground text-background font-semibold"
+                    : "border border-border/60 bg-muted/20 text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                 )}
               >
                 <Icon className="size-3.5" />
@@ -190,7 +190,7 @@ export function FilterBar({ totalCount }: FilterBarProps) {
           <button
             type="button"
             onClick={handleResetAll}
-            className="inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-lg px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-md border border-border/60 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
             <RotateCcw className="size-3" />
             <span>Reset</span>
@@ -199,13 +199,13 @@ export function FilterBar({ totalCount }: FilterBarProps) {
       </div>
 
       {hasActiveFilters && (
-        <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+        <div className="flex flex-wrap items-center gap-1.5 pt-0.5 text-xs">
           <span className="text-[11px] font-medium text-muted-foreground">
             Active Filters:
           </span>
 
           {currentQuery && (
-            <span className="inline-flex items-center gap-1 rounded-lg border border-border/80 bg-muted/60 px-2 py-0.5 text-[11px] text-foreground">
+            <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-muted/40 px-2 py-0.5 text-[11px] text-foreground">
               <span>Query: &quot;{currentQuery}&quot;</span>
               <button
                 type="button"
@@ -221,7 +221,7 @@ export function FilterBar({ totalCount }: FilterBarProps) {
           )}
 
           {currentCategory !== "all" && (
-            <span className="inline-flex items-center gap-1 rounded-lg border border-border/80 bg-muted/60 px-2 py-0.5 text-[11px] text-foreground">
+            <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-muted/40 px-2 py-0.5 text-[11px] text-foreground">
               <span>
                 Category:{" "}
                 {CATEGORIES.find((c) => c.id === currentCategory)?.label ||
@@ -238,7 +238,7 @@ export function FilterBar({ totalCount }: FilterBarProps) {
           )}
 
           {currentSort !== "featured" && (
-            <span className="inline-flex items-center gap-1 rounded-lg border border-border/80 bg-muted/60 px-2 py-0.5 text-[11px] text-foreground">
+            <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-muted/40 px-2 py-0.5 text-[11px] text-foreground">
               <span>
                 Sort:{" "}
                 {SORT_OPTIONS.find((s) => s.id === currentSort)?.label ||

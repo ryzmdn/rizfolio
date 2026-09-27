@@ -4,13 +4,12 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import {
   Download,
-  Sparkles,
+  Users,
   CheckCircle2,
   Lock,
   ArrowRight,
   ShieldCheck,
   ShoppingBag,
-  Zap,
 } from "lucide-react"
 import { useCart } from "./cart-provider"
 import { useCurrency } from "./currency-context"
@@ -54,25 +53,25 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
   }
 
   return (
-    <div className="sticky top-24 space-y-6 rounded-3xl border border-border/80 bg-card/70 p-6 shadow-sm backdrop-blur-md sm:p-8">
+    <div className="sticky top-20 space-y-5 rounded-lg border border-border/70 bg-card p-5 sm:p-6">
       <div className="flex items-center justify-between">
-        <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+        <span className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/30 px-2.5 py-1 text-xs font-medium text-foreground">
           {isDigital ? (
             <>
-              <Download className="size-3.5" />
-              <span>Digital Download</span>
+              <Download className="size-3.5 text-muted-foreground" />
+              <span>Digital Package</span>
             </>
           ) : (
             <>
-              <Sparkles className="size-3.5" />
+              <Users className="size-3.5 text-muted-foreground" />
               <span>1-on-1 Consultation</span>
             </>
           )}
         </span>
 
-        <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-500">
+        <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
           <CheckCircle2 className="size-3.5" />
-          <span>In Stock & Ready</span>
+          <span>Verified & Available</span>
         </span>
       </div>
 
@@ -90,7 +89,7 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
         </p>
       </div>
 
-      <div className="border-t border-border/60 pt-5">
+      <div className="border-t border-border/50 pt-4">
         <LicenseSelector
           standardPrice={product.price}
           extendedPrice={product.extendedPrice}
@@ -100,47 +99,47 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
         />
       </div>
 
-      <div className="space-y-2.5 pt-2">
+      <div className="space-y-2 pt-1">
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-[0.99]"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-foreground py-2.5 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
         >
-          <ShoppingBag className="size-4" />
+          <ShoppingBag className="size-3.5" />
           <span>Add to Shopping Cart</span>
         </button>
 
         <button
           type="button"
           onClick={handleInstantCheckout}
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-border bg-background py-3 text-xs font-semibold text-foreground transition-all hover:bg-muted active:scale-[0.99]"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-border/70 bg-background py-2.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/60"
         >
           <span>Instant Checkout</span>
           <ArrowRight className="size-3.5" />
         </button>
 
-        <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-muted-foreground">
+        <div className="flex items-center justify-center gap-1.5 pt-1 text-[11px] text-muted-foreground">
           <Lock className="size-3 text-muted-foreground" />
           <span>Encrypted 256-bit checkout & direct fulfillment</span>
         </div>
       </div>
 
-      <div className="space-y-2.5 border-t border-border/60 pt-5 text-xs text-muted-foreground">
+      <div className="space-y-2 border-t border-border/50 pt-4 text-xs text-muted-foreground">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="size-4 shrink-0 text-primary" />
+          <ShieldCheck className="size-3.5 shrink-0 text-muted-foreground" />
           <span>Full source code with commercial usage rights</span>
         </div>
         <div className="flex items-center gap-2">
-          <Zap className="size-4 shrink-0 text-primary" />
+          <Download className="size-3.5 shrink-0 text-muted-foreground" />
           <span>Lifetime access and free future revision downloads</span>
         </div>
         <div className="flex items-center gap-2">
-          <CheckCircle2 className="size-4 shrink-0 text-primary" />
+          <CheckCircle2 className="size-3.5 shrink-0 text-muted-foreground" />
           <span>14-day defect resolution and refund guarantee</span>
         </div>
       </div>
 
-      <div className="space-y-2 rounded-2xl border border-border/60 bg-muted/30 p-4 text-xs">
+      <div className="space-y-1.5 rounded-md border border-border/50 bg-muted/20 p-3.5 text-xs">
         <div className="flex items-center justify-between text-muted-foreground">
           <span>Architecture</span>
           <span className="font-mono font-medium text-foreground">

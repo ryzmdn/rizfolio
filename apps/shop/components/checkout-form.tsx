@@ -6,7 +6,7 @@ import {
   ShieldCheck,
   CreditCard,
   Wallet,
-  Zap,
+  Terminal,
   Lock,
   ArrowRight,
   Globe,
@@ -46,7 +46,7 @@ export function CheckoutForm() {
       description:
         "Direct immediate order provisioning for testing without real card entry.",
       badges: ["Instant Access", "Test Mode"],
-      icon: Zap,
+      icon: Terminal,
     },
   ]
 
@@ -137,13 +137,13 @@ export function CheckoutForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-6">
       {/* 1. Currency & Location Selector Card */}
-      <div className="space-y-4 rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-md sm:p-8">
+      <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <Globe className="size-4 text-primary" />
+              <Globe className="size-4 text-muted-foreground" />
               <h2 className="text-base font-semibold text-foreground">
                 Payment Currency & Region
               </h2>
@@ -159,7 +159,7 @@ export function CheckoutForm() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2 rounded-md border border-border/60 bg-muted/20 px-3.5 py-2.5 text-xs text-muted-foreground">
           <span className="text-base select-none" aria-hidden="true">
             {currencyInfo.flag}
           </span>
@@ -178,7 +178,7 @@ export function CheckoutForm() {
       </div>
 
       {/* 2. Delivery Contact Details */}
-      <div className="space-y-4 rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-md sm:p-8">
+      <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
         <h2 className="text-base font-semibold text-foreground">
           1. Delivery Contact Details
         </h2>
@@ -198,7 +198,7 @@ export function CheckoutForm() {
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder="e.g. Alex Pratama"
-              className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs transition-colors placeholder:text-muted-foreground focus:border-primary/60 focus:ring-1 focus:ring-primary/40 focus:outline-hidden"
+              className="w-full rounded-md border border-border bg-background px-3 py-2 text-xs placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring focus:outline-hidden"
             />
           </div>
 
@@ -212,20 +212,20 @@ export function CheckoutForm() {
               value={customerEmail}
               onChange={(e) => setCustomerEmail(e.target.value)}
               placeholder="alex@company.com"
-              className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs transition-colors placeholder:text-muted-foreground focus:border-primary/60 focus:ring-1 focus:ring-primary/40 focus:outline-hidden"
+              className="w-full rounded-md border border-border bg-background px-3 py-2 text-xs placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring focus:outline-hidden"
             />
           </div>
         </div>
       </div>
 
       {/* 3. Payment Method Selection */}
-      <div className="space-y-4 rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-md sm:p-8">
+      <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold text-foreground">
             2. Payment Method
           </h2>
           <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-            <ShieldCheck className="size-3.5 text-primary" />
+            <ShieldCheck className="size-3.5 text-muted-foreground" />
             <span>Stripe Encrypted</span>
           </span>
         </div>
@@ -240,13 +240,13 @@ export function CheckoutForm() {
                 key={opt.id}
                 onClick={() => setPaymentMethod(opt.id)}
                 className={cn(
-                  "flex cursor-pointer items-start gap-3.5 rounded-2xl border p-4 transition-all duration-200 select-none",
+                  "flex cursor-pointer items-start gap-3.5 rounded-md border p-3.5 select-none transition-colors",
                   isSelected
-                    ? "border-primary bg-primary/5 shadow-xs ring-1 ring-primary/40"
-                    : "border-border/70 bg-card/40 hover:border-border hover:bg-card/70"
+                    ? "border-foreground/80 bg-muted/30"
+                    : "border-border/60 bg-muted/10 hover:border-border hover:bg-muted/20"
                 )}
               >
-                <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl border border-border/80 bg-background text-primary">
+                <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-background text-foreground">
                   <Icon className="size-4" />
                 </div>
 
@@ -259,7 +259,7 @@ export function CheckoutForm() {
                       className={cn(
                         "size-3.5 rounded-full border transition-colors",
                         isSelected
-                          ? "border-primary bg-primary"
+                          ? "border-foreground bg-foreground"
                           : "border-muted-foreground/40 bg-background"
                       )}
                     />
@@ -287,13 +287,13 @@ export function CheckoutForm() {
       </div>
 
       {/* 4. Terms and Submit */}
-      <div className="space-y-4 rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-md sm:p-8">
+      <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
         <label className="flex cursor-pointer items-start gap-3 select-none">
           <input
             type="checkbox"
             checked={agreeTerms}
             onChange={(e) => setAgreeTerms(e.target.checked)}
-            className="mt-0.5 size-4 rounded-md border-border text-primary focus:ring-primary"
+            className="mt-0.5 size-4 rounded-md border-border text-primary focus:ring-ring"
           />
           <span className="text-xs leading-relaxed text-muted-foreground">
             I agree to the{" "}
@@ -306,7 +306,7 @@ export function CheckoutForm() {
         </label>
 
         {errorMessage && (
-          <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-xs text-rose-600 dark:text-rose-400">
+          <div className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
             {errorMessage}
           </div>
         )}
@@ -314,7 +314,7 @@ export function CheckoutForm() {
         <button
           type="submit"
           disabled={isPending || items.length === 0}
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-[0.99] disabled:opacity-50"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-primary py-3 px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-[0.99] disabled:opacity-50"
         >
           {isPending ? (
             <>
