@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache"
-import { db, changelogs, changelogItems, eq, desc, asc } from "@workspace/db"
+import { db, changelogs, changelogItems, eq, desc, asc, inArray } from "@workspace/db"
 import {
   fallbackChangelogs,
   roadmapItems,
@@ -84,51 +84,71 @@ async function fetchChangelogReleases(
 ): Promise<ChangelogReleaseData[]> {
   try {
     const releaseRows = await db
-      .select()
+      .select({
+        id: changelogs.id,
+        version: changelogs.version,
+        title: changelogs.title,
+        releaseDate: changelogs.releaseDate,
+        summary: changelogs.summary,
+        isPublished: changelogs.isPublished,
+        createdAt: changelogs.createdAt,
+      })
       .from(changelogs)
       .where(eq(changelogs.isPublished, true))
       .orderBy(desc(changelogs.createdAt))
 
     if (releaseRows.length > 0) {
-      const fullReleases: ChangelogReleaseData[] = await Promise.all(
-        releaseRows.map(async (rel) => {
-          const items = await db
-            .select({
-              id: changelogItems.id,
-              category: changelogItems.category,
-              description: changelogItems.description,
-              displayOrder: changelogItems.displayOrder,
-            })
-            .from(changelogItems)
-            .where(eq(changelogItems.changelogId, rel.id))
-            .orderBy(asc(changelogItems.displayOrder))
-
-          const fallbackMatch = fallbackChangelogs.find(
-            (fb) => fb.version.toLowerCase() === rel.version.toLowerCase()
-          )
-
-          return {
-            id: rel.id,
-            version: rel.version,
-            slug: rel.version.toLowerCase().replace(/\./g, "-"),
-            title: rel.title,
-            releaseDate: rel.releaseDate,
-            summary: rel.summary,
-            commitSha: fallbackMatch?.commitSha || "main",
-            scope: fallbackMatch?.scope || ["monorepo"],
-            metrics: fallbackMatch?.metrics,
-            isPublished: rel.isPublished,
-            createdAt:
-              rel.createdAt instanceof Date
-                ? rel.createdAt.toISOString()
-                : String(rel.createdAt),
-            items: items.map((it) => ({
-              ...it,
-              scope: fallbackMatch?.items.find((fbi) => fbi.id === it.id)?.scope,
-            })),
-          }
+      const releaseIds = releaseRows.map((r) => r.id)
+      const allItems = await db
+        .select({
+          id: changelogItems.id,
+          changelogId: changelogItems.changelogId,
+          category: changelogItems.category,
+          description: changelogItems.description,
+          displayOrder: changelogItems.displayOrder,
         })
-      )
+        .from(changelogItems)
+        .where(inArray(changelogItems.changelogId, releaseIds))
+        .orderBy(asc(changelogItems.displayOrder))
+
+      const itemsByRelease = new Map<string, typeof allItems>()
+      for (const item of allItems) {
+        if (!itemsByRelease.has(item.changelogId)) {
+          itemsByRelease.set(item.changelogId, [])
+        }
+        itemsByRelease.get(item.changelogId)!.push(item)
+      }
+
+      const fullReleases: ChangelogReleaseData[] = releaseRows.map((rel) => {
+        const items = itemsByRelease.get(rel.id) || []
+        const fallbackMatch = fallbackChangelogs.find(
+          (fb) => fb.version.toLowerCase() === rel.version.toLowerCase()
+        )
+
+        return {
+          id: rel.id,
+          version: rel.version,
+          slug: rel.version.toLowerCase().replace(/\./g, "-"),
+          title: rel.title,
+          releaseDate: rel.releaseDate,
+          summary: rel.summary,
+          commitSha: fallbackMatch?.commitSha || "main",
+          scope: fallbackMatch?.scope || ["monorepo"],
+          metrics: fallbackMatch?.metrics,
+          isPublished: rel.isPublished,
+          createdAt:
+            rel.createdAt instanceof Date
+              ? rel.createdAt.toISOString()
+              : String(rel.createdAt),
+          items: items.map((it) => ({
+            id: it.id,
+            category: it.category,
+            description: it.description,
+            displayOrder: it.displayOrder,
+            scope: fallbackMatch?.items.find((fbi) => fbi.id === it.id)?.scope,
+          })),
+        }
+      })
 
       return filterFallbackReleases(fullReleases, filters)
     }
@@ -164,7 +184,15 @@ async function fetchReleaseByVersion(
 
   try {
     const [row] = await db
-      .select()
+      .select({
+        id: changelogs.id,
+        version: changelogs.version,
+        title: changelogs.title,
+        releaseDate: changelogs.releaseDate,
+        summary: changelogs.summary,
+        isPublished: changelogs.isPublished,
+        createdAt: changelogs.createdAt,
+      })
       .from(changelogs)
       .where(eq(changelogs.version, cleanVersion))
       .limit(1)

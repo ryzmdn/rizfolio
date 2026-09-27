@@ -68,6 +68,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
       <body className={cn(fontVariables, "min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary")}>
         <AppProvider>
           <a
