@@ -2,13 +2,14 @@ import Image from "next/image"
 import Link from "next/link"
 import {
   Download,
-  Sparkles,
+  Users,
   ArrowRight,
   ExternalLink,
   Star,
   Layers,
   Code2,
   Cpu,
+  LayoutGrid,
 } from "lucide-react"
 import { formatPrice } from "../lib/utils"
 import { AddToCartButton } from "./add-to-cart-button"
@@ -26,11 +27,11 @@ function getCategoryMeta(category: string) {
     case "STARTER_KIT":
       return { label: "Starter Kit", icon: Code2 }
     case "UI_SYSTEM":
-      return { label: "UI System", icon: Sparkles }
+      return { label: "UI System", icon: LayoutGrid }
     case "BACKEND":
       return { label: "Backend", icon: Cpu }
     case "CONSULTATION":
-      return { label: "Consultation", icon: Layers }
+      return { label: "Consultation", icon: Users }
     default:
       return { label: "Digital Asset", icon: Layers }
   }
@@ -44,42 +45,42 @@ export function ProductCard({ product, className }: ProductCardProps) {
   return (
     <article
       className={cn(
-        "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/70 bg-card/50 transition-all duration-300 hover:border-primary/40 hover:bg-card hover:shadow-lg hover:shadow-primary/5",
+        "group relative flex flex-col justify-between overflow-hidden rounded-lg border border-border/70 bg-card transition-colors hover:border-foreground/30",
         className
       )}
     >
-      <div className="space-y-4 p-5">
-        <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-border/60 bg-muted">
+      <div className="space-y-3.5 p-4 sm:p-5">
+        <div className="relative aspect-video w-full overflow-hidden rounded-md border border-border/60 bg-muted/40">
           {product.coverImageUrl ? (
             <Image
               src={product.coverImageUrl}
               alt={product.title}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-300 group-hover:scale-102"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-muted/60 text-muted-foreground">
-              <Layers className="size-10" />
+            <div className="flex h-full w-full items-center justify-center bg-muted/40 text-muted-foreground">
+              <Layers className="size-8" />
             </div>
           )}
 
-          <div className="absolute top-3 left-3 flex items-center gap-1.5">
-            <span className="inline-flex items-center gap-1 rounded-lg border border-border/80 bg-background/90 px-2 py-0.5 text-[10px] font-medium text-foreground backdrop-blur-md">
+          <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-background/95 px-2 py-0.5 text-[10px] font-medium text-foreground shadow-xs">
               {isDigital ? (
                 <>
-                  <Download className="size-3 text-primary" />
-                  <span>Digital Download</span>
+                  <Download className="size-3 text-muted-foreground" />
+                  <span>Digital</span>
                 </>
               ) : (
                 <>
-                  <Sparkles className="size-3 text-primary" />
-                  <span>1-on-1 Service</span>
+                  <Users className="size-3 text-muted-foreground" />
+                  <span>Consultation</span>
                 </>
               )}
             </span>
 
-            <span className="inline-flex items-center gap-1 rounded-lg border border-border/80 bg-background/90 px-2 py-0.5 text-[10px] font-medium text-muted-foreground backdrop-blur-md">
+            <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-background/95 px-2 py-0.5 text-[10px] font-medium text-muted-foreground shadow-xs">
               <CategoryIcon className="size-3 text-muted-foreground" />
               <span>{categoryMeta.label}</span>
             </span>
@@ -91,7 +92,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
               target="_blank"
               rel="noreferrer"
               aria-label={`Preview live demo for ${product.title}`}
-              className="absolute top-3 right-3 flex size-7 items-center justify-center rounded-lg border border-border/80 bg-background/90 text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
+              className="absolute top-2.5 right-2.5 flex size-7 items-center justify-center rounded-md border border-border/70 bg-background/95 text-muted-foreground shadow-xs transition-colors hover:text-foreground"
             >
               <ExternalLink className="size-3.5" />
             </a>
@@ -114,13 +115,13 @@ export function ProductCard({ product, className }: ProductCardProps) {
           <div className="text-right">
             <PriceDisplay
               amount={product.price}
-              className="font-mono text-base font-bold text-foreground"
+              className="font-mono text-sm font-bold text-foreground sm:text-base"
             />
           </div>
         </div>
 
-        <div className="space-y-1.5">
-          <h2 className="text-base font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">
+        <div className="space-y-1">
+          <h2 className="text-sm font-semibold tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-base">
             <Link
               href={`/product/${product.slug}`}
               className="focus:outline-hidden"
@@ -134,17 +135,17 @@ export function ProductCard({ product, className }: ProductCardProps) {
         </div>
 
         {product.techStack && product.techStack.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 pt-1">
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
             {product.techStack.slice(0, 4).map((tech) => (
               <span
                 key={tech}
-                className="rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
+                className="rounded-md border border-border/60 bg-muted/30 px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
               >
                 {tech}
               </span>
             ))}
             {product.techStack.length > 4 && (
-              <span className="rounded-md border border-border/60 bg-muted/40 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+              <span className="rounded-md border border-border/60 bg-muted/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                 +{product.techStack.length - 4}
               </span>
             )}
@@ -152,7 +153,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
         )}
       </div>
 
-      <div className="flex items-center justify-between border-t border-border/60 bg-muted/20 px-5 py-3">
+      <div className="flex items-center justify-between border-t border-border/60 bg-muted/15 px-4 py-2.5">
         <AddToCartButton
           product={{
             id: product.id,

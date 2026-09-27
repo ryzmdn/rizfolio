@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { ShieldCheck, Zap, Lock, ShoppingBag, Tag, Globe } from "lucide-react"
+import { ShieldCheck, Download, Lock, ShoppingBag, Tag, Globe } from "lucide-react"
 import { useCart } from "./cart-provider"
 import { useCurrency } from "./currency-context"
 import { formatPrice } from "../lib/utils"
@@ -11,7 +11,7 @@ export function OrderSummaryCard() {
   const { currency, currencyInfo, format } = useCurrency()
 
   return (
-    <div className="space-y-6 rounded-3xl border border-border/80 bg-card/60 p-6 shadow-sm backdrop-blur-md sm:p-8">
+    <div className="space-y-6 rounded-lg border border-border/70 bg-card/40 p-5 shadow-xs sm:p-6">
       <div className="flex items-center justify-between border-b border-border/60 pb-4">
         <h2 className="text-base font-semibold text-foreground">
           Order Summary
@@ -34,7 +34,7 @@ export function OrderSummaryCard() {
           return (
             <div key={item.id} className="flex gap-3 py-3.5">
               {item.coverImageUrl ? (
-                <div className="relative size-14 shrink-0 overflow-hidden rounded-xl border border-border/70 bg-muted">
+                <div className="relative size-14 shrink-0 overflow-hidden rounded-md border border-border/60 bg-muted">
                   <Image
                     src={item.coverImageUrl}
                     alt={item.title}
@@ -44,7 +44,7 @@ export function OrderSummaryCard() {
                   />
                 </div>
               ) : (
-                <div className="flex size-14 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-muted">
+                <div className="flex size-14 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted">
                   <ShoppingBag className="size-5 text-muted-foreground" />
                 </div>
               )}
@@ -57,7 +57,7 @@ export function OrderSummaryCard() {
                   <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
                     <span>Qty: {item.quantity}</span>
                     <span>•</span>
-                    <span className="rounded bg-muted px-1.5 py-0.2 font-medium">
+                    <span className="rounded-sm bg-muted px-1.5 py-0.2 font-medium">
                       {isExtended ? "Extended" : "Standard"}
                     </span>
                   </div>
@@ -73,12 +73,12 @@ export function OrderSummaryCard() {
       </div>
 
       {coupon && (
-        <div className="flex items-center justify-between rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-2.5 text-xs text-emerald-600 dark:text-emerald-400">
+        <div className="flex items-center justify-between rounded-md border border-border/70 bg-muted/40 px-3.5 py-2 text-xs text-foreground">
           <div className="flex items-center gap-2">
-            <Tag className="size-3.5" />
+            <Tag className="size-3.5 text-muted-foreground" />
             <span className="font-mono font-semibold">{coupon.code}</span>
           </div>
-          <span>{coupon.discountPercent}% Discount Applied</span>
+          <span className="text-muted-foreground">{coupon.discountPercent}% Discount Applied</span>
         </div>
       )}
 
@@ -105,15 +105,15 @@ export function OrderSummaryCard() {
 
       <div className="space-y-2 border-t border-border/60 pt-5 text-xs text-muted-foreground">
         <div className="flex items-center gap-2">
-          <Lock className="size-3.5 shrink-0 text-primary" />
+          <Lock className="size-3.5 shrink-0 text-muted-foreground" />
           <span>256-bit SSL encrypted transaction verification</span>
         </div>
         <div className="flex items-center gap-2">
-          <Zap className="size-3.5 shrink-0 text-primary" />
+          <Download className="size-3.5 shrink-0 text-muted-foreground" />
           <span>Immediate digital fulfillment and token generation</span>
         </div>
         <div className="flex items-center gap-2">
-          <ShieldCheck className="size-3.5 shrink-0 text-primary" />
+          <ShieldCheck className="size-3.5 shrink-0 text-muted-foreground" />
           <span>14-day technical defect resolution guarantee</span>
         </div>
       </div>

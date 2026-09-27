@@ -38,23 +38,23 @@ export function StickyBuyBar({ product }: StickyBuyBarProps) {
       role="region"
       aria-label="Quick purchase bar"
       className={cn(
-        "fixed right-0 bottom-0 left-0 z-40 border-t border-border/80 bg-background/95 p-3 shadow-2xl backdrop-blur-md transition-all duration-300 sm:py-3.5"
+        "fixed right-0 bottom-0 left-0 z-40 border-t border-border/70 bg-background/98 p-2.5 shadow-lg backdrop-blur-xl transition-all sm:py-3"
       )}
     >
       <Container className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 overflow-hidden">
           {product.coverImageUrl ? (
-            <div className="relative size-10 shrink-0 overflow-hidden rounded-xl border border-border/70 bg-muted">
+            <div className="relative size-9 shrink-0 overflow-hidden rounded-md border border-border/60 bg-muted/40">
               <Image
                 src={product.coverImageUrl}
                 alt={product.title}
                 fill
-                sizes="40px"
+                sizes="36px"
                 className="object-cover"
               />
             </div>
           ) : (
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-muted">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted/40">
               <Layers className="size-4 text-muted-foreground" />
             </div>
           )}

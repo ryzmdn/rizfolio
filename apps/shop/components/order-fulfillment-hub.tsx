@@ -36,14 +36,14 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
 
   return (
     <div className="space-y-10">
-      <div className="flex flex-col items-center justify-center rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-8 text-center sm:p-12">
-        <div className="flex size-16 items-center justify-center rounded-2xl border border-emerald-500/40 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-          <CheckCircle2 className="size-8" />
+      <div className="flex flex-col items-center justify-center rounded-lg border border-border/70 bg-card/40 p-6 text-center sm:p-10">
+        <div className="flex size-12 items-center justify-center rounded-md border border-border/60 bg-muted/40 text-foreground">
+          <CheckCircle2 className="size-6" />
         </div>
-        <span className="mt-4 font-mono text-xs font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+        <span className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
           Order Verified & Completed
         </span>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <h1 className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
           Order Fulfillment Hub
         </h1>
         <p className="mt-2 max-w-md text-xs leading-relaxed text-muted-foreground sm:text-sm">
@@ -51,11 +51,11 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
           access tokens and commercial software licenses are provisioned below.
         </p>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <span className="rounded-xl border border-border/80 bg-background px-3.5 py-1.5 font-mono text-xs font-bold text-foreground">
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
+          <span className="rounded-md border border-border/70 bg-background px-3 py-1 font-mono text-xs font-bold text-foreground">
             Order: {order.orderNumber}
           </span>
-          <span className="rounded-xl border border-border/80 bg-background px-3.5 py-1.5 text-xs text-muted-foreground">
+          <span className="rounded-md border border-border/70 bg-background px-3 py-1 text-xs text-muted-foreground">
             {new Date(order.createdAt).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
@@ -73,7 +73,7 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
           >
             <Printer className="size-3.5" />
             <span>Print Receipt</span>
@@ -90,12 +90,12 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
             return (
               <div
                 key={item.productId + index}
-                className="space-y-6 rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-md sm:p-8"
+                className="space-y-5 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-primary">
+                      <span className="rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-mono text-[10px] font-semibold text-foreground">
                         {item.licenseType}
                       </span>
                       <span className="text-xs text-muted-foreground">
@@ -113,10 +113,10 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                 </div>
 
                 {isService ? (
-                  <div className="flex flex-col gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-4 rounded-md border border-border/60 bg-muted/20 p-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-xs font-semibold text-primary">
-                        <Calendar className="size-4" />
+                      <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+                        <Calendar className="size-4 text-muted-foreground" />
                         <span>Book Your 1-on-1 Consultation Slot</span>
                       </div>
                       <p className="text-xs text-muted-foreground">
@@ -129,14 +129,14 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                       href="https://calendar.google.com"
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
                     >
                       <span>Schedule Meeting</span>
                       <ArrowRight className="size-3.5" />
                     </a>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-4 rounded-2xl border border-border/80 bg-background/80 p-5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-4 rounded-md border border-border/60 bg-muted/20 p-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
                       <span className="font-mono text-xs font-semibold text-foreground">
                         {item.fileName || "digital-source-archive.zip"}
@@ -149,7 +149,7 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
 
                     <a
                       href={downloadUrl}
-                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
                     >
                       <Download className="size-3.5" />
                       <span>Download ZIP Package</span>
@@ -168,8 +168,8 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between gap-3 rounded-xl border border-border/80 bg-background px-4 py-3">
-                      <code className="font-mono text-xs font-bold text-primary sm:text-sm">
+                    <div className="flex items-center justify-between gap-3 rounded-md border border-border/80 bg-background px-3.5 py-2.5">
+                      <code className="font-mono text-xs font-bold text-foreground sm:text-sm">
                         {item.licenseKey}
                       </code>
 
@@ -177,7 +177,7 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                         type="button"
                         onClick={() => handleCopyLicense(item.licenseKey!)}
                         aria-label="Copy license key"
-                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
                       >
                         {copiedKey === item.licenseKey ? (
                           <>
@@ -196,9 +196,9 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                 )}
 
                 {!isService && (
-                  <div className="space-y-2 rounded-2xl border border-border/60 bg-muted/20 p-4 text-xs">
+                  <div className="space-y-2 rounded-md border border-border/60 bg-muted/20 p-4 text-xs">
                     <div className="flex items-center gap-2 font-semibold text-foreground">
-                      <Terminal className="size-3.5 text-primary" />
+                      <Terminal className="size-3.5 text-muted-foreground" />
                       <span>Quick Start Instructions</span>
                     </div>
                     <div className="space-y-1 font-mono text-[11px] text-muted-foreground">
@@ -214,7 +214,7 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
         </div>
       </div>
 
-      <div className="rounded-3xl border border-border/80 bg-card/40 p-6 backdrop-blur-md sm:p-8">
+      <div className="rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
         <h3 className="text-sm font-bold text-foreground">
           Invoice & Payment Receipt
         </h3>
@@ -243,8 +243,8 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
 
           <div className="flex items-center justify-between py-2 text-muted-foreground">
             <span>Payment Status</span>
-            <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-medium text-emerald-600 dark:text-emerald-400">
-              <ShieldCheck className="size-3" />
+            <span className="inline-flex items-center gap-1 rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-medium text-foreground">
+              <ShieldCheck className="size-3 text-muted-foreground" />
               <span>{order.status}</span>
             </span>
           </div>
@@ -261,7 +261,7 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
       <div className="flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 sm:flex-row">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-primary transition-colors hover:underline"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
         >
           <Layers className="size-3.5" />
           <span>Explore More Software Packages</span>
