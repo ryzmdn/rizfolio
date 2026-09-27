@@ -112,7 +112,15 @@ const ECOSYSTEM_LINKS = [
 const getBioProfile = unstable_cache(
   async () => {
     try {
-      const [data] = await db.select().from(profile).limit(1)
+      const [data] = await db
+        .select({
+          fullName: profile.fullName,
+          headline: profile.headline,
+          bio: profile.bio,
+          socialLinks: profile.socialLinks,
+        })
+        .from(profile)
+        .limit(1)
       return data || null
     } catch {
       return null
@@ -140,7 +148,7 @@ export default async function LinkBioPage() {
     "https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
 
   return (
-    <main className="min-h-screen bg-background py-10 px-4 sm:px-6">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-background py-10 px-4 sm:px-6 outline-none">
       <div className="mx-auto max-w-xl space-y-8">
         {/* Cover Banner */}
         <div className="relative h-44 w-full overflow-hidden rounded-2xl sm:h-52 bg-gradient-to-tr from-muted via-card to-secondary border border-border/80 shadow-xs">
