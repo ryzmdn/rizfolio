@@ -12,7 +12,6 @@ export function CmsShell({ children }: { children: ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
 
-  // Global keyboard shortcut for Ctrl+K or Cmd+K
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -26,31 +25,41 @@ export function CmsShell({ children }: { children: ReactNode }) {
   }, [])
 
   if (isLoginPage) {
-    return <main className="min-h-screen bg-background">{children}</main>
+    return (
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="min-h-screen bg-background outline-none"
+      >
+        {children}
+      </main>
+    )
   }
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
-      {/* Desktop Persistent Sidebar */}
       <CmsSidebar />
 
-      {/* Mobile Accessible Navigation Drawer */}
       <CmsSidebar
         isMobile
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
       />
 
-      {/* Main Content Area */}
       <div className="flex flex-col md:pl-64">
         <CmsHeader
           onOpenMobileMenu={() => setMobileMenuOpen(true)}
           onOpenCommandPalette={() => setCommandPaletteOpen(true)}
         />
-        <main className="flex-1 pb-16">{children}</main>
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="flex-1 pb-16 outline-none"
+        >
+          {children}
+        </main>
       </div>
 
-      {/* Global Command Palette */}
       <CmsCommandPalette
         isOpen={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}
