@@ -38,18 +38,18 @@ export function AddToCartButton({
   const [justAdded, setJustAdded] = useState(false)
 
   const sizeClasses = {
-    sm: "px-3 py-1.5 text-xs rounded-lg gap-1.5",
-    md: "px-4 py-2.5 text-xs font-medium rounded-xl gap-2",
-    lg: "px-5 py-3.5 text-sm font-semibold rounded-xl gap-2.5",
+    sm: "px-3 py-1.5 text-xs rounded-md gap-1.5",
+    md: "px-4 py-2 text-xs font-medium rounded-md gap-2",
+    lg: "px-5 py-2.5 text-xs font-semibold rounded-md gap-2",
   }
 
   const variantClasses = {
     primary:
-      "bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs active:scale-[0.99]",
+      "bg-foreground text-background hover:bg-foreground/90 transition-colors",
     secondary:
-      "bg-secondary text-secondary-foreground hover:bg-secondary/80 active:scale-[0.99]",
+      "bg-muted text-foreground hover:bg-muted/80 transition-colors",
     outline:
-      "border border-border bg-background hover:bg-muted text-foreground active:scale-[0.99]",
+      "border border-border/70 bg-background hover:border-foreground/30 hover:bg-muted/60 text-foreground transition-colors",
   }
 
   function handleAddToCart() {
@@ -78,7 +78,7 @@ export function AddToCartButton({
       type="button"
       onClick={handleAddToCart}
       className={cn(
-        "inline-flex cursor-pointer items-center justify-center transition-all",
+        "inline-flex cursor-pointer items-center justify-center font-medium transition-colors",
         sizeClasses[size],
         variantClasses[variant],
         className
@@ -86,9 +86,9 @@ export function AddToCartButton({
     >
       {showIcon &&
         (justAdded ? (
-          <Check className="size-4 text-primary-foreground" />
+          <Check className="size-3.5 shrink-0 text-emerald-500" />
         ) : (
-          <ShoppingBag className="size-4" />
+          <ShoppingBag className="size-3.5 shrink-0" />
         ))}
       <span>{buttonText}</span>
     </button>

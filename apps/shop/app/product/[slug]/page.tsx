@@ -7,10 +7,9 @@ import {
   CheckCircle2,
   FileCode,
   ShieldCheck,
-  Zap,
+  Download,
   ArrowRight,
   Layers,
-  Sparkles,
 } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
 import {
@@ -150,17 +149,14 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </div>
 
             {product.features && product.features.length > 0 && (
-              <div className="space-y-4 rounded-3xl border border-border/70 bg-card/40 p-6 sm:p-8">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="size-4 text-primary" />
-                  <h3 className="text-base font-semibold text-foreground">
-                    Key Features & Technical Capabilities
-                  </h3>
-                </div>
-                <ul className="grid grid-cols-1 gap-3 pt-1 text-xs text-muted-foreground sm:grid-cols-2">
+              <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
+                <h3 className="text-sm font-semibold text-foreground">
+                  Key Features & Technical Capabilities
+                </h3>
+                <ul className="grid grid-cols-1 gap-2.5 pt-1 text-xs text-muted-foreground sm:grid-cols-2">
                   {product.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-foreground" />
                       <span className="leading-snug">{feature}</span>
                     </li>
                   ))}
@@ -169,21 +165,21 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             )}
 
             {product.files && product.files.length > 0 && (
-              <div className="space-y-4 rounded-3xl border border-border/70 bg-card/40 p-6 sm:p-8">
+              <div className="space-y-3 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
                 <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                  <FileCode className="size-4 text-primary" />
+                  <FileCode className="size-4 text-muted-foreground" />
                   <span>Included Digital Packages</span>
                 </div>
                 <ul className="divide-y divide-border/60 text-xs">
                   {product.files.map((file) => (
                     <li
                       key={file.id}
-                      className="flex items-center justify-between py-3"
+                      className="flex items-center justify-between py-2.5"
                     >
                       <span className="font-mono text-foreground">
                         {file.fileName}
                       </span>
-                      <span className="rounded-lg bg-muted px-2.5 py-1 font-mono text-[11px] font-medium text-muted-foreground">
+                      <span className="rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-mono text-[11px] font-medium text-muted-foreground">
                         {formatBytes(file.fileSizeBytes)}
                       </span>
                     </li>
@@ -193,8 +189,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             )}
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="flex items-start gap-3.5 rounded-2xl border border-border/60 bg-card/30 p-5">
-                <Zap className="mt-0.5 size-5 shrink-0 text-primary" />
+              <div className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/20 p-4 sm:p-5">
+                <Download className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                 <div className="space-y-1">
                   <h4 className="text-xs font-semibold text-foreground">
                     Instant Digital Delivery
@@ -206,8 +202,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 rounded-2xl border border-border/60 bg-card/30 p-5">
-                <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" />
+              <div className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/20 p-4 sm:p-5">
+                <ShieldCheck className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                 <div className="space-y-1">
                   <h4 className="text-xs font-semibold text-foreground">
                     Verified TypeScript Codebase
@@ -238,10 +234,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         </div>
 
         {relatedProducts.length > 0 && (
-          <div className="mt-24 space-y-8 border-t border-border/80 pt-16">
+          <div className="mt-20 space-y-8 border-t border-border/60 pt-12 sm:pt-16">
             <div className="flex items-center gap-2">
-              <Layers className="size-4 text-primary" />
-              <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+              <Layers className="size-4 text-muted-foreground" />
+              <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
                 Related Software Architectures
               </h2>
             </div>
@@ -250,23 +246,23 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               {relatedProducts.map((rel) => (
                 <div
                   key={rel.id}
-                  className="group flex flex-col justify-between rounded-2xl border border-border/70 bg-card/40 p-5 transition-all duration-300 hover:border-primary/40 hover:bg-card hover:shadow-lg hover:shadow-primary/5"
+                  className="group flex flex-col justify-between rounded-lg border border-border/70 bg-card/40 p-5 transition-colors hover:border-border hover:bg-card"
                 >
                   <div className="space-y-3">
                     {rel.coverImageUrl && (
-                      <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-border/60 bg-muted">
+                      <div className="relative aspect-video w-full overflow-hidden rounded-md border border-border/60 bg-muted">
                         <Image
                           src={rel.coverImageUrl}
                           alt={rel.title}
                           fill
                           sizes="300px"
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="object-cover transition-transform duration-300 group-hover:scale-102"
                         />
                       </div>
                     )}
 
                     <div className="flex items-center justify-between text-xs">
-                      <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                      <span className="rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                         {rel.productType === "DIGITAL_DOWNLOAD"
                           ? "Digital Download"
                           : "1-on-1 Service"}
@@ -276,7 +272,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                       </span>
                     </div>
 
-                    <h3 className="text-sm font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary">
+                    <h3 className="text-sm font-semibold tracking-tight text-foreground transition-colors group-hover:text-foreground">
                       <Link href={`/product/${rel.slug}`}>{rel.title}</Link>
                     </h3>
                   </div>
@@ -284,7 +280,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   <div className="mt-4 flex items-center justify-end border-t border-border/50 pt-3">
                     <Link
                       href={`/product/${rel.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
                     >
                       <span>Explore</span>
                       <ArrowRight className="size-3" />
