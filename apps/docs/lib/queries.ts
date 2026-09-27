@@ -100,7 +100,24 @@ async function fetchRepositories(filters: RepositoryFilters = {}) {
     }
 
     const query = db
-      .select()
+      .select({
+        id: repositories.id,
+        name: repositories.name,
+        slug: repositories.slug,
+        description: repositories.description,
+        category: repositories.category,
+        courseName: repositories.courseName,
+        semester: repositories.semester,
+        starsCount: repositories.starsCount,
+        downloadsCount: repositories.downloadsCount,
+        viewsCount: repositories.viewsCount,
+        isPublic: repositories.isPublic,
+        techStack: repositories.techStack,
+        githubUrl: repositories.githubUrl,
+        demoUrl: repositories.demoUrl,
+        createdAt: repositories.createdAt,
+        updatedAt: repositories.updatedAt,
+      })
       .from(repositories)
       .where(and(...conditions))
       .orderBy(orderByClause)
@@ -137,7 +154,26 @@ export async function getRepositories(filters: RepositoryFilters = {}) {
 async function fetchRepositoryBySlug(slug: string) {
   const rows = await safeDbQuery(() =>
     db
-      .select()
+      .select({
+        id: repositories.id,
+        name: repositories.name,
+        slug: repositories.slug,
+        description: repositories.description,
+        category: repositories.category,
+        courseName: repositories.courseName,
+        semester: repositories.semester,
+        starsCount: repositories.starsCount,
+        downloadsCount: repositories.downloadsCount,
+        viewsCount: repositories.viewsCount,
+        isPublic: repositories.isPublic,
+        techStack: repositories.techStack,
+        githubUrl: repositories.githubUrl,
+        demoUrl: repositories.demoUrl,
+        license: repositories.license,
+        readmeContent: repositories.readmeContent,
+        createdAt: repositories.createdAt,
+        updatedAt: repositories.updatedAt,
+      })
       .from(repositories)
       .where(eq(repositories.slug, slug))
       .limit(1)
@@ -198,7 +234,14 @@ export async function getFileContent(repoId: string, filePath: string) {
 export async function getRepoReleases(repoId: string) {
   const releases = await safeDbQuery(() =>
     db
-      .select()
+      .select({
+        id: repoReleases.id,
+        repoId: repoReleases.repoId,
+        versionTag: repoReleases.versionTag,
+        zipStoragePath: repoReleases.zipStoragePath,
+        changelog: repoReleases.changelog,
+        createdAt: repoReleases.createdAt,
+      })
       .from(repoReleases)
       .where(eq(repoReleases.repoId, repoId))
       .orderBy(desc(repoReleases.createdAt))
