@@ -130,7 +130,20 @@ async function fetchActiveProducts(
     }
 
     const rows = await db
-      .select()
+      .select({
+        id: products.id,
+        slug: products.slug,
+        title: products.title,
+        description: products.description,
+        price: products.price,
+        currency: products.currency,
+        productType: products.productType,
+        coverImageUrl: products.coverImageUrl,
+        galleryUrls: products.galleryUrls,
+        stock: products.stock,
+        isActive: products.isActive,
+        createdAt: products.createdAt,
+      })
       .from(products)
       .where(and(...conditions))
       .orderBy(orderByClause)
@@ -196,7 +209,20 @@ export async function getActiveProducts(
 async function fetchProductBySlug(slug: string): Promise<ShopProduct | null> {
   try {
     const rows = await db
-      .select()
+      .select({
+        id: products.id,
+        slug: products.slug,
+        title: products.title,
+        description: products.description,
+        price: products.price,
+        currency: products.currency,
+        productType: products.productType,
+        coverImageUrl: products.coverImageUrl,
+        galleryUrls: products.galleryUrls,
+        stock: products.stock,
+        isActive: products.isActive,
+        createdAt: products.createdAt,
+      })
       .from(products)
       .where(and(eq(products.slug, slug), eq(products.isActive, true)))
       .limit(1)
@@ -268,7 +294,20 @@ async function fetchRelatedProducts(
 ): Promise<ShopProduct[]> {
   try {
     const rows = await db
-      .select()
+      .select({
+        id: products.id,
+        slug: products.slug,
+        title: products.title,
+        description: products.description,
+        price: products.price,
+        currency: products.currency,
+        productType: products.productType,
+        coverImageUrl: products.coverImageUrl,
+        galleryUrls: products.galleryUrls,
+        stock: products.stock,
+        isActive: products.isActive,
+        createdAt: products.createdAt,
+      })
       .from(products)
       .where(and(eq(products.isActive, true), ne(products.slug, currentSlug)))
       .orderBy(desc(products.createdAt))

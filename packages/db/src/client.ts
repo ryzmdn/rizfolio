@@ -40,7 +40,9 @@ const connectionString = process.env
 
 const isProduction = process.env.NODE_ENV === "production"
 
-const isSupabase = connectionString.includes(".supabase.com")
+const isSupabase =
+  connectionString.includes(".supabase.com") ||
+  connectionString.includes(".supabase.co")
 
 declare global {
   var __postgresClient: ReturnType<typeof postgres> | undefined
@@ -51,22 +53,18 @@ const client =
   globalThis.__postgresClient ??
   postgres(connectionString, {
     prepare: false,
-    max: isProduction ? 20 : 15,
-    idle_timeout: 30,
-    connect_timeout: 15,
-    max_lifetime: 300,
+    max: isProduction ? 10 : 5,
+    idle_timeout: 20,
+    connect_timeout: 5,
+    max_lifetime: 180,
     ssl: isSupabase ? "require" : isProduction ? "require" : false,
   })
 
-if (!isProduction) {
-  globalThis.__postgresClient = client
-}
+globalThis.__postgresClient = client
 
 export const db = globalThis.__drizzleDb ?? drizzle(client, { schema })
 
-if (!isProduction) {
-  globalThis.__drizzleDb = db
-}
+globalThis.__drizzleDb = db
 export type Database = typeof db
 
 export { client }
