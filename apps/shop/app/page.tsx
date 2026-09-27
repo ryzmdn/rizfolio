@@ -10,14 +10,19 @@ import { Container } from "@workspace/ui/components/layouts/container"
 import { getActiveProducts } from "@/lib/queries"
 import { FilterBar } from "@/components/filter-bar"
 import { ProductCard } from "@/components/product-card"
-import { StoreFaq } from "@/components/store-faq"
+import { StoreFaq, FAQ_ITEMS } from "@/components/store-faq"
+import { SEO_CONFIG, getBaseUrl, createWebSiteJsonLd, createFaqJsonLd } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
+const shopUrl = getBaseUrl("shop")
+
 export const metadata: Metadata = {
-  title: "Digital Tools & Engineering Starter Kits | Rizfolio Store",
-  description:
-    "Explore production-tested software architectures, Next.js 16 starter kits, Tailwind v4 UI systems, and specialized senior engineering consultations.",
+  title: SEO_CONFIG.sites.shop.defaultTitle,
+  description: SEO_CONFIG.sites.shop.description,
+  alternates: {
+    canonical: shopUrl,
+  },
 }
 
 interface ShopPageProps {
@@ -97,9 +102,50 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
     },
   ]
 
+  const websiteJsonLd = createWebSiteJsonLd({
+    siteKey: "shop",
+    url: shopUrl,
+  })
+
+  const faqJsonLd = createFaqJsonLd(FAQ_ITEMS)
+
+  const storeJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${shopUrl}/#collection`,
+    name: SEO_CONFIG.sites.shop.name,
+    description: SEO_CONFIG.sites.shop.description,
+    url: shopUrl,
+    hasPart: products.slice(0, 10).map((prod) => ({
+      "@type": "Product",
+      name: prod.title,
+      description: prod.description,
+      url: `${shopUrl}/product/${prod.slug}`,
+      offers: {
+        "@type": "Offer",
+        price: prod.price.toString(),
+        priceCurrency: prod.currency,
+        availability: "https://schema.org/InStock",
+      },
+    })),
+  }
+
   return (
-    <div className="space-y-14 pb-20 pt-8 sm:space-y-16">
-      <section className="space-y-10">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }}
+      />
+      <div className="space-y-14 pb-20 pt-8 sm:space-y-16">
+        <section className="space-y-10">
         <Container>
           <div className="mx-auto max-w-3xl space-y-5 text-center">
             <div className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/30 px-2.5 py-1 text-xs font-medium text-muted-foreground">
@@ -233,5 +279,6 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
         </Container>
       </section>
     </div>
+    </>
   )
 }

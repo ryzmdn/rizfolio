@@ -10,6 +10,7 @@ import {
   Download,
   ArrowRight,
   Layers,
+  ChevronRight,
 } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
 import {
@@ -24,6 +25,7 @@ import { ProductPurchaseCard } from "@/components/product-purchase-card"
 import { ReviewsSection } from "@/components/reviews-section"
 import { StickyBuyBar } from "@/components/sticky-buy-bar"
 import { ProductFaq } from "@/components/product-faq"
+import { SEO_CONFIG, getBaseUrl, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
 
 interface ProductPageProps {
   params: Promise<{
@@ -48,23 +50,30 @@ export async function generateMetadata({
     }
   }
 
+  const baseUrl = getBaseUrl("shop")
+  const productUrl = `${baseUrl}/product/${slug}`
   const title = product.title
   const description = product.description
+  const coverImage = product.coverImageUrl || SEO_CONFIG.author.avatar
 
   return {
     title: `${title} | Rizfolio Store`,
     description,
+    alternates: {
+      canonical: productUrl,
+    },
     openGraph: {
       title,
       description,
       type: "website",
-      images: product.coverImageUrl ? [{ url: product.coverImageUrl }] : [],
+      url: productUrl,
+      images: [{ url: coverImage, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: product.coverImageUrl ? [product.coverImageUrl] : [],
+      images: [coverImage],
     },
   }
 }
@@ -89,6 +98,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     notFound()
   }
 
+  const baseUrl = getBaseUrl("shop")
+  const productUrl = `${baseUrl}/product/${product.slug}`
+
   const gallery =
     product.galleryUrls && product.galleryUrls.length > 0
       ? product.galleryUrls
@@ -96,44 +108,79 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         ? [product.coverImageUrl]
         : []
 
-  const jsonLd = {
+  const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.title,
     description: product.description,
-    image: product.coverImageUrl,
+    image: product.coverImageUrl || SEO_CONFIG.author.avatar,
     offers: {
       "@type": "Offer",
-      price: product.price,
+      price: product.price.toString(),
       priceCurrency: product.currency,
       availability: "https://schema.org/InStock",
+      url: productUrl,
       seller: {
         "@type": "Person",
-        name: "Rizky Ramadhan",
+        name: SEO_CONFIG.author.name,
+        url: SEO_CONFIG.author.url,
       },
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount,
-    },
+    ...(product.rating && product.reviewCount && product.reviewCount > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: product.rating,
+            reviewCount: product.reviewCount,
+          },
+        }
+      : {}),
   }
+
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: "Store Catalog", url: baseUrl },
+    ...(product.category
+      ? [{ name: product.category, url: `${baseUrl}/?category=${product.category}` }]
+      : []),
+    { name: product.title, url: productUrl },
+  ])
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <Container className="max-w-6xl py-10 md:py-16">
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-3.5" />
-          <span>Back to Store Catalog</span>
-        </Link>
+        <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="size-3.5" />
+            <span>Store Catalog</span>
+          </Link>
+          {product.category && (
+            <>
+              <ChevronRight className="size-3 text-muted-foreground/40" />
+              <Link
+                href={`/?category=${product.category}`}
+                className="transition-colors hover:text-foreground"
+              >
+                {product.category}
+              </Link>
+            </>
+          )}
+          <ChevronRight className="size-3 text-muted-foreground/40" />
+          <span className="truncate max-w-[200px] sm:max-w-xs text-foreground font-medium">
+            {product.title}
+          </span>
+        </nav>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="space-y-10 lg:col-span-7">

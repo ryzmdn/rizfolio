@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next"
 import { getActiveProducts } from "@/lib/queries"
+import { getBaseUrl } from "@workspace/ui/lib/seo"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SHOP_URL || process.env.NEXT_PUBLIC_APP_URL
+  const baseUrl = getBaseUrl("shop")
 
   const products = await getActiveProducts()
 
@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: baseUrl!,
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1.0,

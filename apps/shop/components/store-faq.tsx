@@ -4,13 +4,13 @@ import { useState } from "react"
 import { ChevronDown, HelpCircle } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 
-interface FaqItem {
+export interface FaqItem {
   id: string
   question: string
   answer: string
 }
 
-const FAQ_ITEMS: FaqItem[] = [
+export const FAQ_ITEMS: FaqItem[] = [
   {
     id: "faq-1",
     question: "How do I receive digital packages after checkout?",

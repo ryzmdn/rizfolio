@@ -9,49 +9,56 @@ import { ShopHeader } from "../components/shop-header"
 import { ShopFooter } from "../components/shop-footer"
 import "@workspace/ui/styles/globals.css"
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_SHOP_URL ||
-  process.env.NEXT_PUBLIC_APP_URL ||
-  "https://shop.rizkyramadhan.dev"
+import { SEO_CONFIG, getBaseUrl } from "@workspace/ui/lib/seo"
+
+const baseUrl = getBaseUrl("shop")
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Digital Tools & Engineering Starter Kits | Rizfolio Store",
-    template: "%s | Rizfolio Store",
+    default: SEO_CONFIG.sites.shop.defaultTitle,
+    template: SEO_CONFIG.sites.shop.titleTemplate,
   },
-  description:
-    "Production-ready architectures, monorepo starter kits, UI design systems, and specialized senior engineering consultation sessions.",
-  keywords: [
-    "Next.js 16",
-    "React 19",
-    "Turborepo Starter Kit",
-    "Tailwind CSS v4",
-    "Drizzle ORM",
-    "Go Microservices",
-    "Design System",
-    "Full-Stack Consultation",
-  ],
-  authors: [{ name: "Rizky Ramadhan", url: "https://rizkyramadhan.dev" }],
-  creator: "Rizky Ramadhan",
+  description: SEO_CONFIG.sites.shop.description,
+  keywords: [...SEO_CONFIG.sites.shop.keywords],
+  authors: [{ name: SEO_CONFIG.author.name, url: SEO_CONFIG.author.url }],
+  creator: SEO_CONFIG.author.name,
+  alternates: {
+    canonical: baseUrl,
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: baseUrl,
-    siteName: "Rizfolio Store",
-    title: "Digital Tools & Engineering Starter Kits | Rizfolio Store",
-    description:
-      "Production-ready architectures, monorepo starter kits, UI design systems, and specialized senior engineering consultation sessions.",
+    siteName: SEO_CONFIG.sites.shop.name,
+    title: SEO_CONFIG.sites.shop.defaultTitle,
+    description: SEO_CONFIG.sites.shop.description,
+    images: [
+      {
+        url: SEO_CONFIG.author.avatar,
+        width: 800,
+        height: 800,
+        alt: SEO_CONFIG.sites.shop.name,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Digital Tools & Engineering Starter Kits | Rizfolio Store",
-    description:
-      "Production-ready architectures, monorepo starter kits, UI design systems, and specialized senior engineering consultation sessions.",
+    title: SEO_CONFIG.sites.shop.defaultTitle,
+    description: SEO_CONFIG.sites.shop.description,
+    images: [SEO_CONFIG.author.avatar],
+    creator: "@ryzmdn",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 }
 
