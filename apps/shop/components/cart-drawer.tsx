@@ -12,7 +12,7 @@ import {
   ArrowRight,
   ShieldCheck,
   Tag,
-  Zap,
+  Download,
 } from "lucide-react"
 import { useCart } from "./cart-provider"
 import { useCurrency } from "./currency-context"
@@ -96,16 +96,16 @@ export function CartDrawer() {
         aria-label="Shopping Cart Drawer"
         className="relative z-10 flex h-full w-full max-w-md flex-col border-l border-border bg-card shadow-2xl transition-transform"
       >
-        <header className="flex items-center justify-between border-b border-border/80 px-6 py-4">
+        <header className="flex items-center justify-between border-b border-border/60 px-5 py-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <div className="flex size-8 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-foreground">
               <ShoppingBag className="size-4" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-foreground">
+              <h2 className="text-xs font-semibold text-foreground">
                 Shopping Cart
               </h2>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-[11px] text-muted-foreground">
                 {items.length === 0
                   ? "0 items"
                   : `${items.reduce((acc, it) => acc + it.quantity, 0)} item(s) selected`}
@@ -116,28 +116,28 @@ export function CartDrawer() {
             type="button"
             onClick={closeCart}
             aria-label="Close cart"
-            className="flex size-8 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="flex size-7 items-center justify-center rounded-md border border-border/70 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
-            <X className="size-4" />
+            <X className="size-3.5" />
           </button>
         </header>
 
         {items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-            <div className="flex size-16 items-center justify-center rounded-2xl border border-dashed border-border bg-muted/30 text-muted-foreground">
-              <ShoppingBag className="size-7 text-muted-foreground/60" />
+            <div className="flex size-14 items-center justify-center rounded-lg border border-dashed border-border/80 bg-muted/20 text-muted-foreground">
+              <ShoppingBag className="size-6 text-muted-foreground/60" />
             </div>
-            <h3 className="mt-4 text-base font-medium text-foreground">
+            <h3 className="mt-4 text-sm font-semibold text-foreground">
               Your cart is empty
             </h3>
-            <p className="mt-1.5 max-w-xs text-xs leading-relaxed text-muted-foreground">
+            <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">
               Explore our curated software architectures, design systems, and
               consultation packages.
             </p>
             <button
               type="button"
               onClick={closeCart}
-              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+              className="mt-5 inline-flex items-center gap-1.5 rounded-md bg-foreground px-4 py-2 text-xs font-medium text-background transition-colors hover:bg-foreground/90"
             >
               <span>Explore Store Catalog</span>
               <ArrowRight className="size-3.5" />
@@ -145,44 +145,44 @@ export function CartDrawer() {
           </div>
         ) : (
           <>
-            <div className="flex-1 divide-y divide-border/50 overflow-y-auto px-6 py-2">
+            <div className="flex-1 divide-y divide-border/40 overflow-y-auto px-5 py-2">
               {items.map((item) => {
                 const isExtended = item.licenseType === "EXTENDED"
 
                 return (
-                  <div key={item.id} className="py-4 space-y-3">
+                  <div key={item.id} className="py-3.5 space-y-2.5">
                     <div className="flex gap-3">
                       {item.coverImageUrl ? (
-                        <div className="relative size-16 shrink-0 overflow-hidden rounded-xl border border-border/70 bg-muted">
+                        <div className="relative size-14 shrink-0 overflow-hidden rounded-md border border-border/60 bg-muted/30">
                           <Image
                             src={item.coverImageUrl}
                             alt={item.title}
                             fill
-                            sizes="64px"
+                            sizes="56px"
                             className="object-cover"
                           />
                         </div>
                       ) : (
-                        <div className="flex size-16 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-muted">
-                          <ShoppingBag className="size-6 text-muted-foreground/60" />
+                        <div className="flex size-14 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted/30">
+                          <ShoppingBag className="size-5 text-muted-foreground/60" />
                         </div>
                       )}
 
                       <div className="flex flex-1 flex-col justify-between">
-                        <div className="space-y-1">
+                        <div className="space-y-0.5">
                           <Link
                             href={`/product/${item.slug}`}
                             onClick={closeCart}
-                            className="text-xs font-semibold leading-snug text-foreground transition-colors hover:text-primary"
+                            className="text-xs font-medium leading-snug text-foreground transition-colors hover:underline"
                           >
                             {item.title}
                           </Link>
                           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                            <span className="font-medium text-foreground">
+                            <span className="font-mono font-medium text-foreground">
                               {format(item.price)}
                             </span>
                             <span>•</span>
-                            <span className="rounded bg-muted px-1.5 py-0.2 text-[10px] font-medium text-muted-foreground">
+                            <span className="rounded-sm bg-muted/60 px-1.5 py-0.2 text-[10px] font-medium text-muted-foreground">
                               {isExtended
                                 ? "Extended License"
                                 : "Standard License"}
@@ -190,26 +190,26 @@ export function CartDrawer() {
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between pt-2">
-                          <div className="flex items-center rounded-lg border border-border bg-muted/40">
+                        <div className="flex items-center justify-between pt-1.5">
+                          <div className="flex items-center rounded-md border border-border/70 bg-muted/20">
                             <button
                               type="button"
                               onClick={() => updateQuantity(item.id, -1)}
                               aria-label="Decrease quantity"
-                              className="flex size-6 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                              className="flex size-5.5 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
                             >
-                              <Minus className="size-3" />
+                              <Minus className="size-2.5" />
                             </button>
-                            <span className="min-w-6 text-center font-mono text-xs font-medium text-foreground">
+                            <span className="min-w-5 text-center font-mono text-xs font-medium text-foreground">
                               {item.quantity}
                             </span>
                             <button
                               type="button"
                               onClick={() => updateQuantity(item.id, 1)}
                               aria-label="Increase quantity"
-                              className="flex size-6 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                              className="flex size-5.5 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
                             >
-                              <Plus className="size-3" />
+                              <Plus className="size-2.5" />
                             </button>
                           </div>
 
@@ -217,15 +217,15 @@ export function CartDrawer() {
                             type="button"
                             onClick={() => removeItem(item.id)}
                             aria-label={`Remove ${item.title}`}
-                            className="flex size-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-rose-500/10 hover:text-rose-500"
+                            className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-rose-500"
                           >
-                            <Trash2 className="size-3.5" />
+                            <Trash2 className="size-3" />
                           </button>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-lg border border-border/50 bg-muted/20 px-2.5 py-1.5 text-[11px]">
+                    <div className="flex items-center justify-between rounded-md border border-border/50 bg-muted/20 px-2.5 py-1 text-[11px]">
                       <span className="text-muted-foreground">Tier:</span>
                       <div className="flex items-center gap-1">
                         <button
@@ -237,9 +237,9 @@ export function CartDrawer() {
                             updateLicense(item.id, "STANDARD", standardPrice)
                           }}
                           className={cn(
-                            "rounded px-2 py-0.5 font-medium transition-colors",
+                            "rounded-sm px-2 py-0.5 text-[10px] font-medium transition-colors",
                             !isExtended
-                              ? "bg-primary text-primary-foreground"
+                              ? "bg-foreground text-background font-semibold"
                               : "text-muted-foreground hover:text-foreground"
                           )}
                         >
@@ -254,9 +254,9 @@ export function CartDrawer() {
                             updateLicense(item.id, "EXTENDED", extendedPrice)
                           }}
                           className={cn(
-                            "rounded px-2 py-0.5 font-medium transition-colors",
+                            "rounded-sm px-2 py-0.5 text-[10px] font-medium transition-colors",
                             isExtended
-                              ? "bg-primary text-primary-foreground"
+                              ? "bg-foreground text-background font-semibold"
                               : "text-muted-foreground hover:text-foreground"
                           )}
                         >
@@ -269,9 +269,9 @@ export function CartDrawer() {
               })}
             </div>
 
-            <div className="space-y-4 border-t border-border/80 bg-card p-6">
+            <div className="space-y-3.5 border-t border-border/60 bg-card p-5">
               {coupon ? (
-                <div className="flex items-center justify-between rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs">
+                <div className="flex items-center justify-between rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs">
                   <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                     <Tag className="size-3.5" />
                     <span className="font-mono font-semibold">
@@ -289,19 +289,19 @@ export function CartDrawer() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleApplyCoupon} className="space-y-1.5">
+                <form onSubmit={handleApplyCoupon} className="space-y-1">
                   <div className="flex gap-2">
                     <input
                       type="text"
                       value={couponInput}
                       onChange={(e) => setCouponInput(e.target.value)}
                       placeholder="Promo code (e.g. DEV20)"
-                      className="flex-1 rounded-xl border border-border bg-background px-3 py-1.5 text-xs uppercase placeholder:normal-case placeholder:text-muted-foreground focus:ring-1 focus:ring-primary focus:outline-hidden"
+                      className="flex-1 rounded-md border border-border/70 bg-background px-3 py-1.5 text-xs uppercase placeholder:normal-case placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-hidden"
                     />
                     <button
                       type="submit"
                       disabled={isPending || !couponInput.trim()}
-                      className="rounded-xl border border-border bg-muted/60 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
+                      className="rounded-md border border-border/70 bg-muted/30 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
                     >
                       {isPending ? "Validating..." : "Apply"}
                     </button>
@@ -312,7 +312,7 @@ export function CartDrawer() {
                 </form>
               )}
 
-              <div className="space-y-2 border-t border-border/60 pt-3 text-xs">
+              <div className="space-y-1.5 border-t border-border/50 pt-2.5 text-xs">
                 <div className="flex items-center justify-between text-muted-foreground">
                   <span>Subtotal</span>
                   <span className="font-mono text-foreground">
@@ -327,7 +327,7 @@ export function CartDrawer() {
                     </span>
                   </div>
                 )}
-                <div className="flex items-center justify-between border-t border-border/60 pt-2 text-sm font-semibold text-foreground">
+                <div className="flex items-center justify-between border-t border-border/50 pt-2 text-sm font-semibold text-foreground">
                   <span>Grand Total</span>
                   <span className="font-mono text-base">
                     {format(grandTotal)}
@@ -335,11 +335,11 @@ export function CartDrawer() {
                 </div>
               </div>
 
-              <div className="space-y-2 pt-1">
+              <div className="space-y-2 pt-0.5">
                 <Link
                   href="/checkout"
                   onClick={closeCart}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+                  className="flex w-full items-center justify-center gap-2 rounded-md bg-foreground py-2.5 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
                 >
                   <span>Proceed to Checkout</span>
                   <ArrowRight className="size-3.5" />
@@ -354,14 +354,14 @@ export function CartDrawer() {
                 </button>
               </div>
 
-              <div className="flex items-center justify-center gap-4 pt-1 text-[11px] text-muted-foreground">
+              <div className="flex items-center justify-center gap-3 pt-0.5 text-[11px] text-muted-foreground">
                 <span className="inline-flex items-center gap-1">
-                  <ShieldCheck className="size-3.5 text-primary" />
+                  <ShieldCheck className="size-3 text-muted-foreground" />
                   <span>Encrypted Checkout</span>
                 </span>
                 <span>•</span>
                 <span className="inline-flex items-center gap-1">
-                  <Zap className="size-3.5 text-primary" />
+                  <Download className="size-3 text-muted-foreground" />
                   <span>Instant Delivery</span>
                 </span>
               </div>

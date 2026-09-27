@@ -13,9 +13,9 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <Container className="max-w-2xl py-20 text-center">
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-card/40 p-8 py-20">
-          <div className="flex size-16 items-center justify-center rounded-2xl border border-border bg-muted/40 text-muted-foreground">
-            <ShoppingBag className="size-7" />
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border/70 bg-card/40 p-8 py-16">
+          <div className="flex size-14 items-center justify-center rounded-md border border-border bg-muted/40 text-muted-foreground">
+            <ShoppingBag className="size-6" />
           </div>
           <h1 className="mt-4 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
             Your Cart is Empty
@@ -26,7 +26,7 @@ export default function CheckoutPage() {
           </p>
           <Link
             href="/"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+            className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
           >
             <span>Explore Store Catalog</span>
             <ArrowRight className="size-3.5" />
