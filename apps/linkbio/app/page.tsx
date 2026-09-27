@@ -23,18 +23,15 @@ import { db } from "@workspace/db"
 import { profile } from "@workspace/db/schema"
 import { unstable_cache } from "next/cache"
 
+import { getBaseUrl } from "@workspace/ui/lib/seo"
+
 export const revalidate = 3600
 
-const portfolioUrl =
-  process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://rizkyramadhan.dev"
-const blogUrl =
-  process.env.NEXT_PUBLIC_BLOG_URL || "https://blog.rizkyramadhan.dev"
-const shopUrl =
-  process.env.NEXT_PUBLIC_SHOP_URL || "https://shop.rizkyramadhan.dev"
-const docsUrl =
-  process.env.NEXT_PUBLIC_DOCS_URL || "https://docs.rizkyramadhan.dev"
-const changelogUrl =
-  process.env.NEXT_PUBLIC_CHANGELOG_URL || "https://changelog.rizkyramadhan.dev"
+const portfolioUrl = getBaseUrl("portfolio")
+const blogUrl = getBaseUrl("blog")
+const shopUrl = getBaseUrl("shop")
+const docsUrl = getBaseUrl("docs")
+const changelogUrl = getBaseUrl("changelog")
 
 const SOCIAL_LINKS = [
   {
