@@ -19,16 +19,25 @@ export function StickyBuyBar({ product }: StickyBuyBarProps) {
   const { format } = useCurrency()
 
   useEffect(() => {
+    let rafId: number | null = null
+
     function handleScroll() {
-      if (window.scrollY > 450) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
+      if (rafId !== null) return
+
+      rafId = window.requestAnimationFrame(() => {
+        const nextVisible = window.scrollY > 450
+        setIsVisible((prev) => (prev !== nextVisible ? nextVisible : prev))
+        rafId = null
+      })
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId)
+      }
+    }
   }, [])
 
   if (!isVisible) return null

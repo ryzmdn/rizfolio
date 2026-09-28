@@ -236,6 +236,7 @@ export const defaultMDXComponents = {
           src={src}
           alt={alt}
           loading="lazy"
+          decoding="async"
           className={`w-full object-cover transition-transform duration-300 ${className}`}
         />
 
