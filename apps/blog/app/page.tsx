@@ -147,6 +147,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                         alt={featuredPost.title}
                         fill
                         priority
+                        sizes="(max-width: 1024px) 100vw, 60vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                       />
                     ) : (
@@ -269,6 +270,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                               src={post.coverImageUrl}
                               alt={post.title}
                               fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               loading={index < 3 ? "eager" : "lazy"}
                               className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                             />

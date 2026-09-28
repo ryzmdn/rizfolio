@@ -223,6 +223,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
                     alt="Rizky Ramadhan"
                     fill
+                    sizes="36px"
                     className="object-cover"
                   />
                 </div>
@@ -244,6 +245,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   alt={post.title}
                   fill
                   priority
+                  sizes="(max-width: 1024px) 100vw, 800px"
                   className="object-cover"
                 />
               </div>

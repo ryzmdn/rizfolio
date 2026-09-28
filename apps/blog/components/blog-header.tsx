@@ -22,9 +22,25 @@ export function BlogHeader() {
     process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://rizkyramadhan.dev"
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20)
+    let rafId: number | null = null
+
+    const handleScroll = () => {
+      if (rafId !== null) return
+
+      rafId = window.requestAnimationFrame(() => {
+        const isScrolled = window.scrollY > 20
+        setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev))
+        rafId = null
+      })
+    }
+
     window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId)
+      }
+    }
   }, [])
 
   return (

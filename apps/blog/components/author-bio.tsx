@@ -15,6 +15,7 @@ export function AuthorBio() {
               src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
               alt="Rizky Ramadhan"
               fill
+              sizes="44px"
               className="object-cover"
             />
           </div>

@@ -6,20 +6,32 @@ export function ReadingProgressBar() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    let rafId: number | null = null
+
     const updateProgress = () => {
-      const scrollY = window.scrollY
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight
-      if (docHeight > 0) {
-        const percentage = Math.min(100, Math.max(0, (scrollY / docHeight) * 100))
-        setProgress(percentage)
-      }
+      if (rafId !== null) return
+
+      rafId = window.requestAnimationFrame(() => {
+        const scrollY = window.scrollY
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight
+        if (docHeight > 0) {
+          const percentage = Math.min(100, Math.max(0, (scrollY / docHeight) * 100))
+          setProgress(percentage)
+        }
+        rafId = null
+      })
     }
 
     window.addEventListener("scroll", updateProgress, { passive: true })
     updateProgress()
 
-    return () => window.removeEventListener("scroll", updateProgress)
+    return () => {
+      window.removeEventListener("scroll", updateProgress)
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId)
+      }
+    }
   }, [])
 
   if (progress <= 0) return null
