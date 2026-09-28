@@ -364,16 +364,17 @@ export function createProductJsonLd({
   return schema
 }
 
-export function createFaqJsonLd(items: Array<{ question: string; answer: string }>) {
+export function createFaqJsonLd(items?: Array<{ question: string; answer: string }> | null) {
+  const safeItems = Array.isArray(items) ? items : []
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: items.map((item) => ({
+    mainEntity: safeItems.map((item) => ({
       "@type": "Question",
-      name: item.question,
+      name: item?.question || "",
       acceptedAnswer: {
         "@type": "Answer",
-        text: item.answer,
+        text: item?.answer || "",
       },
     })),
   }

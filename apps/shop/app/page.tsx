@@ -10,7 +10,8 @@ import { Container } from "@workspace/ui/components/layouts/container"
 import { getActiveProducts } from "@/lib/queries"
 import { FilterBar } from "@/components/filter-bar"
 import { ProductCard } from "@/components/product-card"
-import { StoreFaq, FAQ_ITEMS } from "@/components/store-faq"
+import { StoreFaq } from "@/components/store-faq"
+import { FAQ_ITEMS } from "@/data/faq"
 import { SEO_CONFIG, getBaseUrl, createWebSiteJsonLd, createFaqJsonLd } from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
