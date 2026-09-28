@@ -167,6 +167,7 @@ export default async function LinkBioPage() {
                 alt={name}
                 fill
                 priority
+                sizes="(max-width: 640px) 96px, 112px"
                 className="object-cover"
               />
             </div>
