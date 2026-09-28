@@ -44,6 +44,7 @@ export function TestimonialsSection({
                     src={item.avatar}
                     alt={item.name}
                     fill
+                    sizes="44px"
                     className="object-cover object-top"
                   />
                 </div>

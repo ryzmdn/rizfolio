@@ -8,7 +8,9 @@ import {
   THEME_STORAGE_KEY,
 } from "./providers"
 import { CookieConsent } from "./cookie-consent"
-import { GSAPProvider } from "./animations/gsap-provider"
+const LazyGSAPProvider = React.lazy(() =>
+  import("./animations/gsap-provider").then((mod) => ({ default: mod.GSAPProvider }))
+)
 
 export interface AppProviderProps {
   children: React.ReactNode
@@ -20,13 +22,15 @@ export interface AppProviderProps {
 export function AppProvider({
   children,
   disableSmoothScroll = false,
-  disableAnimations = false,
+  disableAnimations = true,
   disableCookieConsent = false,
 }: AppProviderProps) {
   const animatedContent = disableAnimations ? (
     children
   ) : (
-    <GSAPProvider>{children}</GSAPProvider>
+    <React.Suspense fallback={children}>
+      <LazyGSAPProvider>{children}</LazyGSAPProvider>
+    </React.Suspense>
   )
 
   const scrollContent = disableSmoothScroll ? (
