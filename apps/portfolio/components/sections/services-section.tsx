@@ -70,6 +70,10 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
                     <img
                       alt={item.title}
                       src={imgPair[1]}
+                      width={64}
+                      height={80}
+                      loading="lazy"
+                      decoding="async"
                       className="size-full object-cover"
                     />
                   </div>
@@ -85,6 +89,10 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
                     <img
                       alt={item.title}
                       src={imgPair[0]}
+                      width={64}
+                      height={80}
+                      loading="lazy"
+                      decoding="async"
                       className="size-full object-cover"
                     />
                   </div>

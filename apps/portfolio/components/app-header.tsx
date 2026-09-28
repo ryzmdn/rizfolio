@@ -69,11 +69,16 @@ export function AppHeader() {
     >
       <div className="flex h-20 w-full items-center justify-between">
         <div className="flex items-center gap-x-2.5 text-sm">
-          <div className="flex items-center font-medium text-foreground">
-            <span className="tabular-nums">{timeData?.time ?? "--:--:--"}</span>
-            <span className="ml-1 uppercase">{timeData?.ampm}</span>
+          <div
+            className="flex items-center font-medium text-foreground tabular-nums min-w-[5.5rem]"
+            suppressHydrationWarning
+          >
+            <span>{timeData?.time ?? "--:--:--"}</span>
+            <span className="ml-1 uppercase inline-block min-w-[1.25rem]">
+              {timeData?.ampm ?? "--"}
+            </span>
           </div>
-          <span className="text-xs text-muted-foreground">Jakarta (GMT+7)</span>
+          <span className="text-xs text-muted-foreground hidden sm:inline">Jakarta (GMT+7)</span>
         </div>
 
         <nav className="hidden items-center justify-center gap-x-5 text-sm md:flex lg:gap-x-8">

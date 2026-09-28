@@ -43,6 +43,10 @@ export function CertificationsSection({
                 <img
                   src={item.thumbnail}
                   alt={item.title}
+                  width={320}
+                  height={240}
+                  loading="lazy"
+                  decoding="async"
                   className="size-full object-cover"
                 />
               </div>
@@ -63,6 +67,10 @@ export function CertificationsSection({
                 <img
                   src={item.thumbnail}
                   alt={item.title}
+                  width={320}
+                  height={240}
+                  loading="lazy"
+                  decoding="async"
                   className="size-full object-cover"
                 />
               </div>

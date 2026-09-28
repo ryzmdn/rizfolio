@@ -41,6 +41,7 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
               alt={data.name}
               fill
               priority
+              sizes="96px"
               className="size-full object-cover shadow-xl ring-1 ring-border"
             />
           </div>

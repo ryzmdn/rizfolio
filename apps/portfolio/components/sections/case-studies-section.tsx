@@ -36,7 +36,7 @@ export function CaseStudiesSection({
                 src={item.image}
                 alt={item.title}
                 fill
-                priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>

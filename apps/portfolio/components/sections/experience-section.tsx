@@ -40,7 +40,7 @@ export function ExperienceSection({
                       src={exp.logo}
                       alt={exp.company}
                       fill
-                      priority
+                      sizes="64px"
                       className="size-full object-cover"
                     />
                   </div>

@@ -23,13 +23,16 @@ export function ActivitiesSection() {
             {column.map((imgUrl, imgIdx) => (
               <div
                 key={imgIdx}
-                className="overflow-hidden rounded-lg bg-muted shadow-sm"
+                className="relative aspect-4/3 overflow-hidden rounded-lg bg-muted shadow-sm"
               >
                 <img
                   className="size-full object-cover object-center transition-transform duration-500 hover:scale-105"
                   src={imgUrl}
                   alt="community activity"
+                  width={300}
+                  height={225}
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             ))}
