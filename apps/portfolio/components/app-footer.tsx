@@ -2,10 +2,10 @@ import React from "react"
 import { Footer } from "@workspace/ui/components/layouts/footer"
 import { buttonVariants } from "@workspace/ui/components/button"
 import {
-  Facebook,
   Github,
-  Instagram,
-  Youtube,
+  LinkedIn,
+  Behance,
+  Dribbble,
 } from "@workspace/ui/constants/icons"
 import { cn } from "@workspace/ui/lib/utils"
 import { NavLink } from "./nav-link"
@@ -15,30 +15,30 @@ const navigation = {
     { name: "Overview", href: "/" },
     { name: "Journey", href: "/#journey" },
     { name: "Capabilities", href: "/#capabilities" },
-    { name: "Case Studies", href: "/#case-studies" },
+    { name: "Case Studies", href: "/work" },
     { name: "Solutions", href: "/#solutions" },
     { name: "License", href: "/license" },
   ],
   social: [
     {
-      name: "Facebook",
-      href: "/#",
-      icon: Facebook,
-    },
-    {
-      name: "Instagram",
-      href: "/#",
-      icon: Instagram,
-    },
-    {
       name: "GitHub",
-      href: "/#",
+      href: "https://github.com/ryzmdn",
       icon: Github,
     },
     {
-      name: "YouTube",
-      href: "/#",
-      icon: Youtube,
+      name: "LinkedIn",
+      href: "https://linkedin.com/in/ryzmdn",
+      icon: LinkedIn,
+    },
+    {
+      name: "Behance",
+      href: "https://behance.net/ryzmdn",
+      icon: Behance,
+    },
+    {
+      name: "Dribbble",
+      href: "https://dribbble.com/ryzmdn",
+      icon: Dribbble,
     },
   ],
 }
