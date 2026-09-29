@@ -217,23 +217,44 @@ export async function getCaseStudies(): Promise<CaseStudyItem[]> {
   try {
     const rows = await db
       .select({
+        id: caseStudies.id,
+        slug: caseStudies.slug,
         clientName: caseStudies.clientName,
         title: caseStudies.title,
+        summary: caseStudies.summary,
+        contentMd: caseStudies.contentMd,
         thumbnailUrl: caseStudies.thumbnailUrl,
+        liveUrl: caseStudies.liveUrl,
+        repoUrl: caseStudies.repoUrl,
+        metrics: caseStudies.metrics,
       })
       .from(caseStudies)
       .where(eq(caseStudies.isPublished, true))
       .orderBy(asc(caseStudies.displayOrder), desc(caseStudies.createdAt))
 
     if (rows.length > 0) {
-      return rows.map((cs, idx: number): CaseStudyItem => ({
-        id: idx + 1,
-        category: cs.clientName || "Case Study",
-        title: cs.title,
-        image:
-          cs.thumbnailUrl ||
-          "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
-      }))
+      return rows.map((cs): CaseStudyItem => {
+        const fallback = fallbackCaseStudies.find((f) => f.slug === cs.slug)
+        return {
+          id: cs.id,
+          slug: cs.slug,
+          category: cs.clientName || fallback?.category || "Case Study",
+          title: cs.title,
+          clientName: cs.clientName || fallback?.clientName || "Engineering Client",
+          summary: cs.summary || fallback?.summary || "",
+          contentMd: cs.contentMd || fallback?.contentMd || "",
+          image:
+            cs.thumbnailUrl ||
+            fallback?.image ||
+            "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
+          liveUrl: cs.liveUrl || fallback?.liveUrl,
+          repoUrl: cs.repoUrl || fallback?.repoUrl,
+          metrics: (cs.metrics as Record<string, string | number>) || fallback?.metrics,
+          techStack: fallback?.techStack || ["TypeScript", "Next.js", "PostgreSQL"],
+          year: fallback?.year || "2025",
+          role: fallback?.role || "Lead Architect",
+        }
+      })
     }
   } catch (error: unknown) {
     console.warn(
@@ -242,6 +263,77 @@ export async function getCaseStudies(): Promise<CaseStudyItem[]> {
     )
   }
   return fallbackCaseStudies
+}
+
+export async function getCaseStudyBySlug(
+  slug: string
+): Promise<CaseStudyItem | null> {
+  try {
+    const rows = await db
+      .select({
+        id: caseStudies.id,
+        slug: caseStudies.slug,
+        clientName: caseStudies.clientName,
+        title: caseStudies.title,
+        summary: caseStudies.summary,
+        contentMd: caseStudies.contentMd,
+        thumbnailUrl: caseStudies.thumbnailUrl,
+        liveUrl: caseStudies.liveUrl,
+        repoUrl: caseStudies.repoUrl,
+        metrics: caseStudies.metrics,
+      })
+      .from(caseStudies)
+      .where(eq(caseStudies.slug, slug))
+      .limit(1)
+
+    const cs = rows[0]
+    if (cs) {
+      const fallback = fallbackCaseStudies.find((f) => f.slug === cs.slug)
+      return {
+        id: cs.id,
+        slug: cs.slug,
+        category: cs.clientName || fallback?.category || "Case Study",
+        title: cs.title,
+        clientName: cs.clientName || fallback?.clientName || "Engineering Client",
+        summary: cs.summary || fallback?.summary || "",
+        contentMd: cs.contentMd || fallback?.contentMd || "",
+        image:
+          cs.thumbnailUrl ||
+          fallback?.image ||
+          "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
+        liveUrl: cs.liveUrl || fallback?.liveUrl,
+        repoUrl: cs.repoUrl || fallback?.repoUrl,
+        metrics: (cs.metrics as Record<string, string | number>) || fallback?.metrics,
+        techStack: fallback?.techStack || ["TypeScript", "Next.js", "PostgreSQL"],
+        year: fallback?.year || "2025",
+        role: fallback?.role || "Lead Architect",
+      }
+    }
+  } catch (error: unknown) {
+    console.warn(
+      `[Portfolio Data Layer] Failed to fetch case study by slug (${slug}), checking fallback:`,
+      error instanceof Error ? error.message : "Unknown error"
+    )
+  }
+
+  const fallback = fallbackCaseStudies.find((f) => f.slug === slug)
+  return fallback || null
+}
+
+export async function getAllCaseStudySlugs(): Promise<string[]> {
+  try {
+    const rows = await db
+      .select({ slug: caseStudies.slug })
+      .from(caseStudies)
+      .where(eq(caseStudies.isPublished, true))
+
+    if (rows.length > 0) {
+      return Array.from(new Set([...rows.map((r) => r.slug), ...fallbackCaseStudies.map((f) => f.slug)]))
+    }
+  } catch {
+    // fallback
+  }
+  return fallbackCaseStudies.map((f) => f.slug)
 }
 
 export async function getTestimonials(): Promise<TestimonialItem[]> {
