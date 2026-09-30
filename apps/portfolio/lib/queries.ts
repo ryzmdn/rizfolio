@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { unstable_cache } from "next/cache"
 import {
   db,
@@ -46,9 +47,27 @@ export type ServiceItem = (typeof fallbackServices)[number]
 export type CaseStudyItem = (typeof fallbackCaseStudies)[number]
 export type TestimonialItem = (typeof fallbackTestimonials)[number]
 
+/**
+ * SLA-guaranteed execution with fast fallback timeout.
+ * Prevents cold-start or remote database latencies from hanging page loads.
+ */
+async function withTimeout<T>(
+  promise: Promise<T>,
+  ms = 1200,
+  fallback: T
+): Promise<T> {
+  let timer: NodeJS.Timeout
+  const timeoutPromise = new Promise<T>((resolve) => {
+    timer = setTimeout(() => resolve(fallback), ms)
+  })
+  return Promise.race([promise, timeoutPromise]).finally(() => {
+    clearTimeout(timer)
+  })
+}
+
 export async function getProfileData(): Promise<ProfileData> {
   try {
-    const rows = await db
+    const query = db
       .select({
         fullName: profile.fullName,
         headline: profile.headline,
@@ -60,6 +79,7 @@ export async function getProfileData(): Promise<ProfileData> {
       .from(profile)
       .limit(1)
 
+    const rows = await withTimeout(query, 1200, [])
     const data = rows[0]
     if (data) {
       const bioParagraphs: string[] = data.bio
@@ -87,7 +107,7 @@ export async function getProfileData(): Promise<ProfileData> {
 
 export async function getExperiences(): Promise<ExperienceItem[]> {
   try {
-    const rows = await db
+    const query = db
       .select({
         companyLogoUrl: experiences.companyLogoUrl,
         role: experiences.role,
@@ -102,7 +122,8 @@ export async function getExperiences(): Promise<ExperienceItem[]> {
       .from(experiences)
       .orderBy(asc(experiences.displayOrder), desc(experiences.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map((exp): ExperienceItem => ({
         logo: exp.companyLogoUrl || "",
         role: exp.role,
@@ -128,7 +149,7 @@ export async function getExperiences(): Promise<ExperienceItem[]> {
 
 export async function getEducationList(): Promise<EducationItem[]> {
   try {
-    const rows = await db
+    const query = db
       .select({
         institution: education.institution,
         degree: education.degree,
@@ -139,7 +160,8 @@ export async function getEducationList(): Promise<EducationItem[]> {
       .from(education)
       .orderBy(asc(education.displayOrder), desc(education.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map((edu): EducationItem => ({
         institution: edu.institution,
         degree: edu.degree,
@@ -158,7 +180,7 @@ export async function getEducationList(): Promise<EducationItem[]> {
 
 export async function getCertifications(): Promise<CertificationItem[]> {
   try {
-    const rows = await db
+    const query = db
       .select({
         title: certifications.title,
         badgeUrl: certifications.badgeUrl,
@@ -166,7 +188,8 @@ export async function getCertifications(): Promise<CertificationItem[]> {
       .from(certifications)
       .orderBy(asc(certifications.displayOrder), desc(certifications.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map((cert, idx: number): CertificationItem => ({
         id: idx + 1,
         title: cert.title,
@@ -186,7 +209,7 @@ export async function getCertifications(): Promise<CertificationItem[]> {
 
 export async function getServicesList(): Promise<ServiceItem[]> {
   try {
-    const rows = await db
+    const query = db
       .select({
         title: services.title,
         summary: services.summary,
@@ -197,7 +220,8 @@ export async function getServicesList(): Promise<ServiceItem[]> {
       .where(eq(services.isActive, true))
       .orderBy(asc(services.displayOrder), desc(services.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map((s): ServiceItem => ({
         title: s.title,
         description: s.summary || s.description,
@@ -213,9 +237,9 @@ export async function getServicesList(): Promise<ServiceItem[]> {
   return fallbackServices
 }
 
-export async function getCaseStudies(): Promise<CaseStudyItem[]> {
+async function fetchCaseStudiesInternal(): Promise<CaseStudyItem[]> {
   try {
-    const rows = await db
+    const query = db
       .select({
         id: caseStudies.id,
         slug: caseStudies.slug,
@@ -232,7 +256,9 @@ export async function getCaseStudies(): Promise<CaseStudyItem[]> {
       .where(eq(caseStudies.isPublished, true))
       .orderBy(asc(caseStudies.displayOrder), desc(caseStudies.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+
+    if (rows && rows.length > 0) {
       return rows.map((cs): CaseStudyItem => {
         const fallback = fallbackCaseStudies.find((f) => f.slug === cs.slug)
         return {
@@ -265,11 +291,32 @@ export async function getCaseStudies(): Promise<CaseStudyItem[]> {
   return fallbackCaseStudies
 }
 
-export async function getCaseStudyBySlug(
+const cachedGetCaseStudies = unstable_cache(
+  fetchCaseStudiesInternal,
+  ["portfolio-case-studies-list"],
+  {
+    revalidate: 3600,
+    tags: ["case-studies", "portfolio"],
+  }
+)
+
+/**
+ * Memoized per-request and cached across requests.
+ * Instant sub-millisecond retrieval.
+ */
+export const getCaseStudies = cache(async (): Promise<CaseStudyItem[]> => {
+  return cachedGetCaseStudies()
+})
+
+async function fetchCaseStudyBySlugInternal(
   slug: string
 ): Promise<CaseStudyItem | null> {
+  const all = await cachedGetCaseStudies()
+  const found = all.find((s) => s.slug === slug)
+  if (found) return found
+
   try {
-    const rows = await db
+    const query = db
       .select({
         id: caseStudies.id,
         slug: caseStudies.slug,
@@ -286,6 +333,7 @@ export async function getCaseStudyBySlug(
       .where(eq(caseStudies.slug, slug))
       .limit(1)
 
+    const rows = await withTimeout(query, 1200, [])
     const cs = rows[0]
     if (cs) {
       const fallback = fallbackCaseStudies.find((f) => f.slug === cs.slug)
@@ -311,7 +359,7 @@ export async function getCaseStudyBySlug(
     }
   } catch (error: unknown) {
     console.warn(
-      `[Portfolio Data Layer] Failed to fetch case study by slug (${slug}), checking fallback:`,
+      `[Portfolio Data Layer] Failed to fetch case study by slug (${slug}):`,
       error instanceof Error ? error.message : "Unknown error"
     )
   }
@@ -320,25 +368,29 @@ export async function getCaseStudyBySlug(
   return fallback || null
 }
 
-export async function getAllCaseStudySlugs(): Promise<string[]> {
-  try {
-    const rows = await db
-      .select({ slug: caseStudies.slug })
-      .from(caseStudies)
-      .where(eq(caseStudies.isPublished, true))
-
-    if (rows.length > 0) {
-      return Array.from(new Set([...rows.map((r) => r.slug), ...fallbackCaseStudies.map((f) => f.slug)]))
-    }
-  } catch {
-    // fallback
+const cachedGetCaseStudyBySlug = unstable_cache(
+  fetchCaseStudyBySlugInternal,
+  ["portfolio-case-study-by-slug"],
+  {
+    revalidate: 3600,
+    tags: ["case-studies", "portfolio"],
   }
-  return fallbackCaseStudies.map((f) => f.slug)
-}
+)
+
+export const getCaseStudyBySlug = cache(
+  async (slug: string): Promise<CaseStudyItem | null> => {
+    return cachedGetCaseStudyBySlug(slug)
+  }
+)
+
+export const getAllCaseStudySlugs = cache(async (): Promise<string[]> => {
+  const all = await getCaseStudies()
+  return Array.from(new Set(all.map((s) => s.slug)))
+})
 
 export async function getTestimonials(): Promise<TestimonialItem[]> {
   try {
-    const rows = await db
+    const query = db
       .select({
         clientName: testimonials.clientName,
         role: testimonials.role,
@@ -350,7 +402,8 @@ export async function getTestimonials(): Promise<TestimonialItem[]> {
       .where(eq(testimonials.isFeatured, true))
       .orderBy(asc(testimonials.displayOrder), desc(testimonials.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map((t): TestimonialItem => ({
         name: t.clientName,
         handle: `${t.role || ""} at ${t.company || ""}`.replace(

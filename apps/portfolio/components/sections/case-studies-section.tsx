@@ -35,6 +35,7 @@ export function CaseStudiesSection({
           <Link
             key={item.id}
             href={`/work/${item.slug}`}
+            prefetch={true}
             className="group relative flex flex-col overflow-hidden rounded-2xl transition-all duration-300 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
           >
             <div className="relative aspect-3/2 overflow-hidden rounded-xl bg-muted shadow-lg ring-1 ring-border">
@@ -71,6 +72,7 @@ export function CaseStudiesSection({
       <div className="flex justify-center pt-2">
         <Link
           href="/work"
+          prefetch={true}
           className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-xs font-semibold text-foreground shadow-xs transition-all hover:bg-muted hover:border-foreground/30 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
         >
           <span>Explore All Engineering Systems & Case Studies</span>

@@ -106,10 +106,10 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
       />
 
       <article className="space-y-12 py-10 sm:py-16">
-        {/* Top Back Navigation */}
         <Container>
           <Link
             href="/work"
+            prefetch={true}
             className="group inline-flex items-center gap-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-1" />
@@ -117,7 +117,6 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
           </Link>
         </Container>
 
-        {/* Case Study Header */}
         <Container className="space-y-6">
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/20">
@@ -144,7 +143,6 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
             {study.summary}
           </p>
 
-          {/* Action Links & Meta bar */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
             {study.liveUrl && (
               <a
@@ -177,7 +175,6 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
           </div>
         </Container>
 
-        {/* Hero Preview Image */}
         <Container>
           <div className="relative aspect-16/9 w-full overflow-hidden rounded-2xl bg-muted shadow-xl ring-1 ring-border">
             <Image
@@ -185,13 +182,13 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
               alt={study.title}
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 896px"
+              quality={85}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 896px"
               className="object-cover"
             />
           </div>
         </Container>
 
-        {/* Verifiable Impact & Metrics Grid */}
         {study.metrics && Object.keys(study.metrics).length > 0 && (
           <Container>
             <div className="rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur-xs sm:p-8">
@@ -218,7 +215,6 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
           </Container>
         )}
 
-        {/* Technology Stack Pills */}
         {study.techStack && study.techStack.length > 0 && (
           <Container>
             <div className="space-y-3">
@@ -240,7 +236,6 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
           </Container>
         )}
 
-        {/* Detailed Engineering Markdown Content */}
         {study.contentMd && (
           <Container>
             <div className="prose prose-neutral dark:prose-invert max-w-none rounded-2xl border border-border/70 bg-card/40 p-6 sm:p-10">
@@ -312,12 +307,12 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
           </Container>
         )}
 
-        {/* Bottom Adjacent Navigation */}
         <Container>
           <div className="grid grid-cols-1 gap-4 border-t border-border/80 pt-8 sm:grid-cols-2">
             {prevStudy ? (
               <Link
                 href={`/work/${prevStudy.slug}`}
+                prefetch={true}
                 className="group flex flex-col items-start rounded-xl border border-border/70 bg-card p-5 transition-colors hover:border-foreground/30 hover:bg-muted"
               >
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -335,6 +330,7 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
             {nextStudy && (
               <Link
                 href={`/work/${nextStudy.slug}`}
+                prefetch={true}
                 className="group flex flex-col items-end rounded-xl border border-border/70 bg-card p-5 text-right transition-colors hover:border-foreground/30 hover:bg-muted"
               >
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

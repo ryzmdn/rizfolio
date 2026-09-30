@@ -99,6 +99,7 @@ export default async function WorkIndexPage() {
               <Link
                 key={item.id}
                 href={`/work/${item.slug}`}
+                prefetch={true}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs transition-all duration-300 hover:border-foreground/30 hover:shadow-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
               >
                 <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-muted ring-1 ring-border">
