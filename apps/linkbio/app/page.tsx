@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Link from "next/link"
 import {
   GitHub,
   LinkedIn,
@@ -10,28 +9,16 @@ import {
 } from "@workspace/ui/constants/icons"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 import {
-  Globe,
-  FileText,
-  ShoppingBag,
-  BookOpen,
-  History,
   Mail,
-  ArrowUpRight,
-  Sparkles,
 } from "lucide-react"
 import { db } from "@workspace/db"
 import { profile } from "@workspace/db/schema"
 import { unstable_cache } from "next/cache"
 
-import { getBaseUrl } from "@workspace/ui/lib/seo"
+import { getDynamicBioLinks } from "@/lib/queries"
+import { BioLinkCard } from "@/components/bio-link-card"
 
-export const revalidate = 3600
-
-const portfolioUrl = getBaseUrl("portfolio")
-const blogUrl = getBaseUrl("blog")
-const shopUrl = getBaseUrl("shop")
-const docsUrl = getBaseUrl("docs")
-const changelogUrl = getBaseUrl("changelog")
+export const revalidate = 60
 
 const SOCIAL_LINKS = [
   {
@@ -66,49 +53,6 @@ const SOCIAL_LINKS = [
   },
 ]
 
-const ECOSYSTEM_LINKS = [
-  {
-    title: "Personal Portfolio",
-    description: "Full case studies, career journey, and technical solutions",
-    href: portfolioUrl,
-    icon: Globe,
-    badge: "Main",
-    badgeColor: "bg-primary/10 text-primary border-primary/20",
-  },
-  {
-    title: "Engineering Blog",
-    description: "Deep dives on full-stack architecture, Next.js, and scaling",
-    href: blogUrl,
-    icon: FileText,
-    badge: "Articles",
-    badgeColor: "bg-blue-500/10 text-blue-500 border-blue-500/20",
-  },
-  {
-    title: "Digital Store & UI Kits",
-    description: "Production boilerplates, UI templates, and dev tools",
-    href: shopUrl,
-    icon: ShoppingBag,
-    badge: "Shop",
-    badgeColor: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
-  },
-  {
-    title: "Documentation & Code Explorer",
-    description: "Open-source repositories, experiments, and tech docs",
-    href: docsUrl,
-    icon: BookOpen,
-    badge: "Docs",
-    badgeColor: "bg-purple-500/10 text-purple-500 border-purple-500/20",
-  },
-  {
-    title: "Ecosystem Changelog",
-    description: "Release notes, system updates, and milestone tracking",
-    href: changelogUrl,
-    icon: History,
-    badge: "Updates",
-    badgeColor: "bg-muted text-muted-foreground border-border",
-  },
-]
-
 const getBioProfile = unstable_cache(
   async () => {
     try {
@@ -134,7 +78,10 @@ const getBioProfile = unstable_cache(
 )
 
 export default async function LinkBioPage() {
-  const profileData = await getBioProfile()
+  const [profileData, dynamicLinks] = await Promise.all([
+    getBioProfile(),
+    getDynamicBioLinks(),
+  ])
 
   const socialLinks =
     (profileData?.socialLinks as Record<string, string> | null) || {}
@@ -150,15 +97,13 @@ export default async function LinkBioPage() {
   return (
     <main id="main-content" tabIndex={-1} className="min-h-screen bg-background py-10 px-4 sm:px-6 outline-none">
       <div className="mx-auto max-w-xl space-y-8">
-        {/* Cover Banner */}
-        <div className="relative h-44 w-full overflow-hidden rounded-2xl sm:h-52 bg-gradient-to-tr from-muted via-card to-secondary border border-border/80 shadow-xs">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
+        <div className="relative h-44 w-full overflow-hidden rounded-2xl sm:h-52 bg-linear-to-tr from-muted via-card to-secondary border border-border/80 shadow-xs">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
           <div className="absolute top-4 right-4 z-10">
             <ThemeToggle />
           </div>
         </div>
 
-        {/* Profile Card Header */}
         <div className="relative -mt-16 sm:-mt-20 px-2 sm:px-4">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-full ring-4 ring-background shadow-lg bg-card">
@@ -200,7 +145,6 @@ export default async function LinkBioPage() {
           </div>
         </div>
 
-        {/* Social Links Bar */}
         <div className="flex items-center justify-center gap-2 rounded-2xl border border-border/70 bg-card/60 p-2.5 backdrop-blur-xs">
           {SOCIAL_LINKS.map((soc) => {
             const Icon = soc.icon
@@ -219,57 +163,23 @@ export default async function LinkBioPage() {
           })}
         </div>
 
-        {/* Ecosystem Applications List */}
         <div className="space-y-3">
           <div className="flex items-center justify-between px-1">
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              Monorepo Ecosystem
+              Monorepo Ecosystem &amp; Resources
             </span>
             <span className="font-mono text-[11px] text-muted-foreground/60">
-              5 Live Apps
+              {dynamicLinks.length} Active Links
             </span>
           </div>
 
           <div className="space-y-2.5">
-            {ECOSYSTEM_LINKS.map((link) => {
-              const Icon = link.icon
-              return (
-                <a
-                  key={link.title}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center justify-between rounded-2xl border border-border/80 bg-card/60 p-4 transition-all hover:border-foreground/30 hover:bg-card/90 hover:shadow-md"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-muted/30 text-foreground transition-colors group-hover:border-foreground/30">
-                      <Icon className="size-5" />
-                    </div>
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-                          {link.title}
-                        </span>
-                        <span
-                          className={`rounded-md border px-1.5 py-0.5 font-mono text-[10px] font-medium ${link.badgeColor}`}
-                        >
-                          {link.badge}
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        {link.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <ArrowUpRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground shrink-0" />
-                </a>
-              )
-            })}
+            {dynamicLinks.map((link) => (
+              <BioLinkCard key={link.id} link={link} />
+            ))}
           </div>
         </div>
 
-        {/* Footer */}
         <footer className="pt-6 pb-12 text-center">
           <p className="font-mono text-[11px] text-muted-foreground/70">
             Powered by Rizfolio Dynamic Architecture &bull; {new Date().getFullYear()}
