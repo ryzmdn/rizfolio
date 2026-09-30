@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Heart } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 
+import { togglePostReactionAction } from "@/lib/actions"
+
 interface PostReactionsProps {
   postId: string
   initialCount?: number
@@ -22,8 +24,10 @@ export function PostReactions({
       return false
     }
   })
+  const [isPending, setIsPending] = useState(false)
 
-  const handleToggleLike = () => {
+  const handleToggleLike = async () => {
+    if (isPending) return
     const nextState = !hasLiked
     setHasLiked(nextState)
     setLikes((prev) => (nextState ? prev + 1 : Math.max(0, prev - 1)))
@@ -36,6 +40,18 @@ export function PostReactions({
       }
     } catch {
       // LocalStorage unavailable
+    }
+
+    setIsPending(true)
+    try {
+      const res = await togglePostReactionAction(postId, nextState)
+      if (res.success && typeof res.likes === "number") {
+        setLikes(res.likes)
+      }
+    } catch {
+      // Resilience: keep optimistic UI
+    } finally {
+      setIsPending(false)
     }
   }
 

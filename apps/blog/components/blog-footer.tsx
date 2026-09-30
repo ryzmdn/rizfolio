@@ -12,6 +12,7 @@ import {
 } from "@workspace/ui/constants/icons"
 import { ArrowUp, Check, Rss, Send } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
+import { buttonVariants } from "@workspace/ui/components/button"
 
 const footerLinks = [
   { name: "Architecture", href: "/?category=architecture" },
@@ -28,17 +29,36 @@ const socialLinks = [
   { href: "https://dribbble.com/ryzmdn", label: "Dribbble", Icon: Dribbble },
 ]
 
+import { subscribeNewsletterAction } from "@/lib/actions"
+
 export function BlogFooter() {
   const [email, setEmail] = useState("")
-  const [subscribed, setSubscribed] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null)
+  const [isSuccess, setIsSuccess] = useState(false)
   const portfolioUrl =
     process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://rizkyramadhan.dev"
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.SubmitEvent) => {
     e.preventDefault()
     if (!email.trim() || !email.includes("@")) return
-    setSubscribed(true)
-    setTimeout(() => setEmail(""), 2500)
+
+    setIsSubmitting(true)
+    setFeedbackMessage(null)
+
+    try {
+      const result = await subscribeNewsletterAction(email)
+      setIsSuccess(result.success)
+      setFeedbackMessage(result.message)
+      if (result.success) {
+        setEmail("")
+      }
+    } catch {
+      setIsSuccess(false)
+      setFeedbackMessage("An unexpected error occurred. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -60,34 +80,79 @@ export function BlogFooter() {
                 />
               </div>
               <div>
-                <p className="text-sm font-semibold text-foreground">Rizky Ramadhan</p>
-                <p className="text-xs text-muted-foreground">Multidisciplinary Digital Builder</p>
+                <p className="text-sm font-medium text-foreground">
+                  Rizky Ramadhan
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Multidisciplinary Digital Builder
+                </p>
               </div>
             </div>
 
-            <p className="text-sm/relaxed text-muted-foreground">
-              Documenting systems architecture, design token ergonomics, high-throughput database modeling, and lessons from shipping production software.
+            <p className="text-xs/relaxed text-muted-foreground">
+              Documenting systems architecture, design token ergonomics,
+              high-throughput database modeling, and lessons learned shipping
+              production software.
             </p>
 
-            <div className="flex items-center gap-x-1">
-              {socialLinks.map(({ href, label, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${label} Profile`}
-                  className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
-                >
-                  <Icon className="size-3.5" />
-                </a>
-              ))}
+            <div className="flex items-center gap-x-2 pt-2">
+              <a
+                href="https://github.com/ryzmdn"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub Profile"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
+                  "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <GitHub className="size-3.5" />
+              </a>
+              <a
+                href="https://linkedin.com/in/ryzmdn"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn Profile"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
+                  "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <LinkedIn className="size-3.5" />
+              </a>
+              <a
+                href="https://behance.net/ryzmdn"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Behance Profile"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
+                  "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Behance className="size-3.5" />
+              </a>
+              <a
+                href="https://dribbble.com/ryzmdn"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Dribbble Profile"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
+                  "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Dribbble className="size-3.5" />
+              </a>
               <a
                 href="/rss.xml"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="RSS Feed"
-                className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
+                  "text-muted-foreground hover:text-foreground"
+                )}
               >
                 <Rss className="size-3.5" />
               </a>
@@ -106,8 +171,8 @@ export function BlogFooter() {
           </div>
 
           <div className="space-y-3 md:col-span-3">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Topics
+            <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+              Topics & Domains
             </p>
             <ul className="space-y-2">
               {footerLinks.map((cat) => (
@@ -123,49 +188,56 @@ export function BlogFooter() {
             </ul>
           </div>
 
-          <div className="space-y-4 md:col-span-4">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-                Stay Updated
-              </p>
-              <p className="mt-2 text-sm/relaxed text-muted-foreground">
-                Concise notes when new articles or architectural perspectives are published.
-              </p>
-            </div>
+          <div className="space-y-3 md:col-span-4">
+            <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+              Stay Informed
+            </p>
+            <p className="text-xs/relaxed text-muted-foreground">
+              Receive concise technical notes whenever new case studies or
+              architectural perspectives are published. No spam.
+            </p>
 
-            {subscribed ? (
-              <div className="flex items-center gap-x-2 border border-border/60 bg-muted/40 px-3 py-2.5 text-sm text-foreground">
-                <Check className="size-4 shrink-0 text-muted-foreground" />
-                <span>Thank you. You are subscribed.</span>
+            {feedbackMessage && isSuccess ? (
+              <div className="flex items-center gap-x-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5 text-xs text-foreground">
+                <Check className="size-4 shrink-0 text-emerald-500" />
+                <span>{feedbackMessage}</span>
               </div>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-x-2">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@domain.com"
-                  className="min-w-0 flex-1 rounded-md border border-border/70 bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:outline-none focus:ring-0"
-                />
-                <button
-                  type="submit"
-                  aria-label="Subscribe to updates"
-                  className={cn(
-                    "inline-flex shrink-0 items-center gap-x-1.5 rounded-md bg-foreground px-3 py-2 text-xs font-medium text-background transition-opacity hover:opacity-80"
-                  )}
-                >
-                  <span>Join</span>
-                  <Send className="size-3" />
-                </button>
+              <form onSubmit={handleSubscribe} className="space-y-2">
+                <div className="flex gap-x-2">
+                  <input
+                    type="email"
+                    required
+                    disabled={isSubmitting}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="name@domain.com"
+                    className="min-w-0 flex-1 rounded-md border border-border/70 bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:outline-hidden disabled:opacity-60"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    aria-label="Subscribe to updates"
+                    className={cn(
+                      "inline-flex shrink-0 cursor-pointer items-center gap-x-1.5 rounded-md bg-foreground px-3.5 py-2 text-xs font-semibold text-background transition-opacity hover:opacity-80 disabled:opacity-50"
+                    )}
+                  >
+                    <span>{isSubmitting ? "Subscribing..." : "Join"}</span>
+                    <Send className="size-3" />
+                  </button>
+                </div>
+                {feedbackMessage && !isSuccess && (
+                  <p className="text-xs text-destructive">{feedbackMessage}</p>
+                )}
               </form>
             )}
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-y-3 border-t border-border/40 pt-8 sm:flex-row sm:items-center">
-          <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js, React 19 & Tailwind CSS.
+        <div className="flex flex-col items-start justify-between gap-y-4 border-t border-border/40 pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
+          <p>
+            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js
+            16, React 19 & Tailwind CSS.
           </p>
 
           <button

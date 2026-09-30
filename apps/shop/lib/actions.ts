@@ -1,6 +1,12 @@
 "use server"
 
-import { db, orders, orderItems, masterTransactions } from "@workspace/db"
+import {
+  db,
+  orders,
+  orderItems,
+  masterTransactions,
+  productReviews,
+} from "@workspace/db"
 import {
   fallbackOrders,
   fallbackReviews,
@@ -253,6 +259,50 @@ export async function submitReviewAction(
     content,
     createdAt: new Date().toISOString(),
     verifiedPurchase: true,
+  }
+
+  try {
+    const [inserted] = await db
+      .insert(productReviews)
+      .values({
+        productSlug: input.productSlug,
+        authorName: name,
+        authorRole: input.authorRole?.trim() || "Verified Developer",
+        rating: Math.round(input.rating),
+        content,
+        verifiedPurchase: true,
+        status: "APPROVED",
+      })
+      .returning()
+
+    if (inserted) {
+      newReview.id = inserted.id
+      newReview.createdAt = inserted.createdAt.toISOString()
+
+      try {
+        await db.insert(masterTransactions).values({
+          trxNumber: `REV-${Date.now().toString(36).toUpperCase()}`,
+          domain: "COMMERCE",
+          actionType: "PRODUCT_REVIEW_SUBMITTED",
+          status: "COMPLETED",
+          actorType: "CUSTOMER",
+          entityType: "REVIEW",
+          entityId: inserted.id,
+          metadata: {
+            productSlug: input.productSlug,
+            rating: Math.round(input.rating),
+            author: name,
+          },
+        })
+      } catch {
+        // Non-blocking audit record
+      }
+    }
+  } catch (error) {
+    console.warn(
+      "[Shop Actions] Failed to insert product review into DB, using fallback memory store:",
+      error instanceof Error ? error.message : "Database unavailable"
+    )
   }
 
   fallbackReviews.unshift(newReview)

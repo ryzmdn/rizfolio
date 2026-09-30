@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Send, CheckCircle2, MessageSquarePlus } from "lucide-react"
+import { Send, CheckCircle2, MessageSquarePlus, AlertCircle } from "lucide-react"
+import { submitRoadmapProposalAction } from "../lib/actions"
 
 export function RoadmapFeedback() {
   const [title, setTitle] = useState("")
@@ -9,15 +10,32 @@ export function RoadmapFeedback() {
   const [rationale, setRationale] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault()
     if (!title.trim() || !rationale.trim()) return
 
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    setErrorMessage(null)
+
+    try {
+      const res = await submitRoadmapProposalAction({
+        title,
+        scope,
+        rationale,
+      })
+
+      if (res.success) {
+        setIsSubmitted(true)
+      } else {
+        setErrorMessage(res.error || "Failed to submit proposal. Please retry.")
+      }
+    } catch {
+      setErrorMessage("An unexpected error occurred. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   function handleReset() {
@@ -124,11 +142,18 @@ export function RoadmapFeedback() {
             />
           </div>
 
+          {errorMessage && (
+            <div className="flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
+              <AlertCircle className="size-4 shrink-0" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
           <div className="flex justify-end">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2 text-xs font-semibold text-background shadow-xs transition-opacity hover:opacity-90 disabled:opacity-50 focus:outline-hidden focus:ring-2 focus:ring-primary/30"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-foreground px-4 py-2 text-xs font-semibold text-background shadow-xs transition-opacity hover:opacity-90 disabled:opacity-50 focus:outline-hidden focus:ring-2 focus:ring-primary/30"
             >
               <Send className="size-3.5" />
               <span>{isSubmitting ? "Submitting..." : "Submit Proposal"}</span>
