@@ -78,3 +78,26 @@ export const postViews = pgTable("post_views", {
     .defaultNow()
     .notNull(),
 })
+
+export const postReactions = pgTable("post_reactions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  postId: uuid("post_id")
+    .notNull()
+    .references(() => posts.id, { onDelete: "cascade" }),
+  reactionType: varchar("reaction_type", { length: 50 }).notNull().default("LIKE"),
+  count: integer("count").notNull().default(0),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
+
+export const newsletterSubscribers = pgTable("newsletter_subscribers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  source: varchar("source", { length: 100 }).notNull().default("BLOG_FOOTER"),
+  status: varchar("status", { length: 50 }).notNull().default("ACTIVE"),
+  subscribedAt: timestamp("subscribed_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  unsubscribedAt: timestamp("unsubscribed_at", { withTimezone: true }),
+})

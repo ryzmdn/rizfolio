@@ -91,3 +91,22 @@ export const coupons = pgTable("coupons", {
     .defaultNow()
     .notNull(),
 })
+
+export const productReviews = pgTable("product_reviews", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  productId: uuid("product_id").references(() => products.id, {
+    onDelete: "cascade",
+  }),
+  productSlug: varchar("product_slug", { length: 255 }).notNull(),
+  authorName: varchar("author_name", { length: 255 }).notNull(),
+  authorRole: varchar("author_role", { length: 255 }).default(
+    "Verified Developer"
+  ),
+  rating: integer("rating").notNull().default(5),
+  content: text("content").notNull(),
+  verifiedPurchase: boolean("verified_purchase").notNull().default(true),
+  status: varchar("status", { length: 50 }).notNull().default("APPROVED"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})

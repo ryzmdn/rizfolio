@@ -49,15 +49,12 @@ export const masterTransactions = pgTable("master_transactions", {
     onDelete: "set null",
   }),
 
-  // Financial payload
   amount: integer("amount").default(0),
   currency: varchar("currency", { length: 10 }).default("IDR"),
 
-  // State Snapshots
   payloadBefore: jsonb("payload_before"),
   payloadAfter: jsonb("payload_after"),
 
-  // Network & Telemetry
   clientIp: varchar("client_ip", { length: 45 }),
   userAgent: text("user_agent"),
   traceId: varchar("trace_id", { length: 128 }),

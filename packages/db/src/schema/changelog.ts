@@ -47,3 +47,20 @@ export const roadmapItems = pgTable("roadmap_items", {
     .defaultNow()
     .notNull(),
 })
+
+export const roadmapProposals = pgTable("roadmap_proposals", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: varchar("title", { length: 255 }).notNull(),
+  scope: varchar("scope", { length: 100 }).notNull().default("monorepo"),
+  rationale: text("rationale").notNull(),
+  status: varchar("status", { length: 50 }).notNull().default("SUBMITTED"),
+  authorName: varchar("author_name", { length: 255 }),
+  authorEmail: varchar("author_email", { length: 255 }),
+  upvotesCount: integer("upvotes_count").notNull().default(1),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
