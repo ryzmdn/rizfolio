@@ -18,6 +18,7 @@ import { PostReactions } from "@/components/post-reactions"
 import { AuthorBio } from "@/components/author-bio"
 import { PostNavigation } from "@/components/post-navigation"
 import { ArrowLeft, Calendar, Clock, Eye, ChevronRight } from "lucide-react"
+import { getPostReactionCount } from "@/lib/actions"
 import { getBaseUrl, SEO_CONFIG, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
 
 interface BlogPostPageProps {
@@ -81,6 +82,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) {
     notFound()
   }
+
+  const reactionCount = await getPostReactionCount(post.id)
 
   const formattedDate = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
@@ -282,7 +285,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               )}
 
               <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/40 pt-6">
-                <PostReactions postId={post.id} initialCount={14} />
+                <PostReactions postId={post.id} initialCount={reactionCount} />
                 <ShareToolbar title={post.title} url={postUrl} />
               </div>
 
