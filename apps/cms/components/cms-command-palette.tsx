@@ -18,6 +18,8 @@ import {
   ExternalLink,
   X,
   CornerDownLeft,
+  Inbox,
+  Link2,
 } from "lucide-react"
 
 interface CommandItem {
@@ -46,6 +48,14 @@ const COMMAND_ITEMS: CommandItem[] = [
     category: "Navigasi",
     href: "/transactions",
     icon: Activity,
+  },
+  {
+    id: "nav-inbox",
+    title: "Client Inquiries & Inbox",
+    description: "Pesan masuk penawaran proyek dan kolaborasi dari portfolio",
+    category: "Navigasi",
+    href: "/inbox",
+    icon: Inbox,
   },
   {
     id: "nav-portfolio",
@@ -86,6 +96,14 @@ const COMMAND_ITEMS: CommandItem[] = [
     category: "Navigasi",
     href: "/changelog",
     icon: History,
+  },
+  {
+    id: "nav-linkbio",
+    title: "Linkbio Manager",
+    description: "Kelola link ekosistem publik dan metrik klik",
+    category: "Navigasi",
+    href: "/linkbio",
+    icon: Link2,
   },
   {
     id: "nav-media",

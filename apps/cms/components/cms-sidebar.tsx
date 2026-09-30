@@ -16,6 +16,8 @@ import {
   Activity,
   ShieldCheck,
   X,
+  Inbox,
+  Link2,
 } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 import { logoutAdmin } from "@/lib/auth-actions"
@@ -39,6 +41,7 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { href: "/", label: "Overview", icon: LayoutDashboard, exact: true },
       { href: "/transactions", label: "Master Transactions", icon: Activity },
+      { href: "/inbox", label: "Inbox & Inquiries", icon: Inbox },
     ],
   },
   {
@@ -49,6 +52,7 @@ const NAV_SECTIONS: NavSection[] = [
       { href: "/shop", label: "Digital Shop", icon: ShoppingBag },
       { href: "/docs", label: "Docs & Repos", icon: BookOpen },
       { href: "/changelog", label: "Changelog Releases", icon: History },
+      { href: "/linkbio", label: "Linkbio Manager", icon: Link2 },
     ],
   },
   {
@@ -75,7 +79,6 @@ export function CmsSidebar({
 }: CmsSidebarProps) {
   const pathname = usePathname()
 
-  // Handle escape key for mobile drawer
   useEffect(() => {
     if (!isMobile || !isOpen) return
 
@@ -92,7 +95,6 @@ export function CmsSidebar({
   const content = (
     <div className="flex h-full flex-col justify-between bg-card">
       <div className="flex flex-col">
-        {/* Workspace Brand Header */}
         <div className="flex h-16 items-center justify-between border-b border-border/80 px-5">
           <Link
             href="/"
@@ -127,7 +129,6 @@ export function CmsSidebar({
           )}
         </div>
 
-        {/* Grouped Navigation */}
         <nav
           className="flex-1 space-y-6 overflow-y-auto px-3 py-5"
           aria-label="CMS Main Navigation"
@@ -152,7 +153,7 @@ export function CmsSidebar({
                       className={cn(
                         "group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all focus:outline-hidden focus:ring-2 focus:ring-primary/20",
                         isActive
-                          ? "bg-foreground text-background font-semibold shadow-xs"
+                          ? "bg-foreground text-background shadow-xs"
                           : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                       )}
                     >
@@ -188,7 +189,6 @@ export function CmsSidebar({
         </nav>
       </div>
 
-      {/* User Profile & Logout Area */}
       <div className="border-t border-border/80 p-3 space-y-2">
         <div className="flex items-center gap-2.5 rounded-lg bg-muted/40 p-2">
           <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-[11px] font-bold text-background">
