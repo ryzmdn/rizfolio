@@ -1,6 +1,7 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { BriefcaseBusiness, Mail } from "lucide-react"
 import { personalInfo } from "@/data"
+import { InquiryDialog } from "./inquiry-dialog"
 
 export function CtaSection() {
   return (
@@ -23,6 +24,10 @@ export function CtaSection() {
           leadership. Let&apos;s turn ambitious visions into deterministic
           reality.
         </p>
+
+        <div className="flex justify-center">
+          <InquiryDialog />
+        </div>
 
         <ul className="mt-14 grid gap-6 text-secondary sm:mt-16 sm:grid-cols-2">
           {personalInfo.contactEmails.map((item, idx) => (
