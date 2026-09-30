@@ -19,6 +19,27 @@
   }
 }
 
+@layer base {
+  /* Hide scrollbar for Chrome, Safari and Opera across all elements */
+  *::-webkit-scrollbar,
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+  }
+
+  /* Hide scrollbar for Firefox, IE and Edge */
+  *,
+  html,
+  body {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
