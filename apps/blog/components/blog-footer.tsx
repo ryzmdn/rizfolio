@@ -12,6 +12,7 @@ import {
 } from "@workspace/ui/constants/icons"
 import { ArrowUp, Check, Rss, Send } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
+import { buttonVariants } from "@workspace/ui/components/button"
 
 const footerLinks = [
   { name: "Architecture", href: "/?category=architecture" },
@@ -187,7 +188,6 @@ export function BlogFooter() {
             </ul>
           </div>
 
-          {/* Newsletter Box */}
           <div className="space-y-3 md:col-span-4">
             <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
               Stay Informed
@@ -234,7 +234,6 @@ export function BlogFooter() {
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright, Colophon, Back to top */}
         <div className="flex flex-col items-start justify-between gap-y-4 border-t border-border/40 pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>
             &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js
