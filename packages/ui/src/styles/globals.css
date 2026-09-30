@@ -147,15 +147,23 @@
 }
 
 @layer base {
-  html::-webkit-scrollbar {
-    @apply h-auto w-2;
+  *::-webkit-scrollbar,
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
   }
-  html::-webkit-scrollbar-track {
-    @apply rounded-sm bg-background;
+
+  *,
+  html,
+  body {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
   }
-  html::-webkit-scrollbar-thumb {
-    @apply rounded-sm border border-secondary bg-muted-foreground hover:bg-ring;
-  }
+
   html.lenis,
   html.lenis body {
     height: auto;
@@ -214,6 +222,26 @@
 
 @utility max-xs {
   max-width: 20rem;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  &::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  &::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

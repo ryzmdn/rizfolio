@@ -5,6 +5,7 @@ import {
   productFiles,
   orders,
   orderItems,
+  productReviews,
   eq,
   desc,
   asc,
@@ -389,7 +390,58 @@ export async function getAllProductSlugs(): Promise<string[]> {
 export async function getProductReviews(
   productSlug: string
 ): Promise<ProductReview[]> {
-  return fallbackReviews.filter((r) => r.productSlug === productSlug)
+  try {
+    const dbReviews = await db
+      .select({
+        id: productReviews.id,
+        productSlug: productReviews.productSlug,
+        authorName: productReviews.authorName,
+        authorRole: productReviews.authorRole,
+        rating: productReviews.rating,
+        content: productReviews.content,
+        verifiedPurchase: productReviews.verifiedPurchase,
+        createdAt: productReviews.createdAt,
+      })
+      .from(productReviews)
+      .where(
+        and(
+          eq(productReviews.productSlug, productSlug),
+          eq(productReviews.status, "APPROVED")
+        )
+      )
+      .orderBy(desc(productReviews.createdAt))
+
+    const mappedDbReviews: ProductReview[] = dbReviews.map((r) => ({
+      id: r.id,
+      productSlug: r.productSlug,
+      authorName: r.authorName,
+      authorRole: r.authorRole || "Verified Developer",
+      rating: r.rating,
+      content: r.content,
+      verifiedPurchase: r.verifiedPurchase,
+      createdAt: r.createdAt
+        ? r.createdAt.toISOString()
+        : new Date().toISOString(),
+    }))
+
+    const fallbackForSlug = fallbackReviews.filter(
+      (r) => r.productSlug === productSlug
+    )
+
+    const combined = [...mappedDbReviews]
+    for (const fb of fallbackForSlug) {
+      if (!combined.some((c) => c.id === fb.id)) {
+        combined.push(fb)
+      }
+    }
+    return combined
+  } catch (error) {
+    console.warn(
+      `[Shop Queries] Failed to fetch reviews for (${productSlug}) from DB:`,
+      error instanceof Error ? error.message : "Database unavailable"
+    )
+    return fallbackReviews.filter((r) => r.productSlug === productSlug)
+  }
 }
 
 export async function getPromoCoupon(
