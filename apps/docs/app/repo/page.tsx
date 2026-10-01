@@ -1,8 +1,8 @@
-import DocsPage from "../page"
+import DocsPage, { revalidate } from "../page"
 import type { Metadata } from "next"
 import { getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
 
-export const revalidate = 3600
+export { revalidate }
 
 const baseUrl = getBaseUrl("docs")
 const pageUrl = `${baseUrl}/repo`

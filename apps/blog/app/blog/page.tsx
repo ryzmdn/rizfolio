@@ -1,8 +1,8 @@
-import BlogHomePage from "../page"
+import BlogHomePage, { revalidate } from "../page"
 import type { Metadata } from "next"
 import { getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
 
-export const revalidate = 3600
+export { revalidate }
 
 const baseUrl = getBaseUrl("blog")
 const pageUrl = `${baseUrl}/blog`
