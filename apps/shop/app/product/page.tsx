@@ -1,8 +1,8 @@
-import ShopHomePage, { revalidate } from "../page"
+import ShopHomePage from "../page"
 import type { Metadata } from "next"
 import { getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
 
-export { revalidate }
+export const revalidate = 3600
 
 const baseUrl = getBaseUrl("shop")
 const pageUrl = `${baseUrl}/product`
