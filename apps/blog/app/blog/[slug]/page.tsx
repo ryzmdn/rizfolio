@@ -1,17 +1,41 @@
-import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 import { Container } from "@workspace/ui/components/layouts/container"
-import { getPostBySlug, getFeaturedOrRecentPosts } from "@/lib/queries"
+import {
+  getPostBySlug,
+  getAllPostSlugs,
+  getAdjacentPosts,
+  getFeaturedOrRecentPosts,
+} from "@/lib/queries"
 import { MarkdownRenderer } from "@/components/markdown-renderer"
 import { ViewTracker } from "@/components/view-tracker"
-import { ArrowLeft, Calendar, Clock, Eye, Sparkles } from "lucide-react"
-import type { Metadata } from "next"
+import { ReadingProgressBar } from "@/components/reading-progress-bar"
+import { TableOfContents } from "@/components/table-of-contents"
+import { ShareToolbar } from "@/components/share-toolbar"
+import { PostReactions } from "@/components/post-reactions"
+import { AuthorBio } from "@/components/author-bio"
+import { PostNavigation } from "@/components/post-navigation"
+import { ArrowLeft, Calendar, Clock, Eye, ChevronRight } from "lucide-react"
+import { getPostReactionCount } from "@/lib/actions"
+import {
+  getBaseUrl,
+  SEO_CONFIG,
+  createBreadcrumbJsonLd,
+} from "@workspace/ui/lib/seo"
 
 interface BlogPostPageProps {
   params: Promise<{
     slug: string
   }>
+}
+
+export const revalidate = 3600
+
+export async function generateStaticParams() {
+  const slugs = await getAllPostSlugs()
+  return slugs.map((slug) => ({ slug }))
 }
 
 export async function generateMetadata({
@@ -21,45 +45,49 @@ export async function generateMetadata({
   const post = await getPostBySlug(slug)
 
   if (!post) {
-    return {
-      title: "Article Not Found — Rizky's Blog",
-    }
+    return { title: "Article Not Found" }
   }
 
-  const title = post.title
-  const description = post.excerpt
+  const baseUrl = getBaseUrl("blog")
+  const postUrl = `${baseUrl}/blog/${post.slug}`
+  const coverImage = post.coverImageUrl || SEO_CONFIG.author.avatar
 
   return {
-    title: `${title} — Rizky's Blog`,
-    description,
+    title: `${post.title} | ${SEO_CONFIG.author.name}`,
+    description: post.excerpt,
+    alternates: { canonical: postUrl },
     openGraph: {
-      title,
-      description,
+      title: post.title,
+      description: post.excerpt,
       type: "article",
+      url: postUrl,
       publishedTime: post.publishedAt
         ? new Date(post.publishedAt).toISOString()
         : undefined,
-      images: post.coverImageUrl ? [{ url: post.coverImageUrl }] : [],
+      images: [{ url: coverImage, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
-      images: post.coverImageUrl ? [post.coverImageUrl] : [],
+      title: post.title,
+      description: post.excerpt,
+      images: [coverImage],
     },
   }
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const [post, relatedPosts] = await Promise.all([
+  const [post, adjacent, relatedPosts] = await Promise.all([
     getPostBySlug(slug),
+    getAdjacentPosts(slug),
     getFeaturedOrRecentPosts(3),
   ])
 
   if (!post) {
     notFound()
   }
+
+  const reactionCount = await getPostReactionCount(post.id)
 
   const formattedDate = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-US", {
@@ -72,150 +100,258 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const primaryCategory = post.categories[0]
   const otherRelated = relatedPosts
     .filter((p) => p.slug !== post.slug)
-    .slice(0, 2)
+    .slice(0, 3)
+
+  const baseUrl = getBaseUrl("blog")
+  const postUrl = `${baseUrl}/blog/${post.slug}`
+
+  const blogPostJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    url: postUrl,
+    datePublished: post.publishedAt
+      ? new Date(post.publishedAt).toISOString()
+      : undefined,
+    dateModified: post.createdAt
+      ? new Date(post.createdAt).toISOString()
+      : post.publishedAt
+        ? new Date(post.publishedAt).toISOString()
+        : undefined,
+    image: post.coverImageUrl || SEO_CONFIG.author.avatar,
+    author: {
+      "@type": "Person",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
+    },
+    publisher: {
+      "@type": "Person",
+      name: SEO_CONFIG.author.name,
+      url: SEO_CONFIG.author.url,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": postUrl,
+    },
+  }
+
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: "Articles", url: baseUrl },
+    ...(primaryCategory
+      ? [
+          {
+            name: primaryCategory.name,
+            url: `${baseUrl}/?category=${primaryCategory.slug}`,
+          },
+        ]
+      : []),
+    { name: post.title, url: postUrl },
+  ])
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
+      <ReadingProgressBar />
       <ViewTracker postId={post.id} />
 
-      <Container className="max-w-4xl py-12 md:py-20">
-        {/* Back Navigation */}
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-3.5" />
-          <span>Back to Articles</span>
-        </Link>
-
-        {/* Article Header */}
-        <header className="space-y-6">
-          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+      <article className="w-full pt-10 pb-24 sm:pt-16 sm:pb-32">
+        <Container className="max-w-5xl">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground"
+          >
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <ArrowLeft className="size-3.5" />
+              <span>Articles</span>
+            </Link>
             {primaryCategory && (
-              <span className="rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 font-medium text-primary">
-                {primaryCategory.name}
-              </span>
-            )}
-            <span className="inline-flex items-center gap-1">
-              <Calendar className="size-3.5" />
-              <span>{formattedDate}</span>
-            </span>
-            <span className="text-muted-foreground/40">&bull;</span>
-            <span className="inline-flex items-center gap-1">
-              <Clock className="size-3.5" />
-              <span>{post.readingTime} min read</span>
-            </span>
-            {post.viewsCount !== undefined && post.viewsCount > 0 && (
               <>
-                <span className="text-muted-foreground/40">&bull;</span>
-                <span className="inline-flex items-center gap-1">
-                  <Eye className="size-3.5" />
-                  <span>{post.viewsCount} views</span>
-                </span>
+                <ChevronRight className="size-3 text-muted-foreground/40" />
+                <Link
+                  href={`/?category=${primaryCategory.slug}`}
+                  className="transition-colors hover:text-foreground"
+                >
+                  {primaryCategory.name}
+                </Link>
               </>
             )}
-          </div>
+            <ChevronRight className="size-3 text-muted-foreground/40" />
+            <span className="max-w-[200px] truncate font-medium text-foreground sm:max-w-xs">
+              {post.title}
+            </span>
+          </nav>
 
-          <h1 className="text-3xl leading-tight font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl">
-            {post.title}
-          </h1>
-
-          <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {post.excerpt}
-          </p>
-
-          {/* Author info */}
-          <div className="flex items-center gap-3 border-t border-border/60 pt-4">
-            <div className="size-10 overflow-hidden rounded-full bg-foreground/10 ring-1 ring-border">
-              <Image
-                src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
-                alt="Rizky Ramadhan"
-                width={40}
-                height={40}
-                className="size-full object-cover"
-              />
-            </div>
-            <div>
-              <div className="text-xs font-medium text-foreground">
-                Rizky Ramadhan
-              </div>
-              <div className="text-[11px] text-muted-foreground">
-                Full-Stack Engineer & Author
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Cover Image */}
-        {post.coverImageUrl && (
-          <div className="relative my-10 aspect-video w-full overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-sm">
-            <Image
-              src={post.coverImageUrl}
-              alt={post.title}
-              fill
-              priority
-              className="object-cover"
-            />
-          </div>
-        )}
-
-        {/* Main Article Markdown Content */}
-        <div className="mt-10 border-t border-border/40 pt-4">
-          <MarkdownRenderer content={post.contentMd} />
-        </div>
-
-        {/* Tags */}
-        {post.tags.length > 0 && (
-          <div className="mt-12 border-t border-border/60 pt-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="mr-1 text-xs font-medium text-muted-foreground">
-                Tags:
-              </span>
-              {post.tags.map((t) => (
-                <span
-                  key={t.id}
-                  className="inline-flex items-center rounded-md border border-border/50 bg-muted/60 px-2.5 py-1 text-xs text-muted-foreground"
-                >
-                  #{t.name}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Related Articles */}
-        {otherRelated.length > 0 && (
-          <div className="mt-20 space-y-6 border-t border-border pt-12">
-            <div className="flex items-center gap-2">
-              <Sparkles className="size-4 text-primary" />
-              <h2 className="text-lg font-medium text-foreground">
-                Related & Recent Articles
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {otherRelated.map((rel) => (
+          <header className="mb-10 space-y-6 border-b border-border/40 pb-10">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              {primaryCategory && (
                 <Link
-                  key={rel.id}
-                  href={`/blog/${rel.slug}`}
-                  className="group block rounded-xl border border-border/60 bg-card/40 p-4 transition-all hover:border-border hover:bg-card"
+                  href={`/?category=${primaryCategory.slug}`}
+                  className="font-medium text-foreground transition-colors hover:text-muted-foreground"
                 >
-                  <div className="mb-2 text-xs text-muted-foreground">
-                    {rel.readingTime} min read &bull;{" "}
-                    {rel.categories[0]?.name || "Article"}
-                  </div>
-                  <h3 className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
-                    {rel.title}
-                  </h3>
-                  <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">
-                    {rel.excerpt}
-                  </p>
+                  {primaryCategory.name}
                 </Link>
-              ))}
+              )}
+              <span className="flex items-center gap-1">
+                <Calendar className="size-3.5" />
+                {formattedDate}
+              </span>
+              <span className="text-border">·</span>
+              <span className="flex items-center gap-1">
+                <Clock className="size-3.5" />
+                {post.readingTime} min read
+              </span>
+              {post.viewsCount !== undefined && post.viewsCount > 0 && (
+                <>
+                  <span className="text-border">·</span>
+                  <span className="flex items-center gap-1">
+                    <Eye className="size-3.5" />
+                    {post.viewsCount} views
+                  </span>
+                </>
+              )}
             </div>
+
+            <h1 className="text-3xl leading-tight font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              {post.title}
+            </h1>
+
+            <p className="text-base/relaxed text-muted-foreground sm:text-lg/relaxed">
+              {post.excerpt}
+            </p>
+
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+              <div className="flex items-center gap-3">
+                <div className="relative size-9 overflow-hidden rounded-full ring-1 ring-border/60">
+                  <Image
+                    src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
+                    alt="Rizky Ramadhan"
+                    fill
+                    sizes="36px"
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-foreground">
+                    Rizky Ramadhan
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Multidisciplinary Digital Builder
+                  </p>
+                </div>
+              </div>
+
+              <ShareToolbar title={post.title} url={postUrl} />
+            </div>
+          </header>
+
+          {post.coverImageUrl && (
+            <div className="mb-12 overflow-hidden border border-border/40 bg-muted">
+              <div className="relative aspect-video w-full">
+                <Image
+                  src={post.coverImageUrl}
+                  alt={post.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 800px"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="mb-8 lg:hidden">
+            <TableOfContents content={post.contentMd} />
           </div>
-        )}
-      </Container>
+
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
+            <div className="space-y-10 lg:col-span-8">
+              <div className="prose prose-zinc dark:prose-invert max-w-none">
+                <MarkdownRenderer content={post.contentMd} />
+              </div>
+
+              {post.tags.length > 0 && (
+                <div className="border-t border-border/40 pt-6">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-medium text-muted-foreground">
+                      Topics:
+                    </span>
+                    {post.tags.map((t) => (
+                      <Link
+                        key={t.id}
+                        href={`/?tag=${t.slug}`}
+                        className="rounded-md border border-border/50 bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                      >
+                        #{t.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/40 pt-6">
+                <PostReactions postId={post.id} initialCount={reactionCount} />
+                <ShareToolbar title={post.title} url={postUrl} />
+              </div>
+
+              <AuthorBio />
+
+              <PostNavigation prev={adjacent.prev} next={adjacent.next} />
+            </div>
+
+            <aside className="hidden lg:col-span-4 lg:block">
+              <div className="sticky top-28">
+                <TableOfContents content={post.contentMd} />
+              </div>
+            </aside>
+          </div>
+
+          {otherRelated.length > 0 && (
+            <div className="mt-20 border-t border-border/40 pt-14">
+              <h2 className="mb-6 text-base font-semibold text-foreground">
+                More Articles
+              </h2>
+
+              <div className="grid grid-cols-1 gap-px border border-border/40 bg-border/40 sm:grid-cols-3">
+                {otherRelated.map((rel) => (
+                  <Link
+                    key={rel.id}
+                    href={`/blog/${rel.slug}`}
+                    className="group flex flex-col bg-background p-5 transition-colors hover:bg-muted/20"
+                  >
+                    <div className="mb-3 text-xs text-muted-foreground">
+                      <span>{rel.readingTime} min read</span>
+                      {rel.categories[0] && (
+                        <>
+                          <span className="mx-1.5 text-border">·</span>
+                          <span>{rel.categories[0].name}</span>
+                        </>
+                      )}
+                    </div>
+                    <h3 className="text-sm leading-snug font-medium text-foreground transition-colors group-hover:text-muted-foreground">
+                      {rel.title}
+                    </h3>
+                    <p className="mt-2 line-clamp-2 text-xs/relaxed text-muted-foreground">
+                      {rel.excerpt}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </Container>
+      </article>
     </>
   )
 }

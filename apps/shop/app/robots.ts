@@ -1,14 +1,14 @@
 import type { MetadataRoute } from "next"
+import { getBaseUrl } from "@workspace/ui/lib/seo"
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SHOP_URL || process.env.NEXT_PUBLIC_APP_URL
+  const baseUrl = getBaseUrl("shop")
 
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/download/"],
+      disallow: ["/api/", "/download/", "/checkout", "/order/"],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   }

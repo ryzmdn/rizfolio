@@ -1,14 +1,17 @@
 import { Container } from "@workspace/ui/components/layouts"
 import { Marquee } from "@workspace/ui/components/marquee"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { certifications as fallbackCertifications } from "@/data"
 import type { CertificationItem } from "@/lib/queries"
 
 interface CertificationsSectionProps {
   certifications?: CertificationItem[]
+  sectionNumber?: number | string
 }
 
 export function CertificationsSection({
   certifications = fallbackCertifications,
+  sectionNumber = 12,
 }: CertificationsSectionProps) {
   const midpoint = Math.ceil(certifications.length / 2)
   const firstRow = certifications.slice(0, midpoint)
@@ -16,17 +19,17 @@ export function CertificationsSection({
 
   return (
     <Container id="certifications" className="py-20">
-      <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">
+          Verified Certifications
+        </p>
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Licenses & Verified Certifications
         </h2>
-
-        <div className="leading-7 text-muted-foreground">
-          <p>
-            Validated industry credentials and technical achievements across
-            cloud computing, web standards, and secure software development.
-          </p>
-        </div>
+        <p className="leading-7 text-muted-foreground">
+          Validated industry credentials and technical achievements across cloud
+          computing, web standards, and secure software development.
+        </p>
       </hgroup>
 
       <div className="relative flow-root w-full space-y-5 py-10">
@@ -40,6 +43,10 @@ export function CertificationsSection({
                 <img
                   src={item.thumbnail}
                   alt={item.title}
+                  width={320}
+                  height={240}
+                  loading="lazy"
+                  decoding="async"
                   className="size-full object-cover"
                 />
               </div>
@@ -60,6 +67,10 @@ export function CertificationsSection({
                 <img
                   src={item.thumbnail}
                   alt={item.title}
+                  width={320}
+                  height={240}
+                  loading="lazy"
+                  decoding="async"
                   className="size-full object-cover"
                 />
               </div>

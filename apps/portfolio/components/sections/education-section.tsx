@@ -1,4 +1,5 @@
 import { Container } from "@workspace/ui/components/layouts"
+import { SectionEyebrow } from "@workspace/ui/components/section-eyebrow"
 import { educationList } from "@/data"
 import type { EducationItem } from "@/lib/queries"
 
@@ -10,17 +11,17 @@ export function EducationSection({
   education = educationList,
 }: EducationSectionProps) {
   return (
-    <Container id="education" className="py-20">
-      <hgroup className="w-full space-y-2">
-        <h2 className="text-2xl font-medium">Academic Background</h2>
-
-        <div className="leading-7 text-muted-foreground">
-          <p>
-            Formal foundation in computer science and software theory
-            complemented by continuous specialized certifications in modern
-            system architecture.
-          </p>
-        </div>
+    <Container id="education" className="flow-root space-y-12 py-20">
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
+        <p className="text-sm/6 text-muted-foreground">Academic Background</p>
+        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
+          Academic Background
+        </h2>
+        <p className="leading-7 text-muted-foreground">
+          Formal foundation in computer science and software theory complemented
+          by continuous specialized certifications in modern system
+          architecture.
+        </p>
       </hgroup>
 
       <div className="w-full divide-y divide-border/60 py-10">

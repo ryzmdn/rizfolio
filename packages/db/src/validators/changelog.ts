@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
-import { changelogs, changelogItems } from "../schema/changelog"
+import { changelogs, changelogItems } from "@workspace/db/schema/changelog"
 
 export const insertChangelogSchema = createInsertSchema(changelogs)
 export const selectChangelogSchema = createSelectSchema(changelogs)

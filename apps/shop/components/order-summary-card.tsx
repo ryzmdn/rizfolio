@@ -1,0 +1,129 @@
+"use client"
+
+import Image from "next/image"
+import {
+  ShieldCheck,
+  Download,
+  Lock,
+  ShoppingBag,
+  Tag,
+  Globe,
+} from "lucide-react"
+import { useCart } from "./cart-provider"
+import { useCurrency } from "./currency-context"
+import { formatPrice } from "../lib/utils"
+
+export function OrderSummaryCard() {
+  const { items, subtotal, discountAmount, grandTotal, coupon } = useCart()
+  const { currency, currencyInfo, format } = useCurrency()
+
+  return (
+    <div className="space-y-6 rounded-lg border border-border/70 bg-card/40 p-5 shadow-xs sm:p-6">
+      <div className="flex items-center justify-between border-b border-border/60 pb-4">
+        <h2 className="text-base font-semibold text-foreground">
+          Order Summary
+        </h2>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 rounded-md border border-border/80 bg-background px-2 py-0.5 font-mono text-[11px] font-medium text-foreground">
+            <span>{currencyInfo.flag}</span>
+            <span>{currency}</span>
+          </span>
+          <span className="font-mono text-xs text-muted-foreground">
+            {items.reduce((acc, it) => acc + it.quantity, 0)} item(s)
+          </span>
+        </div>
+      </div>
+
+      <div className="divide-y divide-border/50">
+        {items.map((item) => {
+          const isExtended = item.licenseType === "EXTENDED"
+
+          return (
+            <div key={item.id} className="flex gap-3 py-3.5">
+              {item.coverImageUrl ? (
+                <div className="relative size-14 shrink-0 overflow-hidden rounded-md border border-border/60 bg-muted">
+                  <Image
+                    src={item.coverImageUrl}
+                    alt={item.title}
+                    fill
+                    sizes="56px"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="flex size-14 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted">
+                  <ShoppingBag className="size-5 text-muted-foreground" />
+                </div>
+              )}
+
+              <div className="flex flex-1 flex-col justify-between">
+                <div>
+                  <h3 className="line-clamp-1 text-xs font-semibold text-foreground">
+                    {item.title}
+                  </h3>
+                  <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span>Qty: {item.quantity}</span>
+                    <span>•</span>
+                    <span className="py-0.2 rounded-sm bg-muted px-1.5 font-medium">
+                      {isExtended ? "Extended" : "Standard"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="font-mono text-xs font-bold text-foreground">
+                  {format(item.price * item.quantity)}
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {coupon && (
+        <div className="flex items-center justify-between rounded-md border border-border/70 bg-muted/40 px-3.5 py-2 text-xs text-foreground">
+          <div className="flex items-center gap-2">
+            <Tag className="size-3.5 text-muted-foreground" />
+            <span className="font-mono font-semibold">{coupon.code}</span>
+          </div>
+          <span className="text-muted-foreground">
+            {coupon.discountPercent}% Discount Applied
+          </span>
+        </div>
+      )}
+
+      <div className="space-y-2.5 border-t border-border/60 pt-4 text-xs">
+        <div className="flex items-center justify-between text-muted-foreground">
+          <span>Subtotal</span>
+          <span className="font-mono text-foreground">{format(subtotal)}</span>
+        </div>
+
+        {discountAmount > 0 && (
+          <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
+            <span>Promotional Discount</span>
+            <span className="font-mono">-{format(discountAmount)}</span>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between border-t border-border/60 pt-3 text-base font-bold text-foreground">
+          <span>Total Amount</span>
+          <span className="font-mono text-lg">{format(grandTotal)}</span>
+        </div>
+      </div>
+
+      <div className="space-y-2 border-t border-border/60 pt-5 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2">
+          <Lock className="size-3.5 shrink-0 text-muted-foreground" />
+          <span>256-bit SSL encrypted transaction verification</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Download className="size-3.5 shrink-0 text-muted-foreground" />
+          <span>Immediate digital fulfillment and token generation</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="size-3.5 shrink-0 text-muted-foreground" />
+          <span>14-day technical defect resolution guarantee</span>
+        </div>
+      </div>
+    </div>
+  )
+}

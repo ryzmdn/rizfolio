@@ -1,3 +1,5 @@
+import { cache } from "react"
+import { unstable_cache } from "next/cache"
 import {
   db,
   profile,
@@ -28,25 +30,57 @@ export type ProfileData = typeof personalInfo & {
   resumeUrl?: string | null
 }
 
-export type ExperienceItem = (typeof experienceList)[number]
+export type ExperienceItem = {
+  logo?: string
+  role: string
+  company: string
+  type?: string
+  location?: string
+  period: string
+  workMode?: string
+  description: string
+  skills?: string[]
+}
 export type EducationItem = (typeof educationList)[number]
 export type CertificationItem = (typeof fallbackCertifications)[number]
 export type ServiceItem = (typeof fallbackServices)[number]
 export type CaseStudyItem = (typeof fallbackCaseStudies)[number]
 export type TestimonialItem = (typeof fallbackTestimonials)[number]
 
-type ProfileSelect = typeof profile.$inferSelect
-type ExperienceSelect = typeof experiences.$inferSelect
-type EducationSelect = typeof education.$inferSelect
-type CertificationSelect = typeof certifications.$inferSelect
-type ServiceSelect = typeof services.$inferSelect
-type CaseStudySelect = typeof caseStudies.$inferSelect
-type TestimonialSelect = typeof testimonials.$inferSelect
+/**
+ * SLA-guaranteed execution with fast fallback timeout.
+ * Prevents cold-start or remote database latencies from hanging page loads.
+ */
+async function withTimeout<T>(
+  promise: Promise<T>,
+  ms = 1200,
+  fallback: T
+): Promise<T> {
+  let timer: NodeJS.Timeout
+  const timeoutPromise = new Promise<T>((resolve) => {
+    timer = setTimeout(() => resolve(fallback), ms)
+  })
+  return Promise.race([promise, timeoutPromise]).finally(() => {
+    clearTimeout(timer)
+  })
+}
 
 export async function getProfileData(): Promise<ProfileData> {
   try {
-    const rows: ProfileSelect[] = await db.select().from(profile).limit(1)
-    const data: ProfileSelect | undefined = rows[0]
+    const query = db
+      .select({
+        fullName: profile.fullName,
+        headline: profile.headline,
+        bio: profile.bio,
+        location: profile.location,
+        resumeUrl: profile.resumeUrl,
+        status: profile.status,
+      })
+      .from(profile)
+      .limit(1)
+
+    const rows = await withTimeout(query, 1200, [])
+    const data = rows[0]
     if (data) {
       const bioParagraphs: string[] = data.bio
         ? data.bio.split("\n\n").filter(Boolean)
@@ -73,14 +107,26 @@ export async function getProfileData(): Promise<ProfileData> {
 
 export async function getExperiences(): Promise<ExperienceItem[]> {
   try {
-    const rows: ExperienceSelect[] = await db
-      .select()
+    const query = db
+      .select({
+        companyLogoUrl: experiences.companyLogoUrl,
+        role: experiences.role,
+        company: experiences.company,
+        location: experiences.location,
+        startDate: experiences.startDate,
+        endDate: experiences.endDate,
+        isCurrent: experiences.isCurrent,
+        description: experiences.description,
+        techStack: experiences.techStack,
+      })
       .from(experiences)
       .orderBy(asc(experiences.displayOrder), desc(experiences.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map(
-        (exp: ExperienceSelect): ExperienceItem => ({
+        (exp): ExperienceItem => ({
+          logo: exp.companyLogoUrl || "",
           role: exp.role,
           company: exp.company,
           type: "Full-Time",
@@ -105,14 +151,21 @@ export async function getExperiences(): Promise<ExperienceItem[]> {
 
 export async function getEducationList(): Promise<EducationItem[]> {
   try {
-    const rows: EducationSelect[] = await db
-      .select()
+    const query = db
+      .select({
+        institution: education.institution,
+        degree: education.degree,
+        field: education.field,
+        startYear: education.startYear,
+        endYear: education.endYear,
+      })
       .from(education)
       .orderBy(asc(education.displayOrder), desc(education.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map(
-        (edu: EducationSelect): EducationItem => ({
+        (edu): EducationItem => ({
           institution: edu.institution,
           degree: edu.degree,
           field: edu.field,
@@ -131,14 +184,18 @@ export async function getEducationList(): Promise<EducationItem[]> {
 
 export async function getCertifications(): Promise<CertificationItem[]> {
   try {
-    const rows: CertificationSelect[] = await db
-      .select()
+    const query = db
+      .select({
+        title: certifications.title,
+        badgeUrl: certifications.badgeUrl,
+      })
       .from(certifications)
       .orderBy(asc(certifications.displayOrder), desc(certifications.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map(
-        (cert: CertificationSelect, idx: number): CertificationItem => ({
+        (cert, idx: number): CertificationItem => ({
           id: idx + 1,
           title: cert.title,
           thumbnail:
@@ -158,15 +215,21 @@ export async function getCertifications(): Promise<CertificationItem[]> {
 
 export async function getServicesList(): Promise<ServiceItem[]> {
   try {
-    const rows: ServiceSelect[] = await db
-      .select()
+    const query = db
+      .select({
+        title: services.title,
+        summary: services.summary,
+        description: services.description,
+        deliverables: services.deliverables,
+      })
       .from(services)
       .where(eq(services.isActive, true))
       .orderBy(asc(services.displayOrder), desc(services.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map(
-        (s: ServiceSelect): ServiceItem => ({
+        (s): ServiceItem => ({
           title: s.title,
           description: s.summary || s.description,
           features: s.deliverables || [],
@@ -182,25 +245,57 @@ export async function getServicesList(): Promise<ServiceItem[]> {
   return fallbackServices
 }
 
-export async function getCaseStudies(): Promise<CaseStudyItem[]> {
+async function fetchCaseStudiesInternal(): Promise<CaseStudyItem[]> {
   try {
-    const rows: CaseStudySelect[] = await db
-      .select()
+    const query = db
+      .select({
+        id: caseStudies.id,
+        slug: caseStudies.slug,
+        clientName: caseStudies.clientName,
+        title: caseStudies.title,
+        summary: caseStudies.summary,
+        contentMd: caseStudies.contentMd,
+        thumbnailUrl: caseStudies.thumbnailUrl,
+        liveUrl: caseStudies.liveUrl,
+        repoUrl: caseStudies.repoUrl,
+        metrics: caseStudies.metrics,
+      })
       .from(caseStudies)
       .where(eq(caseStudies.isPublished, true))
       .orderBy(asc(caseStudies.displayOrder), desc(caseStudies.createdAt))
 
-    if (rows.length > 0) {
-      return rows.map(
-        (cs: CaseStudySelect, idx: number): CaseStudyItem => ({
-          id: idx + 1,
-          category: cs.clientName || "Case Study",
+    const rows = await withTimeout(query, 1200, [])
+
+    if (rows && rows.length > 0) {
+      return rows.map((cs): CaseStudyItem => {
+        const fallback = fallbackCaseStudies.find((f) => f.slug === cs.slug)
+        return {
+          id: cs.id,
+          slug: cs.slug,
+          category: cs.clientName || fallback?.category || "Case Study",
           title: cs.title,
+          clientName:
+            cs.clientName || fallback?.clientName || "Engineering Client",
+          summary: cs.summary || fallback?.summary || "",
+          contentMd: cs.contentMd || fallback?.contentMd || "",
           image:
             cs.thumbnailUrl ||
+            fallback?.image ||
             "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
-        })
-      )
+          liveUrl: cs.liveUrl || fallback?.liveUrl,
+          repoUrl: cs.repoUrl || fallback?.repoUrl,
+          metrics:
+            (cs.metrics as Record<string, string | number>) ||
+            fallback?.metrics,
+          techStack: fallback?.techStack || [
+            "TypeScript",
+            "Next.js",
+            "PostgreSQL",
+          ],
+          year: fallback?.year || "2025",
+          role: fallback?.role || "Lead Architect",
+        }
+      })
     }
   } catch (error: unknown) {
     console.warn(
@@ -211,17 +306,127 @@ export async function getCaseStudies(): Promise<CaseStudyItem[]> {
   return fallbackCaseStudies
 }
 
+const cachedGetCaseStudies = unstable_cache(
+  fetchCaseStudiesInternal,
+  ["portfolio-case-studies-list"],
+  {
+    revalidate: 3600,
+    tags: ["case-studies", "portfolio"],
+  }
+)
+
+/**
+ * Memoized per-request and cached across requests.
+ * Instant sub-millisecond retrieval.
+ */
+export const getCaseStudies = cache(async (): Promise<CaseStudyItem[]> => {
+  return cachedGetCaseStudies()
+})
+
+async function fetchCaseStudyBySlugInternal(
+  slug: string
+): Promise<CaseStudyItem | null> {
+  const all = await cachedGetCaseStudies()
+  const found = all.find((s) => s.slug === slug)
+  if (found) return found
+
+  try {
+    const query = db
+      .select({
+        id: caseStudies.id,
+        slug: caseStudies.slug,
+        clientName: caseStudies.clientName,
+        title: caseStudies.title,
+        summary: caseStudies.summary,
+        contentMd: caseStudies.contentMd,
+        thumbnailUrl: caseStudies.thumbnailUrl,
+        liveUrl: caseStudies.liveUrl,
+        repoUrl: caseStudies.repoUrl,
+        metrics: caseStudies.metrics,
+      })
+      .from(caseStudies)
+      .where(eq(caseStudies.slug, slug))
+      .limit(1)
+
+    const rows = await withTimeout(query, 1200, [])
+    const cs = rows[0]
+    if (cs) {
+      const fallback = fallbackCaseStudies.find((f) => f.slug === cs.slug)
+      return {
+        id: cs.id,
+        slug: cs.slug,
+        category: cs.clientName || fallback?.category || "Case Study",
+        title: cs.title,
+        clientName:
+          cs.clientName || fallback?.clientName || "Engineering Client",
+        summary: cs.summary || fallback?.summary || "",
+        contentMd: cs.contentMd || fallback?.contentMd || "",
+        image:
+          cs.thumbnailUrl ||
+          fallback?.image ||
+          "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
+        liveUrl: cs.liveUrl || fallback?.liveUrl,
+        repoUrl: cs.repoUrl || fallback?.repoUrl,
+        metrics:
+          (cs.metrics as Record<string, string | number>) || fallback?.metrics,
+        techStack: fallback?.techStack || [
+          "TypeScript",
+          "Next.js",
+          "PostgreSQL",
+        ],
+        year: fallback?.year || "2025",
+        role: fallback?.role || "Lead Architect",
+      }
+    }
+  } catch (error: unknown) {
+    console.warn(
+      `[Portfolio Data Layer] Failed to fetch case study by slug (${slug}):`,
+      error instanceof Error ? error.message : "Unknown error"
+    )
+  }
+
+  const fallback = fallbackCaseStudies.find((f) => f.slug === slug)
+  return fallback || null
+}
+
+const cachedGetCaseStudyBySlug = unstable_cache(
+  fetchCaseStudyBySlugInternal,
+  ["portfolio-case-study-by-slug"],
+  {
+    revalidate: 3600,
+    tags: ["case-studies", "portfolio"],
+  }
+)
+
+export const getCaseStudyBySlug = cache(
+  async (slug: string): Promise<CaseStudyItem | null> => {
+    return cachedGetCaseStudyBySlug(slug)
+  }
+)
+
+export const getAllCaseStudySlugs = cache(async (): Promise<string[]> => {
+  const all = await getCaseStudies()
+  return Array.from(new Set(all.map((s) => s.slug)))
+})
+
 export async function getTestimonials(): Promise<TestimonialItem[]> {
   try {
-    const rows: TestimonialSelect[] = await db
-      .select()
+    const query = db
+      .select({
+        clientName: testimonials.clientName,
+        role: testimonials.role,
+        company: testimonials.company,
+        avatarUrl: testimonials.avatarUrl,
+        content: testimonials.content,
+      })
       .from(testimonials)
       .where(eq(testimonials.isFeatured, true))
       .orderBy(asc(testimonials.displayOrder), desc(testimonials.createdAt))
 
-    if (rows.length > 0) {
+    const rows = await withTimeout(query, 1200, [])
+    if (rows && rows.length > 0) {
       return rows.map(
-        (t: TestimonialSelect): TestimonialItem => ({
+        (t): TestimonialItem => ({
           name: t.clientName,
           handle: `${t.role || ""} at ${t.company || ""}`.replace(
             /^ at | at $/,
@@ -243,7 +448,7 @@ export async function getTestimonials(): Promise<TestimonialItem[]> {
   return fallbackTestimonials
 }
 
-export async function getPortfolioPageData() {
+async function fetchPortfolioPageData() {
   const [
     profileData,
     experiencesData,
@@ -272,3 +477,12 @@ export async function getPortfolioPageData() {
     testimonials: testimonialsData,
   }
 }
+
+export const getPortfolioPageData = unstable_cache(
+  fetchPortfolioPageData,
+  ["portfolio-page-data"],
+  {
+    revalidate: 3600,
+    tags: ["portfolio"],
+  }
+)

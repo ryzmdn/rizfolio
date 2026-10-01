@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next"
+import { getBaseUrl } from "@workspace/ui/lib/seo"
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BLOG_URL || process.env.NEXT_PUBLIC_APP_URL
+  const baseUrl = getBaseUrl("blog")
 
   return {
     rules: {

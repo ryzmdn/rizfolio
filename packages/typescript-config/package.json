@@ -3,6 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "license": "PROPRIETARY",
+  "files": [
+    "base.json",
+    "nextjs.json",
+    "react-library.json",
+    "mdx.d.ts"
+  ],
   "publishConfig": {
     "access": "public"
   }

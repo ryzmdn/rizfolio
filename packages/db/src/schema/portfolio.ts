@@ -28,6 +28,7 @@ export const experiences = pgTable("experiences", {
   company: varchar("company", { length: 255 }).notNull(),
   role: varchar("role", { length: 255 }).notNull(),
   location: varchar("location", { length: 255 }),
+  companyLogoUrl: text("company_logo_url"),
   startDate: varchar("start_date", { length: 50 }).notNull(),
   endDate: varchar("end_date", { length: 50 }),
   isCurrent: boolean("is_current").notNull().default(false),
@@ -119,3 +120,24 @@ export const testimonials = pgTable("testimonials", {
     .defaultNow()
     .notNull(),
 })
+
+export const inquiries = pgTable("inquiries", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  subject: varchar("subject", { length: 255 }),
+  message: text("message").notNull(),
+  projectScope: varchar("project_scope", { length: 100 }).default(
+    "PROJECT_INQUIRY"
+  ), // 'FULL_TIME', 'CONTRACT', 'CONSULTING', 'ADVISORY', 'PROJECT_INQUIRY'
+  budgetRange: varchar("budget_range", { length: 100 }),
+  status: varchar("status", { length: 50 }).notNull().default("NEW"), // 'NEW', 'IN_REVIEW', 'RESPONDED', 'ARCHIVED'
+  replyNotes: text("reply_notes"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  respondedAt: timestamp("responded_at", { withTimezone: true }),
+})
+
+export type Inquiry = typeof inquiries.$inferSelect
+export type NewInquiry = typeof inquiries.$inferInsert

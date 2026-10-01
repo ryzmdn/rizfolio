@@ -13,8 +13,11 @@ if (!process.env.DATABASE_URL) {
     dotenv.config({ path: path.resolve(__dirname, "../../../../.env") })
     dotenv.config({ path: path.resolve(process.cwd(), ".env") })
     dotenv.config({ path: path.resolve(process.cwd(), "../../.env") })
-  } catch {
-    // Ignore in non-file environments
+  } catch (error: unknown) {
+    console.error(
+      "[DB Client] Failed loading environment files:",
+      error instanceof Error ? error.message : String(error)
+    )
   }
 }
 
@@ -37,15 +40,31 @@ const connectionString = process.env
 
 const isProduction = process.env.NODE_ENV === "production"
 
-const client = postgres(connectionString, {
-  prepare: false,
-  max: isProduction ? 10 : 5,
-  idle_timeout: 30,
-  connect_timeout: 10,
-  ssl: isProduction ? "require" : false,
-})
+const isSupabase =
+  connectionString.includes(".supabase.com") ||
+  connectionString.includes(".supabase.co")
 
-export const db = drizzle(client, { schema })
+declare global {
+  var __postgresClient: ReturnType<typeof postgres> | undefined
+  var __drizzleDb: ReturnType<typeof drizzle<typeof schema>> | undefined
+}
+
+const client =
+  globalThis.__postgresClient ??
+  postgres(connectionString, {
+    prepare: false,
+    max: isProduction ? 10 : 5,
+    idle_timeout: 20,
+    connect_timeout: 5,
+    max_lifetime: 180,
+    ssl: isSupabase ? "require" : isProduction ? "require" : false,
+  })
+
+globalThis.__postgresClient = client
+
+export const db = globalThis.__drizzleDb ?? drizzle(client, { schema })
+
+globalThis.__drizzleDb = db
 export type Database = typeof db
 
 export { client }

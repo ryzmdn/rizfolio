@@ -15,6 +15,7 @@ import {
   SESSION_COOKIE_NAME,
   SESSION_COOKIE_OPTIONS,
 } from "@workspace/auth"
+import { logTransaction } from "./actions/transaction-actions"
 
 export interface AuthState {
   error?: string
@@ -37,8 +38,11 @@ async function getClientIp(): Promise<string> {
     if (cfIp) {
       return cfIp.trim()
     }
-  } catch {
-    // Fallback when headers() is called outside request scope
+  } catch (error: unknown) {
+    console.warn(
+      "[Auth Actions] getClientIp fallback to 127.0.0.1:",
+      error instanceof Error ? error.message : String(error)
+    )
   }
   return "127.0.0.1"
 }
@@ -177,6 +181,20 @@ export async function loginAdmin(
 
     const cookieStore = await cookies()
     cookieStore.set(SESSION_COOKIE_NAME, token, SESSION_COOKIE_OPTIONS)
+
+    logTransaction({
+      domain: "AUTH_SECURITY",
+      actionType: "ADMIN_LOGIN_SUCCESS",
+      status: "COMPLETED",
+      actorId: userId,
+      actorType: "OWNER",
+      entityType: "users",
+      entityId: userId,
+      clientIp,
+      metadata: { email: normalizedEmail },
+    })
+
+    return { success: true }
   } catch (error) {
     console.error("[CMS Auth] Server error during login processing:", {
       ip: clientIp,
@@ -188,12 +206,25 @@ export async function loginAdmin(
         "Terjadi kesalahan server saat memproses login. Silakan coba lagi.",
     }
   }
-
-  redirect("/")
 }
 
 export async function logoutAdmin(): Promise<void> {
   const cookieStore = await cookies()
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value
+  const session = await validateOwnerSession(token)
+
+  if (session) {
+    logTransaction({
+      domain: "AUTH_SECURITY",
+      actionType: "ADMIN_LOGOUT",
+      status: "COMPLETED",
+      actorId: session.userId,
+      actorType: "OWNER",
+      entityType: "users",
+      entityId: session.userId,
+    })
+  }
+
   cookieStore.delete(SESSION_COOKIE_NAME)
   redirect("/login")
 }
@@ -203,7 +234,17 @@ export async function getCurrentUser() {
     const cookieStore = await cookies()
     const token = cookieStore.get(SESSION_COOKIE_NAME)?.value
     return await validateOwnerSession(token)
-  } catch {
+  } catch (error: unknown) {
+    if (
+      (error as { digest?: string })?.digest === "DYNAMIC_SERVER_USAGE" ||
+      (error instanceof Error && error.message.includes("Dynamic server usage"))
+    ) {
+      throw error
+    }
+    console.error(
+      "[Auth Actions] getCurrentUser validation failed:",
+      error instanceof Error ? error.message : String(error)
+    )
     return null
   }
 }

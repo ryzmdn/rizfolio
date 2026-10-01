@@ -1,201 +1,285 @@
-import { Container } from "@workspace/ui/components/layouts/container"
-import { getActiveProducts, formatPrice } from "@/lib/queries"
-import Image from "next/image"
+import type { Metadata } from "next"
 import Link from "next/link"
+import { ShieldCheck, FileCode, Users, Package } from "lucide-react"
+import { Container } from "@workspace/ui/components/layouts/container"
+import { getActiveProducts } from "@/lib/queries"
+import { FilterBar } from "@/components/filter-bar"
+import { ProductCard } from "@/components/product-card"
+import { StoreFaq } from "@/components/store-faq"
+import { FAQ_ITEMS } from "@/data/faq"
 import {
-  Sparkles,
-  Download,
-  ArrowRight,
-  Layers,
-  Package,
-  Search,
-} from "lucide-react"
+  SEO_CONFIG,
+  getBaseUrl,
+  createWebSiteJsonLd,
+  createFaqJsonLd,
+} from "@workspace/ui/lib/seo"
+
+export const revalidate = 3600
+
+const shopUrl = getBaseUrl("shop")
+
+export const metadata: Metadata = {
+  title: SEO_CONFIG.sites.shop.defaultTitle,
+  description: SEO_CONFIG.sites.shop.description,
+  alternates: {
+    canonical: shopUrl,
+  },
+}
 
 interface ShopPageProps {
   searchParams: Promise<{
     type?: string
+    category?: string
     q?: string
+    sortBy?: "featured" | "rating" | "price-low" | "price-high" | "newest"
+    minPrice?: string
+    maxPrice?: string
   }>
 }
 
 export default async function ShopHomePage({ searchParams }: ShopPageProps) {
   const resolvedParams = await searchParams
   const type = resolvedParams?.type
+  const category = resolvedParams?.category
   const q = resolvedParams?.q
+  const sortBy = resolvedParams?.sortBy
+  const minPrice = resolvedParams?.minPrice
+    ? Number(resolvedParams.minPrice)
+    : undefined
+  const maxPrice = resolvedParams?.maxPrice
+    ? Number(resolvedParams.maxPrice)
+    : undefined
 
   const products = await getActiveProducts({
     productType: type,
+    category,
     query: q,
+    sortBy,
+    minPrice,
+    maxPrice,
   })
+
+  const stats = [
+    {
+      value: "100%",
+      label: "Production-Tested",
+      description: "Strict TypeScript with zero runtime type errors",
+    },
+    {
+      value: "6+",
+      label: "Curated Architectures",
+      description: "Monorepos, design systems, and backend pools",
+    },
+    {
+      value: "4.9/5.0",
+      label: "Verified Rating",
+      description: "Feedback from working software engineers",
+    },
+    {
+      value: "Instant",
+      label: "Digital Fulfillment",
+      description: "Immediate zip access and license provisioning",
+    },
+  ]
+
+  const pillars = [
+    {
+      icon: ShieldCheck,
+      title: "Enterprise Architecture",
+      description:
+        "Built strictly on Next.js 16, React 19 Server Components, and Turborepo with zero legacy code or technical debt.",
+    },
+    {
+      icon: FileCode,
+      title: "Full Commercial Ownership",
+      description:
+        "Standard and Extended commercial licenses with full unminified source code, lifetime revisions, and clear rights.",
+    },
+    {
+      icon: Users,
+      title: "Senior Engineering Advisory",
+      description:
+        "Direct email engineering support and dedicated 1-on-1 architecture review sessions on Google Meet.",
+    },
+  ]
+
+  const websiteJsonLd = createWebSiteJsonLd({
+    siteKey: "shop",
+    url: shopUrl,
+  })
+
+  const faqJsonLd = createFaqJsonLd(FAQ_ITEMS)
+
+  const storeJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${shopUrl}/#collection`,
+    name: SEO_CONFIG.sites.shop.name,
+    description: SEO_CONFIG.sites.shop.description,
+    url: shopUrl,
+    hasPart: products.slice(0, 10).map((prod) => ({
+      "@type": "Product",
+      name: prod.title,
+      description: prod.description,
+      url: `${shopUrl}/product/${prod.slug}`,
+      offers: {
+        "@type": "Offer",
+        price: prod.price.toString(),
+        priceCurrency: prod.currency,
+        availability: "https://schema.org/InStock",
+      },
+    })),
+  }
 
   return (
     <>
-      <Container className="py-20">
-        <div className="max-w-2xl space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground">
-            <Sparkles className="size-3.5 text-primary" />
-            <span>Curated Software & Engineering Assets</span>
-          </div>
-          <h1 className="text-4xl font-medium tracking-tight text-foreground sm:text-5xl">
-            Digital Tools & Starter Kits
-          </h1>
-          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Production-tested architectures, design systems, and specialized
-            consultation services crafted to accelerate your software
-            engineering workflow.
-          </p>
-        </div>
-      </Container>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }}
+      />
+      <div className="space-y-14 pt-8 pb-20 sm:space-y-16">
+        <section className="space-y-10">
+          <Container>
+            <div className="mx-auto max-w-3xl space-y-5 text-center">
+              <div className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/30 px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                <span>Curated Software & Engineering Assets</span>
+              </div>
 
-      <Container className="sticky top-0 z-20 border-y border-border bg-background/50 py-4 backdrop-blur-xs">
-        <div className="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-          <div className="flex scrollbar-none items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
-            <Link
-              href="/"
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-                !type || type === "all"
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              <Layers className="size-3.5" />
-              <span>All Products</span>
-            </Link>
-            <Link
-              href="/?type=DIGITAL_DOWNLOAD"
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-                type === "DIGITAL_DOWNLOAD"
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              <Download className="size-3.5" />
-              <span>Digital Downloads</span>
-            </Link>
-            <Link
-              href="/?type=SERVICE"
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
-                type === "SERVICE"
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              <Sparkles className="size-3.5" />
-              <span>Services & Consultations</span>
-            </Link>
-          </div>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl sm:leading-tight lg:text-5xl">
+                Digital Tools & Engineering Starter Kits
+              </h1>
 
-          <form
-            action="/"
-            method="GET"
-            className="relative flex max-w-sm min-w-64 items-center"
-          >
-            {type && <input type="hidden" name="type" value={type} />}
-            <Search className="pointer-events-none absolute left-3 size-3.5 text-muted-foreground" />
-            <input
-              type="text"
-              name="q"
-              defaultValue={q || ""}
-              placeholder="Search products..."
-              className="w-full rounded-lg border border-border bg-card/60 py-1.5 pr-4 pl-9 text-xs transition-all placeholder:text-muted-foreground focus:ring-1 focus:ring-primary/50 focus:outline-hidden"
-            />
-          </form>
-        </div>
-      </Container>
+              <p className="mx-auto max-w-2xl text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                Production-tested monorepo architectures, Tailwind CSS v4 design
+                systems, and specialized senior engineering consultation
+                sessions engineered to accelerate real-world digital builds.
+              </p>
 
-      <Container className="py-16">
-        {products.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border p-8 py-24 text-center">
-            <Package className="mb-3 size-10 text-muted-foreground/40" />
-            <h2 className="text-lg font-medium text-foreground">
-              No products found
-            </h2>
-            <p className="mt-1 max-w-sm text-xs text-muted-foreground">
-              We couldn&apos;t find any active digital items matching your
-              search or filter.
-            </p>
-            <Link
-              href="/"
-              className="mt-4 inline-flex items-center text-xs font-medium text-primary hover:underline"
-            >
-              Reset all filters
-            </Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => {
-              const isDigital = product.productType === "DIGITAL_DOWNLOAD"
-
-              return (
-                <div
-                  key={product.id}
-                  className="group flex flex-col justify-between rounded-2xl border border-border/60 bg-card/40 p-4 transition-all duration-200 hover:border-border hover:bg-card hover:shadow-xs"
+              <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
+                <a
+                  href="#catalog"
+                  className="inline-flex items-center gap-1.5 rounded-md bg-foreground px-4 py-2 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
                 >
-                  <div className="space-y-4">
-                    {product.coverImageUrl && (
-                      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted">
-                        <Image
-                          src={product.coverImageUrl}
-                          alt={product.title}
-                          fill
-                          loading="lazy"
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                    )}
+                  <span>Explore Catalog</span>
+                </a>
 
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 font-medium text-foreground">
-                        {isDigital ? (
-                          <>
-                            <Download className="size-3" />
-                            <span>Digital Download</span>
-                          </>
-                        ) : (
-                          <>
-                            <Sparkles className="size-3" />
-                            <span>Service</span>
-                          </>
-                        )}
-                      </span>
-                      <span className="text-sm font-semibold text-foreground">
-                        {formatPrice(product.price, product.currency)}
-                      </span>
-                    </div>
+                <a
+                  href="#faq"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-background px-4 py-2 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/60"
+                >
+                  <span>View Licensing FAQ</span>
+                </a>
+              </div>
+            </div>
+          </Container>
 
-                    <div className="space-y-2">
-                      <h2 className="text-base font-medium tracking-tight text-foreground transition-colors group-hover:text-primary">
-                        <Link
-                          href={`/product/${product.slug}`}
-                          className="focus:outline-hidden"
-                        >
-                          {product.title}
-                        </Link>
-                      </h2>
-                      <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                        {product.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 flex items-center justify-between border-t border-border/40 pt-3">
-                    <span className="text-[11px] text-muted-foreground">
-                      {isDigital ? "Instant Access" : "Direct Booking"}
-                    </span>
-                    <Link
-                      href={`/product/${product.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                    >
-                      <span>View Details</span>
-                      <ArrowRight className="size-3" />
-                    </Link>
-                  </div>
+          <Container>
+            <div className="grid grid-cols-2 divide-y divide-border/60 border-y border-border/60 py-6 sm:grid-cols-4 sm:divide-x sm:divide-y-0 sm:py-8">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex flex-col p-4 text-center sm:text-left"
+                >
+                  <span className="font-mono text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                    {stat.value}
+                  </span>
+                  <span className="mt-1 text-xs font-semibold text-foreground">
+                    {stat.label}
+                  </span>
+                  <span className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                    {stat.description}
+                  </span>
                 </div>
-              )
-            })}
-          </div>
-        )}
-      </Container>
+              ))}
+            </div>
+          </Container>
+        </section>
+
+        <section>
+          <Container>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {pillars.map((pillar) => {
+                const Icon = pillar.icon
+                return (
+                  <div
+                    key={pillar.title}
+                    className="flex flex-col gap-3 rounded-lg border border-border/60 bg-card/40 p-5 transition-colors hover:border-foreground/30"
+                  >
+                    <div className="flex size-8 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-foreground">
+                      <Icon className="size-4" />
+                    </div>
+                    <h2 className="text-xs font-semibold text-foreground sm:text-sm">
+                      {pillar.title}
+                    </h2>
+                    <p className="text-xs leading-relaxed text-muted-foreground">
+                      {pillar.description}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          </Container>
+        </section>
+
+        <section id="catalog" className="scroll-mt-20 space-y-6">
+          <Container className="space-y-5">
+            <div className="flex flex-col gap-1 border-b border-border/50 pb-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+                  Storefront Catalog
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Filter by architecture category, search by tech stack, and
+                  sort by pricing or reviews.
+                </p>
+              </div>
+            </div>
+
+            <FilterBar totalCount={products.length} />
+
+            {products.length === 0 ? (
+              <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border/80 bg-muted/10 p-8 py-16 text-center">
+                <div className="flex size-12 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-muted-foreground">
+                  <Package className="size-6" />
+                </div>
+                <h3 className="mt-3 text-sm font-semibold text-foreground">
+                  No products found
+                </h3>
+                <p className="mt-1 max-w-sm text-xs leading-relaxed text-muted-foreground">
+                  No software architectures or consultation packages matched
+                  your current search query or filter selection.
+                </p>
+                <Link
+                  href="/"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded-md bg-foreground px-4 py-2 text-xs font-medium text-background transition-colors hover:bg-foreground/90"
+                >
+                  <span>Reset all filters</span>
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
+          </Container>
+        </section>
+
+        <section id="faq" className="scroll-mt-20">
+          <Container>
+            <StoreFaq />
+          </Container>
+        </section>
+      </div>
     </>
   )
 }

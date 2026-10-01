@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -7,88 +8,239 @@ import {
   User,
   FileText,
   ShoppingBag,
-  FolderGit2,
+  BookOpen,
   History,
   Image,
   Settings,
   LogOut,
+  Activity,
   ShieldCheck,
+  X,
+  Inbox,
+  Link2,
 } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
-import { logoutAdmin } from "../lib/auth-actions"
+import { logoutAdmin } from "@/lib/auth-actions"
 
-const NAV_ITEMS = [
-  { href: "/", label: "Overview", icon: LayoutDashboard, exact: true },
-  { href: "/portfolio", label: "Portfolio", icon: User },
-  { href: "/blog", label: "Blog", icon: FileText },
-  { href: "/shop", label: "Shop", icon: ShoppingBag },
-  { href: "/archive", label: "Archive", icon: FolderGit2 },
-  { href: "/changelog", label: "Changelog", icon: History },
-  { href: "/media", label: "Media Library", icon: Image },
-  { href: "/settings", label: "Settings", icon: Settings },
+interface NavItem {
+  href: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  exact?: boolean
+  badge?: string
+}
+
+interface NavSection {
+  title: string
+  items: NavItem[]
+}
+
+const NAV_SECTIONS: NavSection[] = [
+  {
+    title: "Core",
+    items: [
+      { href: "/", label: "Overview", icon: LayoutDashboard, exact: true },
+      { href: "/transactions", label: "Master Transactions", icon: Activity },
+      { href: "/inbox", label: "Inbox & Inquiries", icon: Inbox },
+    ],
+  },
+  {
+    title: "Applications",
+    items: [
+      { href: "/portfolio", label: "Portfolio Manager", icon: User },
+      { href: "/blog", label: "Blog Articles", icon: FileText },
+      { href: "/shop", label: "Digital Shop", icon: ShoppingBag },
+      { href: "/docs", label: "Docs & Repos", icon: BookOpen },
+      { href: "/changelog", label: "Changelog Releases", icon: History },
+      { href: "/linkbio", label: "Linkbio Manager", icon: Link2 },
+    ],
+  },
+  {
+    title: "System & Assets",
+    items: [
+      { href: "/media", label: "Media Library", icon: Image },
+      { href: "/settings", label: "Settings & Health", icon: Settings },
+    ],
+  },
 ]
 
-export function CmsSidebar({ userEmail }: { userEmail?: string }) {
+interface CmsSidebarProps {
+  userEmail?: string
+  isMobile?: boolean
+  isOpen?: boolean
+  onClose?: () => void
+}
+
+export function CmsSidebar({
+  userEmail,
+  isMobile = false,
+  isOpen = false,
+  onClose,
+}: CmsSidebarProps) {
   const pathname = usePathname()
 
-  return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border/80 bg-card md:flex">
-      <div className="flex h-14 items-center gap-2.5 border-b border-border/80 px-5">
-        <div className="flex size-7 items-center justify-center rounded-lg border border-border bg-muted/60 text-foreground">
-          <ShieldCheck className="size-4" />
+  useEffect(() => {
+    if (!isMobile || !isOpen) return
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        onClose?.()
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [isMobile, isOpen, onClose])
+
+  const content = (
+    <div className="flex h-full flex-col justify-between bg-card">
+      <div className="flex flex-col">
+        <div className="flex h-16 items-center justify-between border-b border-border/80 px-5">
+          <Link
+            href="/"
+            onClick={() => isMobile && onClose?.()}
+            className="group flex items-center gap-3 transition-opacity hover:opacity-90"
+          >
+            <div className="flex size-8 items-center justify-center rounded-lg bg-foreground text-background shadow-xs transition-transform group-hover:scale-105">
+              <ShieldCheck className="size-4" />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold tracking-tight text-foreground">
+                  Rizfolio CMS
+                </span>
+                <span className="size-1.5 rounded-full bg-emerald-500" />
+              </div>
+              <span className="font-mono text-[10px] text-muted-foreground">
+                Mission Control
+              </span>
+            </div>
+          </Link>
+
+          {isMobile && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close navigation drawer"
+              className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <X className="size-4" />
+            </button>
+          )}
         </div>
-        <div className="flex flex-col">
-          <span className="text-xs font-semibold tracking-tight text-foreground">
-            Personal CMS
-          </span>
-          <span className="font-mono text-[10px] text-muted-foreground">
-            Rizfolio Admin
-          </span>
-        </div>
+
+        <nav
+          className="flex-1 space-y-6 overflow-y-auto px-3 py-5"
+          aria-label="CMS Main Navigation"
+        >
+          {NAV_SECTIONS.map((section) => (
+            <div key={section.title} className="space-y-1">
+              <div className="px-3 pb-1 text-[10px] font-bold tracking-wider text-muted-foreground/70 uppercase">
+                {section.title}
+              </div>
+              <div className="space-y-0.5">
+                {section.items.map((item) => {
+                  const isActive = item.exact
+                    ? pathname === item.href
+                    : pathname.startsWith(item.href)
+                  const Icon = item.icon
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => isMobile && onClose?.()}
+                      className={cn(
+                        "group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all focus:ring-2 focus:ring-primary/20 focus:outline-hidden",
+                        isActive
+                          ? "bg-foreground text-background shadow-xs"
+                          : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                      )}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon
+                          className={cn(
+                            "size-4 shrink-0 transition-colors",
+                            isActive
+                              ? "text-background"
+                              : "text-muted-foreground group-hover:text-foreground"
+                          )}
+                        />
+                        <span>{item.label}</span>
+                      </div>
+                      {item.badge && (
+                        <span
+                          className={cn(
+                            "rounded px-1.5 py-0.5 font-mono text-[10px]",
+                            isActive
+                              ? "bg-background/20 text-background"
+                              : "bg-muted text-muted-foreground"
+                          )}
+                        >
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </nav>
       </div>
 
-      <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-        {NAV_ITEMS.map((item) => {
-          const isActive = item.exact
-            ? pathname === item.href
-            : pathname.startsWith(item.href)
-          const Icon = item.icon
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-colors",
-                isActive
-                  ? "bg-primary font-semibold text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              )}
-            >
-              <Icon className="size-4" />
-              <span>{item.label}</span>
-            </Link>
-          )
-        })}
-      </nav>
-
       <div className="space-y-2 border-t border-border/80 p-3">
-        {userEmail && (
-          <div className="truncate px-3 py-1 font-mono text-[11px] text-muted-foreground">
-            {userEmail}
+        <div className="flex items-center gap-2.5 rounded-lg bg-muted/40 p-2">
+          <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-[11px] font-bold text-background">
+            RR
           </div>
-        )}
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-xs font-semibold text-foreground">
+              Rizky Ramadhan
+            </p>
+            <p className="truncate font-mono text-[10px] text-muted-foreground">
+              {userEmail || "owner@rizkyramadhan.dev"}
+            </p>
+          </div>
+        </div>
 
         <form action={logoutAdmin}>
           <button
             type="submit"
-            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-destructive transition-colors hover:bg-destructive/10"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-border/70 bg-card py-2 text-xs font-medium text-destructive transition-all hover:border-destructive/30 hover:bg-destructive/10 focus:ring-2 focus:ring-destructive/20 focus:outline-hidden"
           >
-            <LogOut className="size-4" />
+            <LogOut className="size-3.5" />
             <span>Keluar (Logout)</span>
           </button>
         </form>
       </div>
+    </div>
+  )
+
+  if (isMobile) {
+    if (!isOpen) return null
+
+    return (
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation"
+        className="fixed inset-0 z-50 md:hidden"
+      >
+        <div
+          className="fixed inset-0 animate-in bg-background/80 backdrop-blur-xs transition-opacity duration-200 fade-in"
+          onClick={onClose}
+        />
+        <div className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] animate-in border-r border-border/80 shadow-2xl duration-200 slide-in-from-left">
+          {content}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-border/80 bg-card md:flex md:flex-col">
+      {content}
     </aside>
   )
 }

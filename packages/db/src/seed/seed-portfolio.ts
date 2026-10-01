@@ -7,7 +7,7 @@ import {
   services,
   caseStudies,
   testimonials,
-} from "../index"
+} from "@workspace/db"
 
 export async function seedPortfolio() {
   console.log("Seeding Portfolio Domain...")

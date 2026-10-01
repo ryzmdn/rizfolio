@@ -6,7 +6,7 @@ import {
   postCategories,
   postTags,
   postViews,
-} from "../index"
+} from "@workspace/db"
 
 export async function seedBlog() {
   console.log("Seeding Blog Domain...")

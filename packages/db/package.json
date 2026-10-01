@@ -33,6 +33,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./schema": "./src/schema/index.ts",
+    "./schema/*": "./src/schema/*.ts",
     "./client": "./src/client.ts",
     "./validators": "./src/validators/index.ts"
   }

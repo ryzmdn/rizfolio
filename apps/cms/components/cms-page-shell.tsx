@@ -14,20 +14,24 @@ export function CmsPageShell({
   children,
 }: CmsPageShellProps) {
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6 md:p-8">
-      <div className="flex flex-col gap-3 border-b border-border/70 pb-5 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mx-auto max-w-7xl space-y-8 p-4 sm:p-6 md:p-8 lg:p-10">
+      <div className="flex flex-col gap-4 border-b border-border/80 pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
-          <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+          <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
             {title}
           </h1>
           {description && (
-            <p className="text-xs leading-relaxed text-muted-foreground">
+            <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground sm:text-sm">
               {description}
             </p>
           )}
         </div>
 
-        {actions && <div className="flex items-center gap-2">{actions}</div>}
+        {actions && (
+          <div className="flex flex-wrap items-center gap-2 sm:self-auto">
+            {actions}
+          </div>
+        )}
       </div>
 
       <div>{children}</div>

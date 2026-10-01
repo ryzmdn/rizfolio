@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
-import { users, sessions } from "../schema/users"
+import { users, sessions } from "@workspace/db/schema/users"
 
 export const insertUserSchema = createInsertSchema(users, {
   email: z.string().email(),

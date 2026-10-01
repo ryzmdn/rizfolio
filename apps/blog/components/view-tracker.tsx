@@ -13,7 +13,12 @@ export function ViewTracker({ postId }: ViewTrackerProps) {
   useEffect(() => {
     if (!hasTracked.current && postId) {
       hasTracked.current = true
-      incrementPostView(postId).catch(() => {})
+      incrementPostView(postId).catch((err: unknown) => {
+        console.error(
+          "[ViewTracker] Failed to increment post view:",
+          err instanceof Error ? err.message : String(err)
+        )
+      })
     }
   }, [postId])
 

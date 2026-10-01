@@ -1,4 +1,4 @@
-import { db, changelogs, changelogItems } from "../index"
+import { db, changelogs, changelogItems } from "@workspace/db"
 
 export async function seedChangelog() {
   console.log("Seeding Changelog Domain...")
@@ -49,7 +49,7 @@ export async function seedChangelog() {
         changelogId: rel1.id,
         category: "FEATURE",
         description:
-          "Launched apps/archive with Shiki server-side code highlighting, folder navigation, and direct ZIP archive downloads.",
+          "Launched apps/docs with Shiki server-side code highlighting, folder navigation, and technical documentation explorer.",
         displayOrder: 1,
       },
       {

@@ -73,3 +73,40 @@ export const orderItems = pgTable("order_items", {
   downloadToken: varchar("download_token", { length: 255 }),
   tokenExpiresAt: timestamp("token_expires_at", { withTimezone: true }),
 })
+
+export const coupons = pgTable("coupons", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  code: varchar("code", { length: 50 }).notNull().unique(),
+  discountPercent: integer("discount_percent").notNull(),
+  description: text("description"),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
+  minSpend: integer("min_spend").default(0),
+  maxUses: integer("max_uses"),
+  usedCount: integer("used_count").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
+
+export const productReviews = pgTable("product_reviews", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  productId: uuid("product_id").references(() => products.id, {
+    onDelete: "cascade",
+  }),
+  productSlug: varchar("product_slug", { length: 255 }).notNull(),
+  authorName: varchar("author_name", { length: 255 }).notNull(),
+  authorRole: varchar("author_role", { length: 255 }).default(
+    "Verified Developer"
+  ),
+  rating: integer("rating").notNull().default(5),
+  content: text("content").notNull(),
+  verifiedPurchase: boolean("verified_purchase").notNull().default(true),
+  status: varchar("status", { length: 50 }).notNull().default("APPROVED"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
