@@ -45,7 +45,7 @@ export default function LicensePage() {
       </Container>
 
       <Container>
-        <div className="rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur-xs sm:p-10 space-y-8">
+        <div className="space-y-8 rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur-xs sm:p-10">
           <div className="space-y-3">
             <h2 className="text-xl font-bold text-foreground">
               GNU Affero General Public License v3.0 (AGPL-3.0)
@@ -59,9 +59,9 @@ export default function LicensePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 border-y border-border/60 py-6">
+          <div className="grid grid-cols-1 gap-6 border-y border-border/60 py-6 sm:grid-cols-3">
             <div className="space-y-2">
-              <span className="text-xs font-semibold text-emerald-500 uppercase tracking-wider">
+              <span className="text-xs font-semibold tracking-wider text-emerald-500 uppercase">
                 Permissions
               </span>
               <ul className="space-y-1.5 text-xs text-muted-foreground">
@@ -85,7 +85,7 @@ export default function LicensePage() {
             </div>
 
             <div className="space-y-2">
-              <span className="text-xs font-semibold text-blue-500 uppercase tracking-wider">
+              <span className="text-xs font-semibold tracking-wider text-blue-500 uppercase">
                 Conditions
               </span>
               <ul className="space-y-1.5 text-xs text-muted-foreground">
@@ -109,7 +109,7 @@ export default function LicensePage() {
             </div>
 
             <div className="space-y-2">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                 Limitations
               </span>
               <ul className="space-y-1.5 text-xs text-muted-foreground">
@@ -119,15 +119,15 @@ export default function LicensePage() {
             </div>
           </div>
 
-          <div className="space-y-3 font-mono text-[11px] leading-relaxed text-muted-foreground bg-muted/30 p-4 rounded-xl border border-border">
+          <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
             <p>
               Copyright (c) 2026 Rizky Ramadhan &lt;hello@rizkyramadhan.dev&gt;
             </p>
             <p>
-              This program is free software: you can redistribute it and/or modify
-              it under the terms of the GNU Affero General Public License as
-              published by the Free Software Foundation, either version 3 of the
-              License, or (at your option) any later version.
+              This program is free software: you can redistribute it and/or
+              modify it under the terms of the GNU Affero General Public License
+              as published by the Free Software Foundation, either version 3 of
+              the License, or (at your option) any later version.
             </p>
           </div>
         </div>

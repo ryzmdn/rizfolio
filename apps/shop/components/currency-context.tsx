@@ -42,7 +42,11 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     setCurrencyState(detected)
 
     function handleStorage(e: StorageEvent) {
-      if (e.key === STORAGE_KEY && e.newValue && SUPPORTED_CURRENCIES[e.newValue]) {
+      if (
+        e.key === STORAGE_KEY &&
+        e.newValue &&
+        SUPPORTED_CURRENCIES[e.newValue]
+      ) {
         setCurrencyState(e.newValue)
       }
     }
@@ -65,7 +69,8 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 
   const activeCurrency = isMounted ? currency : DEFAULT_CURRENCY
   const currencyInfo =
-    SUPPORTED_CURRENCIES[activeCurrency] || SUPPORTED_CURRENCIES[DEFAULT_CURRENCY]
+    SUPPORTED_CURRENCIES[activeCurrency] ||
+    SUPPORTED_CURRENCIES[DEFAULT_CURRENCY]
 
   const convert = useCallback(
     (amountInIdr: number) => convertFromIdr(amountInIdr, activeCurrency),
@@ -112,7 +117,8 @@ export function useCurrency(): CurrencyContextValue {
       setCurrency: () => {},
       convert: (amount: number) => amount,
       format: (amount: number) => formatPriceFromIdr(amount, DEFAULT_CURRENCY),
-      formatRaw: (amount: number) => formatCurrencyAmount(amount, DEFAULT_CURRENCY),
+      formatRaw: (amount: number) =>
+        formatCurrencyAmount(amount, DEFAULT_CURRENCY),
     }
   }
   return context

@@ -110,13 +110,16 @@ export function OrderDetailDialog({
         onClick={onClose}
       />
 
-      <div className="relative z-50 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150">
+      <div className="relative z-50 flex max-h-[90vh] w-full max-w-3xl animate-in flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl duration-150 fade-in-0 zoom-in-95">
         <div className="flex items-center justify-between border-b border-border/80 px-6 py-4">
           <div className="flex items-center gap-3">
             <h2 className="text-base font-semibold text-foreground">
               Rincian Pesanan #{order.orderNumber}
             </h2>
-            <Badge variant={getStatusVariant(order.status)} className="font-mono text-xs">
+            <Badge
+              variant={getStatusVariant(order.status)}
+              className="font-mono text-xs"
+            >
               {order.status}
             </Badge>
           </div>
@@ -129,8 +132,8 @@ export function OrderDetailDialog({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          <div className="rounded-xl border border-border/70 bg-muted/20 p-4 space-y-3">
+        <div className="flex-1 space-y-6 overflow-y-auto p-6">
+          <div className="space-y-3 rounded-xl border border-border/70 bg-muted/20 p-4">
             <h3 className="text-xs font-semibold text-foreground">
               Ubah Status Pemenuhan Pesanan
             </h3>
@@ -176,7 +179,7 @@ export function OrderDetailDialog({
               </button>
 
               {isUpdatingStatus && (
-                <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground pl-2">
+                <div className="flex items-center gap-1.5 pl-2 font-mono text-xs text-muted-foreground">
                   <Loader2 className="size-3.5 animate-spin" />
                   <span>Memperbarui status...</span>
                 </div>
@@ -218,14 +221,18 @@ export function OrderDetailDialog({
               </h3>
               <div className="space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Total Transaksi:</span>
+                  <span className="text-muted-foreground">
+                    Total Transaksi:
+                  </span>
                   <span className="font-mono font-semibold text-foreground">
                     {order.currency} {order.totalAmount.toLocaleString("id-ID")}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Metode Pembayaran:</span>
-                  <span className="font-mono text-foreground flex items-center gap-1">
+                  <span className="text-muted-foreground">
+                    Metode Pembayaran:
+                  </span>
+                  <span className="flex items-center gap-1 font-mono text-foreground">
                     <CreditCard className="size-3" />
                     {order.paymentProvider || "Standard Gateway"}
                   </span>
@@ -233,7 +240,7 @@ export function OrderDetailDialog({
                 {order.paymentRef && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">ID Referensi:</span>
-                    <span className="font-mono text-foreground truncate max-w-[180px]">
+                    <span className="max-w-[180px] truncate font-mono text-foreground">
                       {order.paymentRef}
                     </span>
                   </div>
@@ -249,7 +256,7 @@ export function OrderDetailDialog({
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-xs font-semibold text-foreground flex items-center gap-2">
+            <h3 className="flex items-center gap-2 text-xs font-semibold text-foreground">
               <Package className="size-4 text-muted-foreground" />
               <span>Daftar Item Produk yang Dibeli ({items.length})</span>
             </h3>
@@ -290,7 +297,8 @@ export function OrderDetailDialog({
                       </div>
 
                       <div className="font-mono font-semibold text-foreground">
-                        {order.currency} {item.pricePaid.toLocaleString("id-ID")}
+                        {order.currency}{" "}
+                        {item.pricePaid.toLocaleString("id-ID")}
                       </div>
                     </div>
                   ))

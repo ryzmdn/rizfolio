@@ -29,8 +29,8 @@ export default function ErrorBoundary({
         </h1>
 
         <p className="text-xs/relaxed text-muted-foreground sm:text-sm">
-          A client-side hydration or data rendering failure occurred while loading
-          this view. You can attempt to retry the action.
+          A client-side hydration or data rendering failure occurred while
+          loading this view. You can attempt to retry the action.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">

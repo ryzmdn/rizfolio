@@ -115,7 +115,7 @@ export function CouponManager({ coupons }: CouponManagerProps) {
         <button
           type="button"
           onClick={() => setIsFormOpen((prev) => !prev)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 self-start rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:self-auto"
         >
           <Plus className="size-3.5" />
           <span>{isFormOpen ? "Tutup Formulir" : "Tambah Kupon Promo"}</span>
@@ -123,7 +123,10 @@ export function CouponManager({ coupons }: CouponManagerProps) {
       </div>
 
       {isFormOpen && (
-        <form onSubmit={handleCreateCoupon} className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
+        <form
+          onSubmit={handleCreateCoupon}
+          className="space-y-4 rounded-xl border border-border/80 bg-card p-6"
+        >
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <h3 className="text-sm font-semibold text-foreground">
               Buat Kupon Diskon Promo Baru
@@ -148,7 +151,7 @@ export function CouponManager({ coupons }: CouponManagerProps) {
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
                 required
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-xs uppercase text-foreground focus:outline-none"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-xs text-foreground uppercase focus:outline-none"
               />
             </div>
 
@@ -264,7 +267,7 @@ export function CouponManager({ coupons }: CouponManagerProps) {
       )}
 
       <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
-        <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
           <span>Daftar Kupon Promo Aktif ({filteredCoupons.length} kupon)</span>
         </div>
 
@@ -331,7 +334,7 @@ export function CouponManager({ coupons }: CouponManagerProps) {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex shrink-0 items-center gap-2">
                   <button
                     type="button"
                     onClick={() => handleToggleActive(coupon)}

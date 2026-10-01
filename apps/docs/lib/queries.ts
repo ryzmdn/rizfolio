@@ -37,7 +37,10 @@ const CIRCUIT_BREAKER_COOLDOWN_MS = 60_000
 
 async function safeDbQuery<T>(queryFn: () => Promise<T>): Promise<T | null> {
   const now = Date.now()
-  if (!dbHealth.isHealthy && now - dbHealth.lastCheck < CIRCUIT_BREAKER_COOLDOWN_MS) {
+  if (
+    !dbHealth.isHealthy &&
+    now - dbHealth.lastCheck < CIRCUIT_BREAKER_COOLDOWN_MS
+  ) {
     return null
   }
 
@@ -382,7 +385,9 @@ export async function getAllRepoFilePaths(slug: string): Promise<string[]> {
     db
       .select({ path: repoFiles.path, isDirectory: repoFiles.isDirectory })
       .from(repoFiles)
-      .where(and(eq(repoFiles.repoId, repo.id), eq(repoFiles.isDirectory, false)))
+      .where(
+        and(eq(repoFiles.repoId, repo.id), eq(repoFiles.isDirectory, false))
+      )
   )
 
   if (files && files.length > 0) {

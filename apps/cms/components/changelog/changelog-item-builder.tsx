@@ -184,7 +184,7 @@ export function ChangelogItemBuilder({
         <button
           type="button"
           onClick={() => setIsFormOpen((prev) => !prev)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 self-start rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:self-auto"
         >
           <Plus className="size-3.5" />
           <span>{isFormOpen ? "Tutup Formulir" : "Tambah Poin Sorotan"}</span>
@@ -192,7 +192,10 @@ export function ChangelogItemBuilder({
       </div>
 
       {isFormOpen && (
-        <form onSubmit={handleCreateItem} className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
+        <form
+          onSubmit={handleCreateItem}
+          className="space-y-4 rounded-xl border border-border/80 bg-card p-6"
+        >
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <h3 className="text-sm font-semibold text-foreground">
               Tambah Butir Poin Sorotan Pembaruan
@@ -245,7 +248,9 @@ export function ChangelogItemBuilder({
                 <option value="FEATURE">FEATURE (Fitur Baru)</option>
                 <option value="IMPROVEMENT">IMPROVEMENT (Peningkatan)</option>
                 <option value="FIX">FIX (Perbaikan Bug)</option>
-                <option value="BREAKING">BREAKING (Perubahan Signifikan)</option>
+                <option value="BREAKING">
+                  BREAKING (Perubahan Signifikan)
+                </option>
               </select>
             </div>
           </div>
@@ -303,8 +308,10 @@ export function ChangelogItemBuilder({
       )}
 
       <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
-        <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground flex items-center justify-between">
-          <span>Daftar Poin Sorotan Pembaruan ({filteredItems.length} butir)</span>
+        <div className="flex items-center justify-between border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
+          <span>
+            Daftar Poin Sorotan Pembaruan ({filteredItems.length} butir)
+          </span>
           {selectedChangelogId !== "ALL" && (
             <Badge variant="outline" className="text-[10px]">
               {changelogVersionMap.get(selectedChangelogId)}
@@ -342,7 +349,7 @@ export function ChangelogItemBuilder({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex shrink-0 items-center gap-2">
                   <button
                     type="button"
                     onClick={async () => {

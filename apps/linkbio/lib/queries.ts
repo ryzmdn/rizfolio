@@ -9,7 +9,10 @@ const shopUrl = getBaseUrl("shop")
 const docsUrl = getBaseUrl("docs")
 const changelogUrl = getBaseUrl("changelog")
 
-export const DEFAULT_BIO_LINKS: Omit<BioLink, "id" | "createdAt" | "updatedAt">[] = [
+export const DEFAULT_BIO_LINKS: Omit<
+  BioLink,
+  "id" | "createdAt" | "updatedAt"
+>[] = [
   {
     title: "Personal Portfolio & Architecture",
     description: "Full case studies, career journey, and technical solutions",

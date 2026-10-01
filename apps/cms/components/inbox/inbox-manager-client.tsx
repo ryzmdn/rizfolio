@@ -26,10 +26,7 @@ const defaultBadge = {
   className: "bg-amber-500/10 text-amber-500 border-amber-500/20",
 }
 
-const statusBadges: Record<
-  string,
-  { label: string; className: string }
-> = {
+const statusBadges: Record<string, { label: string; className: string }> = {
   NEW: defaultBadge,
   IN_REVIEW: {
     label: "In Review",
@@ -77,7 +74,8 @@ export function InboxManagerClient({
                   ...item,
                   status: newStatus,
                   replyNotes,
-                  respondedAt: newStatus === "RESPONDED" ? new Date() : item.respondedAt,
+                  respondedAt:
+                    newStatus === "RESPONDED" ? new Date() : item.respondedAt,
                 }
               : item
           )
@@ -90,7 +88,12 @@ export function InboxManagerClient({
   }
 
   function handleDelete(id: string) {
-    if (!window.confirm("Are you sure you want to permanently delete this inquiry?")) return
+    if (
+      !window.confirm(
+        "Are you sure you want to permanently delete this inquiry?"
+      )
+    )
+      return
 
     startTransition(async () => {
       const res = await deleteInquiryAction(id)
@@ -137,9 +140,9 @@ export function InboxManagerClient({
                 key={st}
                 type="button"
                 onClick={() => setStatusFilter(st)}
-                className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer ${
+                className={`cursor-pointer rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors ${
                   statusFilter === st
-                    ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                    ? "bg-primary font-semibold text-primary-foreground shadow-xs"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -149,9 +152,16 @@ export function InboxManagerClient({
           </div>
         </div>
 
-        <div className="font-mono text-xs text-muted-foreground shrink-0">
-          Showing <span className="font-medium text-foreground">{filteredInquiries.length}</span> of{" "}
-          <span className="font-medium text-foreground">{inquiries.length}</span> inquiries
+        <div className="shrink-0 font-mono text-xs text-muted-foreground">
+          Showing{" "}
+          <span className="font-medium text-foreground">
+            {filteredInquiries.length}
+          </span>{" "}
+          of{" "}
+          <span className="font-medium text-foreground">
+            {inquiries.length}
+          </span>{" "}
+          inquiries
         </div>
       </div>
 
@@ -164,7 +174,8 @@ export function InboxManagerClient({
                 No inquiries in this view
               </p>
               <p className="text-[11px] text-muted-foreground">
-                All client proposals and incoming project messages will appear here.
+                All client proposals and incoming project messages will appear
+                here.
               </p>
             </div>
           ) : (
@@ -175,17 +186,17 @@ export function InboxManagerClient({
                 <div
                   key={inq.id}
                   onClick={() => handleSelectInquiry(inq)}
-                  className={`flex flex-col gap-3 p-4 transition-colors cursor-pointer hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between ${
-                    isSelected ? "bg-muted/40 border-l-2 border-primary" : ""
+                  className={`flex cursor-pointer flex-col gap-3 p-4 transition-colors hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between ${
+                    isSelected ? "border-l-2 border-primary bg-muted/40" : ""
                   }`}
                 >
-                  <div className="flex items-start gap-3 min-w-0">
-                    <div className="flex size-9 items-center justify-center rounded-lg border border-border/70 bg-muted/40 text-foreground shrink-0 mt-0.5">
+                  <div className="flex min-w-0 items-start gap-3">
+                    <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-border/70 bg-muted/40 text-foreground">
                       <User className="size-4" />
                     </div>
 
-                    <div className="space-y-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
+                    <div className="min-w-0 space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
                         <span className="text-xs font-bold text-foreground">
                           {inq.name}
                         </span>
@@ -193,23 +204,23 @@ export function InboxManagerClient({
                           &lt;{inq.email}&gt;
                         </span>
                         <span
-                          className={`rounded-md border px-1.5 py-0.2 font-mono text-[9px] font-semibold ${badge.className}`}
+                          className={`py-0.2 rounded-md border px-1.5 font-mono text-[9px] font-semibold ${badge.className}`}
                         >
                           {badge.label}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs text-foreground font-medium">
+                      <div className="flex items-center gap-2 text-xs font-medium text-foreground">
                         <span>{inq.subject || "No Subject"}</span>
                       </div>
 
-                      <p className="text-[11px] text-muted-foreground line-clamp-1">
+                      <p className="line-clamp-1 text-[11px] text-muted-foreground">
                         {inq.message}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between gap-4 sm:justify-end shrink-0 border-t border-border/40 pt-2 sm:border-0 sm:pt-0">
+                  <div className="flex shrink-0 items-center justify-between gap-4 border-t border-border/40 pt-2 sm:justify-end sm:border-0 sm:pt-0">
                     <div className="flex flex-col items-end gap-1">
                       {inq.projectScope && (
                         <span className="rounded-md border border-border bg-muted/40 px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
@@ -250,7 +261,7 @@ export function InboxManagerClient({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
         >
           <div
-            className="w-full max-w-2xl rounded-2xl border border-border bg-card p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto"
+            className="max-h-[90vh] w-full max-w-2xl space-y-5 overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-border/60 pb-3">
@@ -300,7 +311,7 @@ export function InboxManagerClient({
                 <span className="text-[10px] font-medium text-muted-foreground uppercase">
                   Project Parameters
                 </span>
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-md border border-border bg-muted/40 px-2 py-0.5 font-mono text-[10px] text-foreground">
                     {selectedInquiry.projectScope || "General Inquiry"}
                   </span>
@@ -311,7 +322,8 @@ export function InboxManagerClient({
                   )}
                 </div>
                 <p className="font-mono text-[10px] text-muted-foreground">
-                  Received: {new Date(selectedInquiry.createdAt).toLocaleString()}
+                  Received:{" "}
+                  {new Date(selectedInquiry.createdAt).toLocaleString()}
                 </p>
               </div>
             </div>
@@ -320,7 +332,7 @@ export function InboxManagerClient({
               <span className="text-xs font-bold text-foreground">
                 Subject: {selectedInquiry.subject || "No Subject"}
               </span>
-              <div className="rounded-xl border border-border/80 bg-background p-4 text-xs leading-relaxed text-foreground whitespace-pre-wrap font-sans">
+              <div className="rounded-xl border border-border/80 bg-background p-4 font-sans text-xs leading-relaxed whitespace-pre-wrap text-foreground">
                 {selectedInquiry.message}
               </div>
             </div>
@@ -339,12 +351,12 @@ export function InboxManagerClient({
             </div>
 
             <div className="flex flex-col gap-3 border-t border-border/60 pt-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   disabled={isPending}
                   onClick={() => handleUpdateStatus("IN_REVIEW")}
-                  className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted cursor-pointer"
+                  className="cursor-pointer rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted"
                 >
                   Mark In Review
                 </button>
@@ -352,7 +364,7 @@ export function InboxManagerClient({
                   type="button"
                   disabled={isPending}
                   onClick={() => handleUpdateStatus("RESPONDED")}
-                  className="rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 cursor-pointer"
+                  className="cursor-pointer rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400"
                 >
                   Mark Responded
                 </button>
@@ -360,7 +372,7 @@ export function InboxManagerClient({
                   type="button"
                   disabled={isPending}
                   onClick={() => handleUpdateStatus("ARCHIVED")}
-                  className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted cursor-pointer"
+                  className="cursor-pointer rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted"
                 >
                   Archive
                 </button>
@@ -381,7 +393,7 @@ export function InboxManagerClient({
                   type="button"
                   disabled={isPending}
                   onClick={() => handleDelete(selectedInquiry.id)}
-                  className="rounded-lg border border-border p-1.5 text-rose-500 hover:bg-rose-500/10 cursor-pointer"
+                  className="cursor-pointer rounded-lg border border-border p-1.5 text-rose-500 hover:bg-rose-500/10"
                   title="Delete Inquiry"
                 >
                   <Trash2 className="size-3.5" />

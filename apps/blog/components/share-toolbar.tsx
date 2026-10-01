@@ -56,7 +56,7 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs">
-      <span className="text-muted-foreground mr-1 text-[11px] font-medium uppercase tracking-wider">
+      <span className="mr-1 text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
         Share:
       </span>
 
@@ -65,7 +65,7 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
         onClick={handleCopyLink}
         className={cn(
           buttonVariants({ variant: "outline", size: "sm" }),
-          "gap-x-1.5 text-xs h-8 px-2.5"
+          "h-8 gap-x-1.5 px-2.5 text-xs"
         )}
       >
         {copied ? (
@@ -87,7 +87,7 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
         rel="noreferrer"
         className={cn(
           buttonVariants({ variant: "outline", size: "sm" }),
-          "text-xs h-8 px-2.5"
+          "h-8 px-2.5 text-xs"
         )}
       >
         X (Twitter)
@@ -99,7 +99,7 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
         rel="noreferrer"
         className={cn(
           buttonVariants({ variant: "outline", size: "sm" }),
-          "text-xs h-8 px-2.5"
+          "h-8 px-2.5 text-xs"
         )}
       >
         LinkedIn

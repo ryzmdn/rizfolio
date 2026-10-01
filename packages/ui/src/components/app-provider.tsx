@@ -9,7 +9,9 @@ import {
 } from "./providers"
 import { CookieConsent } from "./cookie-consent"
 const LazyGSAPProvider = React.lazy(() =>
-  import("./animations/gsap-provider").then((mod) => ({ default: mod.GSAPProvider }))
+  import("./animations/gsap-provider").then((mod) => ({
+    default: mod.GSAPProvider,
+  }))
 )
 
 export interface AppProviderProps {

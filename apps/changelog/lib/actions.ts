@@ -1,11 +1,6 @@
 "use server"
 
-import {
-  db,
-  roadmapProposals,
-  masterTransactions,
-  sql,
-} from "@workspace/db"
+import { db, roadmapProposals, masterTransactions, sql } from "@workspace/db"
 
 export interface SubmitRoadmapProposalInput {
   title: string

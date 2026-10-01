@@ -20,7 +20,9 @@ export function CaseStudiesSection({
   return (
     <Container id="case-studies" className="space-y-12 py-20">
       <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
-        <p className="text-sm/6 font-medium text-muted-foreground">Case Studies</p>
+        <p className="text-sm/6 font-medium text-muted-foreground">
+          Case Studies
+        </p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Featured Case Studies & Systems
         </h2>
@@ -36,7 +38,7 @@ export function CaseStudiesSection({
             key={item.id}
             href={`/work/${item.slug}`}
             prefetch={true}
-            className="group relative flex flex-col overflow-hidden rounded-2xl transition-all duration-300 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
+            className="group relative flex flex-col overflow-hidden rounded-2xl transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden"
           >
             <div className="relative aspect-3/2 overflow-hidden rounded-xl bg-muted shadow-lg ring-1 ring-border">
               <Image
@@ -73,7 +75,7 @@ export function CaseStudiesSection({
         <Link
           href="/work"
           prefetch={true}
-          className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-xs font-semibold text-foreground shadow-xs transition-all hover:bg-muted hover:border-foreground/30 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
+          className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-xs font-semibold text-foreground shadow-xs transition-all hover:border-foreground/30 hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden"
         >
           <span>Explore All Engineering Systems & Case Studies</span>
           <ArrowRight className="size-3.5" />

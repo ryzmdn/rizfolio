@@ -10,7 +10,7 @@ export default function OrderNotFound() {
           <FileQuestion className="size-6" />
         </div>
 
-        <span className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+        <span className="mt-3 font-mono text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
           Order Unverified
         </span>
 

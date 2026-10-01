@@ -293,7 +293,8 @@ Before any container image is published to the registry, GitHub Actions workflow
   {
     id: "post-6",
     slug: "streaming-state-machines-real-time-ai-interfaces",
-    title: "Designing Streaming State Machines for Real-Time AI User Interfaces",
+    title:
+      "Designing Streaming State Machines for Real-Time AI User Interfaces",
     excerpt:
       "Managing asynchronous latency, progressive rendering, and resilient reconnection protocols in generative AI web workflows.",
     contentMd: `## Handling Asynchronous Latency with Grace

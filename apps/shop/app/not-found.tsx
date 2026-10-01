@@ -10,7 +10,7 @@ export default function ShopNotFound() {
           <Package className="size-6" />
         </div>
 
-        <span className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+        <span className="mt-3 font-mono text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
           404 Error
         </span>
 
@@ -19,8 +19,8 @@ export default function ShopNotFound() {
         </h1>
 
         <p className="mt-2 max-w-md text-xs leading-relaxed text-muted-foreground sm:text-sm">
-          The software architecture page, digital catalog route, or resource
-          you are looking for does not exist or has been relocated.
+          The software architecture page, digital catalog route, or resource you
+          are looking for does not exist or has been relocated.
         </p>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">

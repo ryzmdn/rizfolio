@@ -9,11 +9,7 @@ import {
   SUPPORTED_CURRENCIES,
   DEFAULT_CURRENCY,
 } from "./currencies"
-import {
-  fallbackOrders,
-  getPromoCoupon,
-  type DigitalOrder,
-} from "./queries"
+import { fallbackOrders, getPromoCoupon, type DigitalOrder } from "./queries"
 import type { OrderItemInput } from "./actions"
 
 export interface StripeCheckoutInput {
@@ -54,11 +50,10 @@ export async function createStripeCheckoutSessionAction(
 ): Promise<StripeCheckoutResult> {
   const name = input.customerName?.trim()
   const email = input.customerEmail?.trim().toLowerCase()
-  const selectedCurrency = (
+  const selectedCurrency =
     input.currency && SUPPORTED_CURRENCIES[input.currency.toUpperCase()]
       ? input.currency.toUpperCase()
       : DEFAULT_CURRENCY
-  )
 
   if (!name || name.length < 2) {
     return {
@@ -126,7 +121,9 @@ export async function createStripeCheckoutSessionAction(
         totalAmount: Math.round(finalTotalInCurrency),
         currency: selectedCurrency,
         status: isStripeConfigured() ? "PENDING" : "COMPLETED",
-        paymentProvider: isStripeConfigured() ? "STRIPE" : "Instant Sandbox Order",
+        paymentProvider: isStripeConfigured()
+          ? "STRIPE"
+          : "Instant Sandbox Order",
         paymentRef: `REF-${orderNumber}`,
       })
       .returning()
@@ -180,7 +177,9 @@ export async function createStripeCheckoutSessionAction(
     totalAmount: finalTotalInCurrency,
     currency: selectedCurrency,
     status: isStripeConfigured() ? "PENDING" : "COMPLETED",
-    paymentMethod: isStripeConfigured() ? "Stripe Checkout" : "Instant Sandbox Order",
+    paymentMethod: isStripeConfigured()
+      ? "Stripe Checkout"
+      : "Instant Sandbox Order",
     createdAt: now,
     items: populatedItems,
   }
@@ -203,11 +202,15 @@ export async function createStripeCheckoutSessionAction(
   try {
     const lineItems = input.items.map((it) => {
       const itemPriceInCurrency = convertFromIdr(it.pricePaid, selectedCurrency)
-      const discountedItemPrice = discountPercent > 0
-        ? Math.max(0, itemPriceInCurrency * (1 - discountPercent / 100))
-        : itemPriceInCurrency
+      const discountedItemPrice =
+        discountPercent > 0
+          ? Math.max(0, itemPriceInCurrency * (1 - discountPercent / 100))
+          : itemPriceInCurrency
 
-      const unitAmount = getStripeUnitAmount(discountedItemPrice, selectedCurrency)
+      const unitAmount = getStripeUnitAmount(
+        discountedItemPrice,
+        selectedCurrency
+      )
 
       return {
         price_data: {
@@ -356,4 +359,3 @@ export async function verifyAndFulfillStripeSession(
 
   return false
 }
-

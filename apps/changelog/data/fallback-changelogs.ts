@@ -399,4 +399,3 @@ export const roadmapItems: RoadmapItemData[] = [
     scope: ["apps/analytics", "packages/db"],
   },
 ]
-

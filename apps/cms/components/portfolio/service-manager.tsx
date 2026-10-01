@@ -96,8 +96,7 @@ function ServiceEditForm({
         summary: summary.trim(),
         description: description.trim(),
         deliverables: parsedDeliverables,
-        startingPrice:
-          startingPrice === "" ? null : Number(startingPrice),
+        startingPrice: startingPrice === "" ? null : Number(startingPrice),
         isActive,
         displayOrder: Number(displayOrder) || 0,
       })
@@ -126,7 +125,9 @@ function ServiceEditForm({
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-medium text-foreground">Slug URL</label>
+            <label className="text-xs font-medium text-foreground">
+              Slug URL
+            </label>
             <button
               type="button"
               onClick={() => setSlug(generateSlug(title))}
@@ -140,7 +141,7 @@ function ServiceEditForm({
             onChange={(e) => setSlug(e.target.value)}
             required
             placeholder="fullstack-web-architecture"
-            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono text-foreground focus:outline-none"
+            className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-xs text-foreground focus:outline-none"
           />
         </div>
       </div>
@@ -183,7 +184,7 @@ function ServiceEditForm({
             />
             <label
               htmlFor="edit-is-active"
-              className="text-xs font-medium text-foreground cursor-pointer"
+              className="cursor-pointer text-xs font-medium text-foreground"
             >
               {isActive ? "Aktif Ditawarkan" : "Tidak Aktif"}
             </label>
@@ -231,7 +232,7 @@ function ServiceEditForm({
         />
       </div>
 
-      <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+      <div className="flex items-center justify-end gap-3 border-t border-border pt-3">
         <button
           type="button"
           onClick={onClose}
@@ -344,8 +345,7 @@ function ServiceCreateDialog({
         summary: summary.trim(),
         description: description.trim(),
         deliverables: parsedDeliverables,
-        startingPrice:
-          startingPrice === "" ? null : Number(startingPrice),
+        startingPrice: startingPrice === "" ? null : Number(startingPrice),
         isActive,
         displayOrder: Number(displayOrder) || 0,
       })
@@ -403,7 +403,7 @@ function ServiceCreateDialog({
                 onChange={(e) => setSlug(e.target.value)}
                 required
                 placeholder="fullstack-web-development"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono text-foreground focus:outline-none"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-xs text-foreground focus:outline-none"
               />
             </div>
           </div>
@@ -446,7 +446,7 @@ function ServiceCreateDialog({
                 />
                 <label
                   htmlFor="create-is-active"
-                  className="text-xs font-medium text-foreground cursor-pointer"
+                  className="cursor-pointer text-xs font-medium text-foreground"
                 >
                   Aktif Ditawarkan
                 </label>
@@ -494,7 +494,7 @@ function ServiceCreateDialog({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+          <div className="flex items-center justify-end gap-3 border-t border-border pt-3">
             <button
               type="button"
               onClick={onClose}
@@ -529,9 +529,9 @@ function ServiceCreateDialog({
 
 export function ServiceManager({ services }: ServiceManagerProps) {
   const [searchQuery, setSearchQuery] = useState("")
-  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">(
-    "all"
-  )
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "active" | "inactive"
+  >("all")
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [editingService, setEditingService] = useState<ServiceItem | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -616,7 +616,9 @@ export function ServiceManager({ services }: ServiceManagerProps) {
 
         <div className="rounded-xl border border-border/80 bg-card p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Total Deliverable</span>
+            <span className="text-xs text-muted-foreground">
+              Total Deliverable
+            </span>
             <Sparkles className="h-4 w-4 text-blue-500" />
           </div>
           <p className="mt-2 text-2xl font-bold text-blue-500">
@@ -627,14 +629,14 @@ export function ServiceManager({ services }: ServiceManagerProps) {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-3">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+          <div className="relative max-w-sm flex-1">
+            <Search className="absolute top-2.5 left-3 h-3.5 w-3.5 text-muted-foreground" />
             <input
               type="text"
               placeholder="Cari layanan atau deliverable..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
+              className="w-full rounded-lg border border-border bg-background py-2 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
           </div>
 
@@ -690,7 +692,7 @@ export function ServiceManager({ services }: ServiceManagerProps) {
             <div className="space-y-3">
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex flex-wrap items-center gap-2">
                     <h4 className="text-sm font-semibold text-foreground">
                       {srv.title}
                     </h4>
@@ -715,7 +717,7 @@ export function ServiceManager({ services }: ServiceManagerProps) {
                   variant={srv.isActive ? "default" : "secondary"}
                   className={`text-[10px] font-medium ${
                     srv.isActive
-                      ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                      ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-600"
                       : "bg-muted text-muted-foreground"
                   }`}
                 >
@@ -723,7 +725,7 @@ export function ServiceManager({ services }: ServiceManagerProps) {
                 </Badge>
               </div>
 
-              <p className="text-xs text-muted-foreground line-clamp-2">
+              <p className="line-clamp-2 text-xs text-muted-foreground">
                 {srv.summary}
               </p>
 
@@ -800,7 +802,8 @@ export function ServiceManager({ services }: ServiceManagerProps) {
               Tidak ada layanan ditemukan
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Sesuaikan kata kunci pencarian atau tambahkan penawaran layanan baru.
+              Sesuaikan kata kunci pencarian atau tambahkan penawaran layanan
+              baru.
             </p>
             <button
               onClick={() => setIsCreateOpen(true)}

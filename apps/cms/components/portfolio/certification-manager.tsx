@@ -158,7 +158,7 @@ function CertificationEditForm({
             value={credentialId}
             onChange={(e) => setCredentialId(e.target.value)}
             placeholder="cth: AWS-PSA-123456"
-            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono text-foreground focus:outline-none"
+            className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-xs text-foreground focus:outline-none"
           />
         </div>
         <div className="space-y-1.5">
@@ -186,7 +186,7 @@ function CertificationEditForm({
         />
       </div>
 
-      <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+      <div className="flex items-center justify-end gap-3 border-t border-border pt-3">
         <button
           type="button"
           onClick={onClose}
@@ -396,7 +396,7 @@ function CertificationCreateDialog({
                 value={credentialId}
                 onChange={(e) => setCredentialId(e.target.value)}
                 placeholder="cth: GCP-PDE-987654"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono text-foreground focus:outline-none"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-xs text-foreground focus:outline-none"
               />
             </div>
             <div className="space-y-1.5">
@@ -424,7 +424,7 @@ function CertificationCreateDialog({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+          <div className="flex items-center justify-end gap-3 border-t border-border pt-3">
             <button
               type="button"
               onClick={onClose}
@@ -527,20 +527,21 @@ export function CertificationManager({
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
           </div>
           <p className="mt-2 text-2xl font-bold text-emerald-500">
-            {certifications.filter((c) => Boolean(c.credentialUrl)).length} Terverifikasi
+            {certifications.filter((c) => Boolean(c.credentialUrl)).length}{" "}
+            Terverifikasi
           </p>
         </div>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute top-2.5 left-3 h-3.5 w-3.5 text-muted-foreground" />
           <input
             type="text"
             placeholder="Cari sertifikasi, penerbit, ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
+            className="w-full rounded-lg border border-border bg-background py-2 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
         </div>
 
@@ -563,7 +564,7 @@ export function CertificationManager({
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <Award className="h-4 w-4 text-amber-500 shrink-0" />
+                    <Award className="h-4 w-4 shrink-0 text-amber-500" />
                     <h4 className="text-sm font-semibold text-foreground">
                       {cert.title}
                     </h4>
@@ -586,7 +587,7 @@ export function CertificationManager({
                   </div>
                 </div>
 
-                <Badge variant="outline" className="text-[10px] font-mono">
+                <Badge variant="outline" className="font-mono text-[10px]">
                   #{cert.displayOrder}
                 </Badge>
               </div>
@@ -594,7 +595,7 @@ export function CertificationManager({
               {cert.credentialId && (
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <Hash className="h-3 w-3 text-primary" />
-                  <span className="font-mono text-[11px] bg-muted/60 px-2 py-0.5 rounded">
+                  <span className="rounded bg-muted/60 px-2 py-0.5 font-mono text-[11px]">
                     {cert.credentialId}
                   </span>
                 </div>
@@ -652,7 +653,8 @@ export function CertificationManager({
               Tidak ada sertifikasi ditemukan
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Sesuaikan kata kunci pencarian atau daftarkan lisensi dan sertifikat profesional baru.
+              Sesuaikan kata kunci pencarian atau daftarkan lisensi dan
+              sertifikat profesional baru.
             </p>
             <button
               onClick={() => setIsCreateOpen(true)}

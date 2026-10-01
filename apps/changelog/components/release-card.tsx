@@ -29,25 +29,29 @@ function getItemBadge(category: string) {
     case "FEATURE":
       return {
         label: "Feature",
-        className: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+        className:
+          "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
         icon: <Sparkles className="size-3 shrink-0" />,
       }
     case "IMPROVEMENT":
       return {
         label: "Improvement",
-        className: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+        className:
+          "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
         icon: <Zap className="size-3 shrink-0" />,
       }
     case "FIX":
       return {
         label: "Fix",
-        className: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+        className:
+          "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
         icon: <Wrench className="size-3 shrink-0" />,
       }
     case "BREAKING":
       return {
         label: "Breaking",
-        className: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
+        className:
+          "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
         icon: <AlertCircle className="size-3 shrink-0" />,
       }
     default:
@@ -163,9 +167,7 @@ export function ReleaseCard({ release, isLatest }: ReleaseCardProps) {
 
       <div className="mt-5 space-y-2">
         <h2 className="text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-2xl">
-          <Link href={`/release/${release.version}`}>
-            {release.title}
-          </Link>
+          <Link href={`/release/${release.version}`}>{release.title}</Link>
         </h2>
 
         {release.summary && (
@@ -213,7 +215,7 @@ export function ReleaseCard({ release, isLatest }: ReleaseCardProps) {
 
       {release.items && release.items.length > 0 && (
         <div className="mt-6 border-t border-border/60 pt-5">
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <h3 className="mb-3 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
             Key Changes
           </h3>
           <ul className="space-y-2.5">
@@ -239,7 +241,7 @@ export function ReleaseCard({ release, isLatest }: ReleaseCardProps) {
                       {item.description}
                     </span>
                     {item.scope && (
-                      <span className="ml-2 inline-block rounded border border-border/50 bg-muted/60 px-1.5 py-0.2 font-mono text-[10px] text-muted-foreground">
+                      <span className="py-0.2 ml-2 inline-block rounded border border-border/50 bg-muted/60 px-1.5 font-mono text-[10px] text-muted-foreground">
                         {item.scope}
                       </span>
                     )}

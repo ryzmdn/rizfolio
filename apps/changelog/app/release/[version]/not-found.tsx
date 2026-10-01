@@ -6,7 +6,7 @@ export default function ReleaseNotFound() {
   return (
     <Container className="max-w-xl py-20 sm:py-28">
       <div className="flex flex-col items-center text-center">
-        <div className="flex size-14 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-xs">
+        <div className="flex size-14 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-600 shadow-xs dark:text-amber-400">
           <Tag className="size-7" />
         </div>
 
@@ -19,8 +19,8 @@ export default function ReleaseNotFound() {
         </h1>
 
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          The requested version permalink could not be resolved against published
-          records. The release may have been unlisted or renamed.
+          The requested version permalink could not be resolved against
+          published records. The release may have been unlisted or renamed.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

@@ -1,6 +1,13 @@
 "use client"
 
-import { Folder, FolderOpen, Layers, BookOpen, Package, Image as ImageIcon } from "lucide-react"
+import {
+  Folder,
+  FolderOpen,
+  Layers,
+  BookOpen,
+  Package,
+  Image as ImageIcon,
+} from "lucide-react"
 import { MediaFolder } from "@/lib/media-types"
 
 interface FolderCounts {
@@ -31,7 +38,7 @@ export function MediaFolderTabs({
   ]
 
   return (
-    <div className="flex items-center gap-2 overflow-x-auto border-b border-border pb-2 scrollbar-none">
+    <div className="scrollbar-none flex items-center gap-2 overflow-x-auto border-b border-border pb-2">
       {tabs.map((tab) => {
         const Icon = tab.icon
         const isSelected = selectedFolder === tab.key
@@ -42,7 +49,7 @@ export function MediaFolderTabs({
             key={tab.key}
             type="button"
             onClick={() => onSelectFolder(tab.key)}
-            className={`inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors shrink-0 ${
+            className={`inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
               isSelected
                 ? "bg-primary text-primary-foreground shadow-sm"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -51,7 +58,7 @@ export function MediaFolderTabs({
             <Icon className="h-3.5 w-3.5" />
             <span>{tab.label}</span>
             <span
-              className={`rounded-full px-1.5 py-0.2 text-[10px] ${
+              className={`py-0.2 rounded-full px-1.5 text-[10px] ${
                 isSelected
                   ? "bg-primary-foreground/20 text-primary-foreground"
                   : "bg-muted text-muted-foreground"

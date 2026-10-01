@@ -31,7 +31,6 @@ export function FilterSection({
   const [sortOpen, setSortOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
@@ -63,22 +62,30 @@ export function FilterSection({
   const handleCategorySelect = (slug: string) => {
     startTransition(() => {
       const queryString = createQueryString({ category: slug })
-      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+        scroll: false,
+      })
     })
   }
 
   const handleClearTag = () => {
     startTransition(() => {
       const queryString = createQueryString({ tag: null })
-      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+        scroll: false,
+      })
     })
   }
 
   const handleSortChange = (newSort: "latest" | "popular") => {
     setSortOpen(false)
     startTransition(() => {
-      const queryString = createQueryString({ sort: newSort === "latest" ? null : newSort })
-      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
+      const queryString = createQueryString({
+        sort: newSort === "latest" ? null : newSort,
+      })
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+        scroll: false,
+      })
     })
   }
 
@@ -86,7 +93,9 @@ export function FilterSection({
     e.preventDefault()
     startTransition(() => {
       const queryString = createQueryString({ q: query.trim() || null })
-      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+        scroll: false,
+      })
     })
   }
 
@@ -94,7 +103,9 @@ export function FilterSection({
     setQuery("")
     startTransition(() => {
       const queryString = createQueryString({ q: null })
-      router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false })
+      router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+        scroll: false,
+      })
     })
   }
 
@@ -104,7 +115,7 @@ export function FilterSection({
     <div className="w-full space-y-3">
       <div className="flex items-center justify-between gap-3">
         <div
-          className="flex flex-1 items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none"
+          className="scrollbar-none flex flex-1 items-center gap-1.5 overflow-x-auto pb-0.5"
           role="group"
           aria-label="Filter by category"
         >
@@ -179,7 +190,7 @@ export function FilterSection({
               <div
                 role="menu"
                 aria-labelledby="sort-button"
-                className="absolute right-0 top-full z-10 mt-1.5 w-32 overflow-hidden rounded-md border border-border/70 bg-card shadow-sm"
+                className="absolute top-full right-0 z-10 mt-1.5 w-32 overflow-hidden rounded-md border border-border/70 bg-card shadow-sm"
               >
                 {(["latest", "popular"] as const).map((option) => (
                   <button
@@ -189,7 +200,8 @@ export function FilterSection({
                     onClick={() => handleSortChange(option)}
                     className={cn(
                       "w-full px-3 py-2 text-left text-xs transition-colors",
-                      currentSort === option || (!currentSort && option === "latest")
+                      currentSort === option ||
+                        (!currentSort && option === "latest")
                         ? "bg-muted font-medium text-foreground"
                         : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                     )}
@@ -225,7 +237,7 @@ export function FilterSection({
                 <X className="size-3.5" />
               </button>
             ) : (
-              <kbd className="pointer-events-none absolute right-2 hidden select-none rounded border border-border/40 bg-muted px-1 font-mono text-[9px] text-muted-foreground sm:inline">
+              <kbd className="pointer-events-none absolute right-2 hidden rounded border border-border/40 bg-muted px-1 font-mono text-[9px] text-muted-foreground select-none sm:inline">
                 /
               </kbd>
             )}
@@ -267,8 +279,11 @@ export function FilterSection({
       )}
 
       {isPending && (
-        <div aria-hidden="true" className="h-px w-full overflow-hidden rounded-full bg-border/30">
-          <div className="h-full w-2/5 animate-pulse bg-foreground/30 rounded-full" />
+        <div
+          aria-hidden="true"
+          className="h-px w-full overflow-hidden rounded-full bg-border/30"
+        >
+          <div className="h-full w-2/5 animate-pulse rounded-full bg-foreground/30" />
         </div>
       )}
     </div>

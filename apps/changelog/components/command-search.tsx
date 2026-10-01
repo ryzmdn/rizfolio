@@ -2,13 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import {
-  Search,
-  X,
-  ArrowRight,
-  GitCommit,
-  Milestone,
-} from "lucide-react"
+import { Search, X, ArrowRight, GitCommit, Milestone } from "lucide-react"
 import {
   fallbackChangelogs,
   roadmapItems,
@@ -119,7 +113,9 @@ export function CommandSearch() {
         setSelectedIndex((prev) => (prev + 1) % Math.max(1, allItems.length))
       } else if (e.key === "ArrowUp") {
         e.preventDefault()
-        setSelectedIndex((prev) => (prev - 1 + allItems.length) % Math.max(1, allItems.length))
+        setSelectedIndex(
+          (prev) => (prev - 1 + allItems.length) % Math.max(1, allItems.length)
+        )
       } else if (e.key === "Enter" && allItems[selectedIndex]) {
         e.preventDefault()
         handleSelect(allItems[selectedIndex].url)
@@ -137,11 +133,11 @@ export function CommandSearch() {
       role="dialog"
       aria-modal="true"
       aria-label="Search release notes and roadmap"
-      className="fixed inset-0 z-50 flex items-start justify-center bg-background/80 p-4 pt-16 backdrop-blur-sm sm:pt-24 animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex animate-in items-start justify-center bg-background/80 p-4 pt-16 backdrop-blur-sm duration-150 fade-in sm:pt-24"
       onClick={handleClose}
     >
       <div
-        className="w-full max-w-2xl overflow-hidden rounded-2xl border border-border/90 bg-card shadow-2xl ring-1 ring-border/50 animate-in zoom-in-95 duration-150"
+        className="w-full max-w-2xl animate-in overflow-hidden rounded-2xl border border-border/90 bg-card shadow-2xl ring-1 ring-border/50 duration-150 zoom-in-95"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 border-b border-border/80 px-4 py-3">
@@ -182,19 +178,23 @@ export function CommandSearch() {
             <div className="space-y-4">
               {matchedReleases.length > 0 && (
                 <div>
-                  <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  <div className="px-3 py-1.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
                     Releases & Version Logs
                   </div>
                   <div className="space-y-1">
                     {matchedReleases.map((rel) => {
-                      const itemIndex = allItems.findIndex((it) => it.tag === rel.version)
+                      const itemIndex = allItems.findIndex(
+                        (it) => it.tag === rel.version
+                      )
                       const isSelected = selectedIndex === itemIndex
 
                       return (
                         <button
                           key={rel.id}
                           type="button"
-                          onClick={() => handleSelect(`/release/${rel.version}`)}
+                          onClick={() =>
+                            handleSelect(`/release/${rel.version}`)
+                          }
                           className={cn(
                             "flex w-full items-start gap-3 rounded-xl p-3 text-left transition-all",
                             isSelected
@@ -231,12 +231,14 @@ export function CommandSearch() {
 
               {matchedRoadmap.length > 0 && (
                 <div>
-                  <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  <div className="px-3 py-1.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
                     Roadmap & Milestones
                   </div>
                   <div className="space-y-1">
                     {matchedRoadmap.map((rm) => {
-                      const itemIndex = allItems.findIndex((it) => it.title === rm.title)
+                      const itemIndex = allItems.findIndex(
+                        (it) => it.title === rm.title
+                      )
                       const isSelected = selectedIndex === itemIndex
 
                       return (
@@ -282,9 +284,15 @@ export function CommandSearch() {
         <div className="flex items-center justify-between border-t border-border/80 bg-muted/30 px-4 py-2 text-[11px] text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>Navigation:</span>
-            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">UP</kbd>
-            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">DOWN</kbd>
-            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">ENTER</kbd>
+            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+              UP
+            </kbd>
+            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+              DOWN
+            </kbd>
+            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+              ENTER
+            </kbd>
           </div>
           <span>Press ESC to dismiss</span>
         </div>

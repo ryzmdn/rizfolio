@@ -119,7 +119,7 @@ export function DocsFooter() {
           </div>
 
           <div className="space-y-3 md:col-span-3">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
               Documentation
             </p>
             <ul className="space-y-2 text-xs">
@@ -137,7 +137,7 @@ export function DocsFooter() {
           </div>
 
           <div className="space-y-3 md:col-span-3">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
               Ecosystem
             </p>
             <ul className="space-y-2 text-xs">
@@ -178,7 +178,7 @@ export function DocsFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col items-start justify-between gap-y-4 border-t border-border/40 pt-8 sm:flex-row sm:items-center text-xs text-muted-foreground">
+        <div className="flex flex-col items-start justify-between gap-y-4 border-t border-border/40 pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>
             &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js
             16, React 19, Shiki & Tailwind CSS.

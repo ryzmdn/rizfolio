@@ -48,7 +48,8 @@ export const fallbackCategories: CategoryItem[] = [
     id: "cat-6",
     name: "Applied AI",
     slug: "applied-ai",
-    description: "Streaming LLM workflows, real-time queues, and AI ergonomics.",
+    description:
+      "Streaming LLM workflows, real-time queues, and AI ergonomics.",
     count: 1,
   },
 ]

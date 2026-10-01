@@ -1,5 +1,8 @@
 import { CmsPageShell } from "@/components/cms-page-shell"
-import { getBioLinksAdmin, getBioLinkStats } from "@/lib/actions/linkbio-actions"
+import {
+  getBioLinksAdmin,
+  getBioLinkStats,
+} from "@/lib/actions/linkbio-actions"
 import { LinkbioManagerClient } from "@/components/linkbio/linkbio-manager-client"
 import { Link2, MousePointerClick, CheckCircle2, Globe } from "lucide-react"
 
@@ -20,7 +23,7 @@ export default async function CmsLinkbioPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Total Bio Links
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -36,7 +39,7 @@ export default async function CmsLinkbioPage() {
 
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Active on Public Bio
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500">
@@ -52,7 +55,7 @@ export default async function CmsLinkbioPage() {
 
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Total Click Events
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">

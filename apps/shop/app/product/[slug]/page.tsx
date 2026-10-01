@@ -25,7 +25,11 @@ import { ProductPurchaseCard } from "@/components/product-purchase-card"
 import { ReviewsSection } from "@/components/reviews-section"
 import { StickyBuyBar } from "@/components/sticky-buy-bar"
 import { ProductFaq } from "@/components/product-faq"
-import { SEO_CONFIG, getBaseUrl, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  createBreadcrumbJsonLd,
+} from "@workspace/ui/lib/seo"
 
 interface ProductPageProps {
   params: Promise<{
@@ -140,7 +144,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const breadcrumbJsonLd = createBreadcrumbJsonLd([
     { name: "Store Catalog", url: baseUrl },
     ...(product.category
-      ? [{ name: product.category, url: `${baseUrl}/?category=${product.category}` }]
+      ? [
+          {
+            name: product.category,
+            url: `${baseUrl}/?category=${product.category}`,
+          },
+        ]
       : []),
     { name: product.title, url: productUrl },
   ])
@@ -157,7 +166,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       />
 
       <Container className="max-w-6xl py-10 md:py-16">
-        <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground">
+        <nav
+          aria-label="Breadcrumb"
+          className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground"
+        >
           <Link
             href="/"
             className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
@@ -177,7 +189,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </>
           )}
           <ChevronRight className="size-3 text-muted-foreground/40" />
-          <span className="truncate max-w-[200px] sm:max-w-xs text-foreground font-medium">
+          <span className="max-w-[200px] truncate font-medium text-foreground sm:max-w-xs">
             {product.title}
           </span>
         </nav>

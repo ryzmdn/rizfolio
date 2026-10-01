@@ -3,7 +3,11 @@ import "@workspace/ui/styles/globals.css"
 import { fontVariables } from "@workspace/ui/lib/fonts"
 import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
-import { SEO_CONFIG, getBaseUrl, createProfilePageJsonLd } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  createProfilePageJsonLd,
+} from "@workspace/ui/lib/seo"
 
 const linkbioUrl = getBaseUrl("linkbio")
 
@@ -69,7 +73,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://res.cloudinary.com"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>
       <body className={cn(fontVariables)}>

@@ -2,7 +2,7 @@ import { Container } from "@workspace/ui/components/layouts/container"
 
 export default function ShopLoading() {
   return (
-    <div className="space-y-16 pb-20 pt-10 sm:space-y-20">
+    <div className="space-y-16 pt-10 pb-20 sm:space-y-20">
       <section className="space-y-10">
         <Container>
           <div className="mx-auto max-w-3xl space-y-4 text-center">

@@ -4,7 +4,11 @@ import Image from "next/image"
 import { ArrowLeft, ArrowUpRight, Sparkles, Filter, Code2 } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
 import { getCaseStudies } from "@/lib/queries"
-import { getBaseUrl, SEO_CONFIG, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
+import {
+  getBaseUrl,
+  SEO_CONFIG,
+  createBreadcrumbJsonLd,
+} from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
@@ -78,7 +82,7 @@ export default async function WorkIndexPage() {
           </p>
 
           <div className="flex flex-wrap items-center gap-2 pt-4">
-            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground pr-2">
+            <span className="inline-flex items-center gap-1.5 pr-2 text-xs font-medium text-muted-foreground">
               <Filter className="size-3" />
               <span>Disciplines:</span>
             </span>
@@ -100,7 +104,7 @@ export default async function WorkIndexPage() {
                 key={item.id}
                 href={`/work/${item.slug}`}
                 prefetch={true}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs transition-all duration-300 hover:border-foreground/30 hover:shadow-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs transition-all duration-300 hover:border-foreground/30 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden"
               >
                 <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-muted ring-1 ring-border">
                   <Image
@@ -133,7 +137,7 @@ export default async function WorkIndexPage() {
                     )}
                   </div>
 
-                  <div className="space-y-2.5 pt-2 border-t border-border/50">
+                  <div className="space-y-2.5 border-t border-border/50 pt-2">
                     {item.metrics && Object.keys(item.metrics).length > 0 && (
                       <div className="flex flex-wrap items-center gap-2">
                         {Object.entries(item.metrics)
@@ -143,7 +147,10 @@ export default async function WorkIndexPage() {
                               key={k}
                               className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-foreground"
                             >
-                              <strong className="font-semibold">{String(v)}</strong> {k}
+                              <strong className="font-semibold">
+                                {String(v)}
+                              </strong>{" "}
+                              {k}
                             </span>
                           ))}
                       </div>
@@ -155,7 +162,7 @@ export default async function WorkIndexPage() {
                         {item.techStack.slice(0, 4).map((tech) => (
                           <span
                             key={tech}
-                            className="rounded-sm border border-border/60 bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground font-mono"
+                            className="rounded-sm border border-border/60 bg-background px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground"
                           >
                             {tech}
                           </span>
@@ -180,8 +187,8 @@ export default async function WorkIndexPage() {
               Ready to Architect Your Next System?
             </h3>
             <p className="mx-auto mt-2 max-w-lg text-xs leading-relaxed text-muted-foreground sm:text-sm">
-              Available for high-stakes engineering projects, technical advisory,
-              and full-stack production delivery.
+              Available for high-stakes engineering projects, technical
+              advisory, and full-stack production delivery.
             </p>
             <div className="mt-6 flex justify-center">
               <Link

@@ -16,7 +16,10 @@ export function ReadingProgressBar() {
         const docHeight =
           document.documentElement.scrollHeight - window.innerHeight
         if (docHeight > 0) {
-          const percentage = Math.min(100, Math.max(0, (scrollY / docHeight) * 100))
+          const percentage = Math.min(
+            100,
+            Math.max(0, (scrollY / docHeight) * 100)
+          )
           setProgress(percentage)
         }
         rafId = null

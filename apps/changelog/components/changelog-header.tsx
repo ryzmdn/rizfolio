@@ -67,7 +67,10 @@ export function ChangelogHeader() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-1 sm:flex" aria-label="Main Navigation">
+          <nav
+            className="hidden items-center gap-1 sm:flex"
+            aria-label="Main Navigation"
+          >
             {navLinks.map((link) => {
               const Icon = link.icon
               return (
@@ -79,7 +82,7 @@ export function ChangelogHeader() {
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all",
                     link.active
-                      ? "bg-foreground/10 text-foreground font-semibold"
+                      ? "bg-foreground/10 font-semibold text-foreground"
                       : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                   )}
                 >
@@ -98,7 +101,7 @@ export function ChangelogHeader() {
           <button
             type="button"
             onClick={openSearch}
-            className="group inline-flex items-center gap-2 rounded-lg border border-border/80 bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
+            className="group inline-flex items-center gap-2 rounded-lg border border-border/80 bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-hidden"
             title="Search changelog, updates and roadmap (Ctrl+K or Cmd+K)"
             aria-label="Open search dialog"
           >
@@ -114,7 +117,7 @@ export function ChangelogHeader() {
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub Repository Releases"
-            className="hidden rounded-lg border border-border/80 bg-muted/40 p-2 text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40 sm:inline-flex"
+            className="hidden rounded-lg border border-border/80 bg-muted/40 p-2 text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-hidden sm:inline-flex"
           >
             <GitHub size={15} />
           </a>
@@ -126,15 +129,19 @@ export function ChangelogHeader() {
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
-            className="inline-flex rounded-lg border border-border/80 bg-muted/40 p-2 text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40 sm:hidden"
+            className="inline-flex rounded-lg border border-border/80 bg-muted/40 p-2 text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:ring-2 focus:ring-primary/40 focus:outline-hidden sm:hidden"
           >
-            {mobileMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+            {mobileMenuOpen ? (
+              <X className="size-4" />
+            ) : (
+              <Menu className="size-4" />
+            )}
           </button>
         </div>
       </div>
 
       {mobileMenuOpen && (
-        <div className="border-b border-border/80 bg-background/95 px-4 py-3 backdrop-blur-md sm:hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="animate-in border-b border-border/80 bg-background/95 px-4 py-3 backdrop-blur-md duration-200 fade-in slide-in-from-top-2 sm:hidden">
           <nav className="flex flex-col gap-1" aria-label="Mobile Navigation">
             {navLinks.map((link) => {
               const Icon = link.icon
@@ -148,7 +155,7 @@ export function ChangelogHeader() {
                   className={cn(
                     "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors",
                     link.active
-                      ? "bg-foreground/10 text-foreground font-semibold"
+                      ? "bg-foreground/10 font-semibold text-foreground"
                       : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                   )}
                 >
@@ -156,7 +163,9 @@ export function ChangelogHeader() {
                     <Icon className="size-4" />
                     <span>{link.label}</span>
                   </div>
-                  {link.external && <ExternalLink className="size-3 opacity-60" />}
+                  {link.external && (
+                    <ExternalLink className="size-3 opacity-60" />
+                  )}
                 </Link>
               )
             })}

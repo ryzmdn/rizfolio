@@ -6,14 +6,17 @@ export default function NotFound() {
   return (
     <Container className="flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
       <div className="mx-auto max-w-sm space-y-6">
-        <p className="font-mono text-xs tracking-widest text-muted-foreground">404</p>
+        <p className="font-mono text-xs tracking-widest text-muted-foreground">
+          404
+        </p>
 
         <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           Article not found.
         </h1>
 
         <p className="text-sm/relaxed text-muted-foreground">
-          This article may have been archived, renamed, or is temporarily unavailable.
+          This article may have been archived, renamed, or is temporarily
+          unavailable.
         </p>
 
         <Link

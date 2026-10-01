@@ -97,7 +97,10 @@ export async function updateInquiryStatusAction(
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update inquiry status",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update inquiry status",
     }
   }
 }
@@ -122,7 +125,8 @@ export async function deleteInquiryAction(
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete inquiry",
+      error:
+        error instanceof Error ? error.message : "Failed to delete inquiry",
     }
   }
 }

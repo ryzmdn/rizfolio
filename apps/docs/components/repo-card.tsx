@@ -69,7 +69,7 @@ export function RepoCard({
           </div>
           <Badge
             variant={categoryInfo.variant}
-            className="text-[10px] font-normal shrink-0"
+            className="shrink-0 text-[10px] font-normal"
           >
             {categoryInfo.label}
           </Badge>

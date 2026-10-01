@@ -26,17 +26,17 @@ export default function DocsErrorBoundary({
         </div>
 
         <div className="space-y-2">
-          <p className="font-mono text-xs text-rose-500">
-            Runtime Exception
-          </p>
+          <p className="font-mono text-xs text-rose-500">Runtime Exception</p>
           <h1 className="text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
             Unable to Load Repository Archive
           </h1>
           <p className="text-xs/relaxed text-muted-foreground sm:text-sm/relaxed">
-            An unexpected error occurred while compiling the repository catalog. You can attempt to retry the request or return to the archive overview.
+            An unexpected error occurred while compiling the repository catalog.
+            You can attempt to retry the request or return to the archive
+            overview.
           </p>
           {error.digest ? (
-            <p className="font-mono text-[11px] text-muted-foreground/70 pt-1">
+            <p className="pt-1 font-mono text-[11px] text-muted-foreground/70">
               Error Digest: {error.digest}
             </p>
           ) : null}
@@ -46,14 +46,20 @@ export default function DocsErrorBoundary({
           <button
             type="button"
             onClick={() => reset()}
-            className={cn(buttonVariants({ size: "sm" }), "gap-x-2 text-xs px-4")}
+            className={cn(
+              buttonVariants({ size: "sm" }),
+              "gap-x-2 px-4 text-xs"
+            )}
           >
             <RotateCcw className="size-3.5" />
             <span>Try Again</span>
           </button>
           <Link
             href="/"
-            className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-x-2 text-xs px-4")}
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              "gap-x-2 px-4 text-xs"
+            )}
           >
             <ArrowLeft className="size-3.5" />
             <span>Return to Archive</span>

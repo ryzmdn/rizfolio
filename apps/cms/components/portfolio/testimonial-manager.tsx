@@ -148,7 +148,7 @@ function TestimonialEditForm({
                 type="button"
                 key={val}
                 onClick={() => setRating(val)}
-                className="p-1 hover:scale-110 transition-transform"
+                className="p-1 transition-transform hover:scale-110"
               >
                 <Star
                   className={`h-5 w-5 ${
@@ -186,7 +186,7 @@ function TestimonialEditForm({
             />
             <label
               htmlFor="edit-is-featured"
-              className="text-xs font-medium text-foreground cursor-pointer"
+              className="cursor-pointer text-xs font-medium text-foreground"
             >
               Tampilkan di Beranda
             </label>
@@ -220,7 +220,7 @@ function TestimonialEditForm({
         />
       </div>
 
-      <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+      <div className="flex items-center justify-end gap-3 border-t border-border pt-3">
         <button
           type="button"
           onClick={onClose}
@@ -405,7 +405,7 @@ function TestimonialCreateDialog({
                     type="button"
                     key={val}
                     onClick={() => setRating(val)}
-                    className="p-1 hover:scale-110 transition-transform"
+                    className="p-1 transition-transform hover:scale-110"
                   >
                     <Star
                       className={`h-5 w-5 ${
@@ -443,7 +443,7 @@ function TestimonialCreateDialog({
                 />
                 <label
                   htmlFor="create-is-featured"
-                  className="text-xs font-medium text-foreground cursor-pointer"
+                  className="cursor-pointer text-xs font-medium text-foreground"
                 >
                   Tampilkan di Beranda
                 </label>
@@ -477,7 +477,7 @@ function TestimonialCreateDialog({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-border">
+          <div className="flex items-center justify-end gap-3 border-t border-border pt-3">
             <button
               type="button"
               onClick={onClose}
@@ -512,7 +512,9 @@ function TestimonialCreateDialog({
 
 export function TestimonialManager({ testimonials }: TestimonialManagerProps) {
   const [searchQuery, setSearchQuery] = useState("")
-  const [featuredFilter, setFeaturedFilter] = useState<"all" | "featured">("all")
+  const [featuredFilter, setFeaturedFilter] = useState<"all" | "featured">(
+    "all"
+  )
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<TestimonialItem | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -526,8 +528,7 @@ export function TestimonialManager({ testimonials }: TestimonialManagerProps) {
         (t.role && t.role.toLowerCase().includes(query)) ||
         t.content.toLowerCase().includes(query)
 
-      const matchesFeatured =
-        featuredFilter === "all" ? true : t.isFeatured
+      const matchesFeatured = featuredFilter === "all" ? true : t.isFeatured
 
       return matchesSearch && matchesFeatured
     })
@@ -581,13 +582,14 @@ export function TestimonialManager({ testimonials }: TestimonialManagerProps) {
 
         <div className="rounded-xl border border-border/80 bg-card p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">
-              Skor Kepuasan
-            </span>
-            <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
+            <span className="text-xs text-muted-foreground">Skor Kepuasan</span>
+            <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
           </div>
           <p className="mt-2 text-2xl font-bold text-amber-500">
-            {averageRating} <span className="text-xs font-normal text-muted-foreground">/ 5.0</span>
+            {averageRating}{" "}
+            <span className="text-xs font-normal text-muted-foreground">
+              / 5.0
+            </span>
           </p>
         </div>
 
@@ -606,14 +608,14 @@ export function TestimonialManager({ testimonials }: TestimonialManagerProps) {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-3">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+          <div className="relative max-w-sm flex-1">
+            <Search className="absolute top-2.5 left-3 h-3.5 w-3.5 text-muted-foreground" />
             <input
               type="text"
               placeholder="Cari nama klien, instansi, konten..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
+              className="w-full rounded-lg border border-border bg-background py-2 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
           </div>
 
@@ -690,7 +692,7 @@ export function TestimonialManager({ testimonials }: TestimonialManagerProps) {
                 </div>
               </div>
 
-              <blockquote className="rounded-lg bg-muted/40 p-3 text-xs italic text-foreground leading-relaxed">
+              <blockquote className="rounded-lg bg-muted/40 p-3 text-xs leading-relaxed text-foreground italic">
                 &ldquo;{item.content}&rdquo;
               </blockquote>
             </div>
@@ -745,7 +747,8 @@ export function TestimonialManager({ testimonials }: TestimonialManagerProps) {
               Tidak ada testimoni ditemukan
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Sesuaikan kata kunci pencarian atau rekam testimoni kepuasan klien baru.
+              Sesuaikan kata kunci pencarian atau rekam testimoni kepuasan klien
+              baru.
             </p>
             <button
               onClick={() => setIsCreateOpen(true)}

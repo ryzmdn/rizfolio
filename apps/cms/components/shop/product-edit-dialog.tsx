@@ -79,7 +79,10 @@ function ProductEditForm({ product, onClose }: ProductEditFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="flex-1 space-y-6 overflow-y-auto p-6"
+    >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="space-y-1.5 sm:col-span-2">
           <label className="text-xs font-medium text-foreground">
@@ -103,7 +106,9 @@ function ProductEditForm({ product, onClose }: ProductEditFormProps) {
             onChange={(e) => setProductType(e.target.value)}
             className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
           >
-            <option value="DIGITAL_DOWNLOAD">Digital Download (Source Code / Assets)</option>
+            <option value="DIGITAL_DOWNLOAD">
+              Digital Download (Source Code / Assets)
+            </option>
             <option value="LICENSE">Lisensi Software</option>
             <option value="SERVICE">Layanan Konsultasi</option>
             <option value="COURSE">Materi Video / Course</option>
@@ -200,7 +205,7 @@ function ProductEditForm({ product, onClose }: ProductEditFormProps) {
         <label className="text-xs font-medium text-foreground">
           URL Gambar Sampul
         </label>
-        <div className="flex gap-3 items-center">
+        <div className="flex items-center gap-3">
           <input
             type="text"
             value={coverImageUrl}
@@ -285,14 +290,15 @@ export function ProductEditDialog({
         onClick={onClose}
       />
 
-      <div className="relative z-50 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150">
+      <div className="relative z-50 flex max-h-[90vh] w-full max-w-3xl animate-in flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl duration-150 fade-in-0 zoom-in-95">
         <div className="flex items-center justify-between border-b border-border/80 px-6 py-4">
           <div>
             <h2 className="text-base font-semibold text-foreground">
               Edit Produk: {product.title}
             </h2>
             <p className="text-xs text-muted-foreground">
-              Perbarui harga, kuota stok, visibilitas, gambar sampul, dan deskripsi produk.
+              Perbarui harga, kuota stok, visibilitas, gambar sampul, dan
+              deskripsi produk.
             </p>
           </div>
           <button

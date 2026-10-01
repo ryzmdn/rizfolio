@@ -2,13 +2,7 @@ import * as React from "react"
 import { Container } from "@workspace/ui/components/layouts"
 import { Badge } from "@workspace/ui/components/badge"
 import { nowData, type NowData, type NowFocusItem } from "@/data"
-import {
-  Activity,
-  BookOpen,
-  Cpu,
-  Layers,
-  Sparkles,
-} from "lucide-react"
+import { Activity, BookOpen, Cpu, Layers, Sparkles } from "lucide-react"
 
 interface NowSectionProps {
   data?: NowData
@@ -24,7 +18,7 @@ const iconMap = {
 export function NowSection({ data = nowData }: NowSectionProps) {
   return (
     <Container id="now" className="py-20">
-      <hgroup className="text-center mx-auto max-w-2xl space-y-3">
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
         <p className="text-sm/6 text-muted-foreground">Current Me.</p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Current Focus & Living Roadmap

@@ -1,15 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import {
-  Folder,
-  FileCode,
-  Plus,
-  Trash2,
-  Search,
-  Code,
-  X,
-} from "lucide-react"
+import { Folder, FileCode, Plus, Trash2, Search, Code, X } from "lucide-react"
 import { Badge } from "@workspace/ui/components/badge"
 import { createRepoFile, deleteRepoFile } from "@/lib/actions/docs-actions"
 
@@ -63,8 +55,7 @@ export function RepoFileManager({ repositories, files }: RepoFileManagerProps) {
 
   const filteredFiles = useMemo(() => {
     return files.filter((f) => {
-      const matchRepo =
-        selectedRepoId === "ALL" || f.repoId === selectedRepoId
+      const matchRepo = selectedRepoId === "ALL" || f.repoId === selectedRepoId
       const q = searchQuery.toLowerCase().trim()
       const matchSearch =
         !q ||
@@ -126,7 +117,9 @@ export function RepoFileManager({ repositories, files }: RepoFileManagerProps) {
               onChange={(e) => setSelectedRepoId(e.target.value)}
               className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs text-foreground focus:outline-none"
             >
-              <option value="ALL">Semua Repositori ({files.length} berkas)</option>
+              <option value="ALL">
+                Semua Repositori ({files.length} berkas)
+              </option>
               {repositories.map((repo) => (
                 <option key={repo.id} value={repo.id}>
                   {repo.name}
@@ -155,7 +148,7 @@ export function RepoFileManager({ repositories, files }: RepoFileManagerProps) {
         <button
           type="button"
           onClick={() => setIsFormOpen((prev) => !prev)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 self-start rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:self-auto"
         >
           <Plus className="size-3.5" />
           <span>{isFormOpen ? "Tutup Formulir" : "Tambah Berkas Kode"}</span>
@@ -163,7 +156,10 @@ export function RepoFileManager({ repositories, files }: RepoFileManagerProps) {
       </div>
 
       {isFormOpen && (
-        <form onSubmit={handleCreateFile} className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
+        <form
+          onSubmit={handleCreateFile}
+          className="space-y-4 rounded-xl border border-border/80 bg-card p-6"
+        >
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <h3 className="text-sm font-semibold text-foreground">
               Tambah Berkas / Direktori Kode Baru
@@ -225,7 +221,7 @@ export function RepoFileManager({ repositories, files }: RepoFileManagerProps) {
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-foreground">
+            <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-foreground">
               <input
                 type="checkbox"
                 checked={isDirectory}
@@ -285,7 +281,7 @@ export function RepoFileManager({ repositories, files }: RepoFileManagerProps) {
       )}
 
       <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
-        <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
           <span>Struktur Pohon Berkas Kode ({filteredFiles.length} entri)</span>
           {selectedRepoId !== "ALL" && (
             <Badge variant="outline" className="text-[10px]">
@@ -316,7 +312,7 @@ export function RepoFileManager({ repositories, files }: RepoFileManagerProps) {
 
                   <div className="flex flex-col overflow-hidden">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-medium text-foreground truncate">
+                      <span className="truncate font-mono font-medium text-foreground">
                         {f.path}
                       </span>
                       {f.isDirectory && (
@@ -332,7 +328,7 @@ export function RepoFileManager({ repositories, files }: RepoFileManagerProps) {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex shrink-0 items-center gap-2">
                   {f.contentText && (
                     <button
                       type="button"

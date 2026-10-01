@@ -185,7 +185,7 @@ export function DocsManagerView({
           onClick={() => setActiveTab("REPOSITORIES")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "REPOSITORIES"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -201,7 +201,7 @@ export function DocsManagerView({
           onClick={() => setActiveTab("FILES")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "FILES"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -217,7 +217,7 @@ export function DocsManagerView({
           onClick={() => setActiveTab("RELEASES")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "RELEASES"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -242,7 +242,8 @@ export function DocsManagerView({
                     Tambah Repositori / Dokumen Baru
                   </h2>
                   <p className="text-xs text-muted-foreground">
-                    Daftarkan proyek sumber terbuka, dokumen modul akademik, atau pustaka kode.
+                    Daftarkan proyek sumber terbuka, dokumen modul akademik,
+                    atau pustaka kode.
                   </p>
                 </div>
               </div>
@@ -252,7 +253,9 @@ export function DocsManagerView({
                 onClick={() => setIsFormExpanded((prev) => !prev)}
                 className="flex items-center gap-1.5 rounded-lg border border-border/80 bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
               >
-                <span>{isFormExpanded ? "Tutup Formulir" : "Buka Formulir"}</span>
+                <span>
+                  {isFormExpanded ? "Tutup Formulir" : "Buka Formulir"}
+                </span>
                 {isFormExpanded ? (
                   <ChevronUp className="size-3.5" />
                 ) : (
@@ -299,7 +302,9 @@ export function DocsManagerView({
                     >
                       <option value="OPEN_SOURCE">Open Source</option>
                       <option value="EXPERIMENT">Eksperimen</option>
-                      <option value="ASSIGNMENT">Tugas Kuliah / Akademik</option>
+                      <option value="ASSIGNMENT">
+                        Tugas Kuliah / Akademik
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -467,7 +472,8 @@ export function DocsManagerView({
               <div className="flex items-center gap-2">
                 <BookOpen className="size-4 text-muted-foreground" />
                 <h2 className="text-sm font-semibold text-foreground">
-                  Daftar Repositori & Dokumentasi ({filteredRepositories.length})
+                  Daftar Repositori & Dokumentasi ({filteredRepositories.length}
+                  )
                 </h2>
               </div>
 
@@ -519,7 +525,9 @@ export function DocsManagerView({
                             {repo.category}
                           </Badge>
                           <Badge
-                            variant={repo.isPublic ? "secondary" : "destructive"}
+                            variant={
+                              repo.isPublic ? "secondary" : "destructive"
+                            }
                             className="text-[9px]"
                           >
                             {repo.isPublic ? "Publik" : "Privat"}
@@ -595,7 +603,7 @@ export function DocsManagerView({
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex shrink-0 items-center gap-2">
                         <a
                           href={`${docsBaseUrl}/repo/${repo.slug}`}
                           target="_blank"

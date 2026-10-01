@@ -10,14 +10,15 @@ export default function NotFound() {
         </div>
 
         <div className="space-y-2">
-          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
             Error : 404 Not Found
           </span>
           <h1 className="text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
             Modul Tidak Ditemukan
           </h1>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Halaman atau entitas administrasi yang Anda tuju tidak terdaftar atau telah dipindahkan dalam ekosistem CMS.
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Halaman atau entitas administrasi yang Anda tuju tidak terdaftar
+            atau telah dipindahkan dalam ekosistem CMS.
           </p>
         </div>
 

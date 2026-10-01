@@ -40,23 +40,38 @@ export default async function SettingsPage() {
               <RefreshCw className="size-3.5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold tracking-tight text-foreground uppercase text-muted-foreground/80">
+              <h2 className="text-sm font-bold tracking-tight text-foreground text-muted-foreground/80 uppercase">
                 On-Demand ISR Cache Revalidation
               </h2>
               <p className="text-xs text-muted-foreground">
-                Sinkronisasi data instan ke seluruh platform monorepo tanpa build ulang.
+                Sinkronisasi data instan ke seluruh platform monorepo tanpa
+                build ulang.
               </p>
             </div>
           </div>
 
           <p className="text-xs leading-relaxed text-muted-foreground">
             Perbarui cache halaman statis di aplikasi konsumen (
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">portfolio</code>,{" "}
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">blog</code>,{" "}
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">shop</code>,{" "}
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">docs</code>,{" "}
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">changelog</code>) secara
-            otomatis dan instan.
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
+              portfolio
+            </code>
+            ,{" "}
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
+              blog
+            </code>
+            ,{" "}
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
+              shop
+            </code>
+            ,{" "}
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
+              docs
+            </code>
+            ,{" "}
+            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-foreground">
+              changelog
+            </code>
+            ) secara otomatis dan instan.
           </p>
 
           <div className="pt-2">
@@ -71,11 +86,12 @@ export default async function SettingsPage() {
               <Settings className="size-3.5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold tracking-tight text-foreground uppercase text-muted-foreground/80">
+              <h2 className="text-sm font-bold tracking-tight text-foreground text-muted-foreground/80 uppercase">
                 Konfigurasi Situs Global
               </h2>
               <p className="text-xs text-muted-foreground">
-                Metadata identitas, domain produksi, dan status operasional publik.
+                Metadata identitas, domain produksi, dan status operasional
+                publik.
               </p>
             </div>
           </div>
@@ -85,9 +101,11 @@ export default async function SettingsPage() {
               "use server"
               const name = formData.get("siteName")?.toString() || "Rizfolio"
               const url =
-                formData.get("siteUrl")?.toString() || "https://rizkyramadhan.dev"
+                formData.get("siteUrl")?.toString() ||
+                "https://rizkyramadhan.dev"
               const email =
-                formData.get("contactEmail")?.toString() || "contact@rizkyramadhan.dev"
+                formData.get("contactEmail")?.toString() ||
+                "contact@rizkyramadhan.dev"
               const isMaintenance = formData.get("maintenanceMode") === "true"
 
               await updateSiteSettings(
@@ -112,7 +130,7 @@ export default async function SettingsPage() {
                   name="siteName"
                   defaultValue={siteName}
                   required
-                  className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:border-foreground/30 focus:outline-hidden focus:ring-2 focus:ring-primary/20 sm:text-sm"
+                  className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
                 />
               </div>
 
@@ -124,7 +142,7 @@ export default async function SettingsPage() {
                   name="siteUrl"
                   defaultValue={siteUrl}
                   required
-                  className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:border-foreground/30 focus:outline-hidden focus:ring-2 focus:ring-primary/20 sm:text-sm"
+                  className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
                 />
               </div>
             </div>
@@ -139,7 +157,7 @@ export default async function SettingsPage() {
                   defaultValue={contactEmail}
                   type="email"
                   required
-                  className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:border-foreground/30 focus:outline-hidden focus:ring-2 focus:ring-primary/20 sm:text-sm"
+                  className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
                 />
               </div>
 
@@ -150,10 +168,12 @@ export default async function SettingsPage() {
                 <select
                   name="maintenanceMode"
                   defaultValue={maintenanceMode ? "true" : "false"}
-                  className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all focus:border-foreground/30 focus:outline-hidden focus:ring-2 focus:ring-primary/20 sm:text-sm"
+                  className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
                 >
                   <option value="false">Live (Operasional Normal)</option>
-                  <option value="true">Maintenance Mode (Perawatan Sistem)</option>
+                  <option value="true">
+                    Maintenance Mode (Perawatan Sistem)
+                  </option>
                 </select>
               </div>
             </div>

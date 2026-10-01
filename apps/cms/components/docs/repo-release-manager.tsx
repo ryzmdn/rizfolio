@@ -1,15 +1,12 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import {
-  Plus,
-  Trash2,
-  Calendar,
-  X,
-  FileArchive,
-} from "lucide-react"
+import { Plus, Trash2, Calendar, X, FileArchive } from "lucide-react"
 import { Badge } from "@workspace/ui/components/badge"
-import { createRepoRelease, deleteRepoRelease } from "@/lib/actions/docs-actions"
+import {
+  createRepoRelease,
+  deleteRepoRelease,
+} from "@/lib/actions/docs-actions"
 
 interface RepositoryItem {
   id: string
@@ -93,7 +90,9 @@ export function RepoReleaseManager({
             onChange={(e) => setSelectedRepoId(e.target.value)}
             className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs text-foreground focus:outline-none"
           >
-            <option value="ALL">Semua Repositori ({releases.length} rilis)</option>
+            <option value="ALL">
+              Semua Repositori ({releases.length} rilis)
+            </option>
             {repositories.map((repo) => (
               <option key={repo.id} value={repo.id}>
                 {repo.name}
@@ -105,15 +104,20 @@ export function RepoReleaseManager({
         <button
           type="button"
           onClick={() => setIsFormOpen((prev) => !prev)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 self-start rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:self-auto"
         >
           <Plus className="size-3.5" />
-          <span>{isFormOpen ? "Tutup Formulir" : "Publikasikan Rilis Baru"}</span>
+          <span>
+            {isFormOpen ? "Tutup Formulir" : "Publikasikan Rilis Baru"}
+          </span>
         </button>
       </div>
 
       {isFormOpen && (
-        <form onSubmit={handleCreateRelease} className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
+        <form
+          onSubmit={handleCreateRelease}
+          className="space-y-4 rounded-xl border border-border/80 bg-card p-6"
+        >
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <h3 className="text-sm font-semibold text-foreground">
               Publikasikan Versi Rilis Repositori
@@ -195,14 +199,16 @@ export function RepoReleaseManager({
               className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               <Plus className="size-3.5" />
-              <span>{isSubmitting ? "Menerbitkan..." : "Publikasikan Rilis"}</span>
+              <span>
+                {isSubmitting ? "Menerbitkan..." : "Publikasikan Rilis"}
+              </span>
             </button>
           </div>
         </form>
       )}
 
       <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
-        <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
           <span>Daftar Arsip Rilis ({filteredReleases.length} versi)</span>
         </div>
 
@@ -248,14 +254,12 @@ export function RepoReleaseManager({
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex shrink-0 items-center gap-2">
                   <button
                     type="button"
                     onClick={async () => {
                       if (
-                        confirm(
-                          `Hapus rilis "${rel.versionTag}" permanen?`
-                        )
+                        confirm(`Hapus rilis "${rel.versionTag}" permanen?`)
                       ) {
                         await deleteRepoRelease(rel.id)
                       }

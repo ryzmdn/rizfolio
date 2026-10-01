@@ -12,7 +12,10 @@ import {
   Loader2,
 } from "lucide-react"
 import { Badge } from "@workspace/ui/components/badge"
-import { createProductFile, deleteProductFile } from "@/lib/actions/shop-actions"
+import {
+  createProductFile,
+  deleteProductFile,
+} from "@/lib/actions/shop-actions"
 
 interface ProductItem {
   id: string
@@ -143,7 +146,7 @@ export function ProductFileManager({
         <button
           type="button"
           onClick={() => setIsFormOpen((prev) => !prev)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 self-start rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:self-auto"
         >
           <Plus className="size-3.5" />
           <span>{isFormOpen ? "Tutup Formulir" : "Tambah Berkas Unduhan"}</span>
@@ -151,7 +154,10 @@ export function ProductFileManager({
       </div>
 
       {isFormOpen && (
-        <form onSubmit={handleCreateFile} className="space-y-4 rounded-xl border border-border/80 bg-card p-6">
+        <form
+          onSubmit={handleCreateFile}
+          className="space-y-4 rounded-xl border border-border/80 bg-card p-6"
+        >
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <h3 className="text-sm font-semibold text-foreground">
               Lampirkan Berkas Unduhan Digital
@@ -256,8 +262,10 @@ export function ProductFileManager({
       )}
 
       <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
-        <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground flex items-center justify-between">
-          <span>Daftar Berkas Unduhan Digital ({filteredFiles.length} berkas)</span>
+        <div className="flex items-center justify-between border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
+          <span>
+            Daftar Berkas Unduhan Digital ({filteredFiles.length} berkas)
+          </span>
           {selectedProductId !== "ALL" && (
             <Badge variant="outline" className="text-[10px]">
               {productMap.get(selectedProductId)}
@@ -283,7 +291,7 @@ export function ProductFileManager({
 
                   <div className="flex flex-col overflow-hidden">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-medium text-foreground truncate">
+                      <span className="truncate font-mono font-medium text-foreground">
                         {file.fileName}
                       </span>
                       <Badge variant="outline" className="text-[9px]">
@@ -304,16 +312,19 @@ export function ProductFileManager({
                       <div className="flex items-center gap-1">
                         <Calendar className="size-3" />
                         <span>
-                          {new Date(file.createdAt).toLocaleDateString("id-ID", {
-                            dateStyle: "medium",
-                          })}
+                          {new Date(file.createdAt).toLocaleDateString(
+                            "id-ID",
+                            {
+                              dateStyle: "medium",
+                            }
+                          )}
                         </span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex shrink-0 items-center gap-2">
                   <button
                     type="button"
                     onClick={async () => {

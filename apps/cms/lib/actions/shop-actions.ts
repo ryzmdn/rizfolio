@@ -332,7 +332,10 @@ export async function createCoupon(values: CreateCouponInput) {
       status: "COMPLETED",
       entityType: "coupons",
       entityId: created.id,
-      metadata: { code: created.code, discountPercent: created.discountPercent },
+      metadata: {
+        code: created.code,
+        discountPercent: created.discountPercent,
+      },
     })
     dispatchBackgroundRevalidation({ app: "shop", path: "/" })
   }

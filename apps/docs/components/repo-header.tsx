@@ -223,7 +223,7 @@ export function RepoHeader({
           >
             <Star className="mr-1.5 size-3.5" />
             <span>{hasStarred ? "Starred" : "Star"}</span>
-            <span className="ml-1.5 rounded-full bg-background/20 px-1.5 py-0.2 font-mono text-[10px] tabular-nums">
+            <span className="py-0.2 ml-1.5 rounded-full bg-background/20 px-1.5 font-mono text-[10px] tabular-nums">
               {stars}
             </span>
           </button>
@@ -280,7 +280,7 @@ export function RepoHeader({
 
       {/* Clone Command Modal Popover */}
       {showCloneModal && (
-        <div className="relative rounded-2xl border border-border bg-card p-4 shadow-lg space-y-3">
+        <div className="relative space-y-3 rounded-2xl border border-border bg-card p-4 shadow-lg">
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1 border-b border-transparent">
               <button
@@ -289,7 +289,7 @@ export function RepoHeader({
                 className={cn(
                   "rounded-md px-2.5 py-1 font-mono text-xs transition-colors",
                   cloneProtocol === "https"
-                    ? "bg-foreground text-background font-medium"
+                    ? "bg-foreground font-medium text-background"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -301,7 +301,7 @@ export function RepoHeader({
                 className={cn(
                   "rounded-md px-2.5 py-1 font-mono text-xs transition-colors",
                   cloneProtocol === "ssh"
-                    ? "bg-foreground text-background font-medium"
+                    ? "bg-foreground font-medium text-background"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >

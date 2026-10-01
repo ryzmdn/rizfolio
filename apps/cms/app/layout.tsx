@@ -27,7 +27,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
-      <body className={cn(fontVariables, "min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary")}>
+      <body
+        className={cn(
+          fontVariables,
+          "min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary"
+        )}
+      >
         <AppProvider>
           <a
             href="#main-content"

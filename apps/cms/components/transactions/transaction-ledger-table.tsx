@@ -68,7 +68,8 @@ export function TransactionLedgerTable({
               Master Ledger Records
             </h2>
             <p className="text-[11px] text-muted-foreground">
-              Klik pada baris transaksi untuk melihat metadata dan inspeksi JSON diff.
+              Klik pada baris transaksi untuk melihat metadata dan inspeksi JSON
+              diff.
             </p>
           </div>
 
@@ -96,7 +97,8 @@ export function TransactionLedgerTable({
                     colSpan={8}
                     className="px-6 py-12 text-center text-sm text-muted-foreground"
                   >
-                    Belum ada catatan transaksi master yang sesuai dengan filter.
+                    Belum ada catatan transaksi master yang sesuai dengan
+                    filter.
                   </td>
                 </tr>
               ) : (
@@ -154,10 +156,7 @@ export function TransactionLedgerTable({
                         )}
                       </td>
                       <td className="px-6 py-4">
-                        <Badge
-                          variant={statBadge.variant}
-                          className="text-xs"
-                        >
+                        <Badge variant={statBadge.variant} className="text-xs">
                           {statBadge.label}
                         </Badge>
                       </td>

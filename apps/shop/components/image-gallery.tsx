@@ -35,7 +35,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
           className="object-cover transition-opacity duration-300"
         />
 
-        <div className="absolute bottom-2.5 right-2.5 rounded-md border border-border/70 bg-background/95 px-2 py-0.5 text-[10px] font-mono text-muted-foreground shadow-xs">
+        <div className="absolute right-2.5 bottom-2.5 rounded-md border border-border/70 bg-background/95 px-2 py-0.5 font-mono text-[10px] text-muted-foreground shadow-xs">
           <span>
             {selectedIndex + 1} / {images.length}
           </span>
@@ -56,7 +56,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                 className={cn(
                   "relative aspect-video overflow-hidden rounded-md border transition-all duration-150 focus:outline-hidden",
                   isSelected
-                    ? "border-foreground/80 ring-1 ring-foreground/30 opacity-100"
+                    ? "border-foreground/80 opacity-100 ring-1 ring-foreground/30"
                     : "border-border/60 opacity-60 hover:border-border hover:opacity-90"
                 )}
               >

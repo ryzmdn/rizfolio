@@ -160,7 +160,9 @@ export function CommandSearch() {
           id: `course-${c.name}`,
           type: "course",
           title: c.name,
-          subtitle: c.semester ? `${c.semester} • ${c.count} repos` : `${c.count} repos`,
+          subtitle: c.semester
+            ? `${c.semester} • ${c.count} repos`
+            : `${c.count} repos`,
           href: `/?course=${encodeURIComponent(c.name)}`,
         })
       }
@@ -195,7 +197,9 @@ export function CommandSearch() {
           id: `course-${c.name}`,
           type: "course",
           title: c.name,
-          subtitle: c.semester ? `${c.semester} • ${c.count} repos` : `${c.count} repos`,
+          subtitle: c.semester
+            ? `${c.semester} • ${c.count} repos`
+            : `${c.count} repos`,
           href: `/?course=${encodeURIComponent(c.name)}`,
         })
       }
@@ -287,13 +291,14 @@ export function CommandSearch() {
 
         <div
           ref={listRef}
-          className="flex-1 overflow-y-auto p-2 text-xs divide-y divide-transparent"
+          className="flex-1 divide-y divide-transparent overflow-y-auto p-2 text-xs"
         >
           {results.length === 0 ? (
             <div className="py-12 text-center text-muted-foreground">
               <p className="font-medium text-foreground">No matches found</p>
               <p className="mt-1 text-xs">
-                No repositories, topics, or code files matched &quot;{query}&quot;.
+                No repositories, topics, or code files matched &quot;{query}
+                &quot;.
               </p>
             </div>
           ) : (
@@ -313,7 +318,7 @@ export function CommandSearch() {
                         : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                     )}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex min-w-0 items-center gap-3">
                       <div
                         className={cn(
                           "flex size-7 shrink-0 items-center justify-center rounded-lg border",
@@ -322,9 +327,15 @@ export function CommandSearch() {
                             : "border-border/60 bg-muted/30 text-muted-foreground"
                         )}
                       >
-                        {item.type === "repo" && <FolderGit2 className="size-3.5" />}
-                        {item.type === "course" && <GraduationCap className="size-3.5" />}
-                        {item.type === "file" && <FileCode className="size-3.5" />}
+                        {item.type === "repo" && (
+                          <FolderGit2 className="size-3.5" />
+                        )}
+                        {item.type === "course" && (
+                          <GraduationCap className="size-3.5" />
+                        )}
+                        {item.type === "file" && (
+                          <FileCode className="size-3.5" />
+                        )}
                       </div>
 
                       <div className="min-w-0 flex-1">
@@ -335,7 +346,7 @@ export function CommandSearch() {
                           {item.badge && (
                             <Badge
                               variant="outline"
-                              className="text-[10px] font-normal shrink-0"
+                              className="shrink-0 text-[10px] font-normal"
                             >
                               {item.badge}
                             </Badge>

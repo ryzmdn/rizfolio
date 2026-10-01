@@ -235,7 +235,7 @@ export function ShopManagerView({
           onClick={() => setActiveTab("PRODUCTS")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "PRODUCTS"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -251,7 +251,7 @@ export function ShopManagerView({
           onClick={() => setActiveTab("ORDERS")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "ORDERS"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -267,7 +267,7 @@ export function ShopManagerView({
           onClick={() => setActiveTab("FILES")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "FILES"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -283,7 +283,7 @@ export function ShopManagerView({
           onClick={() => setActiveTab("COUPONS")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "COUPONS"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -308,7 +308,8 @@ export function ShopManagerView({
                     Tambah Produk Digital Baru
                   </h2>
                   <p className="text-xs text-muted-foreground">
-                    Tambahkan template kode, materi pembelajaran, lisensi perangkat lunak, atau paket jasa.
+                    Tambahkan template kode, materi pembelajaran, lisensi
+                    perangkat lunak, atau paket jasa.
                   </p>
                 </div>
               </div>
@@ -318,7 +319,9 @@ export function ShopManagerView({
                 onClick={() => setIsFormExpanded((prev) => !prev)}
                 className="flex items-center gap-1.5 rounded-lg border border-border/80 bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
               >
-                <span>{isFormExpanded ? "Tutup Formulir" : "Buka Formulir"}</span>
+                <span>
+                  {isFormExpanded ? "Tutup Formulir" : "Buka Formulir"}
+                </span>
                 {isFormExpanded ? (
                   <ChevronUp className="size-3.5" />
                 ) : (
@@ -553,10 +556,13 @@ export function ShopManagerView({
                               {prod.title}
                             </span>
                             <Badge variant="outline" className="text-[10px]">
-                              {prod.currency} {prod.price.toLocaleString("id-ID")}
+                              {prod.currency}{" "}
+                              {prod.price.toLocaleString("id-ID")}
                             </Badge>
                             <Badge
-                              variant={prod.isActive ? "default" : "destructive"}
+                              variant={
+                                prod.isActive ? "default" : "destructive"
+                              }
                               className="text-[9px]"
                             >
                               {prod.isActive ? "Aktif" : "Nonaktif"}
@@ -590,7 +596,7 @@ export function ShopManagerView({
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                      <div className="flex shrink-0 items-center gap-2 self-end sm:self-center">
                         <a
                           href={`${shopBaseUrl}/product/${prod.slug}`}
                           target="_blank"
@@ -701,7 +707,8 @@ export function ShopManagerView({
                             {order.status}
                           </Badge>
                           <span className="font-mono font-semibold text-foreground">
-                            {order.currency} {order.totalAmount.toLocaleString("id-ID")}
+                            {order.currency}{" "}
+                            {order.totalAmount.toLocaleString("id-ID")}
                           </span>
                         </div>
 
@@ -713,7 +720,9 @@ export function ShopManagerView({
                             </span>
                           </div>
                           <span>&bull;</span>
-                          <span className="font-mono">{order.customerEmail}</span>
+                          <span className="font-mono">
+                            {order.customerEmail}
+                          </span>
                           <span>&bull;</span>
                           <span>{itemsCount} item produk</span>
                         </div>
@@ -727,16 +736,19 @@ export function ShopManagerView({
                           <div className="flex items-center gap-1">
                             <Calendar className="size-3" />
                             <span>
-                              {new Date(order.createdAt).toLocaleString("id-ID", {
-                                dateStyle: "medium",
-                                timeStyle: "short",
-                              })}
+                              {new Date(order.createdAt).toLocaleString(
+                                "id-ID",
+                                {
+                                  dateStyle: "medium",
+                                  timeStyle: "short",
+                                }
+                              )}
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex shrink-0 items-center gap-2">
                         <button
                           type="button"
                           onClick={() => setSelectedOrder(order)}
@@ -759,9 +771,7 @@ export function ShopManagerView({
         <ProductFileManager products={products} files={productFiles} />
       )}
 
-      {activeTab === "COUPONS" && (
-        <CouponManager coupons={coupons} />
-      )}
+      {activeTab === "COUPONS" && <CouponManager coupons={coupons} />}
 
       <ProductEditDialog
         product={editingProduct}

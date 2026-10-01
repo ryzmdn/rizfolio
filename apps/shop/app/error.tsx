@@ -22,7 +22,7 @@ export default function ShopError({ error, reset }: ErrorProps) {
           <AlertTriangle className="size-6" />
         </div>
 
-        <span className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-widest text-destructive">
+        <span className="mt-3 font-mono text-[11px] font-semibold tracking-widest text-destructive uppercase">
           Runtime Exception
         </span>
 
@@ -32,7 +32,8 @@ export default function ShopError({ error, reset }: ErrorProps) {
 
         <p className="mt-2 max-w-md text-xs leading-relaxed text-muted-foreground sm:text-sm">
           An unexpected error occurred while loading this section of the store.
-          You can attempt to refresh the component state or return to the main catalog.
+          You can attempt to refresh the component state or return to the main
+          catalog.
         </p>
 
         {error.digest && (

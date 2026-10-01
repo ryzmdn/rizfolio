@@ -49,14 +49,15 @@ export default function RootError({
         </div>
 
         <div className="space-y-2">
-          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-destructive">
+          <span className="font-mono text-xs font-semibold tracking-wider text-destructive uppercase">
             Error : Exception Boundary
           </span>
           <h1 className="text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
             Terjadi Kendala Sistem
           </h1>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Aplikasi menemui kendala saat memproses mutasi data. Anda dapat mencoba memuat ulang sesi atau kembali ke dashboard overview.
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Aplikasi menemui kendala saat memproses mutasi data. Anda dapat
+            mencoba memuat ulang sesi atau kembali ke dashboard overview.
           </p>
         </div>
 
@@ -120,9 +121,11 @@ export default function RootError({
 
           {showDetails && (
             <div className="mt-3 max-h-48 overflow-y-auto rounded-xl border border-border/80 bg-background/80 p-3 font-mono text-[10px] text-muted-foreground">
-              <p className="font-bold text-destructive">{error.name}: {error.message}</p>
+              <p className="font-bold text-destructive">
+                {error.name}: {error.message}
+              </p>
               {error.stack && (
-                <pre className="mt-2 whitespace-pre-wrap leading-relaxed">
+                <pre className="mt-2 leading-relaxed whitespace-pre-wrap">
                   {error.stack}
                 </pre>
               )}

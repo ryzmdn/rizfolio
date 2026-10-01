@@ -28,7 +28,8 @@ export default function ErrorBoundary({
         </h1>
 
         <p className="text-sm/relaxed text-muted-foreground">
-          An unexpected error occurred while loading the page data. You can retry or return to the overview.
+          An unexpected error occurred while loading the page data. You can
+          retry or return to the overview.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">

@@ -20,9 +20,8 @@ export function CtaSection() {
         </h2>
         <p className="mx-auto mt-6 max-w-2xl text-base/relaxed text-pretty text-muted sm:text-lg/8">
           Whether you&apos;re launching a new digital venture, scaling existing
-          cloud systems, or seeking high-caliber engineering
-          leadership. Let&apos;s turn ambitious visions into deterministic
-          reality.
+          cloud systems, or seeking high-caliber engineering leadership.
+          Let&apos;s turn ambitious visions into deterministic reality.
         </p>
 
         <div className="flex justify-center">

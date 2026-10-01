@@ -150,7 +150,7 @@ export function CartDrawer() {
                 const isExtended = item.licenseType === "EXTENDED"
 
                 return (
-                  <div key={item.id} className="py-3.5 space-y-2.5">
+                  <div key={item.id} className="space-y-2.5 py-3.5">
                     <div className="flex gap-3">
                       {item.coverImageUrl ? (
                         <div className="relative size-14 shrink-0 overflow-hidden rounded-md border border-border/60 bg-muted/30">
@@ -173,7 +173,7 @@ export function CartDrawer() {
                           <Link
                             href={`/product/${item.slug}`}
                             onClick={closeCart}
-                            className="text-xs font-medium leading-snug text-foreground transition-colors hover:underline"
+                            className="text-xs leading-snug font-medium text-foreground transition-colors hover:underline"
                           >
                             {item.title}
                           </Link>
@@ -182,7 +182,7 @@ export function CartDrawer() {
                               {format(item.price)}
                             </span>
                             <span>•</span>
-                            <span className="rounded-sm bg-muted/60 px-1.5 py-0.2 text-[10px] font-medium text-muted-foreground">
+                            <span className="py-0.2 rounded-sm bg-muted/60 px-1.5 text-[10px] font-medium text-muted-foreground">
                               {isExtended
                                 ? "Extended License"
                                 : "Standard License"}
@@ -239,7 +239,7 @@ export function CartDrawer() {
                           className={cn(
                             "rounded-sm px-2 py-0.5 text-[10px] font-medium transition-colors",
                             !isExtended
-                              ? "bg-foreground text-background font-semibold"
+                              ? "bg-foreground font-semibold text-background"
                               : "text-muted-foreground hover:text-foreground"
                           )}
                         >
@@ -256,7 +256,7 @@ export function CartDrawer() {
                           className={cn(
                             "rounded-sm px-2 py-0.5 text-[10px] font-medium transition-colors",
                             isExtended
-                              ? "bg-foreground text-background font-semibold"
+                              ? "bg-foreground font-semibold text-background"
                               : "text-muted-foreground hover:text-foreground"
                           )}
                         >
@@ -296,7 +296,7 @@ export function CartDrawer() {
                       value={couponInput}
                       onChange={(e) => setCouponInput(e.target.value)}
                       placeholder="Promo code (e.g. DEV20)"
-                      className="flex-1 rounded-md border border-border/70 bg-background px-3 py-1.5 text-xs uppercase placeholder:normal-case placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-hidden"
+                      className="flex-1 rounded-md border border-border/70 bg-background px-3 py-1.5 text-xs uppercase placeholder:text-muted-foreground placeholder:normal-case focus:border-foreground/40 focus:outline-hidden"
                     />
                     <button
                       type="submit"
@@ -322,9 +322,7 @@ export function CartDrawer() {
                 {discountAmount > 0 && (
                   <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
                     <span>Discount</span>
-                    <span className="font-mono">
-                      -{format(discountAmount)}
-                    </span>
+                    <span className="font-mono">-{format(discountAmount)}</span>
                   </div>
                 )}
                 <div className="flex items-center justify-between border-t border-border/50 pt-2 text-sm font-semibold text-foreground">

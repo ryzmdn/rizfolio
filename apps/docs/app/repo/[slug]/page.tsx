@@ -11,7 +11,11 @@ import { RepoHeader } from "../../../components/repo-header"
 import { FileTreeBrowser } from "../../../components/file-tree-browser"
 import { ReadmeViewer } from "../../../components/readme-viewer"
 import { Code2, BookOpen } from "lucide-react"
-import { getBaseUrl, SEO_CONFIG, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
+import {
+  getBaseUrl,
+  SEO_CONFIG,
+  createBreadcrumbJsonLd,
+} from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
@@ -172,7 +176,7 @@ export default async function RepoDetailPage({
       </div>
 
       {/* File Tree Browser Section */}
-      <section id="files" className="space-y-3 scroll-mt-24">
+      <section id="files" className="scroll-mt-24 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
             <Code2 className="size-4" />
@@ -187,7 +191,7 @@ export default async function RepoDetailPage({
 
       {/* README.md Viewer Section with Table of Contents */}
       {repo.readmeContent && (
-        <section id="readme" className="space-y-3 pt-6 scroll-mt-24">
+        <section id="readme" className="scroll-mt-24 space-y-3 pt-6">
           <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
             <BookOpen className="size-4" />
             <h2>Repository Overview & Architecture</h2>

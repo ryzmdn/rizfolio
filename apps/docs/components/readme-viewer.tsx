@@ -32,7 +32,7 @@ export function ReadmeViewer({ content }: { content: string }) {
       <div className="p-6">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Markdown Content Column */}
-          <div className="lg:col-span-8 xl:col-span-9 space-y-4">
+          <div className="space-y-4 lg:col-span-8 xl:col-span-9">
             <MDXRemoteRenderer source={content} />
           </div>
 

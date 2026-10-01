@@ -40,7 +40,7 @@ export const SUPPORTED_CURRENCIES: Record<string, CurrencyInfo> = {
     code: "GBP",
     name: "British Pound",
     symbol: "£",
-    exchangeRateFromIdr: 0.000050,
+    exchangeRateFromIdr: 0.00005,
     locale: "en-GB",
     isZeroDecimal: false,
     flag: "🇬🇧",
@@ -98,7 +98,9 @@ export function convertFromIdr(
   amountInIdr: number,
   targetCurrencyCode: string
 ): number {
-  const currency = SUPPORTED_CURRENCIES[targetCurrencyCode] || SUPPORTED_CURRENCIES[DEFAULT_CURRENCY]
+  const currency =
+    SUPPORTED_CURRENCIES[targetCurrencyCode] ||
+    SUPPORTED_CURRENCIES[DEFAULT_CURRENCY]
   if (!currency || currency.code === "IDR") {
     return amountInIdr
   }
@@ -116,7 +118,8 @@ export function formatCurrencyAmount(
   amount: number,
   currencyCode: string
 ): string {
-  const currency = SUPPORTED_CURRENCIES[currencyCode] || SUPPORTED_CURRENCIES[DEFAULT_CURRENCY]
+  const currency =
+    SUPPORTED_CURRENCIES[currencyCode] || SUPPORTED_CURRENCIES[DEFAULT_CURRENCY]
   const isZeroDec = currency ? currency.isZeroDecimal : false
   const locale = currency ? currency.locale : "en-US"
 
@@ -241,7 +244,13 @@ export function detectUserCurrency(): string {
     if (lang.startsWith("id")) return "IDR"
     if (lang.startsWith("ja")) return "JPY"
     if (lang.startsWith("ms")) return "MYR"
-    if (lang.startsWith("de") || lang.startsWith("fr") || lang.startsWith("es") || lang.startsWith("it")) return "EUR"
+    if (
+      lang.startsWith("de") ||
+      lang.startsWith("fr") ||
+      lang.startsWith("es") ||
+      lang.startsWith("it")
+    )
+      return "EUR"
     if (lang.includes("gb")) return "GBP"
     if (lang.includes("au")) return "AUD"
     if (lang.includes("ca")) return "CAD"

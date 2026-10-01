@@ -16,8 +16,9 @@ export default function NotFound() {
         </h1>
 
         <p className="text-sm/relaxed text-muted-foreground">
-          The requested page, project link, or portfolio asset could not be found.
-          It may have been moved, renamed, or is under active development.
+          The requested page, project link, or portfolio asset could not be
+          found. It may have been moved, renamed, or is under active
+          development.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">

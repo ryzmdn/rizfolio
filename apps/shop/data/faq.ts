@@ -19,7 +19,8 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     id: "faq-3",
-    question: "Do I receive future updates when Next.js or Tailwind releases new versions?",
+    question:
+      "Do I receive future updates when Next.js or Tailwind releases new versions?",
     answer:
       "Yes. All digital starter kits and UI systems include lifetime patches. Whenever upstream dependencies receive major upgrades (such as Next.js releases or Tailwind CSS improvements), revised archives are pushed to the repository and become accessible via your download token.",
   },
@@ -31,7 +32,8 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     id: "faq-5",
-    question: "Can I request a refund if the codebase does not match specifications?",
+    question:
+      "Can I request a refund if the codebase does not match specifications?",
     answer:
       "We offer a 14-day quality guarantee. If you encounter a verified bug or architectural defect that cannot be resolved via our support team within 48 hours, you are eligible for full refund assistance.",
   },

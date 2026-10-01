@@ -79,7 +79,10 @@ export async function createRepository(values: CreateRepositoryInput) {
   return created
 }
 
-export async function updateRepository(id: string, values: UpdateRepositoryInput) {
+export async function updateRepository(
+  id: string,
+  values: UpdateRepositoryInput
+) {
   const [updated] = await db
     .update(repositories)
     .set({ ...values, updatedAt: new Date() })

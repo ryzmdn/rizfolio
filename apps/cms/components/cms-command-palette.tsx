@@ -210,7 +210,9 @@ const COMMAND_ITEMS: CommandItem[] = [
     title: "Product Changelog",
     description: "Buka linimasa rilis publik di tab baru",
     category: "Ekosistem Monorepo",
-    href: process.env.NEXT_PUBLIC_CHANGELOG_URL || "https://changelog.rizkyramadhan.dev",
+    href:
+      process.env.NEXT_PUBLIC_CHANGELOG_URL ||
+      "https://changelog.rizkyramadhan.dev",
     isExternal: true,
     icon: ExternalLink,
   },
@@ -275,17 +277,13 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
 
     if (e.key === "ArrowDown") {
       e.preventDefault()
-      setRawIndex((prev) =>
-        prev < filteredItems.length - 1 ? prev + 1 : 0
-      )
+      setRawIndex((prev) => (prev < filteredItems.length - 1 ? prev + 1 : 0))
       return
     }
 
     if (e.key === "ArrowUp") {
       e.preventDefault()
-      setRawIndex((prev) =>
-        prev > 0 ? prev - 1 : filteredItems.length - 1
-      )
+      setRawIndex((prev) => (prev > 0 ? prev - 1 : filteredItems.length - 1))
       return
     }
 
@@ -311,7 +309,7 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
         onClick={handleClose}
       />
 
-      <div className="relative z-50 flex w-full max-w-xl flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150">
+      <div className="relative z-50 flex w-full max-w-xl animate-in flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl duration-150 fade-in-0 zoom-in-95">
         <div className="flex items-center gap-3 border-b border-border/80 px-4 py-3">
           <Search className="size-4 shrink-0 text-muted-foreground" />
           <input
@@ -342,10 +340,7 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
           </kbd>
         </div>
 
-        <div
-          ref={listRef}
-          className="max-h-80 overflow-y-auto p-2"
-        >
+        <div ref={listRef} className="max-h-80 overflow-y-auto p-2">
           {filteredItems.length === 0 ? (
             <div className="py-8 text-center text-xs text-muted-foreground">
               Tidak ada hasil yang cocok dengan &quot;{query}&quot;.
@@ -394,7 +389,7 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
 
                     <div className="flex items-center gap-2">
                       <span
-                        className={`rounded px-1.5 py-0.5 text-[10px] uppercase font-mono ${
+                        className={`rounded px-1.5 py-0.5 font-mono text-[10px] uppercase ${
                           isSelected
                             ? "bg-primary-foreground/20 text-primary-foreground"
                             : "bg-muted text-muted-foreground"

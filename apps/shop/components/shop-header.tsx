@@ -36,16 +36,19 @@ export function ShopHeader() {
               <Layers className="size-4" />
             </div>
             <div className="flex flex-col">
-              <span className="font-semibold text-xs tracking-tight text-foreground sm:text-sm">
+              <span className="text-xs font-semibold tracking-tight text-foreground sm:text-sm">
                 RizShop
               </span>
-              <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
+              <span className="text-[10px] tracking-widest text-muted-foreground uppercase">
                 Software & Assets
               </span>
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1 pl-4" aria-label="Store navigation">
+          <nav
+            className="hidden items-center gap-1 pl-4 md:flex"
+            aria-label="Store navigation"
+          >
             {navLinks.map((link) => {
               const isActive = pathname === link.href
 
@@ -105,7 +108,10 @@ export function ShopHeader() {
 
       {mobileMenuOpen && (
         <div className="border-t border-border/60 bg-background/98 px-5 py-4 backdrop-blur-xl md:hidden">
-          <nav className="flex flex-col gap-1.5" aria-label="Mobile store navigation">
+          <nav
+            className="flex flex-col gap-1.5"
+            aria-label="Mobile store navigation"
+          >
             {navLinks.map((link) => (
               <Link
                 key={link.label}

@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Checkout | Rizfolio Store",
-  description: "Secure digital checkout for architectural packages and consultation bookings.",
+  description:
+    "Secure digital checkout for architectural packages and consultation bookings.",
   robots: {
     index: false,
     follow: false,

@@ -102,7 +102,7 @@ export function FilterBar({
             value={searchValue}
             placeholder="Cari repositori, topik, atau mata kuliah..."
             onChange={(e) => setSearchValue(e.target.value)}
-            className="w-full rounded-xl border border-border bg-background py-2 pr-9 pl-9 text-xs text-foreground placeholder:text-muted-foreground transition-colors focus:border-foreground/40 focus:outline-hidden"
+            className="w-full rounded-xl border border-border bg-background py-2 pr-9 pl-9 text-xs text-foreground transition-colors placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-hidden"
           />
           {searchValue && (
             <button

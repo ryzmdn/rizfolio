@@ -28,10 +28,25 @@ interface FilterBarProps {
 
 const categories = [
   { id: "ALL", label: "All Types" },
-  { id: "FEATURE", label: "Features", icon: Sparkles, dotColor: "bg-emerald-500" },
-  { id: "IMPROVEMENT", label: "Improvements", icon: Zap, dotColor: "bg-blue-500" },
+  {
+    id: "FEATURE",
+    label: "Features",
+    icon: Sparkles,
+    dotColor: "bg-emerald-500",
+  },
+  {
+    id: "IMPROVEMENT",
+    label: "Improvements",
+    icon: Zap,
+    dotColor: "bg-blue-500",
+  },
   { id: "FIX", label: "Fixes", icon: Wrench, dotColor: "bg-amber-500" },
-  { id: "BREAKING", label: "Breaking", icon: AlertCircle, dotColor: "bg-rose-500" },
+  {
+    id: "BREAKING",
+    label: "Breaking",
+    icon: AlertCircle,
+    dotColor: "bg-rose-500",
+  },
 ]
 
 const scopes = [
@@ -93,7 +108,7 @@ export function FilterBar({
             onChange={(e) => setLocalQuery(e.target.value)}
             placeholder="Search changes by title, version, summary, or package..."
             aria-label="Filter releases by query"
-            className="w-full rounded-xl border border-border/70 bg-background/80 py-2.5 pr-9 pl-10 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:border-foreground/30 focus:outline-hidden focus:ring-2 focus:ring-primary/20 sm:text-sm"
+            className="w-full rounded-xl border border-border/70 bg-background/80 py-2.5 pr-9 pl-10 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
           />
           {localQuery && (
             <button
@@ -112,7 +127,11 @@ export function FilterBar({
 
         <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground sm:justify-end">
           <div className="font-mono text-xs">
-            Showing <span className="font-semibold text-foreground">{matchedCount}</span> of {totalCount} releases
+            Showing{" "}
+            <span className="font-semibold text-foreground">
+              {matchedCount}
+            </span>{" "}
+            of {totalCount} releases
           </div>
 
           {hasActiveFilters && (
@@ -130,7 +149,7 @@ export function FilterBar({
 
       <div className="flex flex-col gap-3.5 border-t border-border/60 pt-3">
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="mr-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="mr-1 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
             Type:
           </span>
           {categories.map((cat) => {
@@ -148,9 +167,9 @@ export function FilterBar({
                   })
                 }
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition-all focus:outline-hidden focus:ring-2 focus:ring-primary/30",
+                  "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium transition-all focus:ring-2 focus:ring-primary/30 focus:outline-hidden",
                   isSelected
-                    ? "bg-foreground text-background shadow-xs font-semibold"
+                    ? "bg-foreground font-semibold text-background shadow-xs"
                     : "border border-border/60 bg-muted/30 text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                 )}
               >
@@ -170,7 +189,7 @@ export function FilterBar({
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="mr-1 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="mr-1 flex items-center gap-1 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
             <Layers className="size-3" />
             Scope:
           </span>
@@ -189,9 +208,9 @@ export function FilterBar({
                   })
                 }
                 className={cn(
-                  "rounded-lg px-2.5 py-0.5 font-mono text-[11px] font-medium transition-all focus:outline-hidden focus:ring-2 focus:ring-primary/30",
+                  "rounded-lg px-2.5 py-0.5 font-mono text-[11px] font-medium transition-all focus:ring-2 focus:ring-primary/30 focus:outline-hidden",
                   isSelected
-                    ? "bg-foreground text-background shadow-xs font-semibold"
+                    ? "bg-foreground font-semibold text-background shadow-xs"
                     : "border border-border/60 bg-muted/30 text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                 )}
               >

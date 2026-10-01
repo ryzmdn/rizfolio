@@ -2,13 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import {
-  Menu,
-  Search,
-  ExternalLink,
-  ChevronRight,
-  Home,
-} from "lucide-react"
+import { Menu, Search, ExternalLink, ChevronRight, Home } from "lucide-react"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 import { RevalidationButton } from "./revalidation-button"
 
@@ -90,7 +84,7 @@ export function CmsHeader({
         <button
           type="button"
           onClick={onOpenCommandPalette}
-          className="group inline-flex items-center gap-2 rounded-lg border border-border/80 bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+          className="group inline-flex items-center gap-2 rounded-lg border border-border/80 bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
           title="Search CMS navigation & actions (Ctrl+K or Cmd+K)"
           aria-label="Open command palette"
         >
@@ -110,7 +104,7 @@ export function CmsHeader({
           target="_blank"
           rel="noreferrer"
           aria-label="Open live portfolio website in new tab"
-          className="group inline-flex items-center gap-1.5 rounded-lg border border-border/80 bg-muted/40 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+          className="group inline-flex items-center gap-1.5 rounded-lg border border-border/80 bg-muted/40 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
         >
           <span className="hidden sm:inline">Live Site</span>
           <ExternalLink className="size-3.5 opacity-70 transition-transform group-hover:translate-x-0.5" />

@@ -2,17 +2,8 @@
 
 import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
-import {
-  HardDrive,
-  Files,
-  FolderOpen,
-  Globe2,
-  RefreshCw,
-} from "lucide-react"
-import {
-  type MediaAssetItem,
-  type MediaFolder,
-} from "@/lib/media-types"
+import { HardDrive, Files, FolderOpen, Globe2, RefreshCw } from "lucide-react"
+import { type MediaAssetItem, type MediaFolder } from "@/lib/media-types"
 import { MediaFolderTabs } from "./media-folder-tabs"
 import { MediaAssetGrid } from "./media-asset-grid"
 import { MediaUploadZone } from "./media-upload-zone"
@@ -64,7 +55,9 @@ export function MediaBrowserView({ initialAssets }: MediaBrowserViewProps) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-xl border border-border/80 bg-card p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Total Aset Media</span>
+            <span className="text-xs text-muted-foreground">
+              Total Aset Media
+            </span>
             <Files className="h-4 w-4 text-primary" />
           </div>
           <p className="mt-2 text-2xl font-bold text-foreground">
@@ -74,7 +67,9 @@ export function MediaBrowserView({ initialAssets }: MediaBrowserViewProps) {
 
         <div className="rounded-xl border border-border/80 bg-card p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Kapasitas Terpakai</span>
+            <span className="text-xs text-muted-foreground">
+              Kapasitas Terpakai
+            </span>
             <HardDrive className="h-4 w-4 text-blue-500" />
           </div>
           <p className="mt-2 text-2xl font-bold text-blue-500">
@@ -94,7 +89,9 @@ export function MediaBrowserView({ initialAssets }: MediaBrowserViewProps) {
 
         <div className="rounded-xl border border-border/80 bg-card p-4">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Infrastruktur CDN</span>
+            <span className="text-xs text-muted-foreground">
+              Infrastruktur CDN
+            </span>
             <Globe2 className="h-4 w-4 text-emerald-500" />
           </div>
           <p className="mt-2 text-2xl font-bold text-emerald-500">
@@ -132,10 +129,7 @@ export function MediaBrowserView({ initialAssets }: MediaBrowserViewProps) {
           counts={counts}
         />
 
-        <MediaAssetGrid
-          assets={visibleAssets}
-          onAssetDeleted={handleRefresh}
-        />
+        <MediaAssetGrid assets={visibleAssets} onAssetDeleted={handleRefresh} />
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import { Container } from "@workspace/ui/components/layouts/container"
 
 export default function WorkLoading() {
   return (
-    <div className="space-y-12 py-10 sm:py-16 animate-in fade-in duration-150">
+    <div className="animate-in space-y-12 py-10 duration-150 fade-in sm:py-16">
       <Container>
         <div className="h-4 w-32 animate-pulse rounded-md bg-muted/60" />
       </Container>
@@ -25,7 +25,7 @@ export default function WorkLoading() {
           {[1, 2, 3, 4].map((idx) => (
             <div
               key={idx}
-              className="flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/40 p-4 space-y-4"
+              className="flex flex-col space-y-4 overflow-hidden rounded-2xl border border-border/60 bg-card/40 p-4"
             >
               <div className="aspect-3/2 w-full animate-pulse rounded-xl bg-muted/60" />
               <div className="space-y-2">

@@ -14,8 +14,8 @@ export default function ChangelogNotFound() {
       </h1>
 
       <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-        The requested release version, timeline filter, or documentation endpoint does not
-        exist in the active changelog index.
+        The requested release version, timeline filter, or documentation
+        endpoint does not exist in the active changelog index.
       </p>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

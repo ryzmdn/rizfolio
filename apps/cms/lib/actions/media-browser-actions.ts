@@ -9,10 +9,7 @@ import {
 } from "@workspace/storage"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
-import {
-  MEDIA_FOLDERS,
-  type MediaAssetItem,
-} from "../media-types"
+import { MEDIA_FOLDERS, type MediaAssetItem } from "../media-types"
 
 function mapFileToAsset(file: StorageFileItem, folder: string): MediaAssetItem {
   const fullPath = folder ? `${folder}/${file.name}` : file.name

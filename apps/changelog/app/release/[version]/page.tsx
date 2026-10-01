@@ -135,9 +135,12 @@ export default async function ReleaseDetailPage({
     itemsByCategory[cat].push(item)
   }
 
-  const orderedCategories = ["FEATURE", "IMPROVEMENT", "FIX", "BREAKING"].filter(
-    (cat) => itemsByCategory[cat] && itemsByCategory[cat].length > 0
-  )
+  const orderedCategories = [
+    "FEATURE",
+    "IMPROVEMENT",
+    "FIX",
+    "BREAKING",
+  ].filter((cat) => itemsByCategory[cat] && itemsByCategory[cat].length > 0)
 
   const baseUrl = getBaseUrl("changelog")
 

@@ -8,9 +8,7 @@ import {
   Instagram,
 } from "@workspace/ui/constants/icons"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
-import {
-  Mail,
-} from "lucide-react"
+import { Mail } from "lucide-react"
 import { db } from "@workspace/db"
 import { profile } from "@workspace/db/schema"
 import { unstable_cache } from "next/cache"
@@ -86,7 +84,8 @@ export default async function LinkBioPage() {
   const socialLinks =
     (profileData?.socialLinks as Record<string, string> | null) || {}
   const name = profileData?.fullName || "Rizky Ramadhan"
-  const headline = profileData?.headline || "Software Engineer & System Architect"
+  const headline =
+    profileData?.headline || "Software Engineer & System Architect"
   const bio =
     profileData?.bio ||
     "Building scalable web applications, open-source development tools, and performant design systems across the modern web ecosystem."
@@ -95,18 +94,22 @@ export default async function LinkBioPage() {
     "https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
 
   return (
-    <main id="main-content" tabIndex={-1} className="min-h-screen bg-background py-10 px-4 sm:px-6 outline-none">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="min-h-screen bg-background px-4 py-10 outline-none sm:px-6"
+    >
       <div className="mx-auto max-w-xl space-y-8">
-        <div className="relative h-44 w-full overflow-hidden rounded-2xl sm:h-52 bg-linear-to-tr from-muted via-card to-secondary border border-border/80 shadow-xs">
+        <div className="relative h-44 w-full overflow-hidden rounded-2xl border border-border/80 bg-linear-to-tr from-muted via-card to-secondary shadow-xs sm:h-52">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
           <div className="absolute top-4 right-4 z-10">
             <ThemeToggle />
           </div>
         </div>
 
-        <div className="relative -mt-16 sm:-mt-20 px-2 sm:px-4">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div className="relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-full ring-4 ring-background shadow-lg bg-card">
+        <div className="relative -mt-16 px-2 sm:-mt-20 sm:px-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="relative size-24 shrink-0 overflow-hidden rounded-full bg-card shadow-lg ring-4 ring-background sm:size-28">
               <Image
                 src={avatarUrl}
                 alt={name}
@@ -134,12 +137,14 @@ export default async function LinkBioPage() {
                 {name}
               </h1>
               <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-500">
-                <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
                 Available
               </span>
             </div>
-            <p className="text-sm font-medium text-muted-foreground">{headline}</p>
-            <p className="text-xs leading-relaxed text-muted-foreground/90 pt-1">
+            <p className="text-sm font-medium text-muted-foreground">
+              {headline}
+            </p>
+            <p className="pt-1 text-xs leading-relaxed text-muted-foreground/90">
               {bio}
             </p>
           </div>
@@ -165,7 +170,7 @@ export default async function LinkBioPage() {
 
         <div className="space-y-3">
           <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="text-xs font-bold tracking-wider text-muted-foreground uppercase">
               Monorepo Ecosystem &amp; Resources
             </span>
             <span className="font-mono text-[11px] text-muted-foreground/60">
@@ -182,7 +187,8 @@ export default async function LinkBioPage() {
 
         <footer className="pt-6 pb-12 text-center">
           <p className="font-mono text-[11px] text-muted-foreground/70">
-            Powered by Rizfolio Dynamic Architecture &bull; {new Date().getFullYear()}
+            Powered by Rizfolio Dynamic Architecture &bull;{" "}
+            {new Date().getFullYear()}
           </p>
         </footer>
       </div>

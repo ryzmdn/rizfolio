@@ -47,7 +47,9 @@ export async function POST(request: NextRequest) {
           session.client_reference_id || session.metadata?.orderNumber
 
         if (!orderNumber) {
-          console.warn("Stripe Checkout completed without orderNumber reference.")
+          console.warn(
+            "Stripe Checkout completed without orderNumber reference."
+          )
           break
         }
 
@@ -110,7 +112,8 @@ export async function POST(request: NextRequest) {
               metadata: {
                 stripeSessionId: session.id,
                 paymentIntent: paymentRef,
-                customerEmail: session.customer_details?.email || dbOrder.customerEmail,
+                customerEmail:
+                  session.customer_details?.email || dbOrder.customerEmail,
                 paymentStatus: session.payment_status,
               },
             })

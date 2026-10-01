@@ -65,13 +65,14 @@ export function BioLinkCard({ link }: BioLinkCardProps) {
         </div>
         <div className="space-y-0.5 text-left">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+            <span className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
               {link.title}
             </span>
             {link.badge && (
               <span
                 className={`rounded-md border px-1.5 py-0.5 font-mono text-[10px] font-medium ${
-                  link.badgeColor || "bg-primary/10 text-primary border-primary/20"
+                  link.badgeColor ||
+                  "border-primary/20 bg-primary/10 text-primary"
                 }`}
               >
                 {link.badge}
@@ -79,14 +80,14 @@ export function BioLinkCard({ link }: BioLinkCardProps) {
             )}
           </div>
           {link.description && (
-            <p className="text-xs text-muted-foreground line-clamp-1">
+            <p className="line-clamp-1 text-xs text-muted-foreground">
               {link.description}
             </p>
           )}
         </div>
       </div>
 
-      <ArrowUpRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground shrink-0" />
+      <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
     </a>
   )
 }

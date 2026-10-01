@@ -71,7 +71,8 @@ export async function runSystemHealthDiagnostics(): Promise<SystemHealthReport> 
       name: "PostgreSQL Database",
       status: "down",
       latencyMs: Date.now() - t0Db,
-      message: err instanceof Error ? err.message : "Gagal terhubung ke database.",
+      message:
+        err instanceof Error ? err.message : "Gagal terhubung ke database.",
     }
   }
 
@@ -99,7 +100,8 @@ export async function runSystemHealthDiagnostics(): Promise<SystemHealthReport> 
       name: "Supabase Object Storage",
       status: "down",
       latencyMs: Date.now() - t0Storage,
-      message: err instanceof Error ? err.message : "Gagal mengakses bucket storage.",
+      message:
+        err instanceof Error ? err.message : "Gagal mengakses bucket storage.",
     }
   }
 

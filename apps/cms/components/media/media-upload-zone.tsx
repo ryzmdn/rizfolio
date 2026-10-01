@@ -130,7 +130,8 @@ export function MediaUploadZone({
             Unggah Berkas Baru
           </h3>
           <p className="text-xs text-muted-foreground">
-            Tarik dan lepas gambar atau dokumen ke area berikut, atau pilih secara manual.
+            Tarik dan lepas gambar atau dokumen ke area berikut, atau pilih
+            secara manual.
           </p>
         </div>
 
@@ -170,7 +171,7 @@ export function MediaUploadZone({
             <button
               type="button"
               onClick={handleCopy}
-              className="inline-flex items-center gap-1 rounded bg-muted px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted/80 shrink-0"
+              className="inline-flex shrink-0 items-center gap-1 rounded bg-muted px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted/80"
             >
               {copied ? (
                 <>
@@ -221,13 +222,14 @@ export function MediaUploadZone({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-primary hover:underline font-semibold"
+                  className="font-semibold text-primary hover:underline"
                 >
                   telusuri dari komputer
                 </button>
               </p>
               <p className="text-[11px] text-muted-foreground">
-                Mendukung format PNG, JPG, WEBP, GIF, SVG, AVIF, dan PDF (Maks. 50 MB)
+                Mendukung format PNG, JPG, WEBP, GIF, SVG, AVIF, dan PDF (Maks.
+                50 MB)
               </p>
             </div>
           </div>
@@ -241,14 +243,14 @@ export function MediaUploadZone({
                   width={48}
                   height={48}
                   unoptimized
-                  className="h-12 w-12 rounded-lg object-cover border border-border shrink-0"
+                  className="h-12 w-12 shrink-0 rounded-lg border border-border object-cover"
                 />
               ) : (
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted text-muted-foreground shrink-0">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                   <FileCheck className="h-6 w-6" />
                 </div>
               )}
-              <div className="overflow-hidden space-y-0.5">
+              <div className="space-y-0.5 overflow-hidden">
                 <p className="truncate text-xs font-semibold text-foreground">
                   {selectedFile.name}
                 </p>
@@ -258,7 +260,7 @@ export function MediaUploadZone({
               </div>
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex shrink-0 items-center gap-2">
               <button
                 type="button"
                 onClick={handleClear}

@@ -50,10 +50,7 @@ function extractHeadings(markdown: string): TocItem[] {
   return items
 }
 
-export function TableOfContents({
-  content,
-  className,
-}: TableOfContentsProps) {
+export function TableOfContents({ content, className }: TableOfContentsProps) {
   const headings = extractHeadings(content)
   const [activeId, setActiveId] = useState<string>("")
   const [mobileExpanded, setMobileExpanded] = useState<boolean>(false)
@@ -136,7 +133,7 @@ export function TableOfContents({
                   className={cn(
                     "block py-0.5 transition-colors",
                     activeId === item.id
-                      ? "text-primary font-medium"
+                      ? "font-medium text-primary"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -149,8 +146,8 @@ export function TableOfContents({
       </div>
 
       {/* Desktop Sticky View */}
-      <div className="hidden lg:block space-y-3">
-        <p className="flex items-center gap-x-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+      <div className="hidden space-y-3 lg:block">
+        <p className="flex items-center gap-x-2 text-xs font-medium tracking-wider text-muted-foreground uppercase">
           <ListCollapse className="size-3.5" />
           <span>Table of Contents</span>
         </p>
@@ -170,7 +167,7 @@ export function TableOfContents({
                 className={cn(
                   "block py-1 leading-snug transition-colors",
                   activeId === item.id
-                    ? "text-foreground font-medium border-l-2 border-primary pl-2 -ml-2"
+                    ? "-ml-2 border-l-2 border-primary pl-2 font-medium text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >

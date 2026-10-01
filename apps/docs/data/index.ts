@@ -18,7 +18,9 @@ export interface FallbackFilterOptions {
   offset?: number
 }
 
-export function getFallbackRepositories(filters: FallbackFilterOptions = {}): FallbackRepository[] {
+export function getFallbackRepositories(
+  filters: FallbackFilterOptions = {}
+): FallbackRepository[] {
   let list = [...fallbackRepositories]
 
   if (filters.category && filters.category !== "ALL") {
@@ -49,7 +51,10 @@ export function getFallbackRepositories(filters: FallbackFilterOptions = {}): Fa
     list.sort((a, b) => a.name.localeCompare(b.name))
   } else {
     // Default: latest
-    list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    list.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
   }
 
   const offset = filters.offset || 0
@@ -64,7 +69,10 @@ export function getFallbackRepository(slug: string): FallbackRepository | null {
   return fallbackRepositories.find((r) => r.slug === slug) || null
 }
 
-export function getFallbackRepoFiles(repoId: string, parentPath = ""): FallbackRepoFile[] {
+export function getFallbackRepoFiles(
+  repoId: string,
+  parentPath = ""
+): FallbackRepoFile[] {
   const normalizedParent = parentPath.trim().replace(/^\/+|\/+$/g, "")
 
   return fallbackRepoFiles
@@ -76,24 +84,43 @@ export function getFallbackRepoFiles(repoId: string, parentPath = ""): FallbackR
     })
 }
 
-export function getFallbackFileContent(repoId: string, filePath: string): FallbackRepoFile | null {
+export function getFallbackFileContent(
+  repoId: string,
+  filePath: string
+): FallbackRepoFile | null {
   const normalizedPath = filePath.trim().replace(/^\/+|\/+$/g, "")
-  return fallbackRepoFiles.find((f) => f.repoId === repoId && f.path === normalizedPath) || null
+  return (
+    fallbackRepoFiles.find(
+      (f) => f.repoId === repoId && f.path === normalizedPath
+    ) || null
+  )
 }
 
 export function getFallbackReleases(repoId: string): FallbackRepoRelease[] {
   return fallbackRepoReleases
     .filter((rel) => rel.repoId === repoId)
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
 }
 
 export function getFallbackStats() {
   const total = fallbackRepositories.length
-  const assignments = fallbackRepositories.filter((r) => r.category === "ASSIGNMENT").length
-  const experiments = fallbackRepositories.filter((r) => r.category === "EXPERIMENT").length
-  const openSource = fallbackRepositories.filter((r) => r.category === "OPEN_SOURCE").length
+  const assignments = fallbackRepositories.filter(
+    (r) => r.category === "ASSIGNMENT"
+  ).length
+  const experiments = fallbackRepositories.filter(
+    (r) => r.category === "EXPERIMENT"
+  ).length
+  const openSource = fallbackRepositories.filter(
+    (r) => r.category === "OPEN_SOURCE"
+  ).length
 
-  const totalStars = fallbackRepositories.reduce((acc, curr) => acc + (curr.starsCount || 0), 0)
+  const totalStars = fallbackRepositories.reduce(
+    (acc, curr) => acc + (curr.starsCount || 0),
+    0
+  )
   const totalDownloads = fallbackRepositories.reduce(
     (acc, curr) => acc + (curr.downloadsCount || 0),
     0

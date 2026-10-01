@@ -1,5 +1,13 @@
 import { unstable_cache } from "next/cache"
-import { db, changelogs, changelogItems, eq, desc, asc, inArray } from "@workspace/db"
+import {
+  db,
+  changelogs,
+  changelogItems,
+  eq,
+  desc,
+  asc,
+  inArray,
+} from "@workspace/db"
 import {
   fallbackChangelogs,
   roadmapItems,
@@ -51,8 +59,7 @@ function filterFallbackReleases(
       (rel) =>
         rel.scope.some((s) => s.toLowerCase().includes(targetScope)) ||
         rel.items.some(
-          (item) =>
-            item.scope && item.scope.toLowerCase().includes(targetScope)
+          (item) => item.scope && item.scope.toLowerCase().includes(targetScope)
         )
     )
   }

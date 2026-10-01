@@ -54,7 +54,7 @@ export function TimelineNav({ releases }: TimelineNavProps) {
       aria-label="Release navigation"
     >
       <div className="flex items-center justify-between border-b border-border/60 pb-3">
-        <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        <div className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
           <History className="size-3.5 text-foreground" />
           <span>Timeline Index</span>
         </div>
@@ -83,7 +83,9 @@ export function TimelineNav({ releases }: TimelineNavProps) {
                 <span
                   className={cn(
                     "size-1.5 rounded-full transition-colors",
-                    isActive ? "bg-foreground" : "bg-muted-foreground/40 group-hover:bg-foreground"
+                    isActive
+                      ? "bg-foreground"
+                      : "bg-muted-foreground/40 group-hover:bg-foreground"
                   )}
                 />
                 <span className="font-mono font-medium">{rel.version}</span>
@@ -105,7 +107,7 @@ export function TimelineNav({ releases }: TimelineNavProps) {
             <Milestone className="size-3.5" />
             <span>Product Roadmap</span>
           </div>
-          <span className="rounded border border-border/60 bg-muted/40 px-1 py-0.2 font-mono text-[10px] text-muted-foreground">
+          <span className="py-0.2 rounded border border-border/60 bg-muted/40 px-1 font-mono text-[10px] text-muted-foreground">
             Upcoming
           </span>
         </Link>

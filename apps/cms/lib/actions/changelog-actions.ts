@@ -1,11 +1,7 @@
 "use server"
 
 import { db, eq, desc, asc } from "@workspace/db"
-import {
-  changelogs,
-  changelogItems,
-  roadmapItems,
-} from "@workspace/db/schema"
+import { changelogs, changelogItems, roadmapItems } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 import { dispatchBackgroundRevalidation } from "../revalidate"
@@ -153,9 +149,7 @@ export async function getChangelogItems(changelogId: string) {
   }
 }
 
-export async function createChangelogItem(
-  values: CreateChangelogItemInput
-) {
+export async function createChangelogItem(values: CreateChangelogItemInput) {
   const [created] = await db.insert(changelogItems).values(values).returning()
   dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   revalidatePath("/changelog")

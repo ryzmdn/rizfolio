@@ -4,7 +4,10 @@ import { db, eq } from "@workspace/db"
 import { siteSettings } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
-import { dispatchBackgroundRevalidation, type RevalidatableApp } from "../revalidate"
+import {
+  dispatchBackgroundRevalidation,
+  type RevalidatableApp,
+} from "../revalidate"
 
 const ALL_APPS: RevalidatableApp[] = [
   "portfolio",
@@ -53,13 +56,14 @@ export async function updateSiteSettings(
     status: "COMPLETED",
     entityType: "site_settings",
     entityId: key,
-    payloadAfter: typeof valueJson === "object" ? (valueJson as Record<string, unknown>) : { value: valueJson },
+    payloadAfter:
+      typeof valueJson === "object"
+        ? (valueJson as Record<string, unknown>)
+        : { value: valueJson },
   })
 
   // Cascades revalidation across all consumer apps so global settings reflect immediately
-  dispatchBackgroundRevalidation(
-    ALL_APPS.map((app) => ({ app, path: "/" }))
-  )
+  dispatchBackgroundRevalidation(ALL_APPS.map((app) => ({ app, path: "/" })))
 
   revalidatePath("/settings")
   revalidatePath("/")

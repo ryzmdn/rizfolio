@@ -60,7 +60,7 @@ export function ReleaseActionBar({
         onClick={handleCopySha}
         title="Copy Git commit SHA"
         aria-label={`Copy Git commit ${commitSha}`}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 font-mono text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 font-mono text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
       >
         <GitCommit className="size-3.5 text-foreground" />
         <span>{commitSha}</span>
@@ -77,7 +77,7 @@ export function ReleaseActionBar({
         rel="noreferrer"
         title="View commit diff on GitHub"
         aria-label="View commit diff on GitHub"
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
       >
         <GitHub size={13} />
         <span>GitHub Diff</span>
@@ -89,7 +89,7 @@ export function ReleaseActionBar({
         onClick={handleCopyLink}
         title="Copy permanent URL"
         aria-label="Copy release permanent URL"
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
       >
         {copiedLink ? (
           <>
@@ -109,7 +109,7 @@ export function ReleaseActionBar({
         onClick={handleShare}
         title="Share release notes"
         aria-label="Share release notes"
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
       >
         <Share2 className="size-3.5 opacity-70" />
         <span>Share</span>

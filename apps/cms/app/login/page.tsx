@@ -80,7 +80,7 @@ export default function LoginPage() {
                     required
                     autoComplete="email"
                     placeholder="owner@example.com"
-                    className="w-full rounded-xl border border-border/80 bg-background/80 py-2.5 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:border-foreground/40 focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+                    className="w-full rounded-xl border border-border/80 bg-background/80 py-2.5 pr-3 pl-9 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/40 focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function LoginPage() {
                     required
                     autoComplete="current-password"
                     placeholder="••••••••••••"
-                    className="w-full rounded-xl border border-border/80 bg-background/80 py-2.5 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:border-foreground/40 focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+                    className="w-full rounded-xl border border-border/80 bg-background/80 py-2.5 pr-3 pl-9 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/40 focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isPending}
-                className="mt-2 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-foreground py-2.5 text-xs font-bold text-background shadow-xs transition-opacity hover:opacity-90 disabled:opacity-50 focus:outline-hidden focus:ring-2 focus:ring-primary/30"
+                className="mt-2 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-foreground py-2.5 text-xs font-bold text-background shadow-xs transition-opacity hover:opacity-90 focus:ring-2 focus:ring-primary/30 focus:outline-hidden disabled:opacity-50"
               >
                 {isPending ? (
                   <>

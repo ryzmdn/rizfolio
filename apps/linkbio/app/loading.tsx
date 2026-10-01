@@ -1,12 +1,12 @@
 export default function LinkBioLoading() {
   return (
-    <main className="min-h-screen bg-background py-10 px-4 sm:px-6">
+    <main className="min-h-screen bg-background px-4 py-10 sm:px-6">
       <div className="mx-auto max-w-xl space-y-8">
         <div className="h-44 w-full animate-pulse rounded-2xl border border-border/60 bg-muted/40 sm:h-52" />
 
         <div className="relative -mt-16 px-2 sm:-mt-20 sm:px-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="size-24 animate-pulse rounded-full ring-4 ring-background bg-muted/70 sm:size-28" />
+            <div className="size-24 animate-pulse rounded-full bg-muted/70 ring-4 ring-background sm:size-28" />
           </div>
           <div className="mt-4 space-y-2">
             <div className="h-6 w-44 animate-pulse rounded-md bg-muted/70" />

@@ -1,7 +1,14 @@
 "use client"
 
 import Image from "next/image"
-import { ShieldCheck, Download, Lock, ShoppingBag, Tag, Globe } from "lucide-react"
+import {
+  ShieldCheck,
+  Download,
+  Lock,
+  ShoppingBag,
+  Tag,
+  Globe,
+} from "lucide-react"
 import { useCart } from "./cart-provider"
 import { useCurrency } from "./currency-context"
 import { formatPrice } from "../lib/utils"
@@ -57,7 +64,7 @@ export function OrderSummaryCard() {
                   <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
                     <span>Qty: {item.quantity}</span>
                     <span>•</span>
-                    <span className="rounded-sm bg-muted px-1.5 py-0.2 font-medium">
+                    <span className="py-0.2 rounded-sm bg-muted px-1.5 font-medium">
                       {isExtended ? "Extended" : "Standard"}
                     </span>
                   </div>
@@ -78,16 +85,16 @@ export function OrderSummaryCard() {
             <Tag className="size-3.5 text-muted-foreground" />
             <span className="font-mono font-semibold">{coupon.code}</span>
           </div>
-          <span className="text-muted-foreground">{coupon.discountPercent}% Discount Applied</span>
+          <span className="text-muted-foreground">
+            {coupon.discountPercent}% Discount Applied
+          </span>
         </div>
       )}
 
       <div className="space-y-2.5 border-t border-border/60 pt-4 text-xs">
         <div className="flex items-center justify-between text-muted-foreground">
           <span>Subtotal</span>
-          <span className="font-mono text-foreground">
-            {format(subtotal)}
-          </span>
+          <span className="font-mono text-foreground">{format(subtotal)}</span>
         </div>
 
         {discountAmount > 0 && (

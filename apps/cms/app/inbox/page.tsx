@@ -20,7 +20,7 @@ export default async function CmsInboxPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Total Inquiries
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -36,7 +36,7 @@ export default async function CmsInboxPage() {
 
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 New &amp; Unread
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500">
@@ -52,7 +52,7 @@ export default async function CmsInboxPage() {
 
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 In Review
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
@@ -68,7 +68,7 @@ export default async function CmsInboxPage() {
 
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Responded &amp; Closed
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500">

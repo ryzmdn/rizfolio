@@ -31,7 +31,7 @@ export function RoadmapCard({ item }: RoadmapCardProps) {
           <div className="flex items-center gap-2">
             <span
               className={cn(
-                "rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider",
+                "rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold tracking-wider uppercase",
                 getPriorityBadge(item.priority)
               )}
             >
@@ -46,7 +46,7 @@ export function RoadmapCard({ item }: RoadmapCardProps) {
           {isShipped && item.relatedVersion && (
             <Link
               href={`/release/${item.relatedVersion}`}
-              className="inline-flex items-center gap-1 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 transition-colors hover:bg-emerald-500/20"
+              className="inline-flex items-center gap-1 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] font-semibold text-emerald-600 transition-colors hover:bg-emerald-500/20 dark:text-emerald-400"
             >
               <CheckCircle2 className="size-3" />
               <span>{item.relatedVersion}</span>

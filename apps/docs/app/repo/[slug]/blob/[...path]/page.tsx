@@ -12,7 +12,11 @@ import {
 import { highlightCode } from "../../../../../lib/shiki"
 import { CodeViewer } from "../../../../../components/code-viewer"
 import { CopyPathButton } from "../../../../../components/copy-path-button"
-import { getBaseUrl, SEO_CONFIG, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
+import {
+  getBaseUrl,
+  SEO_CONFIG,
+  createBreadcrumbJsonLd,
+} from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
@@ -167,7 +171,7 @@ export default async function FileViewPage({
 
           <Link
             href="/"
-            className="transition-colors hover:text-foreground text-xs uppercase tracking-wider"
+            className="text-xs tracking-wider uppercase transition-colors hover:text-foreground"
           >
             Repositories
           </Link>

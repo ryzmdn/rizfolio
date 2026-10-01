@@ -20,14 +20,18 @@ export default function RepoNotFound() {
             Repository Not Found
           </h1>
           <p className="text-xs/relaxed text-muted-foreground sm:text-sm/relaxed">
-            The requested repository could not be located in this catalog. It may have been renamed, removed, or the slug may be incorrect.
+            The requested repository could not be located in this catalog. It
+            may have been renamed, removed, or the slug may be incorrect.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Link
             href="/"
-            className={cn(buttonVariants({ size: "sm" }), "gap-x-2 text-xs px-4")}
+            className={cn(
+              buttonVariants({ size: "sm" }),
+              "gap-x-2 px-4 text-xs"
+            )}
           >
             <ArrowLeft className="size-3.5" />
             <span>Return to All Repositories</span>
@@ -36,7 +40,7 @@ export default function RepoNotFound() {
             href="/categories"
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              "gap-x-2 text-xs px-4"
+              "gap-x-2 px-4 text-xs"
             )}
           >
             <BookOpen className="size-3.5" />

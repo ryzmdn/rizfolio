@@ -90,9 +90,9 @@ function AssetPreviewModal({
         <div className="flex items-center justify-between border-b border-border p-4">
           <div className="flex items-center gap-2 overflow-hidden">
             {isImg ? (
-              <ImageIcon className="h-4 w-4 text-primary shrink-0" />
+              <ImageIcon className="h-4 w-4 shrink-0 text-primary" />
             ) : (
-              <FileText className="h-4 w-4 text-primary shrink-0" />
+              <FileText className="h-4 w-4 shrink-0 text-primary" />
             )}
             <h3 className="truncate text-xs font-semibold text-foreground">
               {asset.name}
@@ -107,7 +107,7 @@ function AssetPreviewModal({
           </button>
         </div>
 
-        <div className="flex flex-1 items-center justify-center overflow-auto bg-black/10 p-6 min-h-[300px]">
+        <div className="flex min-h-[300px] flex-1 items-center justify-center overflow-auto bg-black/10 p-6">
           {isImg ? (
             <Image
               src={asset.url}
@@ -141,17 +141,24 @@ function AssetPreviewModal({
           <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <Tag className="h-3.5 w-3.5 text-primary" />
-              Folder: <strong className="text-foreground">{asset.folder}</strong>
+              Folder:{" "}
+              <strong className="text-foreground">{asset.folder}</strong>
             </span>
             <span>•</span>
             <span className="inline-flex items-center gap-1">
               <HardDrive className="h-3.5 w-3.5 text-primary" />
-              Ukuran: <strong className="text-foreground">{formatFileSize(asset.size)}</strong>
+              Ukuran:{" "}
+              <strong className="text-foreground">
+                {formatFileSize(asset.size)}
+              </strong>
             </span>
             <span>•</span>
             <span className="inline-flex items-center gap-1">
               <Calendar className="h-3.5 w-3.5 text-primary" />
-              Waktu: <strong className="text-foreground">{formatDate(asset.createdAt)}</strong>
+              Waktu:{" "}
+              <strong className="text-foreground">
+                {formatDate(asset.createdAt)}
+              </strong>
             </span>
           </div>
 
@@ -159,7 +166,7 @@ function AssetPreviewModal({
             <span className="truncate font-mono text-[11px] text-foreground">
               {asset.url}
             </span>
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex shrink-0 items-center gap-2">
               <button
                 type="button"
                 onClick={handleCopy}
@@ -232,7 +239,7 @@ function DeleteConfirmModal({
         <h3 className="text-sm font-semibold text-foreground">
           Konfirmasi Hapus Aset Media
         </h3>
-        <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
           Apakah Anda yakin ingin menghapus berkas{" "}
           <strong className="text-foreground">{asset.name}</strong> dari bucket
           Supabase Storage? Berkas yang telah dihapus tidak dapat dipulihkan.
@@ -251,7 +258,7 @@ function DeleteConfirmModal({
             type="button"
             disabled={isDeleting}
             onClick={handleConfirmDelete}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-destructive px-4 py-2 text-xs font-medium text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50"
+            className="text-destructive-foreground inline-flex items-center gap-1.5 rounded-lg bg-destructive px-4 py-2 text-xs font-medium hover:bg-destructive/90 disabled:opacity-50"
           >
             {isDeleting ? (
               <>
@@ -271,12 +278,17 @@ function DeleteConfirmModal({
   )
 }
 
-export function MediaAssetGrid({ assets, onAssetDeleted }: MediaAssetGridProps) {
+export function MediaAssetGrid({
+  assets,
+  onAssetDeleted,
+}: MediaAssetGridProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState<SortOption>("newest")
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [previewAsset, setPreviewAsset] = useState<MediaAssetItem | null>(null)
-  const [deletingAsset, setDeletingAsset] = useState<MediaAssetItem | null>(null)
+  const [deletingAsset, setDeletingAsset] = useState<MediaAssetItem | null>(
+    null
+  )
 
   const filteredAssets = useMemo(() => {
     const list = assets.filter((asset) => {
@@ -316,14 +328,14 @@ export function MediaAssetGrid({ assets, onAssetDeleted }: MediaAssetGridProps) 
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute top-2.5 left-3 h-3.5 w-3.5 text-muted-foreground" />
           <input
             type="text"
             placeholder="Cari nama berkas aset..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
+            className="w-full rounded-lg border border-border bg-background py-2 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
         </div>
 
@@ -381,7 +393,7 @@ export function MediaAssetGrid({ assets, onAssetDeleted }: MediaAssetGridProps) 
 
                 <Badge
                   variant="outline"
-                  className="absolute left-2 top-2 bg-background/80 text-[9px] backdrop-blur-xs font-mono uppercase"
+                  className="absolute top-2 left-2 bg-background/80 font-mono text-[9px] uppercase backdrop-blur-xs"
                 >
                   {asset.folder}
                 </Badge>
@@ -439,7 +451,8 @@ export function MediaAssetGrid({ assets, onAssetDeleted }: MediaAssetGridProps) 
               Tidak ada aset ditemukan
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Sesuaikan kata kunci pencarian atau unggah berkas baru ke folder ini.
+              Sesuaikan kata kunci pencarian atau unggah berkas baru ke folder
+              ini.
             </p>
           </div>
         )}

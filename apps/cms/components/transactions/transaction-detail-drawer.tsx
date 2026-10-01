@@ -32,12 +32,14 @@ interface DiffEntry {
   afterValue?: unknown
 }
 
-function computeJsonDiff(
-  before: unknown,
-  after: unknown
-): DiffEntry[] {
-  const objBefore = (before && typeof before === "object" ? before : {}) as Record<string, unknown>
-  const objAfter = (after && typeof after === "object" ? after : {}) as Record<string, unknown>
+function computeJsonDiff(before: unknown, after: unknown): DiffEntry[] {
+  const objBefore = (
+    before && typeof before === "object" ? before : {}
+  ) as Record<string, unknown>
+  const objAfter = (after && typeof after === "object" ? after : {}) as Record<
+    string,
+    unknown
+  >
 
   const allKeys = Array.from(
     new Set([...Object.keys(objBefore), ...Object.keys(objAfter)])
@@ -83,10 +85,7 @@ export function TransactionDetailDrawer({
 
   const diffEntries = useMemo(() => {
     if (!transaction) return []
-    return computeJsonDiff(
-      transaction.payloadBefore,
-      transaction.payloadAfter
-    )
+    return computeJsonDiff(transaction.payloadBefore, transaction.payloadAfter)
   }, [transaction])
 
   if (!isOpen || !transaction) return null
@@ -110,7 +109,7 @@ export function TransactionDetailDrawer({
       >
         <div className="flex items-center justify-between border-b border-border p-5">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <Activity className="h-5 w-5 text-primary shrink-0" />
+            <Activity className="h-5 w-5 shrink-0 text-primary" />
             <div className="overflow-hidden">
               <h3 className="truncate font-mono text-sm font-bold text-foreground">
                 {transaction.trxNumber}
@@ -144,17 +143,19 @@ export function TransactionDetailDrawer({
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5 space-y-6">
+        <div className="flex-1 space-y-6 overflow-y-auto p-5">
           <div className="grid grid-cols-2 gap-3 rounded-xl border border-border/70 bg-muted/20 p-4 sm:grid-cols-4">
             <div className="space-y-1">
               <span className="text-[11px] text-muted-foreground">Domain</span>
-              <p className="font-semibold text-xs text-foreground">
+              <p className="text-xs font-semibold text-foreground">
                 {transaction.domain}
               </p>
             </div>
             <div className="space-y-1">
-              <span className="text-[11px] text-muted-foreground">Aksi Sistem</span>
-              <p className="font-semibold text-xs text-foreground">
+              <span className="text-[11px] text-muted-foreground">
+                Aksi Sistem
+              </span>
+              <p className="text-xs font-semibold text-foreground">
                 {transaction.actionType}
               </p>
             </div>
@@ -176,8 +177,10 @@ export function TransactionDetailDrawer({
               </div>
             </div>
             <div className="space-y-1">
-              <span className="text-[11px] text-muted-foreground">Nilai Transaksi</span>
-              <p className="font-mono font-semibold text-xs text-foreground">
+              <span className="text-[11px] text-muted-foreground">
+                Nilai Transaksi
+              </span>
+              <p className="font-mono text-xs font-semibold text-foreground">
                 {transaction.amount && transaction.amount > 0
                   ? `Rp ${transaction.amount.toLocaleString("id-ID")}`
                   : "-"}
@@ -186,26 +189,29 @@ export function TransactionDetailDrawer({
           </div>
 
           <div className="space-y-3 rounded-xl border border-border/70 bg-card p-4 text-xs">
-            <h4 className="font-semibold text-foreground uppercase tracking-wider text-[11px] text-muted-foreground">
+            <h4 className="text-[11px] font-semibold tracking-wider text-foreground text-muted-foreground uppercase">
               Metadata Konteks & Keamanan
             </h4>
             <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Shield className="h-3.5 w-3.5 text-primary shrink-0" />
+                <Shield className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <span>Aktor:</span>
                 <strong className="text-foreground">
-                  {transaction.actorType} {transaction.actorId ? `(${transaction.actorId.substring(0, 10)}...)` : ""}
+                  {transaction.actorType}{" "}
+                  {transaction.actorId
+                    ? `(${transaction.actorId.substring(0, 10)}...)`
+                    : ""}
                 </strong>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
+                <Layers className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <span>Entitas:</span>
                 <strong className="font-mono text-foreground">
                   {transaction.entityType}: {transaction.entityId}
                 </strong>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Clock className="h-3.5 w-3.5 text-primary shrink-0" />
+                <Clock className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <span>Waktu Catat:</span>
                 <strong className="text-foreground">
                   {new Date(transaction.createdAt).toLocaleString("id-ID", {
@@ -215,7 +221,7 @@ export function TransactionDetailDrawer({
                 </strong>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Network className="h-3.5 w-3.5 text-primary shrink-0" />
+                <Network className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <span>Client IP:</span>
                 <strong className="font-mono text-foreground">
                   {transaction.clientIp || "Internal Cluster / Localhost"}
@@ -225,7 +231,7 @@ export function TransactionDetailDrawer({
 
             {transaction.userAgent && (
               <div className="flex items-start gap-2 pt-1 text-muted-foreground">
-                <Laptop className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                <Laptop className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                 <span className="shrink-0">User Agent:</span>
                 <span className="truncate font-mono text-[11px] text-foreground">
                   {transaction.userAgent}
@@ -329,11 +335,11 @@ export function TransactionDetailDrawer({
                     Tidak ada perubahan data payload pada rekaman audit ini.
                   </div>
                 ) : (
-                  <div className="divide-y divide-border/60 rounded-xl border border-border bg-card overflow-hidden">
+                  <div className="divide-y divide-border/60 overflow-hidden rounded-xl border border-border bg-card">
                     {diffEntries.map((entry) => (
                       <div
                         key={entry.key}
-                        className={`p-3 text-xs font-mono transition-colors ${
+                        className={`p-3 font-mono text-xs transition-colors ${
                           entry.status === "added"
                             ? "bg-emerald-500/5 dark:bg-emerald-500/10"
                             : entry.status === "removed"
@@ -348,7 +354,7 @@ export function TransactionDetailDrawer({
                             {entry.key}
                           </span>
                           <span
-                            className={`rounded px-1.5 py-0.5 text-[10px] uppercase font-semibold ${
+                            className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase ${
                               entry.status === "added"
                                 ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
                                 : entry.status === "removed"
@@ -363,20 +369,20 @@ export function TransactionDetailDrawer({
                         </div>
 
                         {entry.status === "modified" && (
-                          <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 pt-1 border-t border-border/40">
+                          <div className="mt-2 grid grid-cols-1 gap-2 border-t border-border/40 pt-1 sm:grid-cols-2">
                             <div>
-                              <span className="text-[10px] text-muted-foreground block mb-0.5">
+                              <span className="mb-0.5 block text-[10px] text-muted-foreground">
                                 Sebelum:
                               </span>
-                              <pre className="rounded bg-muted/40 p-2 text-[11px] text-destructive overflow-x-auto">
+                              <pre className="overflow-x-auto rounded bg-muted/40 p-2 text-[11px] text-destructive">
                                 {JSON.stringify(entry.beforeValue, null, 2)}
                               </pre>
                             </div>
                             <div>
-                              <span className="text-[10px] text-muted-foreground block mb-0.5">
+                              <span className="mb-0.5 block text-[10px] text-muted-foreground">
                                 Sesudah:
                               </span>
-                              <pre className="rounded bg-muted/40 p-2 text-[11px] text-emerald-600 dark:text-emerald-400 overflow-x-auto">
+                              <pre className="overflow-x-auto rounded bg-muted/40 p-2 text-[11px] text-emerald-600 dark:text-emerald-400">
                                 {JSON.stringify(entry.afterValue, null, 2)}
                               </pre>
                             </div>
@@ -385,7 +391,7 @@ export function TransactionDetailDrawer({
 
                         {entry.status === "added" && (
                           <div className="mt-2 pt-1">
-                            <pre className="rounded bg-muted/40 p-2 text-[11px] text-emerald-600 dark:text-emerald-400 overflow-x-auto">
+                            <pre className="overflow-x-auto rounded bg-muted/40 p-2 text-[11px] text-emerald-600 dark:text-emerald-400">
                               {JSON.stringify(entry.afterValue, null, 2)}
                             </pre>
                           </div>
@@ -393,14 +399,14 @@ export function TransactionDetailDrawer({
 
                         {entry.status === "removed" && (
                           <div className="mt-2 pt-1">
-                            <pre className="rounded bg-muted/40 p-2 text-[11px] text-destructive overflow-x-auto">
+                            <pre className="overflow-x-auto rounded bg-muted/40 p-2 text-[11px] text-destructive">
                               {JSON.stringify(entry.beforeValue, null, 2)}
                             </pre>
                           </div>
                         )}
 
                         {entry.status === "unchanged" && (
-                          <div className="mt-1 text-muted-foreground text-[11px]">
+                          <div className="mt-1 text-[11px] text-muted-foreground">
                             {JSON.stringify(entry.afterValue)}
                           </div>
                         )}

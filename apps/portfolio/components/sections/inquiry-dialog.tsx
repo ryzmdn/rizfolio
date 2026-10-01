@@ -40,7 +40,9 @@ export function InquiryDialog() {
     }
 
     if (!message.trim() || message.trim().length < 10) {
-      setError("Please describe your project or requirements (at least 10 characters).")
+      setError(
+        "Please describe your project or requirements (at least 10 characters)."
+      )
       return
     }
 
@@ -80,7 +82,7 @@ export function InquiryDialog() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="mt-8 inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-background px-6 py-3.5 text-sm font-semibold text-foreground shadow-md transition-all hover:bg-background/90 hover:scale-[1.02] active:scale-[0.98]"
+        className="mt-8 inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-background px-6 py-3.5 text-sm font-semibold text-foreground shadow-md transition-all hover:scale-[1.02] hover:bg-background/90 active:scale-[0.98]"
       >
         <MessageSquareCode className="size-4" />
         <span>Submit Project Inquiry</span>
@@ -90,10 +92,10 @@ export function InquiryDialog() {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs duration-200 fade-in"
         >
           <div
-            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl border border-border/80 bg-card p-6 shadow-2xl text-left"
+            className="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-border/80 bg-card p-6 text-left shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-border/60 pb-4">
@@ -106,7 +108,8 @@ export function InquiryDialog() {
                     Project Collaboration Inquiry
                   </h3>
                   <p className="text-xs text-muted-foreground">
-                    Direct proposal channel to architect and build your next system.
+                    Direct proposal channel to architect and build your next
+                    system.
                   </p>
                 </div>
               </div>
@@ -120,14 +123,14 @@ export function InquiryDialog() {
             </div>
 
             {successMessage ? (
-              <div className="py-8 space-y-4 text-center">
+              <div className="space-y-4 py-8 text-center">
                 <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
                   <CheckCircle2 className="size-6" />
                 </div>
                 <h4 className="text-base font-bold text-foreground">
                   Inquiry Dispatched Successfully
                 </h4>
-                <p className="text-xs leading-relaxed text-muted-foreground max-w-md mx-auto">
+                <p className="mx-auto max-w-md text-xs leading-relaxed text-muted-foreground">
                   {successMessage}
                 </p>
                 <div className="pt-4">
@@ -182,11 +185,21 @@ export function InquiryDialog() {
                       onChange={(e) => setProjectScope(e.target.value)}
                       className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:border-primary/50 focus:outline-hidden"
                     >
-                      <option value="Full-Time Architecture">Full-Time Architecture</option>
-                      <option value="Engineering Contract">Engineering Contract</option>
-                      <option value="System Audit & Optimization">System Audit & Optimization</option>
-                      <option value="Technical Advisory">Technical Advisory</option>
-                      <option value="Web App Development">Web App Development</option>
+                      <option value="Full-Time Architecture">
+                        Full-Time Architecture
+                      </option>
+                      <option value="Engineering Contract">
+                        Engineering Contract
+                      </option>
+                      <option value="System Audit & Optimization">
+                        System Audit & Optimization
+                      </option>
+                      <option value="Technical Advisory">
+                        Technical Advisory
+                      </option>
+                      <option value="Web App Development">
+                        Web App Development
+                      </option>
                     </select>
                   </div>
 
@@ -203,7 +216,9 @@ export function InquiryDialog() {
                       <option value="$5K - $15K">$5,000 - $15,000</option>
                       <option value="$15K - $30K">$15,000 - $30,000</option>
                       <option value="> $30K">&gt; $30,000</option>
-                      <option value="Flexible / To Discuss">Flexible / To Discuss</option>
+                      <option value="Flexible / To Discuss">
+                        Flexible / To Discuss
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -223,7 +238,8 @@ export function InquiryDialog() {
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-foreground">
-                    Project Details & Goals <span className="text-rose-500">*</span>
+                    Project Details & Goals{" "}
+                    <span className="text-rose-500">*</span>
                   </label>
                   <textarea
                     rows={4}
@@ -242,7 +258,7 @@ export function InquiryDialog() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-end gap-3 pt-3 border-t border-border/60">
+                <div className="flex items-center justify-end gap-3 border-t border-border/60 pt-3">
                   <button
                     type="button"
                     onClick={handleClose}

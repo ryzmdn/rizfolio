@@ -87,7 +87,10 @@ function RepoEditForm({ repo, onClose }: RepoEditFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="flex-1 space-y-6 overflow-y-auto p-6"
+    >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="space-y-1.5 sm:col-span-2">
           <label className="text-xs font-medium text-foreground">
@@ -133,9 +136,7 @@ function RepoEditForm({ repo, onClose }: RepoEditFormProps) {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-foreground">
-            Lisensi
-          </label>
+          <label className="text-xs font-medium text-foreground">Lisensi</label>
           <input
             type="text"
             value={license}
@@ -326,14 +327,15 @@ export function RepoEditDialog({ repo, isOpen, onClose }: RepoEditDialogProps) {
         onClick={onClose}
       />
 
-      <div className="relative z-50 flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150">
+      <div className="relative z-50 flex max-h-[90vh] w-full max-w-4xl animate-in flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl duration-150 fade-in-0 zoom-in-95">
         <div className="flex items-center justify-between border-b border-border/80 px-6 py-4">
           <div>
             <h2 className="text-base font-semibold text-foreground">
               Edit Repositori: {repo.name}
             </h2>
             <p className="text-xs text-muted-foreground">
-              Perbarui metadata proyek, tech stack, lisensi, dan dokumentasi README.
+              Perbarui metadata proyek, tech stack, lisensi, dan dokumentasi
+              README.
             </p>
           </div>
           <button

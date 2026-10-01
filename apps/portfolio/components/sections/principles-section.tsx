@@ -39,8 +39,8 @@ export function PrinciplesSection({
             <div key={idx} className="pb-10 lg:flex">
               <div className="lg:flex-auto">
                 <div className="w-full space-y-5">
-                  <div className="flex max-xs:flex-col justify-between gap-4 sm:items-center">
-                    <div className="flex justify-center items-center size-8 text-secondary bg-foreground rounded-md">
+                  <div className="flex justify-between gap-4 sm:items-center max-xs:flex-col">
+                    <div className="flex size-8 items-center justify-center rounded-md bg-foreground text-secondary">
                       <Icon className="size-4" />
                     </div>
                     <div className="flex-1">
@@ -51,13 +51,15 @@ export function PrinciplesSection({
                         </small>
                       </h3>
                     </div>
-                    <Badge variant="secondary" className="max-sm:hidden">{service.mentalModel}</Badge>
+                    <Badge variant="secondary" className="max-sm:hidden">
+                      {service.mentalModel}
+                    </Badge>
                   </div>
                   <p className="leading-7 text-muted-foreground">
                     {service.description}
                   </p>
                 </div>
-                <div className="border-l border-border italic my-7 pl-8 leading-7 text-muted-foreground">
+                <div className="my-7 border-l border-border pl-8 leading-7 text-muted-foreground italic">
                   <q>{service.tagline}</q>
                 </div>
                 {service.rules && service.rules.length > 0 && (

@@ -26,12 +26,7 @@ import {
   type DigitalOrder,
 } from "../data"
 
-export {
-  fallbackProducts,
-  fallbackReviews,
-  fallbackCoupons,
-  fallbackOrders,
-}
+export { fallbackProducts, fallbackReviews, fallbackCoupons, fallbackOrders }
 
 export type {
   ShopProduct,
@@ -158,9 +153,12 @@ async function fetchActiveProducts(
           title: p.title,
           description: p.description,
           price: p.price,
-          extendedPrice: fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
+          extendedPrice:
+            fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
           currency: p.currency,
-          productType: (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") || "DIGITAL_DOWNLOAD",
+          productType:
+            (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") ||
+            "DIGITAL_DOWNLOAD",
           category: fallbackMatch?.category || "STARTER_KIT",
           coverImageUrl: p.coverImageUrl || fallbackMatch?.coverImageUrl || "",
           galleryUrls: p.galleryUrls || fallbackMatch?.galleryUrls || [],
@@ -170,7 +168,10 @@ async function fetchActiveProducts(
           reviewCount: fallbackMatch?.reviewCount || 10,
           stock: p.stock,
           isActive: p.isActive,
-          createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+          createdAt:
+            typeof p.createdAt === "string"
+              ? p.createdAt
+              : p.createdAt.toISOString(),
           demoUrl: fallbackMatch?.demoUrl,
           faq: fallbackMatch?.faq || [],
         }
@@ -247,9 +248,12 @@ async function fetchProductBySlug(slug: string): Promise<ShopProduct | null> {
         title: p.title,
         description: p.description,
         price: p.price,
-        extendedPrice: fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
+        extendedPrice:
+          fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
         currency: p.currency,
-        productType: (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") || "DIGITAL_DOWNLOAD",
+        productType:
+          (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") ||
+          "DIGITAL_DOWNLOAD",
         category: fallbackMatch?.category || "STARTER_KIT",
         coverImageUrl: p.coverImageUrl || fallbackMatch?.coverImageUrl || "",
         galleryUrls: p.galleryUrls || fallbackMatch?.galleryUrls || [],
@@ -259,7 +263,10 @@ async function fetchProductBySlug(slug: string): Promise<ShopProduct | null> {
         reviewCount: fallbackMatch?.reviewCount || 10,
         stock: p.stock,
         isActive: p.isActive,
-        createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+        createdAt:
+          typeof p.createdAt === "string"
+            ? p.createdAt
+            : p.createdAt.toISOString(),
         demoUrl: fallbackMatch?.demoUrl,
         files: files && files.length > 0 ? files : fallbackMatch?.files,
         faq: fallbackMatch?.faq || [],
@@ -323,9 +330,12 @@ async function fetchRelatedProducts(
           title: p.title,
           description: p.description,
           price: p.price,
-          extendedPrice: fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
+          extendedPrice:
+            fallbackMatch?.extendedPrice || Math.round(p.price * 1.75),
           currency: p.currency,
-          productType: (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") || "DIGITAL_DOWNLOAD",
+          productType:
+            (p.productType as "DIGITAL_DOWNLOAD" | "SERVICE" | "PHYSICAL") ||
+            "DIGITAL_DOWNLOAD",
           category: fallbackMatch?.category || "STARTER_KIT",
           coverImageUrl: p.coverImageUrl || fallbackMatch?.coverImageUrl || "",
           galleryUrls: p.galleryUrls || fallbackMatch?.galleryUrls || [],
@@ -335,7 +345,10 @@ async function fetchRelatedProducts(
           reviewCount: fallbackMatch?.reviewCount || 10,
           stock: p.stock,
           isActive: p.isActive,
-          createdAt: typeof p.createdAt === "string" ? p.createdAt : p.createdAt.toISOString(),
+          createdAt:
+            typeof p.createdAt === "string"
+              ? p.createdAt
+              : p.createdAt.toISOString(),
           demoUrl: fallbackMatch?.demoUrl,
           faq: fallbackMatch?.faq || [],
         }
@@ -461,7 +474,9 @@ export async function getOrderByNumber(
     const rows = await db
       .select()
       .from(orders)
-      .where(or(eq(orders.orderNumber, orderNumber), eq(orders.id, orderNumber))!)
+      .where(
+        or(eq(orders.orderNumber, orderNumber), eq(orders.id, orderNumber))!
+      )
       .limit(1)
 
     const ord = rows[0]
@@ -478,7 +493,8 @@ export async function getOrderByNumber(
         customerEmail: ord.customerEmail,
         totalAmount: ord.totalAmount,
         currency: ord.currency,
-        status: (ord.status as "COMPLETED" | "PENDING" | "FAILED") || "COMPLETED",
+        status:
+          (ord.status as "COMPLETED" | "PENDING" | "FAILED") || "COMPLETED",
         paymentMethod: ord.paymentProvider || "Simulated Instant Order",
         createdAt: ord.createdAt.toISOString(),
         items: items.map((it) => ({

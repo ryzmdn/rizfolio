@@ -63,7 +63,9 @@ export function AuthorBio() {
       </div>
 
       <p className="mt-4 text-sm/relaxed text-muted-foreground">
-        Architecting resilient digital systems at the intersection of robust full-stack engineering, accessible interface design, and observable cloud infrastructure.
+        Architecting resilient digital systems at the intersection of robust
+        full-stack engineering, accessible interface design, and observable
+        cloud infrastructure.
       </p>
     </div>
   )

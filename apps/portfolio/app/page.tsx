@@ -16,7 +16,11 @@ import {
   CtaSection,
 } from "@/components/sections"
 import { getPortfolioPageData } from "@/lib/queries"
-import { createPersonJsonLd, createWebSiteJsonLd, getBaseUrl } from "@workspace/ui/lib/seo"
+import {
+  createPersonJsonLd,
+  createWebSiteJsonLd,
+  getBaseUrl,
+} from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 

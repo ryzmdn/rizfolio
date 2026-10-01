@@ -4,7 +4,7 @@ import { engineeringProcess } from "@/data"
 export function ProcessSection() {
   return (
     <Container id="process" className="space-y-16 py-20">
-      <hgroup className="text-center mx-auto max-w-2xl space-y-3">
+      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
         <p className="text-sm/6 text-muted-foreground">Engineering Process.</p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Engineering Lifecycle

@@ -46,8 +46,7 @@ export function AddToCartButton({
   const variantClasses = {
     primary:
       "bg-foreground text-background hover:bg-foreground/90 transition-colors",
-    secondary:
-      "bg-muted text-foreground hover:bg-muted/80 transition-colors",
+    secondary: "bg-muted text-foreground hover:bg-muted/80 transition-colors",
     outline:
       "border border-border/70 bg-background hover:border-foreground/30 hover:bg-muted/60 text-foreground transition-colors",
   }

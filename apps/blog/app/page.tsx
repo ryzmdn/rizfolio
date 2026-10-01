@@ -1,9 +1,6 @@
 import { Container } from "@workspace/ui/components/layouts/container"
 import { FilterSection } from "@/components/filters-section"
-import {
-  getPublishedPosts,
-  getCategoriesWithCount,
-} from "@/lib/queries"
+import { getPublishedPosts, getCategoriesWithCount } from "@/lib/queries"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -15,7 +12,11 @@ import {
   ArrowRight,
   ArrowUpRight,
 } from "lucide-react"
-import { createWebSiteJsonLd, getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
+import {
+  createWebSiteJsonLd,
+  getBaseUrl,
+  SEO_CONFIG,
+} from "@workspace/ui/lib/seo"
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -29,7 +30,10 @@ interface BlogPageProps {
 
 export const revalidate = 3600
 
-function formatDate(date: string | Date | null, format: "short" | "long" = "short") {
+function formatDate(
+  date: string | Date | null,
+  format: "short" | "long" = "short"
+) {
   if (!date) return "Recent"
   return new Date(date).toLocaleDateString("en-US", {
     month: format === "long" ? "long" : "short",
@@ -44,22 +48,23 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
   const tag = resolvedParams?.tag
   const q = resolvedParams?.q
   const sort = resolvedParams?.sort || "latest"
-  const currentPage = resolvedParams?.page ? parseInt(resolvedParams.page, 10) : 1
+  const currentPage = resolvedParams?.page
+    ? parseInt(resolvedParams.page, 10)
+    : 1
 
   const isDefaultView = !category && !tag && !q && currentPage === 1
 
-  const [{ posts, total, totalPages }, categories] =
-    await Promise.all([
-      getPublishedPosts({
-        categorySlug: category,
-        tagSlug: tag,
-        query: q,
-        sort,
-        page: currentPage,
-        limit: 9,
-      }),
-      getCategoriesWithCount(),
-    ])
+  const [{ posts, total, totalPages }, categories] = await Promise.all([
+    getPublishedPosts({
+      categorySlug: category,
+      tagSlug: tag,
+      query: q,
+      sort,
+      page: currentPage,
+      limit: 9,
+    }),
+    getCategoriesWithCount(),
+  ])
 
   const featuredPost = isDefaultView
     ? posts.find((p) => p.featured) || posts[0] || null
@@ -112,20 +117,22 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
-      <section className="w-full border-b border-border/40 pb-0 pt-10 sm:pt-16">
+      <section className="w-full border-b border-border/40 pt-10 pb-0 sm:pt-16">
         <Container>
           {isDefaultView && featuredPost ? (
             <div className="grid grid-cols-1 gap-0 lg:grid-cols-12">
               <div className="flex flex-col justify-between py-6 pr-0 lg:col-span-5 lg:py-8 lg:pr-12">
                 <div>
-                  <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                  <p className="mb-4 text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
                     Engineering Notes & Architectural Invariants
                   </p>
-                  <h1 className="text-4xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                  <h1 className="text-4xl leading-[1.1] font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
                     Articles on systems, design & full-stack craft.
                   </h1>
                   <p className="mt-4 text-sm/relaxed text-muted-foreground sm:text-base/relaxed">
-                    Architectural essays on deterministic state, monorepo package isolation, database resilience, and sub-second web performance.
+                    Architectural essays on deterministic state, monorepo
+                    package isolation, database resilience, and sub-second web
+                    performance.
                   </p>
                 </div>
 
@@ -157,9 +164,9 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <div className="absolute right-0 bottom-0 left-0 p-6">
                       <div className="mb-3 flex flex-wrap items-center gap-2 text-[11px] text-white/70">
-                        <span className="rounded bg-white/15 px-2 py-0.5 font-semibold uppercase tracking-widest text-white backdrop-blur-sm">
+                        <span className="rounded bg-white/15 px-2 py-0.5 font-semibold tracking-widest text-white uppercase backdrop-blur-sm">
                           Featured
                         </span>
                         {featuredPost.categories[0] && (
@@ -174,7 +181,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                         </span>
                       </div>
 
-                      <h2 className="text-xl font-semibold leading-tight tracking-tight text-white sm:text-2xl">
+                      <h2 className="text-xl leading-tight font-semibold tracking-tight text-white sm:text-2xl">
                         {featuredPost.title}
                       </h2>
 
@@ -197,14 +204,15 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
             </div>
           ) : (
             <div className="max-w-3xl py-8 sm:py-12">
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+              <p className="mb-3 text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
                 Engineering Notes & Architectural Invariants
               </p>
-              <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
+              <h1 className="text-4xl leading-tight font-semibold tracking-tight text-foreground sm:text-5xl">
                 Articles on systems, design & full-stack craft.
               </h1>
               <p className="mt-4 text-sm/relaxed text-muted-foreground sm:text-base/relaxed">
-                Architectural essays on deterministic state, monorepo package isolation, database resilience, and sub-second web performance.
+                Architectural essays on deterministic state, monorepo package
+                isolation, database resilience, and sub-second web performance.
               </p>
             </div>
           )}
@@ -233,7 +241,8 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 No articles found
               </h2>
               <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-                No published articles match your current filters or search query.
+                No published articles match your current filters or search
+                query.
               </p>
               <Link
                 href="/"
@@ -278,7 +287,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                         </Link>
                       ) : null}
 
-                      <div className="p-5 sm:p-6 pb-0">
+                      <div className="p-5 pb-0 sm:p-6">
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
                           {primaryCategory && (
                             <>
@@ -305,8 +314,8 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                         <h2
                           className={
                             isLarge
-                              ? "mt-3 text-xl font-semibold leading-snug tracking-tight text-foreground sm:text-2xl"
-                              : "mt-3 text-base font-semibold leading-snug tracking-tight text-foreground"
+                              ? "mt-3 text-xl leading-snug font-semibold tracking-tight text-foreground sm:text-2xl"
+                              : "mt-3 text-base leading-snug font-semibold tracking-tight text-foreground"
                           }
                         >
                           <Link
@@ -323,7 +332,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                       </div>
                     </div>
 
-                    <div className="p-5 sm:p-6 pt-5">
+                    <div className="p-5 pt-5 sm:p-6">
                       <div className="flex items-center justify-between border-t border-border/40 pt-4">
                         <div className="flex flex-wrap gap-x-2">
                           {post.tags.slice(0, 2).map((t) => (
@@ -338,12 +347,13 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                           ))}
                         </div>
 
-                        {post.viewsCount !== undefined && post.viewsCount > 0 && (
-                          <div className="flex items-center gap-1 text-[11px] text-muted-foreground/60">
-                            <Eye className="size-3" />
-                            <span>{post.viewsCount}</span>
-                          </div>
-                        )}
+                        {post.viewsCount !== undefined &&
+                          post.viewsCount > 0 && (
+                            <div className="flex items-center gap-1 text-[11px] text-muted-foreground/60">
+                              <Eye className="size-3" />
+                              <span>{post.viewsCount}</span>
+                            </div>
+                          )}
                       </div>
                     </div>
                   </article>
@@ -355,8 +365,14 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
           {totalPages > 1 && (
             <div className="mt-12 flex items-center justify-between border-t border-border/40 pt-6">
               <p className="text-xs text-muted-foreground">
-                Page <span className="font-medium text-foreground">{currentPage}</span> of{" "}
-                <span className="font-medium text-foreground">{totalPages}</span>
+                Page{" "}
+                <span className="font-medium text-foreground">
+                  {currentPage}
+                </span>{" "}
+                of{" "}
+                <span className="font-medium text-foreground">
+                  {totalPages}
+                </span>
               </p>
               <div className="flex items-center gap-2">
                 {currentPage > 1 && (

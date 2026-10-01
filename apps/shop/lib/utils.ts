@@ -15,6 +15,9 @@ export function formatPrice(
   return formatPriceFromIdr(price, currency)
 }
 
-export function formatRawPrice(amount: number, currency: string = "IDR"): string {
+export function formatRawPrice(
+  amount: number,
+  currency: string = "IDR"
+): string {
   return formatCurrencyAmount(amount, currency)
 }

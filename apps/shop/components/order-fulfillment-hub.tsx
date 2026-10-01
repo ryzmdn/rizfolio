@@ -40,7 +40,7 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
         <div className="flex size-12 items-center justify-center rounded-md border border-border/60 bg-muted/40 text-foreground">
           <CheckCircle2 className="size-6" />
         </div>
-        <span className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+        <span className="mt-3 font-mono text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
           Order Verified & Completed
         </span>
         <h1 className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
@@ -202,7 +202,10 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                       <span>Quick Start Instructions</span>
                     </div>
                     <div className="space-y-1 font-mono text-[11px] text-muted-foreground">
-                      <p>1. Extract archive: unzip {item.fileName || "archive.zip"} -d ./project</p>
+                      <p>
+                        1. Extract archive: unzip{" "}
+                        {item.fileName || "archive.zip"} -d ./project
+                      </p>
                       <p>2. Install dependencies: pnpm install</p>
                       <p>3. Start development server: pnpm dev</p>
                     </div>

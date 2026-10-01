@@ -19,7 +19,11 @@ import { AuthorBio } from "@/components/author-bio"
 import { PostNavigation } from "@/components/post-navigation"
 import { ArrowLeft, Calendar, Clock, Eye, ChevronRight } from "lucide-react"
 import { getPostReactionCount } from "@/lib/actions"
-import { getBaseUrl, SEO_CONFIG, createBreadcrumbJsonLd } from "@workspace/ui/lib/seo"
+import {
+  getBaseUrl,
+  SEO_CONFIG,
+  createBreadcrumbJsonLd,
+} from "@workspace/ui/lib/seo"
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -135,7 +139,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const breadcrumbJsonLd = createBreadcrumbJsonLd([
     { name: "Articles", url: baseUrl },
     ...(primaryCategory
-      ? [{ name: primaryCategory.name, url: `${baseUrl}/?category=${primaryCategory.slug}` }]
+      ? [
+          {
+            name: primaryCategory.name,
+            url: `${baseUrl}/?category=${primaryCategory.slug}`,
+          },
+        ]
       : []),
     { name: post.title, url: postUrl },
   ])
@@ -156,7 +165,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <article className="w-full pt-10 pb-24 sm:pt-16 sm:pb-32">
         <Container className="max-w-5xl">
-          <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground"
+          >
             <Link
               href="/"
               className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
@@ -176,7 +188,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </>
             )}
             <ChevronRight className="size-3 text-muted-foreground/40" />
-            <span className="truncate max-w-[200px] sm:max-w-xs text-foreground font-medium">
+            <span className="max-w-[200px] truncate font-medium text-foreground sm:max-w-xs">
               {post.title}
             </span>
           </nav>
@@ -211,7 +223,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               )}
             </div>
 
-            <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl">
+            <h1 className="text-3xl leading-tight font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl">
               {post.title}
             </h1>
 
@@ -231,8 +243,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-foreground">Rizky Ramadhan</p>
-                  <p className="text-[11px] text-muted-foreground">Multidisciplinary Digital Builder</p>
+                  <p className="text-xs font-medium text-foreground">
+                    Rizky Ramadhan
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Multidisciplinary Digital Builder
+                  </p>
                 </div>
               </div>
 
@@ -255,7 +271,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           )}
 
-          <div className="lg:hidden mb-8">
+          <div className="mb-8 lg:hidden">
             <TableOfContents content={post.contentMd} />
           </div>
 
@@ -323,7 +339,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         </>
                       )}
                     </div>
-                    <h3 className="text-sm font-medium leading-snug text-foreground transition-colors group-hover:text-muted-foreground">
+                    <h3 className="text-sm leading-snug font-medium text-foreground transition-colors group-hover:text-muted-foreground">
                       {rel.title}
                     </h3>
                     <p className="mt-2 line-clamp-2 text-xs/relaxed text-muted-foreground">

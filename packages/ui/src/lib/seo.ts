@@ -19,7 +19,8 @@ export const SEO_CONFIG = {
   sites: {
     main: {
       name: "Rizky Ramadhan",
-      defaultTitle: "Rizky Ramadhan — Senior Full-Stack Engineer & Systems Architect",
+      defaultTitle:
+        "Rizky Ramadhan — Senior Full-Stack Engineer & Systems Architect",
       titleTemplate: "%s | Rizky Ramadhan",
       description:
         "Senior Full-Stack Engineer & Systems Architect specializing in deterministic software systems, Next.js monorepos, and high-performance digital experiences.",
@@ -40,7 +41,8 @@ export const SEO_CONFIG = {
     },
     portfolio: {
       name: "Rizfolio Portfolio",
-      defaultTitle: "Rizky Ramadhan — Senior Full-Stack Engineer & Systems Architect",
+      defaultTitle:
+        "Rizky Ramadhan — Senior Full-Stack Engineer & Systems Architect",
       titleTemplate: "%s | Rizky Ramadhan",
       description:
         "Showcasing high-impact full-stack applications, resilient backend architectures, enterprise design systems, and client delivery case studies.",
@@ -163,9 +165,7 @@ export const SEO_CONFIG = {
       titleTemplate: "%s | Rizfolio CMS",
       description:
         "Internal administrative dashboard and management portal for the Rizfolio monorepo.",
-      url:
-        process.env.NEXT_PUBLIC_CMS_URL ||
-        "https://cms.ryzmdn.me",
+      url: process.env.NEXT_PUBLIC_CMS_URL || "https://cms.ryzmdn.me",
       keywords: [],
     },
   },
@@ -178,7 +178,10 @@ export function getBaseUrl(siteKey: AppSiteKey): string {
   return site.url.replace(/\/$/, "")
 }
 
-export function getCanonicalUrl(siteKey: AppSiteKey, path: string = ""): string {
+export function getCanonicalUrl(
+  siteKey: AppSiteKey,
+  path: string = ""
+): string {
   const base = getBaseUrl(siteKey)
   const cleanPath = path ? (path.startsWith("/") ? path : `/${path}`) : ""
   return `${base}${cleanPath}`
@@ -218,9 +221,16 @@ export function createWebSiteJsonLd({
   url?: string
   searchUrlTemplate?: string
 }) {
-  const resolvedUrl = url || (siteKey ? getBaseUrl(siteKey) : SEO_CONFIG.sites.main.url)
-  const resolvedName = name || (siteKey ? SEO_CONFIG.sites[siteKey].name : SEO_CONFIG.sites.main.name)
-  const resolvedDesc = description || (siteKey ? SEO_CONFIG.sites[siteKey].description : SEO_CONFIG.sites.main.description)
+  const resolvedUrl =
+    url || (siteKey ? getBaseUrl(siteKey) : SEO_CONFIG.sites.main.url)
+  const resolvedName =
+    name ||
+    (siteKey ? SEO_CONFIG.sites[siteKey].name : SEO_CONFIG.sites.main.name)
+  const resolvedDesc =
+    description ||
+    (siteKey
+      ? SEO_CONFIG.sites[siteKey].description
+      : SEO_CONFIG.sites.main.description)
 
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -288,7 +298,9 @@ export function createBlogPostJsonLd({
     headline: title,
     description,
     url,
-    datePublished: datePublished ? new Date(datePublished).toISOString() : undefined,
+    datePublished: datePublished
+      ? new Date(datePublished).toISOString()
+      : undefined,
     dateModified: dateModified
       ? new Date(dateModified).toISOString()
       : datePublished
@@ -364,7 +376,9 @@ export function createProductJsonLd({
   return schema
 }
 
-export function createFaqJsonLd(items?: Array<{ question: string; answer: string }> | null) {
+export function createFaqJsonLd(
+  items?: Array<{ question: string; answer: string }> | null
+) {
   const safeItems = Array.isArray(items) ? items : []
   return {
     "@context": "https://schema.org",

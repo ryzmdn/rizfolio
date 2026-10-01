@@ -26,8 +26,11 @@ const SERVICE_IMAGES: [string, string][] = [
   ],
 ]
 
-export function ServicesSection({ services: propServices }: ServicesSectionProps) {
-  const items = propServices && propServices.length > 0 ? propServices : fallbackServices
+export function ServicesSection({
+  services: propServices,
+}: ServicesSectionProps) {
+  const items =
+    propServices && propServices.length > 0 ? propServices : fallbackServices
 
   const container = "absolute -top-1 left-1/2 -translate-x-1/2 z-40 h-20 w-16"
   const effect =
@@ -56,12 +59,12 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
               key={item.title}
               className="group/reveal relative grid w-full items-center gap-6 border-b border-border/40 py-8 lg:grid-cols-5"
             >
-              <div className="text-4xl font-semibold text-foreground/40 font-mono">
+              <div className="font-mono text-4xl font-semibold text-foreground/40">
                 <p>0{index + 1}</p>
               </div>
 
               <div className="relative lg:col-span-2">
-                <h3 className="text-2xl sm:text-3xl font-semibold text-foreground transition-opacity duration-500 group-hover/reveal:opacity-40">
+                <h3 className="text-2xl font-semibold text-foreground transition-opacity duration-500 group-hover/reveal:opacity-40 sm:text-3xl">
                   {item.title}
                 </h3>
 
@@ -106,7 +109,7 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
                     {item.features.map((feat) => (
                       <span
                         key={feat}
-                        className="rounded-md border border-border/60 bg-muted/30 px-2 py-0.5 text-xs text-foreground/80 font-mono"
+                        className="rounded-md border border-border/60 bg-muted/30 px-2 py-0.5 font-mono text-xs text-foreground/80"
                       >
                         {feat}
                       </span>

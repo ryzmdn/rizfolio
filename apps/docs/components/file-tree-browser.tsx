@@ -32,7 +32,9 @@ function formatBytes(bytes: number): string {
 
 function getFileIcon(filename: string, isDirectory: boolean) {
   if (isDirectory) {
-    return <Folder className="size-4 text-foreground/80 group-hover:text-foreground" />
+    return (
+      <Folder className="size-4 text-foreground/80 group-hover:text-foreground" />
+    )
   }
 
   const lower = filename.toLowerCase()
@@ -52,7 +54,9 @@ function getFileIcon(filename: string, isDirectory: boolean) {
     lower === "makefile" ||
     lower === "dockerfile"
   ) {
-    return <FileCode className="size-4 text-muted-foreground group-hover:text-foreground" />
+    return (
+      <FileCode className="size-4 text-muted-foreground group-hover:text-foreground" />
+    )
   }
 
   if (
@@ -61,14 +65,20 @@ function getFileIcon(filename: string, isDirectory: boolean) {
     lower.endsWith(".yml") ||
     lower.endsWith(".toml")
   ) {
-    return <FileJson className="size-4 text-muted-foreground group-hover:text-foreground" />
+    return (
+      <FileJson className="size-4 text-muted-foreground group-hover:text-foreground" />
+    )
   }
 
   if (lower.endsWith(".md") || lower.endsWith(".txt")) {
-    return <FileText className="size-4 text-muted-foreground group-hover:text-foreground" />
+    return (
+      <FileText className="size-4 text-muted-foreground group-hover:text-foreground" />
+    )
   }
 
-  return <File className="size-4 text-muted-foreground group-hover:text-foreground" />
+  return (
+    <File className="size-4 text-muted-foreground group-hover:text-foreground" />
+  )
 }
 
 export function FileTreeBrowser({
@@ -98,7 +108,7 @@ export function FileTreeBrowser({
   return (
     <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs">
       {/* Header bar: Breadcrumb path & In-directory search */}
-      <div className="flex flex-col gap-3 border-b border-border/80 bg-muted/40 px-4 py-2.5 sm:flex-row sm:items-center sm:justify-between text-xs text-muted-foreground">
+      <div className="flex flex-col gap-3 border-b border-border/80 bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         {/* Breadcrumbs for directory tree */}
         <div className="flex flex-wrap items-center gap-1.5 font-mono">
           <Link
@@ -115,9 +125,7 @@ export function FileTreeBrowser({
               <span key={segmentPath} className="flex items-center gap-1.5">
                 <span>/</span>
                 {isLast ? (
-                  <span className="font-medium text-foreground">
-                    {segment}
-                  </span>
+                  <span className="font-medium text-foreground">{segment}</span>
                 ) : (
                   <Link
                     href={`/repo/${slug}?path=${encodeURIComponent(segmentPath)}`}
@@ -140,7 +148,7 @@ export function FileTreeBrowser({
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
               placeholder="Cari file..."
-              className="w-32 rounded-lg border border-border/70 bg-background py-1 pr-6 pl-6 text-[11px] text-foreground placeholder:text-muted-foreground focus:w-44 focus:border-foreground/40 focus:outline-hidden transition-all"
+              className="w-32 rounded-lg border border-border/70 bg-background py-1 pr-6 pl-6 text-[11px] text-foreground transition-all placeholder:text-muted-foreground focus:w-44 focus:border-foreground/40 focus:outline-hidden"
             />
             {filterQuery && (
               <button
@@ -153,7 +161,7 @@ export function FileTreeBrowser({
             )}
           </div>
 
-          <span className="font-mono text-[11px] tabular-nums shrink-0">
+          <span className="shrink-0 font-mono text-[11px] tabular-nums">
             {displayedFiles.length} item{displayedFiles.length !== 1 ? "s" : ""}
           </span>
         </div>
@@ -197,7 +205,7 @@ export function FileTreeBrowser({
               href={fileHref}
               className="group flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-muted/50"
             >
-              <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex min-w-0 items-center gap-2.5">
                 {getFileIcon(file.filename, file.isDirectory)}
                 <span className="truncate font-mono text-[11px] text-foreground/90 underline-offset-2 group-hover:text-foreground group-hover:underline">
                   {file.filename}
@@ -205,7 +213,7 @@ export function FileTreeBrowser({
               </div>
 
               {!file.isDirectory && (
-                <span className="font-mono text-[11px] text-muted-foreground tabular-nums shrink-0">
+                <span className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
                   {formatBytes(file.sizeBytes)}
                 </span>
               )}

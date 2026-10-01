@@ -149,8 +149,8 @@ export function CheckoutForm() {
               </h2>
             </div>
             <p className="text-xs text-muted-foreground">
-              Select your preferred currency. Prices are calculated at equivalent
-              values for every country.
+              Select your preferred currency. Prices are calculated at
+              equivalent values for every country.
             </p>
           </div>
 
@@ -240,7 +240,7 @@ export function CheckoutForm() {
                 key={opt.id}
                 onClick={() => setPaymentMethod(opt.id)}
                 className={cn(
-                  "flex cursor-pointer items-start gap-3.5 rounded-md border p-3.5 select-none transition-colors",
+                  "flex cursor-pointer items-start gap-3.5 rounded-md border p-3.5 transition-colors select-none",
                   isSelected
                     ? "border-foreground/80 bg-muted/30"
                     : "border-border/60 bg-muted/10 hover:border-border hover:bg-muted/20"
@@ -314,7 +314,7 @@ export function CheckoutForm() {
         <button
           type="submit"
           disabled={isPending || items.length === 0}
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-primary py-3 px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-[0.99] disabled:opacity-50"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-[0.99] disabled:opacity-50"
         >
           {isPending ? (
             <>

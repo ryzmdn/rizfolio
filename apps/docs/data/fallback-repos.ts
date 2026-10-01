@@ -238,7 +238,13 @@ export const fallbackRepositories: FallbackRepository[] = [
     category: "OPEN_SOURCE",
     courseName: null,
     semester: null,
-    techStack: ["Next.js", "Turborepo", "Drizzle ORM", "TypeScript", "Tailwind CSS"],
+    techStack: [
+      "Next.js",
+      "Turborepo",
+      "Drizzle ORM",
+      "TypeScript",
+      "Tailwind CSS",
+    ],
     githubUrl: "https://github.com/ryzmdn/turborepo-next-starter",
     demoUrl: "https://starter.rizkyramadhan.dev",
     license: "MIT",
@@ -819,7 +825,8 @@ export const fallbackRepoReleases: FallbackRepoRelease[] = [
     repoId: "repo-1-dist-cache",
     versionTag: "v1.0.0",
     zipStoragePath: "releases/distributed-cache-node-v1.0.0.zip",
-    changelog: "Initial production release of distributed cache node with consistent hash ring and gossip protocol.",
+    changelog:
+      "Initial production release of distributed cache node with consistent hash ring and gossip protocol.",
     createdAt: new Date("2024-11-20T14:30:00Z"),
   },
   {
@@ -827,7 +834,8 @@ export const fallbackRepoReleases: FallbackRepoRelease[] = [
     repoId: "repo-2-oklch-theme",
     versionTag: "v0.4.2",
     zipStoragePath: "releases/oklch-theme-generator-v0.4.2.zip",
-    changelog: "Added APCA contrast computation algorithm and dynamic chroma boundary fallback.",
+    changelog:
+      "Added APCA contrast computation algorithm and dynamic chroma boundary fallback.",
     createdAt: new Date("2025-02-18T16:45:00Z"),
   },
   {
@@ -835,7 +843,8 @@ export const fallbackRepoReleases: FallbackRepoRelease[] = [
     repoId: "repo-3-kernel-alloc",
     versionTag: "v1.2.0",
     zipStoragePath: "releases/os-kernel-allocator-v1.2.0.zip",
-    changelog: "Slab cache object alignment optimization and thread-safe lockless free list.",
+    changelog:
+      "Slab cache object alignment optimization and thread-safe lockless free list.",
     createdAt: new Date("2024-04-22T11:20:00Z"),
   },
   {

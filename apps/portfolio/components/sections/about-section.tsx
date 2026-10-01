@@ -69,7 +69,7 @@ export function AboutSection({ data = personalInfo }: AboutSectionProps) {
                 rel={isEmail ? undefined : "noreferrer"}
                 className={cn(
                   buttonVariants({ variant: "link" }),
-                  "font-normal gap-x-3"
+                  "gap-x-3 font-normal"
                 )}
               >
                 {isEmail ? (

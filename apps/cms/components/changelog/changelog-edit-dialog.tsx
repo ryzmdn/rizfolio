@@ -52,7 +52,10 @@ function ChangelogEditForm({ changelog, onClose }: ChangelogEditFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="flex-1 space-y-6 overflow-y-auto p-6"
+    >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-foreground">
@@ -172,14 +175,15 @@ export function ChangelogEditDialog({
         onClick={onClose}
       />
 
-      <div className="relative z-50 flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150">
+      <div className="relative z-50 flex max-h-[90vh] w-full max-w-2xl animate-in flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl duration-150 fade-in-0 zoom-in-95">
         <div className="flex items-center justify-between border-b border-border/80 px-6 py-4">
           <div>
             <h2 className="text-base font-semibold text-foreground">
               Edit Rilis: {changelog.version} - {changelog.title}
             </h2>
             <p className="text-xs text-muted-foreground">
-              Perbarui judul rilis, tanggal rilis, ringkasan, dan status publikasi.
+              Perbarui judul rilis, tanggal rilis, ringkasan, dan status
+              publikasi.
             </p>
           </div>
           <button

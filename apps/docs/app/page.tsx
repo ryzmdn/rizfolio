@@ -8,7 +8,11 @@ import {
 } from "../lib/queries"
 import { FilterBar } from "../components/filter-bar"
 import { RepoCard } from "../components/repo-card"
-import { getBaseUrl, SEO_CONFIG, createWebSiteJsonLd } from "@workspace/ui/lib/seo"
+import {
+  getBaseUrl,
+  SEO_CONFIG,
+  createWebSiteJsonLd,
+} from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 
@@ -48,9 +52,9 @@ export default async function DocsPage({
 
   const hasActiveFilters = Boolean(
     params.search ||
-      (params.category && params.category !== "ALL") ||
-      params.course ||
-      (params.sort && params.sort !== "latest")
+    (params.category && params.category !== "ALL") ||
+    params.course ||
+    (params.sort && params.sort !== "latest")
   )
 
   const baseUrl = getBaseUrl("docs")
@@ -166,7 +170,9 @@ export default async function DocsPage({
 
           {params.category && params.category !== "ALL" && (
             <span className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/60 px-2 py-0.5 text-foreground">
-              <span>Kategori: {CATEGORY_NAMES[params.category] || params.category}</span>
+              <span>
+                Kategori: {CATEGORY_NAMES[params.category] || params.category}
+              </span>
               <Link
                 href={`/?${new URLSearchParams({
                   ...(params.search ? { search: params.search } : {}),
@@ -224,7 +230,7 @@ export default async function DocsPage({
 
       {/* Repositories Grid or Empty State */}
       {repos.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/80 bg-card/40 p-12 text-center space-y-4">
+        <div className="flex flex-col items-center justify-center space-y-4 rounded-2xl border border-dashed border-border/80 bg-card/40 p-12 text-center">
           <div className="flex size-12 items-center justify-center rounded-xl border border-border bg-muted/40 text-muted-foreground">
             <FolderGit2 className="size-6" />
           </div>
@@ -232,8 +238,9 @@ export default async function DocsPage({
             <p className="text-sm font-semibold text-foreground">
               Tidak ada repositori yang cocok
             </p>
-            <p className="text-xs text-muted-foreground max-w-sm">
-              Tidak ditemukan repositori atau berkas yang cocok dengan filter atau kata kunci pencarian Anda.
+            <p className="max-w-sm text-xs text-muted-foreground">
+              Tidak ditemukan repositori atau berkas yang cocok dengan filter
+              atau kata kunci pencarian Anda.
             </p>
           </div>
           {hasActiveFilters && (

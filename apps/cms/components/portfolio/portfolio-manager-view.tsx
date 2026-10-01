@@ -158,7 +158,9 @@ interface SocialLinksMap {
 
 function ProfileTab({ profileData }: { profileData: ProfileItem | null }) {
   const existingLinks = (profileData?.socialLinks as SocialLinksMap) || {}
-  const [fullName, setFullName] = useState(profileData?.fullName || "Rizky Ramadhan")
+  const [fullName, setFullName] = useState(
+    profileData?.fullName || "Rizky Ramadhan"
+  )
   const [headline, setHeadline] = useState(
     profileData?.headline || "Senior Software Engineer & AI Architect"
   )
@@ -221,7 +223,7 @@ function ProfileTab({ profileData }: { profileData: ProfileItem | null }) {
               </h3>
             </div>
             {saveSuccess && (
-              <span className="inline-flex items-center gap-1 text-xs text-emerald-500 font-medium">
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-500">
                 <CheckCircle2 className="h-3.5 w-3.5" />
                 Tersimpan
               </span>
@@ -297,7 +299,9 @@ function ProfileTab({ profileData }: { profileData: ProfileItem | null }) {
                 onChange={(e) => setStatus(e.target.value)}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
               >
-                <option value="available">Tersedia untuk Kontrak / Proyek</option>
+                <option value="available">
+                  Tersedia untuk Kontrak / Proyek
+                </option>
                 <option value="busy">Sedang Penuh (Busy)</option>
                 <option value="unavailable">Tidak Menerima Tawaran</option>
               </select>
@@ -305,7 +309,7 @@ function ProfileTab({ profileData }: { profileData: ProfileItem | null }) {
           </div>
 
           <div className="space-y-3 pt-2">
-            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider text-muted-foreground">
+            <h4 className="text-xs font-semibold tracking-wider text-foreground text-muted-foreground uppercase">
               Tautan Jaringan & Sosial
             </h4>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -356,7 +360,7 @@ function ProfileTab({ profileData }: { profileData: ProfileItem | null }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-end pt-3 border-t border-border">
+          <div className="flex items-center justify-end border-t border-border pt-3">
             <button
               type="submit"
               disabled={isSubmitting}
@@ -380,7 +384,7 @@ function ProfileTab({ profileData }: { profileData: ProfileItem | null }) {
 
       <div className="space-y-6">
         <div className="rounded-xl border border-border/80 bg-card p-6 shadow-sm">
-          <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+          <h4 className="mb-4 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
             Pratinjau Kartu Portofolio
           </h4>
           <div className="space-y-4">
@@ -394,16 +398,18 @@ function ProfileTab({ profileData }: { profileData: ProfileItem | null }) {
                   .toUpperCase()}
               </div>
               <div>
-                <h3 className="text-sm font-bold text-foreground">{fullName}</h3>
+                <h3 className="text-sm font-bold text-foreground">
+                  {fullName}
+                </h3>
                 <p className="text-xs text-muted-foreground">{headline}</p>
               </div>
             </div>
 
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-xs leading-relaxed text-muted-foreground">
               {bio}
             </p>
 
-            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground pt-1">
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1">
                 <MapPin className="h-3.5 w-3.5 text-primary" />
                 {location}
@@ -413,7 +419,7 @@ function ProfileTab({ profileData }: { profileData: ProfileItem | null }) {
                 variant={status === "available" ? "default" : "secondary"}
                 className={`text-[10px] font-medium ${
                   status === "available"
-                    ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                    ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-600"
                     : "bg-muted text-muted-foreground"
                 }`}
               >
@@ -522,7 +528,8 @@ function ExperienceAndEducationTab({
 
   async function handleCreateEdu(e: React.FormEvent) {
     e.preventDefault()
-    if (!eduInstitution.trim() || !eduDegree.trim() || !eduStartYear.trim()) return
+    if (!eduInstitution.trim() || !eduDegree.trim() || !eduStartYear.trim())
+      return
 
     setIsSubmittingEdu(true)
     try {
@@ -707,7 +714,7 @@ function ExperienceAndEducationTab({
                     />
                     <label
                       htmlFor="new-exp-current"
-                      className="text-xs font-medium text-foreground cursor-pointer"
+                      className="cursor-pointer text-xs font-medium text-foreground"
                     >
                       Masih Bekerja
                     </label>
@@ -788,7 +795,7 @@ function ExperienceAndEducationTab({
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2">
-                        <Building2 className="h-4 w-4 text-primary shrink-0" />
+                        <Building2 className="h-4 w-4 shrink-0 text-primary" />
                         <h4 className="text-sm font-semibold text-foreground">
                           {exp.role}
                         </h4>
@@ -802,7 +809,8 @@ function ExperienceAndEducationTab({
                       <div className="flex items-center gap-2 pt-1 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
-                          {exp.startDate} - {exp.isCurrent ? "Sekarang" : exp.endDate}
+                          {exp.startDate} -{" "}
+                          {exp.isCurrent ? "Sekarang" : exp.endDate}
                         </span>
                         {exp.location && (
                           <>
@@ -819,14 +827,14 @@ function ExperienceAndEducationTab({
                     {exp.isCurrent && (
                       <Badge
                         variant="default"
-                        className="bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 text-[10px]"
+                        className="border border-emerald-500/20 bg-emerald-500/10 text-[10px] text-emerald-600"
                       >
                         Posisi Saat Ini
                       </Badge>
                     )}
                   </div>
 
-                  <p className="text-xs text-muted-foreground leading-relaxed whitespace-pre-line">
+                  <p className="text-xs leading-relaxed whitespace-pre-line text-muted-foreground">
                     {exp.description}
                   </p>
 
@@ -1032,13 +1040,11 @@ function ExperienceAndEducationTab({
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2">
-                        <GraduationCap className="h-4 w-4 text-primary shrink-0" />
+                        <GraduationCap className="h-4 w-4 shrink-0 text-primary" />
                         <h4 className="text-sm font-semibold text-foreground">
                           {edu.degree}
                         </h4>
-                        <span className="text-xs text-muted-foreground">
-                          -
-                        </span>
+                        <span className="text-xs text-muted-foreground">-</span>
                         <span className="text-sm font-medium text-foreground">
                           {edu.field}
                         </span>
@@ -1055,7 +1061,10 @@ function ExperienceAndEducationTab({
                         {edu.gpa && (
                           <>
                             <span>•</span>
-                            <Badge variant="outline" className="font-mono text-[10px]">
+                            <Badge
+                              variant="outline"
+                              className="font-mono text-[10px]"
+                            >
                               IPK {edu.gpa}
                             </Badge>
                           </>
@@ -1065,7 +1074,7 @@ function ExperienceAndEducationTab({
                   </div>
 
                   {edu.description && (
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+                    <p className="text-xs leading-relaxed text-muted-foreground">
                       {edu.description}
                     </p>
                   )}
@@ -1104,7 +1113,8 @@ function ExperienceAndEducationTab({
                   Belum ada riwayat pendidikan
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Daftarkan riwayat studi akademik dan kualifikasi pendidikan Anda.
+                  Daftarkan riwayat studi akademik dan kualifikasi pendidikan
+                  Anda.
                 </p>
               </div>
             )}
@@ -1140,10 +1150,10 @@ export function PortfolioManagerView({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 overflow-x-auto border-b border-border pb-2 scrollbar-none">
+      <div className="scrollbar-none flex items-center gap-2 overflow-x-auto border-b border-border pb-2">
         <button
           onClick={() => setActiveTab("profil")}
-          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors shrink-0 ${
+          className={`inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
             activeTab === "profil"
               ? "bg-primary text-primary-foreground shadow-sm"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -1155,7 +1165,7 @@ export function PortfolioManagerView({
 
         <button
           onClick={() => setActiveTab("pengalaman")}
-          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors shrink-0 ${
+          className={`inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
             activeTab === "pengalaman"
               ? "bg-primary text-primary-foreground shadow-sm"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -1164,7 +1174,7 @@ export function PortfolioManagerView({
           <Briefcase className="h-3.5 w-3.5" />
           <span>Pengalaman & Edukasi</span>
           <span
-            className={`rounded-full px-1.5 py-0.2 text-[10px] ${
+            className={`py-0.2 rounded-full px-1.5 text-[10px] ${
               activeTab === "pengalaman"
                 ? "bg-primary-foreground/20 text-primary-foreground"
                 : "bg-muted text-muted-foreground"
@@ -1176,7 +1186,7 @@ export function PortfolioManagerView({
 
         <button
           onClick={() => setActiveTab("kasus")}
-          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors shrink-0 ${
+          className={`inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
             activeTab === "kasus"
               ? "bg-primary text-primary-foreground shadow-sm"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -1185,7 +1195,7 @@ export function PortfolioManagerView({
           <FolderGit2 className="h-3.5 w-3.5" />
           <span>Studi Kasus</span>
           <span
-            className={`rounded-full px-1.5 py-0.2 text-[10px] ${
+            className={`py-0.2 rounded-full px-1.5 text-[10px] ${
               activeTab === "kasus"
                 ? "bg-primary-foreground/20 text-primary-foreground"
                 : "bg-muted text-muted-foreground"
@@ -1197,7 +1207,7 @@ export function PortfolioManagerView({
 
         <button
           onClick={() => setActiveTab("layanan")}
-          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors shrink-0 ${
+          className={`inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
             activeTab === "layanan"
               ? "bg-primary text-primary-foreground shadow-sm"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -1206,7 +1216,7 @@ export function PortfolioManagerView({
           <Layers className="h-3.5 w-3.5" />
           <span>Layanan Profesional</span>
           <span
-            className={`rounded-full px-1.5 py-0.2 text-[10px] ${
+            className={`py-0.2 rounded-full px-1.5 text-[10px] ${
               activeTab === "layanan"
                 ? "bg-primary-foreground/20 text-primary-foreground"
                 : "bg-muted text-muted-foreground"
@@ -1218,7 +1228,7 @@ export function PortfolioManagerView({
 
         <button
           onClick={() => setActiveTab("sertifikasi")}
-          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors shrink-0 ${
+          className={`inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
             activeTab === "sertifikasi"
               ? "bg-primary text-primary-foreground shadow-sm"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -1227,7 +1237,7 @@ export function PortfolioManagerView({
           <Award className="h-3.5 w-3.5" />
           <span>Sertifikasi</span>
           <span
-            className={`rounded-full px-1.5 py-0.2 text-[10px] ${
+            className={`py-0.2 rounded-full px-1.5 text-[10px] ${
               activeTab === "sertifikasi"
                 ? "bg-primary-foreground/20 text-primary-foreground"
                 : "bg-muted text-muted-foreground"
@@ -1239,7 +1249,7 @@ export function PortfolioManagerView({
 
         <button
           onClick={() => setActiveTab("testimoni")}
-          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors shrink-0 ${
+          className={`inline-flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
             activeTab === "testimoni"
               ? "bg-primary text-primary-foreground shadow-sm"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -1248,7 +1258,7 @@ export function PortfolioManagerView({
           <Quote className="h-3.5 w-3.5" />
           <span>Testimoni</span>
           <span
-            className={`rounded-full px-1.5 py-0.2 text-[10px] ${
+            className={`py-0.2 rounded-full px-1.5 text-[10px] ${
               activeTab === "testimoni"
                 ? "bg-primary-foreground/20 text-primary-foreground"
                 : "bg-muted text-muted-foreground"
@@ -1273,9 +1283,7 @@ export function PortfolioManagerView({
           <CaseStudyManager caseStudies={caseStudies} />
         )}
 
-        {activeTab === "layanan" && (
-          <ServiceManager services={services} />
-        )}
+        {activeTab === "layanan" && <ServiceManager services={services} />}
 
         {activeTab === "sertifikasi" && (
           <CertificationManager certifications={certifications} />

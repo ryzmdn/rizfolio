@@ -1,7 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Send, CheckCircle2, MessageSquarePlus, AlertCircle } from "lucide-react"
+import {
+  Send,
+  CheckCircle2,
+  MessageSquarePlus,
+  AlertCircle,
+} from "lucide-react"
 import { submitRoadmapProposalAction } from "../lib/actions"
 
 export function RoadmapFeedback() {
@@ -56,7 +61,8 @@ export function RoadmapFeedback() {
             Propose a Feature or Architecture Milestone
           </h2>
           <p className="text-xs text-muted-foreground">
-            Have an enhancement idea or architectural improvement in mind? Submit your proposal directly.
+            Have an enhancement idea or architectural improvement in mind?
+            Submit your proposal directly.
           </p>
         </div>
       </div>
@@ -68,12 +74,13 @@ export function RoadmapFeedback() {
             Suggestion Received
           </h3>
           <p className="mt-1 text-xs text-muted-foreground">
-            Thank you for your proposal. It has been recorded for review in future engineering cycles.
+            Thank you for your proposal. It has been recorded for review in
+            future engineering cycles.
           </p>
           <button
             type="button"
             onClick={handleReset}
-            className="mt-4 rounded-xl border border-border bg-card px-3.5 py-1.5 text-xs font-semibold text-foreground transition-all hover:bg-muted focus:outline-hidden focus:ring-2 focus:ring-primary/20"
+            className="mt-4 rounded-xl border border-border bg-card px-3.5 py-1.5 text-xs font-semibold text-foreground transition-all hover:bg-muted focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
           >
             Submit Another Suggestion
           </button>
@@ -95,7 +102,7 @@ export function RoadmapFeedback() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Distributed WebSocket state synchronization"
-                className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:border-foreground/30 focus:outline-hidden focus:ring-2 focus:ring-primary/20 sm:text-sm"
+                className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
               />
             </div>
 
@@ -110,7 +117,7 @@ export function RoadmapFeedback() {
                 id="feature-scope"
                 value={scope}
                 onChange={(e) => setScope(e.target.value)}
-                className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all focus:border-foreground/30 focus:outline-hidden focus:ring-2 focus:ring-primary/20 sm:text-sm"
+                className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
               >
                 <option value="monorepo">All Monorepo</option>
                 <option value="apps/shop">apps/shop</option>
@@ -138,7 +145,7 @@ export function RoadmapFeedback() {
               value={rationale}
               onChange={(e) => setRationale(e.target.value)}
               placeholder="Describe the motivation, architectural trade-offs, and expected benefits..."
-              className="w-full rounded-xl border border-border/70 bg-background/80 p-3.5 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:border-foreground/30 focus:outline-hidden focus:ring-2 focus:ring-primary/20 sm:text-sm"
+              className="w-full rounded-xl border border-border/70 bg-background/80 p-3.5 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
             />
           </div>
 
@@ -153,7 +160,7 @@ export function RoadmapFeedback() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-foreground px-4 py-2 text-xs font-semibold text-background shadow-xs transition-opacity hover:opacity-90 disabled:opacity-50 focus:outline-hidden focus:ring-2 focus:ring-primary/30"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-foreground px-4 py-2 text-xs font-semibold text-background shadow-xs transition-opacity hover:opacity-90 focus:ring-2 focus:ring-primary/30 focus:outline-hidden disabled:opacity-50"
             >
               <Send className="size-3.5" />
               <span>{isSubmitting ? "Submitting..." : "Submit Proposal"}</span>

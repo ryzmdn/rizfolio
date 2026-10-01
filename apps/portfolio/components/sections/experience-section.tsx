@@ -14,9 +14,7 @@ export function ExperienceSection({
   return (
     <Container id="experience" className="space-y-12 py-20">
       <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
-        <p className="text-sm/6 text-muted-foreground">
-          Career History.
-        </p>
+        <p className="text-sm/6 text-muted-foreground">Career History.</p>
         <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
           Professional Experience
         </h2>

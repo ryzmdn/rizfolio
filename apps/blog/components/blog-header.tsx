@@ -62,12 +62,15 @@ export function BlogHeader() {
           <span className="font-semibold tracking-tight text-foreground transition-opacity group-hover:opacity-75">
             Rizky Ramadhan
           </span>
-          <span className="hidden text-[11px] font-medium uppercase tracking-widest text-muted-foreground sm:inline">
+          <span className="hidden text-[11px] font-medium tracking-widest text-muted-foreground uppercase sm:inline">
             Engineering
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-x-0.5 md:flex" aria-label="Main navigation">
+        <nav
+          className="hidden items-center gap-x-0.5 md:flex"
+          aria-label="Main navigation"
+        >
           {navItems.map((item) => (
             <Link
               key={item.label}
@@ -109,7 +112,11 @@ export function BlogHeader() {
             aria-expanded={mobileOpen}
             className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground md:hidden"
           >
-            {mobileOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
+            {mobileOpen ? (
+              <X className="size-4.5" />
+            ) : (
+              <Menu className="size-4.5" />
+            )}
           </button>
         </div>
       </div>

@@ -19,29 +19,36 @@ export function ShopFooter() {
     {
       icon: Download,
       title: "Instant Digital Fulfillment",
-      description: "Direct download links and license keys provisioned upon purchase.",
+      description:
+        "Direct download links and license keys provisioned upon purchase.",
     },
     {
       icon: ShieldCheck,
       title: "Production-Tested",
-      description: "Strict TypeScript compliance with zero runtime type errors.",
+      description:
+        "Strict TypeScript compliance with zero runtime type errors.",
     },
     {
       icon: FileCode,
       title: "Full Source Code",
-      description: "Clean, unminified source code with comprehensive documentation.",
+      description:
+        "Clean, unminified source code with comprehensive documentation.",
     },
     {
       icon: Clock,
       title: "14-Day Guarantee",
-      description: "Eligible for refund assistance if the package does not meet specs.",
+      description:
+        "Eligible for refund assistance if the package does not meet specs.",
     },
   ]
 
   const ecosystemLinks = [
     { label: "Personal Portfolio", href: "https://rizkyramadhan.dev" },
     { label: "Engineering Blog", href: "https://blog.rizkyramadhan.dev" },
-    { label: "Documentation & Explorer", href: "https://docs.rizkyramadhan.dev" },
+    {
+      label: "Documentation & Explorer",
+      href: "https://docs.rizkyramadhan.dev",
+    },
   ]
 
   const legalLinks = [
@@ -85,7 +92,7 @@ export function ShopFooter() {
               <div className="flex size-7 items-center justify-center rounded-md border border-border/80 bg-muted/40 text-foreground">
                 <Layers className="size-3.5" />
               </div>
-              <span className="font-semibold text-sm text-foreground">
+              <span className="text-sm font-semibold text-foreground">
                 Rizfolio Store
               </span>
             </div>
@@ -97,7 +104,7 @@ export function ShopFooter() {
           </div>
 
           <div className="space-y-3 md:col-span-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+            <h4 className="text-xs font-semibold tracking-wider text-foreground uppercase">
               Ecosystem
             </h4>
             <ul className="space-y-2 text-xs text-muted-foreground">
@@ -117,7 +124,7 @@ export function ShopFooter() {
           </div>
 
           <div className="space-y-3 md:col-span-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+            <h4 className="text-xs font-semibold tracking-wider text-foreground uppercase">
               Legal & Licenses
             </h4>
             <ul className="space-y-2 text-xs text-muted-foreground">
@@ -135,8 +142,10 @@ export function ShopFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 sm:flex-row text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} Rizky Ramadhan. All rights reserved.</p>
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
+          <p>
+            © {new Date().getFullYear()} Rizky Ramadhan. All rights reserved.
+          </p>
           <button
             type="button"
             onClick={scrollToTop}

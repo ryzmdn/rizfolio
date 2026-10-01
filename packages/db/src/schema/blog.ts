@@ -84,7 +84,9 @@ export const postReactions = pgTable("post_reactions", {
   postId: uuid("post_id")
     .notNull()
     .references(() => posts.id, { onDelete: "cascade" }),
-  reactionType: varchar("reaction_type", { length: 50 }).notNull().default("LIKE"),
+  reactionType: varchar("reaction_type", { length: 50 })
+    .notNull()
+    .default("LIKE"),
   count: integer("count").notNull().default(0),
   updatedAt: timestamp("updated_at", { withTimezone: true })
     .defaultNow()

@@ -104,8 +104,9 @@ export function TimelineExplorer({
             Changelog & Releases
           </h1>
           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            An open chronological log tracking architectural iterations, new feature
-            deliveries, performance tunings, and infrastructure updates across the monorepo ecosystem.
+            An open chronological log tracking architectural iterations, new
+            feature deliveries, performance tunings, and infrastructure updates
+            across the monorepo ecosystem.
           </p>
         </div>
 
@@ -180,7 +181,8 @@ export function TimelineExplorer({
                 No matching releases found
               </h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                No release updates or items matched your active search or filter criteria.
+                No release updates or items matched your active search or filter
+                criteria.
               </p>
               {hasActiveFilters && (
                 <button

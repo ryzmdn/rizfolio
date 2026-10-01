@@ -67,14 +67,15 @@ function CaseStudyEditDialog({
         onClick={onClose}
       />
 
-      <div className="relative z-50 flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150">
+      <div className="relative z-50 flex max-h-[90vh] w-full max-w-4xl animate-in flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl duration-150 fade-in-0 zoom-in-95">
         <div className="flex items-center justify-between border-b border-border/80 px-6 py-4">
           <div>
             <h2 className="text-base font-semibold text-foreground">
               Edit Studi Kasus: {study.title}
             </h2>
             <p className="text-xs text-muted-foreground">
-              Perbarui analisis arsitektur, hasil metrik, tautan repositori, dan konten Markdown.
+              Perbarui analisis arsitektur, hasil metrik, tautan repositori, dan
+              konten Markdown.
             </p>
           </div>
           <button
@@ -138,7 +139,10 @@ function CaseStudyEditForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="flex-1 space-y-6 overflow-y-auto p-6"
+    >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="space-y-1.5 sm:col-span-2">
           <label className="text-xs font-medium text-foreground">
@@ -266,11 +270,7 @@ function CaseStudyEditForm({
         <label className="text-xs font-medium text-foreground">
           Konten Studi Kasus Mendalam (Markdown)
         </label>
-        <MarkdownEditor
-          value={contentMd}
-          onChange={setContentMd}
-          rows={12}
-        />
+        <MarkdownEditor value={contentMd} onChange={setContentMd} rows={12} />
       </div>
 
       <div className="flex items-center justify-end gap-3 border-t border-border/80 pt-4">
@@ -411,7 +411,7 @@ export function CaseStudyManager({ caseStudies }: CaseStudyManagerProps) {
         <button
           type="button"
           onClick={() => setIsFormOpen((prev) => !prev)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 self-start rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 sm:self-auto"
         >
           <Plus className="size-3.5" />
           <span>{isFormOpen ? "Tutup Formulir" : "Tambah Studi Kasus"}</span>
@@ -419,7 +419,10 @@ export function CaseStudyManager({ caseStudies }: CaseStudyManagerProps) {
       </div>
 
       {isFormOpen && (
-        <form onSubmit={handleCreateCaseStudy} className="space-y-5 rounded-xl border border-border/80 bg-card p-6">
+        <form
+          onSubmit={handleCreateCaseStudy}
+          className="space-y-5 rounded-xl border border-border/80 bg-card p-6"
+        >
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <h3 className="text-sm font-semibold text-foreground">
               Tulis Studi Kasus Proyek Baru
@@ -605,7 +608,7 @@ export function CaseStudyManager({ caseStudies }: CaseStudyManagerProps) {
       )}
 
       <div className="overflow-hidden rounded-xl border border-border/80 bg-card">
-        <div className="border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-border/80 bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground">
           <span>Daftar Studi Kasus ({filteredCaseStudies.length})</span>
         </div>
 
@@ -678,7 +681,7 @@ export function CaseStudyManager({ caseStudies }: CaseStudyManagerProps) {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                <div className="flex shrink-0 items-center gap-2 self-end sm:self-center">
                   {study.liveUrl && (
                     <a
                       href={study.liveUrl}

@@ -28,7 +28,10 @@ export async function getBioLinkStats(): Promise<BioLinkStats> {
     const all = await db.select().from(bioLinks)
     const total = all.length
     const active = all.filter((l) => l.isActive).length
-    const totalClicks = all.reduce((acc, curr) => acc + (curr.clickCount || 0), 0)
+    const totalClicks = all.reduce(
+      (acc, curr) => acc + (curr.clickCount || 0),
+      0
+    )
 
     return { total, active, totalClicks }
   } catch {
@@ -48,7 +51,10 @@ export async function createBioLinkAction(
     }
 
     if (!url || !url.startsWith("http")) {
-      return { success: false, error: "URL must be a valid http/https address." }
+      return {
+        success: false,
+        error: "URL must be a valid http/https address.",
+      }
     }
 
     const [created] = await db
@@ -59,7 +65,8 @@ export async function createBioLinkAction(
         description: input.description?.trim() || null,
         icon: input.icon || "Globe",
         badge: input.badge?.trim() || null,
-        badgeColor: input.badgeColor || "bg-primary/10 text-primary border-primary/20",
+        badgeColor:
+          input.badgeColor || "bg-primary/10 text-primary border-primary/20",
         category: input.category || "ECOSYSTEM",
         isActive: input.isActive ?? true,
         displayOrder: input.displayOrder ?? 0,
@@ -84,7 +91,8 @@ export async function createBioLinkAction(
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to create bio link",
+      error:
+        error instanceof Error ? error.message : "Failed to create bio link",
     }
   }
 }
@@ -120,7 +128,8 @@ export async function updateBioLinkAction(
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update bio link",
+      error:
+        error instanceof Error ? error.message : "Failed to update bio link",
     }
   }
 }

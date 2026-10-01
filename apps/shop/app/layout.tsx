@@ -70,7 +70,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://res.cloudinary.com"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>
       <body className={cn(fontVariables)}>

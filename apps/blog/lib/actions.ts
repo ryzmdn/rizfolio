@@ -71,7 +71,10 @@ export async function subscribeNewsletterAction(
 
   try {
     const existing = await db
-      .select({ id: newsletterSubscribers.id, status: newsletterSubscribers.status })
+      .select({
+        id: newsletterSubscribers.id,
+        status: newsletterSubscribers.status,
+      })
       .from(newsletterSubscribers)
       .where(eq(newsletterSubscribers.email, email))
       .limit(1)
@@ -80,16 +83,22 @@ export async function subscribeNewsletterAction(
       if (existing[0]?.status === "UNSUBSCRIBED") {
         await db
           .update(newsletterSubscribers)
-          .set({ status: "ACTIVE", subscribedAt: new Date(), unsubscribedAt: null })
+          .set({
+            status: "ACTIVE",
+            subscribedAt: new Date(),
+            unsubscribedAt: null,
+          })
           .where(eq(newsletterSubscribers.email, email))
         return {
           success: true,
-          message: "Welcome back! Your newsletter subscription has been reactivated.",
+          message:
+            "Welcome back! Your newsletter subscription has been reactivated.",
         }
       }
       return {
         success: true,
-        message: "You are already subscribed! Expect high-value engineering deep dives in your inbox.",
+        message:
+          "You are already subscribed! Expect high-value engineering deep dives in your inbox.",
       }
     }
 
@@ -121,7 +130,8 @@ export async function subscribeNewsletterAction(
 
     return {
       success: true,
-      message: "Subscription confirmed! Welcome to the engineering publication.",
+      message:
+        "Subscription confirmed! Welcome to the engineering publication.",
     }
   } catch (error) {
     console.warn(
@@ -201,9 +211,7 @@ export async function togglePostReactionAction(
   }
 }
 
-export async function getPostReactionCount(
-  postId: string
-): Promise<number> {
+export async function getPostReactionCount(postId: string): Promise<number> {
   if (!postId) return 12
 
   try {

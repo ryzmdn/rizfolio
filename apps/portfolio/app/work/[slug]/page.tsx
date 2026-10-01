@@ -14,7 +14,11 @@ import {
 } from "lucide-react"
 import { GitHub } from "@workspace/ui/constants/icons"
 import { Container } from "@workspace/ui/components/layouts"
-import { getCaseStudyBySlug, getAllCaseStudySlugs, getCaseStudies } from "@/lib/queries"
+import {
+  getCaseStudyBySlug,
+  getAllCaseStudySlugs,
+  getCaseStudies,
+} from "@/lib/queries"
 import { getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
 
 interface CaseStudyPageProps {
@@ -64,7 +68,9 @@ export async function generateMetadata({
   }
 }
 
-export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps) {
+export default async function CaseStudyDetailPage({
+  params,
+}: CaseStudyPageProps) {
   const { slug } = await params
   const [study, allStudies] = await Promise.all([
     getCaseStudyBySlug(slug),
@@ -192,7 +198,7 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
         {study.metrics && Object.keys(study.metrics).length > 0 && (
           <Container>
             <div className="rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur-xs sm:p-8">
-              <div className="mb-6 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <div className="mb-6 flex items-center gap-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                 <BarChart3 className="size-4 text-primary" />
                 <span>Verifiable Architectural Benchmarks</span>
               </div>
@@ -218,7 +224,7 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
         {study.techStack && study.techStack.length > 0 && (
           <Container>
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                 <Layers className="size-3.5 text-primary" />
                 <span>Technologies & Framework Stack</span>
               </div>
@@ -284,7 +290,10 @@ export default async function CaseStudyDetailPage({ params }: CaseStudyPageProps
                       .split("\n")
                       .map((line) => line.replace(/^\d+\.\s*/, ""))
                     return (
-                      <ol key={idx} className="space-y-2 pl-4 list-decimal text-sm text-muted-foreground">
+                      <ol
+                        key={idx}
+                        className="list-decimal space-y-2 pl-4 text-sm text-muted-foreground"
+                      >
                         {items.map((item, itemIdx) => (
                           <li key={itemIdx} className="pl-1">
                             {item}

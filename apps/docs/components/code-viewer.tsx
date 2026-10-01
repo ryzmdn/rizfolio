@@ -59,7 +59,10 @@ function getLanguageName(filename: string): string {
     css: "CSS",
     html: "HTML",
   }
-  return map[ext] || (filename.toLowerCase() === "makefile" ? "Makefile" : "Plain Text")
+  return (
+    map[ext] ||
+    (filename.toLowerCase() === "makefile" ? "Makefile" : "Plain Text")
+  )
 }
 
 export function CodeViewer({
@@ -72,7 +75,9 @@ export function CodeViewer({
   const [copiedLink, setCopiedLink] = useState(false)
   const [lineWrap, setLineWrap] = useState(false)
   const [rawMode, setRawMode] = useState(false)
-  const [highlightRange, setHighlightRange] = useState<HighlightRange | null>(null)
+  const [highlightRange, setHighlightRange] = useState<HighlightRange | null>(
+    null
+  )
 
   const lines = code ? code.split("\n") : []
   const lineCount = lines.length
@@ -172,7 +177,7 @@ export function CodeViewer({
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs">
-      <div className="flex flex-col gap-3 border-b border-border/80 bg-muted/40 px-4 py-2.5 sm:flex-row sm:items-center sm:justify-between text-xs text-muted-foreground">
+      <div className="flex flex-col gap-3 border-b border-border/80 bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2">
           <FileCode className="size-4 text-foreground/80" />
           <span className="font-mono font-semibold text-foreground">
@@ -194,7 +199,7 @@ export function CodeViewer({
           {highlightRange ? (
             <>
               <span>•</span>
-              <span className="font-mono text-primary font-medium">
+              <span className="font-mono font-medium text-primary">
                 {highlightRange.start === highlightRange.end
                   ? `Line ${highlightRange.start}`
                   : `Lines ${highlightRange.start}-${highlightRange.end}`}
@@ -287,7 +292,7 @@ export function CodeViewer({
       <div className="flex bg-background/50 font-mono text-xs">
         <div
           aria-hidden="true"
-          className="select-none border-r border-border/60 bg-muted/15 py-4 text-right font-mono text-[11px] text-muted-foreground/50"
+          className="border-r border-border/60 bg-muted/15 py-4 text-right font-mono text-[11px] text-muted-foreground/50 select-none"
         >
           {lines.map((_, i) => {
             const lineNum = i + 1
@@ -317,7 +322,7 @@ export function CodeViewer({
         <div
           className={cn(
             "flex-1 overflow-x-auto p-4 font-mono text-xs",
-            lineWrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"
+            lineWrap ? "break-words whitespace-pre-wrap" : "whitespace-pre"
           )}
         >
           {rawMode ? (
@@ -337,7 +342,7 @@ export function CodeViewer({
                 `}</style>
               ) : null}
               <div
-                className="code-viewer-shiki [&_code]:font-mono! [&>pre]:bg-transparent! [&>pre]:p-0! [&_.line]:block [&_.line]:h-[22px] [&_.line]:leading-[22px]"
+                className="code-viewer-shiki [&_.line]:block [&_.line]:h-[22px] [&_.line]:leading-[22px] [&_code]:font-mono! [&>pre]:bg-transparent! [&>pre]:p-0!"
                 dangerouslySetInnerHTML={{ __html: highlightedHtml }}
               />
             </>

@@ -24,7 +24,7 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
             <ArrowLeft className="size-3 transition-transform group-hover:-translate-x-0.5" />
             <span>Previous</span>
           </span>
-          <span className="text-sm font-medium leading-snug text-foreground line-clamp-2">
+          <span className="line-clamp-2 text-sm leading-snug font-medium text-foreground">
             {prev.title}
           </span>
         </Link>
@@ -41,7 +41,7 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
             <span>Next</span>
             <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
           </span>
-          <span className="text-sm font-medium leading-snug text-foreground line-clamp-2">
+          <span className="line-clamp-2 text-sm leading-snug font-medium text-foreground">
             {next.title}
           </span>
         </Link>

@@ -95,7 +95,10 @@ function ExperienceForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
+    <form
+      onSubmit={handleSubmit}
+      className="flex-1 space-y-5 overflow-y-auto p-6"
+    >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-foreground">
@@ -154,7 +157,7 @@ function ExperienceForm({
         </div>
 
         <div className="flex items-center pt-6">
-          <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-foreground">
+          <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-foreground">
             <input
               type="checkbox"
               checked={isCurrent}
@@ -304,7 +307,10 @@ function EducationForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
+    <form
+      onSubmit={handleSubmit}
+      className="flex-1 space-y-5 overflow-y-auto p-6"
+    >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="space-y-1.5 sm:col-span-2">
           <label className="text-xs font-medium text-foreground">
@@ -469,7 +475,7 @@ export function ExperienceEditDialog({
         onClick={onClose}
       />
 
-      <div className="relative z-50 flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl animate-in fade-in-0 zoom-in-95 duration-150">
+      <div className="relative z-50 flex max-h-[90vh] w-full max-w-2xl animate-in flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl duration-150 fade-in-0 zoom-in-95">
         <div className="flex items-center justify-between border-b border-border/80 px-6 py-4">
           <div>
             <h2 className="text-base font-semibold text-foreground">
@@ -493,9 +499,17 @@ export function ExperienceEditDialog({
         </div>
 
         {isEdu && education ? (
-          <EducationForm key={education.id} education={education} onClose={onClose} />
+          <EducationForm
+            key={education.id}
+            education={education}
+            onClose={onClose}
+          />
         ) : experience ? (
-          <ExperienceForm key={experience.id} experience={experience} onClose={onClose} />
+          <ExperienceForm
+            key={experience.id}
+            experience={experience}
+            onClose={onClose}
+          />
         ) : null}
       </div>
     </div>

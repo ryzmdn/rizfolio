@@ -233,8 +233,8 @@ export default async function CategoriesIndexPage() {
             </h2>
           </div>
           <p className="text-xs text-muted-foreground">
-            Daftar mata kuliah dan topik perkuliahan ilmu komputer yang
-            memiliki arsip kode dan tugas terkait.
+            Daftar mata kuliah dan topik perkuliahan ilmu komputer yang memiliki
+            arsip kode dan tugas terkait.
           </p>
         </div>
 
@@ -262,7 +262,7 @@ export default async function CategoriesIndexPage() {
                       href={`/?course=${encodeURIComponent(course.name)}`}
                       className="group flex items-center justify-between rounded-xl border border-border/70 bg-card p-4 transition-all duration-150 hover:border-foreground/30 hover:shadow-xs"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex min-w-0 items-center gap-3">
                         <div className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-muted/30 text-muted-foreground group-hover:text-foreground">
                           <Code2 className="size-3.5" />
                         </div>
@@ -296,8 +296,8 @@ export default async function CategoriesIndexPage() {
               </h2>
             </div>
             <p className="text-xs text-muted-foreground">
-              Pilih bahasa pemrograman atau framework untuk menyaring
-              repositori secara instan.
+              Pilih bahasa pemrograman atau framework untuk menyaring repositori
+              secara instan.
             </p>
           </div>
 
@@ -309,7 +309,7 @@ export default async function CategoriesIndexPage() {
                 className="group inline-flex items-center gap-1.5 rounded-xl border border-border/70 bg-card px-3 py-1.5 text-xs text-foreground transition-all hover:border-foreground/40 hover:bg-muted"
               >
                 <span className="font-mono">{tech.name}</span>
-                <span className="rounded-full bg-muted/80 px-1.5 py-0.2 font-mono text-[10px] text-muted-foreground tabular-nums group-hover:bg-foreground/10 group-hover:text-foreground">
+                <span className="py-0.2 rounded-full bg-muted/80 px-1.5 font-mono text-[10px] text-muted-foreground tabular-nums group-hover:bg-foreground/10 group-hover:text-foreground">
                   {tech.count}
                 </span>
               </Link>

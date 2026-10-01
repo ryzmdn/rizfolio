@@ -74,7 +74,9 @@ interface LinkbioManagerClientProps {
   initialLinks: BioLink[]
 }
 
-export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps) {
+export function LinkbioManagerClient({
+  initialLinks,
+}: LinkbioManagerClientProps) {
   const [links, setLinks] = useState<BioLink[]>(initialLinks)
   const [search, setSearch] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("ALL")
@@ -87,7 +89,9 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
   const [formDescription, setFormDescription] = useState("")
   const [formIcon, setFormIcon] = useState("Globe")
   const [formBadge, setFormBadge] = useState("")
-  const [formBadgeColor, setFormBadgeColor] = useState("bg-primary/10 text-primary border-primary/20")
+  const [formBadgeColor, setFormBadgeColor] = useState(
+    "bg-primary/10 text-primary border-primary/20"
+  )
   const [formCategory, setFormCategory] = useState("ECOSYSTEM")
   const [formOrder, setFormOrder] = useState(0)
   const [formActive, setFormActive] = useState(true)
@@ -115,7 +119,9 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
     setFormDescription(link.description || "")
     setFormIcon(link.icon || "Globe")
     setFormBadge(link.badge || "")
-    setFormBadgeColor(link.badgeColor || "bg-primary/10 text-primary border-primary/20")
+    setFormBadgeColor(
+      link.badgeColor || "bg-primary/10 text-primary border-primary/20"
+    )
     setFormCategory(link.category || "ECOSYSTEM")
     setFormOrder(link.displayOrder || 0)
     setFormActive(link.isActive)
@@ -197,7 +203,8 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
   }
 
   function handleDelete(id: string, title: string) {
-    if (!window.confirm(`Are you sure you want to remove link "${title}"?`)) return
+    if (!window.confirm(`Are you sure you want to remove link "${title}"?`))
+      return
 
     startTransition(async () => {
       const res = await deleteBioLinkAction(id)
@@ -214,7 +221,8 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
       search === "" ||
       link.title.toLowerCase().includes(search.toLowerCase()) ||
       link.url.toLowerCase().includes(search.toLowerCase()) ||
-      (link.description && link.description.toLowerCase().includes(search.toLowerCase()))
+      (link.description &&
+        link.description.toLowerCase().includes(search.toLowerCase()))
 
     return matchCategory && matchSearch
   })
@@ -252,7 +260,7 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
           <button
             type="button"
             onClick={openCreateModal}
-            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-opacity hover:opacity-90 shrink-0"
+            className="inline-flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-opacity hover:opacity-90"
           >
             <Plus className="size-3.5" />
             <span>Add Bio Link</span>
@@ -280,22 +288,25 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                     className="flex flex-col gap-3 p-4 transition-colors hover:bg-muted/20 sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div className="flex items-start gap-3.5">
-                      <div className="flex size-9 items-center justify-center rounded-lg border border-border/80 bg-muted/40 text-foreground shrink-0 mt-0.5">
+                      <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg border border-border/80 bg-muted/40 text-foreground">
                         <IconComp className="size-4" />
                       </div>
                       <div className="space-y-1">
-                        <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex flex-wrap items-center gap-2">
                           <span className="text-xs font-bold text-foreground">
                             {link.title}
                           </span>
                           {link.badge && (
                             <span
-                              className={`rounded-md border px-1.5 py-0.2 font-mono text-[9px] font-medium ${link.badgeColor}`}
+                              className={`py-0.2 rounded-md border px-1.5 font-mono text-[9px] font-medium ${link.badgeColor}`}
                             >
                               {link.badge}
                             </span>
                           )}
-                          <Badge variant="outline" className="text-[9px] font-mono">
+                          <Badge
+                            variant="outline"
+                            className="font-mono text-[9px]"
+                          >
                             {link.category}
                           </Badge>
                           <span className="font-mono text-[10px] text-muted-foreground">
@@ -306,20 +317,20 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground hover:text-foreground line-clamp-1"
+                          className="line-clamp-1 inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground hover:text-foreground"
                         >
-                          <span className="truncate max-w-xs">{link.url}</span>
+                          <span className="max-w-xs truncate">{link.url}</span>
                           <ExternalLink className="size-2.5 shrink-0" />
                         </a>
                         {link.description && (
-                          <p className="text-[11px] text-muted-foreground line-clamp-1">
+                          <p className="line-clamp-1 text-[11px] text-muted-foreground">
                             {link.description}
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between gap-3 sm:justify-end shrink-0 border-t border-border/40 pt-2 sm:border-0 sm:pt-0">
+                    <div className="flex shrink-0 items-center justify-between gap-3 border-t border-border/40 pt-2 sm:justify-end sm:border-0 sm:pt-0">
                       <div className="flex items-center gap-1 font-mono text-xs text-muted-foreground">
                         <MousePointerClick className="size-3 text-muted-foreground" />
                         <span>{link.clickCount} clicks</span>
@@ -328,11 +339,13 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                       <div className="flex items-center gap-1.5">
                         <button
                           type="button"
-                          onClick={() => handleToggleStatus(link.id, link.isActive)}
+                          onClick={() =>
+                            handleToggleStatus(link.id, link.isActive)
+                          }
                           disabled={isPending}
-                          className={`rounded-md px-2 py-1 text-[10px] font-semibold transition-colors cursor-pointer ${
+                          className={`cursor-pointer rounded-md px-2 py-1 text-[10px] font-semibold transition-colors ${
                             link.isActive
-                              ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/20"
+                              ? "border border-emerald-500/20 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20"
                               : "bg-muted text-muted-foreground hover:bg-muted/80"
                           }`}
                         >
@@ -342,7 +355,7 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                         <button
                           type="button"
                           onClick={() => openEditModal(link)}
-                          className="rounded-md border border-border p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
+                          className="cursor-pointer rounded-md border border-border p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                           title="Edit Link"
                         >
                           <Edit2 className="size-3" />
@@ -352,7 +365,7 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                           type="button"
                           onClick={() => handleDelete(link.id, link.title)}
                           disabled={isPending}
-                          className="rounded-md border border-border p-1.5 text-rose-500 transition-colors hover:bg-rose-500/10 cursor-pointer"
+                          className="cursor-pointer rounded-md border border-border p-1.5 text-rose-500 transition-colors hover:bg-rose-500/10"
                           title="Delete Link"
                         >
                           <Trash2 className="size-3" />
@@ -370,10 +383,10 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
       <div className="space-y-4 lg:col-span-4">
         <div className="sticky top-20 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-foreground uppercase tracking-wider">
+            <span className="text-xs font-bold tracking-wider text-foreground uppercase">
               Live Linkbio Mockup
             </span>
-            <Badge variant="outline" className="text-[10px] font-mono">
+            <Badge variant="outline" className="font-mono text-[10px]">
               Dynamic Client View
             </Badge>
           </div>
@@ -382,16 +395,20 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
             <div className="mx-auto mb-4 h-1 w-12 rounded-full bg-muted-foreground/30" />
 
             <div className="space-y-3 text-center">
-              <div className="mx-auto size-14 rounded-full bg-gradient-to-tr from-primary/30 to-muted border border-border shadow-xs flex items-center justify-center font-bold text-xs text-foreground">
+              <div className="mx-auto flex size-14 items-center justify-center rounded-full border border-border bg-gradient-to-tr from-primary/30 to-muted text-xs font-bold text-foreground shadow-xs">
                 RR
               </div>
               <div>
-                <h4 className="text-xs font-bold text-foreground">Rizky Ramadhan</h4>
-                <p className="text-[10px] text-muted-foreground">Software Engineer &amp; Architect</p>
+                <h4 className="text-xs font-bold text-foreground">
+                  Rizky Ramadhan
+                </h4>
+                <p className="text-[10px] text-muted-foreground">
+                  Software Engineer &amp; Architect
+                </p>
               </div>
             </div>
 
-            <div className="mt-5 space-y-2 max-h-[380px] overflow-y-auto pr-1">
+            <div className="mt-5 max-h-[380px] space-y-2 overflow-y-auto pr-1">
               {links
                 .filter((l) => l.isActive)
                 .sort((a, b) => a.displayOrder - b.displayOrder)
@@ -402,14 +419,14 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                       key={l.id}
                       className="flex items-center justify-between rounded-xl border border-border/80 bg-card/60 p-2.5 text-left text-xs transition-colors hover:border-foreground/30"
                     >
-                      <div className="flex items-center gap-2 min-w-0">
-                        <PreviewIcon className="size-3.5 text-foreground shrink-0" />
+                      <div className="flex min-w-0 items-center gap-2">
+                        <PreviewIcon className="size-3.5 shrink-0 text-foreground" />
                         <span className="truncate text-[11px] font-medium text-foreground">
                           {l.title}
                         </span>
                       </div>
                       {l.badge && (
-                        <span className="rounded-md border px-1 py-0.2 text-[8px] font-mono shrink-0">
+                        <span className="py-0.2 shrink-0 rounded-md border px-1 font-mono text-[8px]">
                           {l.badge}
                         </span>
                       )}
@@ -418,7 +435,7 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                 })}
             </div>
 
-            <div className="mt-4 pt-3 border-t border-border/60 text-center font-mono text-[9px] text-muted-foreground">
+            <div className="mt-4 border-t border-border/60 pt-3 text-center font-mono text-[9px] text-muted-foreground">
               apps/linkbio live preview
             </div>
           </div>
@@ -432,7 +449,7 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
         >
           <div
-            className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto"
+            className="max-h-[90vh] w-full max-w-lg space-y-4 overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-border/60 pb-3">
@@ -449,14 +466,16 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
             </div>
 
             {formError && (
-              <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-500 font-medium">
+              <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-3 text-xs font-medium text-rose-500">
                 {formError}
               </p>
             )}
 
             <form onSubmit={handleSave} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Link Title</label>
+                <label className="text-xs font-medium text-foreground">
+                  Link Title
+                </label>
                 <input
                   type="text"
                   required
@@ -468,7 +487,9 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Destination URL</label>
+                <label className="text-xs font-medium text-foreground">
+                  Destination URL
+                </label>
                 <input
                   type="url"
                   required
@@ -494,7 +515,9 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">Icon</label>
+                  <label className="text-xs font-medium text-foreground">
+                    Icon
+                  </label>
                   <select
                     value={formIcon}
                     onChange={(e) => setFormIcon(e.target.value)}
@@ -509,7 +532,9 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">Category</label>
+                  <label className="text-xs font-medium text-foreground">
+                    Category
+                  </label>
                   <select
                     value={formCategory}
                     onChange={(e) => setFormCategory(e.target.value)}
@@ -526,7 +551,9 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">Badge Label</label>
+                  <label className="text-xs font-medium text-foreground">
+                    Badge Label
+                  </label>
                   <input
                     type="text"
                     value={formBadge}
@@ -537,7 +564,9 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">Display Order</label>
+                  <label className="text-xs font-medium text-foreground">
+                    Display Order
+                  </label>
                   <input
                     type="number"
                     value={formOrder}
@@ -546,8 +575,8 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                   />
                 </div>
 
-                <div className="space-y-1.5 flex flex-col justify-end">
-                  <label className="flex items-center gap-2 cursor-pointer pb-2 text-xs font-medium text-foreground">
+                <div className="flex flex-col justify-end space-y-1.5">
+                  <label className="flex cursor-pointer items-center gap-2 pb-2 text-xs font-medium text-foreground">
                     <input
                       type="checkbox"
                       checked={formActive}
@@ -559,7 +588,7 @@ export function LinkbioManagerClient({ initialLinks }: LinkbioManagerClientProps
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-4 border-t border-border/60">
+              <div className="flex items-center justify-end gap-2 border-t border-border/60 pt-4">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}

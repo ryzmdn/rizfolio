@@ -199,51 +199,48 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const closeCart = useCallback(() => setIsOpen(false), [])
   const toggleCart = useCallback(() => setIsOpen((prev) => !prev), [])
 
-  const addItem = useCallback(
-    (input: CartItemInput) => {
-      const qty = input.quantity && input.quantity > 0 ? input.quantity : 1
-      const compositeId = `${input.productId}-${input.licenseType}`
+  const addItem = useCallback((input: CartItemInput) => {
+    const qty = input.quantity && input.quantity > 0 ? input.quantity : 1
+    const compositeId = `${input.productId}-${input.licenseType}`
 
-      const currentItems = getItemsSnapshot()
-      const existingIndex = currentItems.findIndex(
-        (item) => item.id === compositeId
-      )
+    const currentItems = getItemsSnapshot()
+    const existingIndex = currentItems.findIndex(
+      (item) => item.id === compositeId
+    )
 
-      let nextItems: CartItem[]
-      if (existingIndex > -1) {
-        nextItems = [...currentItems]
-        const currentItem = nextItems[existingIndex]
-        if (currentItem) {
-          nextItems[existingIndex] = {
-            ...currentItem,
-            quantity: currentItem.quantity + qty,
-          }
+    let nextItems: CartItem[]
+    if (existingIndex > -1) {
+      nextItems = [...currentItems]
+      const currentItem = nextItems[existingIndex]
+      if (currentItem) {
+        nextItems[existingIndex] = {
+          ...currentItem,
+          quantity: currentItem.quantity + qty,
         }
-      } else {
-        nextItems = [
-          ...currentItems,
-          {
-            id: compositeId,
-            productId: input.productId,
-            slug: input.slug,
-            title: input.title,
-            coverImageUrl: input.coverImageUrl,
-            productType: input.productType,
-            licenseType: input.licenseType,
-            price: input.price,
-            quantity: qty,
-            currency: input.currency || "IDR",
-            fileName: input.fileName,
-            fileSizeBytes: input.fileSizeBytes,
-          },
-        ]
       }
+    } else {
+      nextItems = [
+        ...currentItems,
+        {
+          id: compositeId,
+          productId: input.productId,
+          slug: input.slug,
+          title: input.title,
+          coverImageUrl: input.coverImageUrl,
+          productType: input.productType,
+          licenseType: input.licenseType,
+          price: input.price,
+          quantity: qty,
+          currency: input.currency || "IDR",
+          fileName: input.fileName,
+          fileSizeBytes: input.fileSizeBytes,
+        },
+      ]
+    }
 
-      saveItems(nextItems)
-      setIsOpen(true)
-    },
-    []
-  )
+    saveItems(nextItems)
+    setIsOpen(true)
+  }, [])
 
   const removeItem = useCallback((id: string) => {
     const nextItems = getItemsSnapshot().filter((item) => item.id !== id)
@@ -265,11 +262,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const updateLicense = useCallback(
-    (
-      id: string,
-      licenseType: "STANDARD" | "EXTENDED",
-      newPrice: number
-    ) => {
+    (id: string, licenseType: "STANDARD" | "EXTENDED", newPrice: number) => {
       const currentItems = getItemsSnapshot()
       const target = currentItems.find((item) => item.id === id)
       if (!target) return

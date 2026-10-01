@@ -2,7 +2,7 @@ import { Container } from "@workspace/ui/components/layouts/container"
 
 export default function BlobLoading() {
   return (
-    <Container className="space-y-6 py-10 animate-pulse">
+    <Container className="animate-pulse space-y-6 py-10">
       <div className="flex flex-col gap-4 border-b border-border/70 pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <div className="h-7 w-24 rounded-lg bg-muted/70" />

@@ -19,7 +19,10 @@ import { Badge } from "@workspace/ui/components/badge"
 import { ChangelogEditDialog } from "./changelog-edit-dialog"
 import { ChangelogItemBuilder } from "./changelog-item-builder"
 import { RoadmapManager } from "./roadmap-manager"
-import { createChangelog, deleteChangelog } from "@/lib/actions/changelog-actions"
+import {
+  createChangelog,
+  deleteChangelog,
+} from "@/lib/actions/changelog-actions"
 
 interface ChangelogItem {
   id: string
@@ -145,7 +148,7 @@ export function ChangelogManagerView({
           onClick={() => setActiveTab("RELEASES")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "RELEASES"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -161,7 +164,7 @@ export function ChangelogManagerView({
           onClick={() => setActiveTab("ITEMS")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "ITEMS"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -177,7 +180,7 @@ export function ChangelogManagerView({
           onClick={() => setActiveTab("ROADMAP")}
           className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs font-medium transition-colors ${
             activeTab === "ROADMAP"
-              ? "border-primary text-foreground font-semibold"
+              ? "border-primary font-semibold text-foreground"
               : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
         >
@@ -202,7 +205,8 @@ export function ChangelogManagerView({
                     Tambah Rilis Changelog Baru
                   </h2>
                   <p className="text-xs text-muted-foreground">
-                    Catat versi rilis baru aplikasi, perbaikan bug, dan pembaruan arsitektur sistem.
+                    Catat versi rilis baru aplikasi, perbaikan bug, dan
+                    pembaruan arsitektur sistem.
                   </p>
                 </div>
               </div>
@@ -212,7 +216,9 @@ export function ChangelogManagerView({
                 onClick={() => setIsFormExpanded((prev) => !prev)}
                 className="flex items-center gap-1.5 rounded-lg border border-border/80 bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
               >
-                <span>{isFormExpanded ? "Tutup Formulir" : "Buka Formulir"}</span>
+                <span>
+                  {isFormExpanded ? "Tutup Formulir" : "Buka Formulir"}
+                </span>
                 {isFormExpanded ? (
                   <ChevronUp className="size-3.5" />
                 ) : (
@@ -273,7 +279,9 @@ export function ChangelogManagerView({
                     </label>
                     <select
                       value={isPublished ? "true" : "false"}
-                      onChange={(e) => setIsPublished(e.target.value === "true")}
+                      onChange={(e) =>
+                        setIsPublished(e.target.value === "true")
+                      }
                       className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:outline-none"
                     >
                       <option value="true">Publik (Tampil di Timeline)</option>
@@ -405,7 +413,7 @@ export function ChangelogManagerView({
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                        <div className="flex shrink-0 items-center gap-2 self-end sm:self-center">
                           <a
                             href={`${changelogBaseUrl}/release/${release.version.replace(/^v/, "").replace(/\./g, "-")}`}
                             target="_blank"

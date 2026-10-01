@@ -47,7 +47,7 @@ export default async function TransactionsPage({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs transition-colors hover:border-border">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Total Transaction Events
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -63,7 +63,7 @@ export default async function TransactionsPage({
 
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs transition-colors hover:border-border">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Execution Success Rate
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500">
@@ -74,7 +74,7 @@ export default async function TransactionsPage({
               <span className="text-2xl font-bold tracking-tight text-foreground tabular-nums">
                 {stats.successRate}%
               </span>
-              <span className="text-xs text-muted-foreground font-mono">
+              <span className="font-mono text-xs text-muted-foreground">
                 ({stats.completed} succeeded)
               </span>
             </div>
@@ -82,7 +82,7 @@ export default async function TransactionsPage({
 
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs transition-colors hover:border-border">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Settled Commerce Volume
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
@@ -98,7 +98,7 @@ export default async function TransactionsPage({
 
           <div className="rounded-xl border border-border/70 bg-card/60 p-5 backdrop-blur-xs transition-colors hover:border-border">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              <span className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Audit Domains Tracked
               </span>
               <div className="flex size-7 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
@@ -109,7 +109,7 @@ export default async function TransactionsPage({
               <span className="text-2xl font-bold tracking-tight text-foreground tabular-nums">
                 7
               </span>
-              <Badge variant="outline" className="text-[10px] font-mono">
+              <Badge variant="outline" className="font-mono text-[10px]">
                 Active Domains
               </Badge>
             </div>
@@ -118,7 +118,10 @@ export default async function TransactionsPage({
 
         {/* Filter Controls Bar */}
         <div className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card/60 p-4 backdrop-blur-xs sm:flex-row sm:items-center sm:justify-between">
-          <form className="flex flex-1 flex-wrap items-center gap-2.5" method="GET">
+          <form
+            className="flex flex-1 flex-wrap items-center gap-2.5"
+            method="GET"
+          >
             <div className="relative min-w-[200px] flex-1">
               <Search className="absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
               <input
@@ -175,9 +178,11 @@ export default async function TransactionsPage({
             )}
           </form>
 
-          <div className="font-mono text-xs text-muted-foreground shrink-0">
-            Showing <span className="font-medium text-foreground">{items.length}</span> of{" "}
-            <span className="font-medium text-foreground">{total}</span> records
+          <div className="shrink-0 font-mono text-xs text-muted-foreground">
+            Showing{" "}
+            <span className="font-medium text-foreground">{items.length}</span>{" "}
+            of <span className="font-medium text-foreground">{total}</span>{" "}
+            records
           </div>
         </div>
 

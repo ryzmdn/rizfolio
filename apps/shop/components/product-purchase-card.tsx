@@ -26,7 +26,8 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
   const { addItem } = useCart()
   const { currency, format } = useCurrency()
 
-  const [selectedLicense, setSelectedLicense] = useState<LicenseTier>("STANDARD")
+  const [selectedLicense, setSelectedLicense] =
+    useState<LicenseTier>("STANDARD")
 
   const isDigital = product.productType === "DIGITAL_DOWNLOAD"
   const currentPrice =
@@ -143,7 +144,8 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
         <div className="flex items-center justify-between text-muted-foreground">
           <span>Architecture</span>
           <span className="font-mono font-medium text-foreground">
-            {product.techStack?.[0] || "Next.js 16"} + {product.techStack?.[1] || "React 19"}
+            {product.techStack?.[0] || "Next.js 16"} +{" "}
+            {product.techStack?.[1] || "React 19"}
           </span>
         </div>
         <div className="flex items-center justify-between text-muted-foreground">

@@ -68,7 +68,9 @@ export function BlogManagerView({
   postTagsMap,
 }: BlogManagerViewProps) {
   const [searchQuery, setSearchQuery] = useState("")
-  const [statusFilter, setStatusFilter] = useState<"ALL" | "PUBLISHED" | "DRAFT">("ALL")
+  const [statusFilter, setStatusFilter] = useState<
+    "ALL" | "PUBLISHED" | "DRAFT"
+  >("ALL")
   const [isFormExpanded, setIsFormExpanded] = useState(false)
   const [editingPost, setEditingPost] = useState<PostItem | null>(null)
 
@@ -93,8 +95,7 @@ export function BlogManagerView({
         post.title.toLowerCase().includes(q) ||
         post.slug.toLowerCase().includes(q)
 
-      const matchStatus =
-        statusFilter === "ALL" || post.status === statusFilter
+      const matchStatus = statusFilter === "ALL" || post.status === statusFilter
 
       return matchSearch && matchStatus
     })
@@ -175,7 +176,8 @@ export function BlogManagerView({
     return map
   }, [tags])
 
-  const blogBaseUrl = process.env.NEXT_PUBLIC_BLOG_URL || "http://localhost:3001"
+  const blogBaseUrl =
+    process.env.NEXT_PUBLIC_BLOG_URL || "http://localhost:3001"
 
   return (
     <div className="space-y-8">
@@ -190,7 +192,8 @@ export function BlogManagerView({
                 Tulis Artikel Baru
               </h2>
               <p className="text-xs text-muted-foreground">
-                Tulis artikel teknis dengan editor Markdown interaktif dan optimasi SEO.
+                Tulis artikel teknis dengan editor Markdown interaktif dan
+                optimasi SEO.
               </p>
             </div>
           </div>
@@ -341,7 +344,7 @@ export function BlogManagerView({
                           onClick={() => toggleCatSelection(cat.id)}
                           className={`rounded-lg border px-2.5 py-1 text-xs transition-colors ${
                             isChecked
-                              ? "border-primary bg-primary text-primary-foreground font-semibold"
+                              ? "border-primary bg-primary font-semibold text-primary-foreground"
                               : "border-border/80 bg-background text-muted-foreground hover:text-foreground"
                           }`}
                         >
@@ -373,7 +376,7 @@ export function BlogManagerView({
                           onClick={() => toggleTagSelection(t.id)}
                           className={`rounded-lg border px-2.5 py-1 text-xs transition-colors ${
                             isChecked
-                              ? "border-primary bg-primary text-primary-foreground font-semibold"
+                              ? "border-primary bg-primary font-semibold text-primary-foreground"
                               : "border-border/80 bg-background text-muted-foreground hover:text-foreground"
                           }`}
                         >
@@ -478,9 +481,7 @@ export function BlogManagerView({
             <select
               value={statusFilter}
               onChange={(e) =>
-                setStatusFilter(
-                  e.target.value as "ALL" | "PUBLISHED" | "DRAFT"
-                )
+                setStatusFilter(e.target.value as "ALL" | "PUBLISHED" | "DRAFT")
               }
               className="rounded-lg border border-border bg-background px-2.5 py-1.5 text-xs text-foreground focus:outline-none"
             >
@@ -587,7 +588,7 @@ export function BlogManagerView({
                       )}
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex shrink-0 items-center gap-2">
                       <a
                         href={`${blogBaseUrl}/blog/${post.slug}`}
                         target="_blank"
@@ -638,7 +639,9 @@ export function BlogManagerView({
         onClose={() => setEditingPost(null)}
         categories={categories}
         tags={tags}
-        initialCategoryIds={editingPost ? postCategoriesMap[editingPost.id] : []}
+        initialCategoryIds={
+          editingPost ? postCategoriesMap[editingPost.id] : []
+        }
         initialTagIds={editingPost ? postTagsMap[editingPost.id] : []}
       />
     </div>

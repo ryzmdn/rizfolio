@@ -141,4 +141,3 @@ export const inquiries = pgTable("inquiries", {
 
 export type Inquiry = typeof inquiries.$inferSelect
 export type NewInquiry = typeof inquiries.$inferInsert
-

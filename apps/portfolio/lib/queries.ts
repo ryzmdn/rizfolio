@@ -124,19 +124,21 @@ export async function getExperiences(): Promise<ExperienceItem[]> {
 
     const rows = await withTimeout(query, 1200, [])
     if (rows && rows.length > 0) {
-      return rows.map((exp): ExperienceItem => ({
-        logo: exp.companyLogoUrl || "",
-        role: exp.role,
-        company: exp.company,
-        type: "Full-Time",
-        location: exp.location || "Jakarta / Remote",
-        period: `${exp.startDate} – ${exp.isCurrent ? "Present" : exp.endDate || ""}`,
-        workMode: exp.location?.toLowerCase().includes("remote")
-          ? "Remote"
-          : "On-site",
-        description: exp.description,
-        skills: exp.techStack || [],
-      }))
+      return rows.map(
+        (exp): ExperienceItem => ({
+          logo: exp.companyLogoUrl || "",
+          role: exp.role,
+          company: exp.company,
+          type: "Full-Time",
+          location: exp.location || "Jakarta / Remote",
+          period: `${exp.startDate} – ${exp.isCurrent ? "Present" : exp.endDate || ""}`,
+          workMode: exp.location?.toLowerCase().includes("remote")
+            ? "Remote"
+            : "On-site",
+          description: exp.description,
+          skills: exp.techStack || [],
+        })
+      )
     }
   } catch (error: unknown) {
     console.warn(
@@ -162,12 +164,14 @@ export async function getEducationList(): Promise<EducationItem[]> {
 
     const rows = await withTimeout(query, 1200, [])
     if (rows && rows.length > 0) {
-      return rows.map((edu): EducationItem => ({
-        institution: edu.institution,
-        degree: edu.degree,
-        field: edu.field,
-        period: `${edu.startYear} – ${edu.endYear || "Present"}`,
-      }))
+      return rows.map(
+        (edu): EducationItem => ({
+          institution: edu.institution,
+          degree: edu.degree,
+          field: edu.field,
+          period: `${edu.startYear} – ${edu.endYear || "Present"}`,
+        })
+      )
     }
   } catch (error: unknown) {
     console.warn(
@@ -190,13 +194,15 @@ export async function getCertifications(): Promise<CertificationItem[]> {
 
     const rows = await withTimeout(query, 1200, [])
     if (rows && rows.length > 0) {
-      return rows.map((cert, idx: number): CertificationItem => ({
-        id: idx + 1,
-        title: cert.title,
-        thumbnail:
-          cert.badgeUrl ||
-          "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
-      }))
+      return rows.map(
+        (cert, idx: number): CertificationItem => ({
+          id: idx + 1,
+          title: cert.title,
+          thumbnail:
+            cert.badgeUrl ||
+            "https://templated-assets.s3.us-east-1.amazonaws.com/public/thumbnail/97d2bca7-9815-4947-bb9d-d7f7b7f3b082.webp",
+        })
+      )
     }
   } catch (error: unknown) {
     console.warn(
@@ -222,11 +228,13 @@ export async function getServicesList(): Promise<ServiceItem[]> {
 
     const rows = await withTimeout(query, 1200, [])
     if (rows && rows.length > 0) {
-      return rows.map((s): ServiceItem => ({
-        title: s.title,
-        description: s.summary || s.description,
-        features: s.deliverables || [],
-      }))
+      return rows.map(
+        (s): ServiceItem => ({
+          title: s.title,
+          description: s.summary || s.description,
+          features: s.deliverables || [],
+        })
+      )
     }
   } catch (error: unknown) {
     console.warn(
@@ -266,7 +274,8 @@ async function fetchCaseStudiesInternal(): Promise<CaseStudyItem[]> {
           slug: cs.slug,
           category: cs.clientName || fallback?.category || "Case Study",
           title: cs.title,
-          clientName: cs.clientName || fallback?.clientName || "Engineering Client",
+          clientName:
+            cs.clientName || fallback?.clientName || "Engineering Client",
           summary: cs.summary || fallback?.summary || "",
           contentMd: cs.contentMd || fallback?.contentMd || "",
           image:
@@ -275,8 +284,14 @@ async function fetchCaseStudiesInternal(): Promise<CaseStudyItem[]> {
             "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
           liveUrl: cs.liveUrl || fallback?.liveUrl,
           repoUrl: cs.repoUrl || fallback?.repoUrl,
-          metrics: (cs.metrics as Record<string, string | number>) || fallback?.metrics,
-          techStack: fallback?.techStack || ["TypeScript", "Next.js", "PostgreSQL"],
+          metrics:
+            (cs.metrics as Record<string, string | number>) ||
+            fallback?.metrics,
+          techStack: fallback?.techStack || [
+            "TypeScript",
+            "Next.js",
+            "PostgreSQL",
+          ],
           year: fallback?.year || "2025",
           role: fallback?.role || "Lead Architect",
         }
@@ -342,7 +357,8 @@ async function fetchCaseStudyBySlugInternal(
         slug: cs.slug,
         category: cs.clientName || fallback?.category || "Case Study",
         title: cs.title,
-        clientName: cs.clientName || fallback?.clientName || "Engineering Client",
+        clientName:
+          cs.clientName || fallback?.clientName || "Engineering Client",
         summary: cs.summary || fallback?.summary || "",
         contentMd: cs.contentMd || fallback?.contentMd || "",
         image:
@@ -351,8 +367,13 @@ async function fetchCaseStudyBySlugInternal(
           "https://res.cloudinary.com/dhaonb1vn/image/upload/v1782231915/pexels-photo-35239459_igdi3o.jpg",
         liveUrl: cs.liveUrl || fallback?.liveUrl,
         repoUrl: cs.repoUrl || fallback?.repoUrl,
-        metrics: (cs.metrics as Record<string, string | number>) || fallback?.metrics,
-        techStack: fallback?.techStack || ["TypeScript", "Next.js", "PostgreSQL"],
+        metrics:
+          (cs.metrics as Record<string, string | number>) || fallback?.metrics,
+        techStack: fallback?.techStack || [
+          "TypeScript",
+          "Next.js",
+          "PostgreSQL",
+        ],
         year: fallback?.year || "2025",
         role: fallback?.role || "Lead Architect",
       }
@@ -404,17 +425,19 @@ export async function getTestimonials(): Promise<TestimonialItem[]> {
 
     const rows = await withTimeout(query, 1200, [])
     if (rows && rows.length > 0) {
-      return rows.map((t): TestimonialItem => ({
-        name: t.clientName,
-        handle: `${t.role || ""} at ${t.company || ""}`.replace(
-          /^ at | at $/,
-          ""
-        ),
-        avatar:
-          t.avatarUrl ||
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-        content: t.content,
-      }))
+      return rows.map(
+        (t): TestimonialItem => ({
+          name: t.clientName,
+          handle: `${t.role || ""} at ${t.company || ""}`.replace(
+            /^ at | at $/,
+            ""
+          ),
+          avatar:
+            t.avatarUrl ||
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+          content: t.content,
+        })
+      )
     }
   } catch (error: unknown) {
     console.warn(

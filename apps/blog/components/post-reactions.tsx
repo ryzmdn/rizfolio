@@ -72,14 +72,12 @@ export function PostReactions({
         <Heart
           className={cn(
             "size-3.5 transition-transform",
-            hasLiked ? "fill-current scale-110" : ""
+            hasLiked ? "scale-110 fill-current" : ""
           )}
         />
         <span>{likes}</span>
       </button>
-      <span className="text-xs text-muted-foreground">
-        Found this useful
-      </span>
+      <span className="text-xs text-muted-foreground">Found this useful</span>
     </div>
   )
 }

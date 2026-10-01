@@ -1,13 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import {
-  Folder,
-  Tag,
-  Plus,
-  Trash2,
-  Hash,
-} from "lucide-react"
+import { Folder, Tag, Plus, Trash2, Hash } from "lucide-react"
 import {
   createBlogCategory,
   deleteBlogCategory,
@@ -38,7 +32,9 @@ export function CategoryTagManager({
   categories,
   tags,
 }: CategoryTagManagerProps) {
-  const [activeTab, setActiveTab] = useState<"categories" | "tags">("categories")
+  const [activeTab, setActiveTab] = useState<"categories" | "tags">(
+    "categories"
+  )
   const [categoryName, setCategoryName] = useState("")
   const [categorySlug, setCategorySlug] = useState("")
   const [categoryDesc, setCategoryDesc] = useState("")
@@ -116,7 +112,7 @@ export function CategoryTagManager({
             onClick={() => setActiveTab("categories")}
             className={`flex items-center gap-1.5 rounded px-2.5 py-1 text-xs font-medium transition-colors ${
               activeTab === "categories"
-                ? "bg-primary text-primary-foreground font-semibold"
+                ? "bg-primary font-semibold text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -128,7 +124,7 @@ export function CategoryTagManager({
             onClick={() => setActiveTab("tags")}
             className={`flex items-center gap-1.5 rounded px-2.5 py-1 text-xs font-medium transition-colors ${
               activeTab === "tags"
-                ? "bg-primary text-primary-foreground font-semibold"
+                ? "bg-primary font-semibold text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -140,7 +136,10 @@ export function CategoryTagManager({
 
       {activeTab === "categories" && (
         <div className="space-y-5">
-          <form onSubmit={handleCreateCategory} className="space-y-3 rounded-lg border border-border/60 bg-muted/20 p-4">
+          <form
+            onSubmit={handleCreateCategory}
+            className="space-y-3 rounded-lg border border-border/60 bg-muted/20 p-4"
+          >
             <span className="text-xs font-medium text-foreground">
               Tambah Kategori Baru
             </span>
@@ -206,7 +205,10 @@ export function CategoryTagManager({
                       <span className="font-medium text-foreground">
                         {cat.name}
                       </span>
-                      <Badge variant="outline" className="font-mono text-[10px]">
+                      <Badge
+                        variant="outline"
+                        className="font-mono text-[10px]"
+                      >
                         /{cat.slug}
                       </Badge>
                     </div>
@@ -238,7 +240,10 @@ export function CategoryTagManager({
 
       {activeTab === "tags" && (
         <div className="space-y-5">
-          <form onSubmit={handleCreateTag} className="space-y-3 rounded-lg border border-border/60 bg-muted/20 p-4">
+          <form
+            onSubmit={handleCreateTag}
+            className="space-y-3 rounded-lg border border-border/60 bg-muted/20 p-4"
+          >
             <span className="text-xs font-medium text-foreground">
               Tambah Tag Baru
             </span>

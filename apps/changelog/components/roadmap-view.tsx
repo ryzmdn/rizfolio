@@ -87,8 +87,9 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
             Product Roadmap & Milestones
           </h1>
           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            An open overview of delivered capabilities, current engineering priorities,
-            and upcoming architectural initiatives across the Rizfolio digital monorepo.
+            An open overview of delivered capabilities, current engineering
+            priorities, and upcoming architectural initiatives across the
+            Rizfolio digital monorepo.
           </p>
         </div>
 
@@ -143,7 +144,7 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
       <div className="space-y-4 rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs sm:p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="mr-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="mr-1 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
               Stage:
             </span>
             {(
@@ -160,9 +161,9 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
                 aria-pressed={selectedStage === st.id}
                 onClick={() => setSelectedStage(st.id)}
                 className={cn(
-                  "rounded-lg px-2.5 py-1 text-xs font-medium transition-all focus:outline-hidden focus:ring-2 focus:ring-primary/30",
+                  "rounded-lg px-2.5 py-1 text-xs font-medium transition-all focus:ring-2 focus:ring-primary/30 focus:outline-hidden",
                   selectedStage === st.id
-                    ? "bg-foreground text-background shadow-xs font-semibold"
+                    ? "bg-foreground font-semibold text-background shadow-xs"
                     : "border border-border/60 bg-muted/30 text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                 )}
               >
@@ -173,7 +174,11 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
 
           <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground sm:justify-end">
             <span className="font-mono">
-              Showing <span className="font-semibold text-foreground">{filteredItems.length}</span> of {initialItems.length}
+              Showing{" "}
+              <span className="font-semibold text-foreground">
+                {filteredItems.length}
+              </span>{" "}
+              of {initialItems.length}
             </span>
 
             {hasActiveFilters && (
@@ -190,7 +195,7 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5 border-t border-border/60 pt-3">
-          <span className="mr-1 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="mr-1 flex items-center gap-1 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
             <Layers className="size-3" />
             Scope:
           </span>
@@ -203,12 +208,14 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
                 type="button"
                 aria-pressed={isSelected}
                 onClick={() =>
-                  setSelectedScope(isSelected && sc.id !== "ALL" ? "ALL" : sc.id)
+                  setSelectedScope(
+                    isSelected && sc.id !== "ALL" ? "ALL" : sc.id
+                  )
                 }
                 className={cn(
-                  "rounded-lg px-2.5 py-0.5 font-mono text-[11px] font-medium transition-all focus:outline-hidden focus:ring-2 focus:ring-primary/30",
+                  "rounded-lg px-2.5 py-0.5 font-mono text-[11px] font-medium transition-all focus:ring-2 focus:ring-primary/30 focus:outline-hidden",
                   isSelected
-                    ? "bg-foreground text-background shadow-xs font-semibold"
+                    ? "bg-foreground font-semibold text-background shadow-xs"
                     : "border border-border/60 bg-muted/30 text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                 )}
               >

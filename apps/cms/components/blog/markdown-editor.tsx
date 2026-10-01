@@ -55,7 +55,7 @@ function renderSimpleMarkdown(markdown: string) {
             className="my-3 overflow-x-auto rounded-lg border border-border/80 bg-muted/40 p-3 font-mono text-xs text-foreground"
           >
             {codeBlockLang && (
-              <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <div className="mb-2 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
                 {codeBlockLang}
               </div>
             )}
@@ -120,7 +120,7 @@ function renderSimpleMarkdown(markdown: string) {
       elements.push(
         <blockquote
           key={`quote-${i}`}
-          className="my-2 border-l-2 border-primary pl-3 italic text-muted-foreground"
+          className="my-2 border-l-2 border-primary pl-3 text-muted-foreground italic"
         >
           {line.slice(2)}
         </blockquote>
@@ -129,9 +129,7 @@ function renderSimpleMarkdown(markdown: string) {
     }
 
     if (line.trim() === "---" || line.trim() === "***") {
-      elements.push(
-        <hr key={`hr-${i}`} className="my-4 border-border/70" />
-      )
+      elements.push(<hr key={`hr-${i}`} className="my-4 border-border/70" />)
       continue
     }
 
@@ -173,7 +171,9 @@ function renderSimpleMarkdown(markdown: string) {
 }
 
 function formatInline(text: string): React.ReactNode {
-  const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g)
+  const parts = text.split(
+    /(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g
+  )
 
   return parts.map((part, index) => {
     if (part.startsWith("`") && part.endsWith("`") && part.length > 2) {
@@ -197,7 +197,7 @@ function formatInline(text: string): React.ReactNode {
 
     if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
       return (
-        <em key={index} className="italic text-foreground">
+        <em key={index} className="text-foreground italic">
           {part.slice(1, -1)}
         </em>
       )
@@ -242,7 +242,11 @@ export function MarkdownEditor({
     return { words, chars, readingTime }
   }, [value])
 
-  function insertFormatting(prefix: string, suffix: string = "", placeholderText: string = "") {
+  function insertFormatting(
+    prefix: string,
+    suffix: string = "",
+    placeholderText: string = ""
+  ) {
     const textarea = textareaRef.current
     if (!textarea) return
 
@@ -370,7 +374,11 @@ export function MarkdownEditor({
           <button
             type="button"
             onClick={() =>
-              insertFormatting("![", "](https://images.unsplash.com/...)", "Gambar")
+              insertFormatting(
+                "![",
+                "](https://images.unsplash.com/...)",
+                "Gambar"
+              )
             }
             className="rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             title="Sisipkan Gambar"
@@ -455,7 +463,7 @@ export function MarkdownEditor({
         )}
 
         {viewMode === "preview" && (
-          <div className="min-h-72 max-h-[500px] overflow-y-auto p-4 text-xs">
+          <div className="max-h-[500px] min-h-72 overflow-y-auto p-4 text-xs">
             {renderSimpleMarkdown(value)}
           </div>
         )}

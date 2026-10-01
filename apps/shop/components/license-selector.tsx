@@ -42,7 +42,8 @@ export function LicenseSelector({
       price: extendedPrice,
       badge: "Unlimited & SaaS",
       icon: Building2,
-      description: "For multi-client deployments and commercial SaaS applications.",
+      description:
+        "For multi-client deployments and commercial SaaS applications.",
       perks: [
         "Unlimited end-product deployments",
         "Commercial SaaS and monetized app rights",
@@ -55,7 +56,7 @@ export function LicenseSelector({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-foreground">
+        <span className="text-xs font-semibold tracking-wider text-foreground uppercase">
           Select Commercial Tier
         </span>
         <span className="text-[11px] text-muted-foreground">
@@ -88,7 +89,7 @@ export function LicenseSelector({
                         {option.title}
                       </h3>
                     </div>
-                    <span className="inline-block rounded-md border border-border/70 bg-muted/40 px-1.5 py-0.2 text-[10px] font-mono text-muted-foreground">
+                    <span className="py-0.2 inline-block rounded-md border border-border/70 bg-muted/40 px-1.5 font-mono text-[10px] text-muted-foreground">
                       {option.badge}
                     </span>
                   </div>

@@ -67,7 +67,7 @@ export function SystemHealthDiagnostics() {
 
   return (
     <div className="space-y-5 rounded-xl border border-border/80 bg-card p-6 shadow-sm">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4">
+      <div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
             <Server className="h-4 w-4 text-primary" />
@@ -75,15 +75,17 @@ export function SystemHealthDiagnostics() {
               Diagnostik Infrastruktur & Kesehatan Sistem
             </h2>
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Pemantauan langsung status basis data PostgreSQL, Supabase CDN, variabel lingkungan, dan konsumsi memori runtime.
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Pemantauan langsung status basis data PostgreSQL, Supabase CDN,
+            variabel lingkungan, dan konsumsi memori runtime.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           {report?.timestamp && (
-            <span className="text-[11px] text-muted-foreground hidden sm:inline-block">
-              Diperiksa: {new Date(report.timestamp).toLocaleTimeString("id-ID")}
+            <span className="hidden text-[11px] text-muted-foreground sm:inline-block">
+              Diperiksa:{" "}
+              {new Date(report.timestamp).toLocaleTimeString("id-ID")}
             </span>
           )}
           <button
@@ -112,13 +114,13 @@ export function SystemHealthDiagnostics() {
         >
           <div className="flex items-center gap-3">
             {report.overallStatus === "healthy" && (
-              <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-500" />
             )}
             {report.overallStatus === "degraded" && (
-              <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0" />
+              <AlertTriangle className="h-5 w-5 shrink-0 text-amber-500" />
             )}
             {report.overallStatus === "down" && (
-              <XCircle className="h-5 w-5 text-destructive shrink-0" />
+              <XCircle className="h-5 w-5 shrink-0 text-destructive" />
             )}
             <div>
               <p className="text-xs font-semibold">
@@ -129,7 +131,8 @@ export function SystemHealthDiagnostics() {
                     : "Gangguan Kritis Terdeteksi pada Infrastruktur"}
               </p>
               <p className="text-[11px] opacity-80">
-                Pemeriksaan koneksi basis data, objek penyimpanan, dan verifikasi kredensial produksi.
+                Pemeriksaan koneksi basis data, objek penyimpanan, dan
+                verifikasi kredensial produksi.
               </p>
             </div>
           </div>
@@ -142,7 +145,7 @@ export function SystemHealthDiagnostics() {
                   ? "secondary"
                   : "destructive"
             }
-            className="text-[10px] font-bold uppercase tracking-wider"
+            className="text-[10px] font-bold tracking-wider uppercase"
           >
             {report.overallStatus}
           </Badge>
@@ -150,7 +153,7 @@ export function SystemHealthDiagnostics() {
       )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border border-border/80 bg-background/50 p-4 space-y-3">
+        <div className="space-y-3 rounded-xl border border-border/80 bg-background/50 p-4">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-muted-foreground">
               PostgreSQL DB
@@ -180,13 +183,13 @@ export function SystemHealthDiagnostics() {
                 {report?.database.latencyMs ?? 0} ms
               </span>
             </div>
-            <p className="text-[11px] text-muted-foreground line-clamp-2 pt-1">
+            <p className="line-clamp-2 pt-1 text-[11px] text-muted-foreground">
               {report?.database.message || "Menunggu hasil diagnostik..."}
             </p>
           </div>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-background/50 p-4 space-y-3">
+        <div className="space-y-3 rounded-xl border border-border/80 bg-background/50 p-4">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-muted-foreground">
               Supabase Storage
@@ -216,13 +219,13 @@ export function SystemHealthDiagnostics() {
                 {report?.storage.latencyMs ?? 0} ms
               </span>
             </div>
-            <p className="text-[11px] text-muted-foreground line-clamp-2 pt-1">
+            <p className="line-clamp-2 pt-1 text-[11px] text-muted-foreground">
               {report?.storage.message || "Menunggu hasil diagnostik..."}
             </p>
           </div>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-background/50 p-4 space-y-3">
+        <div className="space-y-3 rounded-xl border border-border/80 bg-background/50 p-4">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-muted-foreground">
               Konfigurasi ENV
@@ -247,13 +250,13 @@ export function SystemHealthDiagnostics() {
                 Audit Trail
               </span>
             </div>
-            <p className="text-[11px] text-muted-foreground pt-1">
+            <p className="pt-1 text-[11px] text-muted-foreground">
               Kunci database, token Supabase, dan rahasia enkripsi sesi.
             </p>
           </div>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-background/50 p-4 space-y-3">
+        <div className="space-y-3 rounded-xl border border-border/80 bg-background/50 p-4">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-muted-foreground">
               Node Runtime & RAM
@@ -270,7 +273,7 @@ export function SystemHealthDiagnostics() {
                 RSS: {report?.runtime.memory.rssMb ?? 0} MB
               </span>
             </div>
-            <p className="text-[11px] text-muted-foreground pt-1 flex items-center gap-1">
+            <p className="flex items-center gap-1 pt-1 text-[11px] text-muted-foreground">
               <Clock className="h-3 w-3" />
               <span>
                 Uptime: {formatUptime(report?.runtime.uptimeSeconds ?? 0)}
@@ -282,7 +285,7 @@ export function SystemHealthDiagnostics() {
 
       {report?.environment.variables && (
         <div className="space-y-2 rounded-xl border border-border/60 bg-muted/20 p-4">
-          <h4 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+          <h4 className="flex items-center gap-1.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
             <Key className="h-3.5 w-3.5" />
             <span>Audit Variabel Lingkungan Produksi</span>
           </h4>
@@ -294,15 +297,15 @@ export function SystemHealthDiagnostics() {
               >
                 <div className="flex items-center gap-2 overflow-hidden">
                   {env.isSet ? (
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
                   ) : (
-                    <XCircle className="h-3.5 w-3.5 text-destructive shrink-0" />
+                    <XCircle className="h-3.5 w-3.5 shrink-0 text-destructive" />
                   )}
-                  <span className="font-mono text-[11px] font-medium text-foreground truncate">
+                  <span className="truncate font-mono text-[11px] font-medium text-foreground">
                     {env.variable}
                   </span>
                 </div>
-                <span className="font-mono text-[10px] text-muted-foreground shrink-0">
+                <span className="shrink-0 font-mono text-[10px] text-muted-foreground">
                   {env.maskedValue}
                 </span>
               </div>

@@ -160,7 +160,7 @@ export default async function OverviewDashboard() {
           {/* Quick Actions */}
           <div className="space-y-4 rounded-2xl border border-border/80 bg-card/60 p-6 shadow-xs backdrop-blur-xs lg:col-span-7">
             <div className="flex items-center justify-between border-b border-border/60 pb-3">
-              <h2 className="text-sm font-bold tracking-tight text-foreground uppercase text-muted-foreground/80">
+              <h2 className="text-sm font-bold tracking-tight text-foreground text-muted-foreground/80 uppercase">
                 Aksi Cepat & Navigasi Modul
               </h2>
               <span className="font-mono text-[11px] text-muted-foreground">
@@ -203,7 +203,7 @@ export default async function OverviewDashboard() {
             <div className="flex items-center justify-between border-b border-border/60 pb-3">
               <div className="flex items-center gap-2">
                 <Server className="size-4 text-foreground" />
-                <h2 className="text-sm font-bold tracking-tight text-foreground uppercase text-muted-foreground/80">
+                <h2 className="text-sm font-bold tracking-tight text-foreground text-muted-foreground/80 uppercase">
                   Status Infrastruktur
                 </h2>
               </div>
@@ -293,7 +293,8 @@ export default async function OverviewDashboard() {
                 Recent Master Transactions
               </h2>
               <p className="text-xs text-muted-foreground">
-                Audit trail aktivitas dan mutasi data sistem terbaru di seluruh ekosistem.
+                Audit trail aktivitas dan mutasi data sistem terbaru di seluruh
+                ekosistem.
               </p>
             </div>
             <Link
@@ -314,7 +315,7 @@ export default async function OverviewDashboard() {
               recentTransactions.map((trx) => (
                 <div
                   key={trx.id}
-                  className="group flex flex-col gap-3 py-3.5 transition-colors hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:px-2 rounded-xl"
+                  className="group flex flex-col gap-3 rounded-xl py-3.5 transition-colors hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:px-2"
                 >
                   <div className="flex items-start gap-3">
                     <span className="rounded-md border border-border/70 bg-muted/50 px-2 py-0.5 font-mono text-[11px] font-semibold text-foreground">

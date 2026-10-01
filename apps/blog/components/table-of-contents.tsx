@@ -18,28 +18,26 @@ interface TableOfContentsProps {
 function extractHeadings(markdown: string): TocItem[] {
   if (!markdown) return []
 
-  return markdown
-    .split("\n")
-    .reduce<TocItem[]>((acc, line) => {
-      const match = line.match(/^(#{2,3})\s+(.+)$/)
-      if (!match) return acc
+  return markdown.split("\n").reduce<TocItem[]>((acc, line) => {
+    const match = line.match(/^(#{2,3})\s+(.+)$/)
+    if (!match) return acc
 
-      const level = match[1]!.length
-      const rawText = match[2]!.trim()
-      const cleanText = rawText
-        .replace(/`([^`]+)`/g, "$1")
-        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-        .replace(/\*\*([^*]+)\*\*/g, "$1")
-        .replace(/\*([^*]+)\*/g, "$1")
+    const level = match[1]!.length
+    const rawText = match[2]!.trim()
+    const cleanText = rawText
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/\*\*([^*]+)\*\*/g, "$1")
+      .replace(/\*([^*]+)\*/g, "$1")
 
-      const id = cleanText
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-")
+    const id = cleanText
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
 
-      acc.push({ id, text: cleanText, level })
-      return acc
-    }, [])
+    acc.push({ id, text: cleanText, level })
+    return acc
+  }, [])
 }
 
 export function TableOfContents({ content, className }: TableOfContentsProps) {
@@ -130,7 +128,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
       </div>
 
       <div className="hidden space-y-4 lg:block">
-        <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+        <p className="flex items-center gap-2 text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
           <ListCollapse className="size-3.5" />
           <span>On this page</span>
         </p>

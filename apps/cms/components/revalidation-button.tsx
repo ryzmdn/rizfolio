@@ -2,7 +2,10 @@
 
 import { useState } from "react"
 import { RefreshCw, Check, AlertCircle } from "lucide-react"
-import { revalidateAllAppsAction, type RevalidationReport } from "@/lib/actions/revalidate-actions"
+import {
+  revalidateAllAppsAction,
+  type RevalidationReport,
+} from "@/lib/actions/revalidate-actions"
 
 export function RevalidationButton() {
   const [status, setStatus] = useState<

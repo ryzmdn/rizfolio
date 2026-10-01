@@ -27,7 +27,8 @@ export default function ErrorBoundary({
         </h1>
 
         <p className="text-sm text-muted-foreground">
-          An unexpected error occurred while loading profile links. Please retry or visit the main portfolio.
+          An unexpected error occurred while loading profile links. Please retry
+          or visit the main portfolio.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">

@@ -40,7 +40,9 @@ export function DocsHeader() {
               R
             </div>
             <div className="flex items-center gap-x-1.5">
-              <span className="font-semibold text-foreground">Rizky Ramadhan</span>
+              <span className="font-semibold text-foreground">
+                Rizky Ramadhan
+              </span>
               <span className="text-muted-foreground/40">/</span>
               <span className="font-mono text-xs text-muted-foreground">
                 Docs & Code
@@ -93,7 +95,7 @@ export function DocsHeader() {
             aria-label="GitHub Profile"
             className={cn(
               buttonVariants({ variant: "ghost", size: "icon-sm" }),
-              "text-muted-foreground hover:text-foreground hidden sm:inline-flex"
+              "hidden text-muted-foreground hover:text-foreground sm:inline-flex"
             )}
           >
             <GitHub className="size-4" />
@@ -129,7 +131,11 @@ export function DocsHeader() {
               "md:hidden"
             )}
           >
-            {mobileOpen ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
+            {mobileOpen ? (
+              <X className="size-4.5" />
+            ) : (
+              <Menu className="size-4.5" />
+            )}
           </button>
         </div>
       </div>

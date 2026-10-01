@@ -87,7 +87,11 @@ async function fetchPublishedPosts({
     if (query && query.trim()) {
       const q = `%${query.trim()}%`
       conditions.push(
-        or(ilike(posts.title, q), ilike(posts.excerpt, q), ilike(posts.contentMd, q))!
+        or(
+          ilike(posts.title, q),
+          ilike(posts.excerpt, q),
+          ilike(posts.contentMd, q)
+        )!
       )
     }
 
@@ -101,7 +105,9 @@ async function fetchPublishedPosts({
         readingTime: posts.readingTime,
         publishedAt: posts.publishedAt,
         createdAt: posts.createdAt,
-        viewsCount: sql<number>`coalesce(${postViews.viewCount}, 0)`.as("viewsCount"),
+        viewsCount: sql<number>`coalesce(${postViews.viewCount}, 0)`.as(
+          "viewsCount"
+        ),
       })
       .from(posts)
       .leftJoin(postViews, eq(posts.id, postViews.postId))
@@ -109,7 +115,10 @@ async function fetchPublishedPosts({
 
     const orderByClause =
       sort === "popular"
-        ? [desc(sql`coalesce(${postViews.viewCount}, 0)`), desc(posts.publishedAt)]
+        ? [
+            desc(sql`coalesce(${postViews.viewCount}, 0)`),
+            desc(posts.publishedAt),
+          ]
         : [desc(posts.publishedAt), desc(posts.createdAt)]
 
     const [rows, countRows] = await Promise.all([
@@ -156,13 +165,19 @@ async function fetchPublishedPosts({
           .where(sql`${postTags.postId} IN ${postIds}`),
       ])
 
-      const catsByPost = new Map<string, Array<{ id: string; name: string; slug: string }>>()
+      const catsByPost = new Map<
+        string,
+        Array<{ id: string; name: string; slug: string }>
+      >()
       for (const row of catRows) {
         if (!catsByPost.has(row.postId)) catsByPost.set(row.postId, [])
         catsByPost.get(row.postId)!.push(row.category)
       }
 
-      const tagsByPost = new Map<string, Array<{ id: string; name: string; slug: string }>>()
+      const tagsByPost = new Map<
+        string,
+        Array<{ id: string; name: string; slug: string }>
+      >()
       for (const row of tagRows) {
         if (!tagsByPost.has(row.postId)) tagsByPost.set(row.postId, [])
         tagsByPost.get(row.postId)!.push(row.tag)
@@ -202,7 +217,9 @@ async function fetchPublishedPosts({
 
   if (categorySlug && categorySlug !== "all") {
     filtered = filtered.filter((p) =>
-      p.categories.some((c) => c.slug.toLowerCase() === categorySlug.toLowerCase())
+      p.categories.some(
+        (c) => c.slug.toLowerCase() === categorySlug.toLowerCase()
+      )
     )
   }
 
@@ -271,7 +288,9 @@ async function fetchPostBySlug(slug: string): Promise<BlogPostItem | null> {
         readingTime: posts.readingTime,
         publishedAt: posts.publishedAt,
         createdAt: posts.createdAt,
-        viewsCount: sql<number>`coalesce(${postViews.viewCount}, 0)`.as("viewsCount"),
+        viewsCount: sql<number>`coalesce(${postViews.viewCount}, 0)`.as(
+          "viewsCount"
+        ),
       })
       .from(posts)
       .leftJoin(postViews, eq(posts.id, postViews.postId))
@@ -309,7 +328,8 @@ async function fetchPostBySlug(slug: string): Promise<BlogPostItem | null> {
         excerpt: post.excerpt,
         contentMd: post.contentMd,
         coverImageUrl: post.coverImageUrl,
-        readingTime: post.readingTime || Math.ceil((post.contentMd?.length || 500) / 900),
+        readingTime:
+          post.readingTime || Math.ceil((post.contentMd?.length || 500) / 900),
         publishedAt: post.publishedAt,
         createdAt: post.createdAt,
         categories: catRows,
@@ -327,15 +347,13 @@ async function fetchPostBySlug(slug: string): Promise<BlogPostItem | null> {
   return fallbackPosts.find((p) => p.slug === slug) || null
 }
 
-export async function getPostBySlug(slug: string): Promise<BlogPostItem | null> {
-  return unstable_cache(
-    () => fetchPostBySlug(slug),
-    ["blog-post", slug],
-    {
-      revalidate: 3600,
-      tags: ["blog", `post-${slug}`],
-    }
-  )()
+export async function getPostBySlug(
+  slug: string
+): Promise<BlogPostItem | null> {
+  return unstable_cache(() => fetchPostBySlug(slug), ["blog-post", slug], {
+    revalidate: 3600,
+    tags: ["blog", `post-${slug}`],
+  })()
 }
 
 async function fetchAllPostSlugs(): Promise<string[]> {
@@ -459,7 +477,10 @@ async function fetchAdjacentPosts(currentSlug: string): Promise<{
       return { prev, next }
     }
   } catch (error) {
-    console.warn("[Blog Data Layer] Failed to fetch adjacent posts from DB:", error)
+    console.warn(
+      "[Blog Data Layer] Failed to fetch adjacent posts from DB:",
+      error
+    )
   }
 
   const index = fallbackPosts.findIndex((p) => p.slug === currentSlug)
@@ -468,8 +489,11 @@ async function fetchAdjacentPosts(currentSlug: string): Promise<{
   }
 
   return {
-    prev: index > 0 ? fallbackPosts[index - 1] ?? null : null,
-    next: index < fallbackPosts.length - 1 ? fallbackPosts[index + 1] ?? null : null,
+    prev: index > 0 ? (fallbackPosts[index - 1] ?? null) : null,
+    next:
+      index < fallbackPosts.length - 1
+        ? (fallbackPosts[index + 1] ?? null)
+        : null,
   }
 }
 
@@ -492,7 +516,9 @@ export async function getFeaturedPost(): Promise<BlogPostItem | null> {
   return allPosts.find((p) => p.featured) || allPosts[0] || null
 }
 
-export async function getFeaturedOrRecentPosts(limit = 3): Promise<BlogPostItem[]> {
+export async function getFeaturedOrRecentPosts(
+  limit = 3
+): Promise<BlogPostItem[]> {
   const { posts } = await getPublishedPosts({ limit })
   return posts
 }
@@ -510,7 +536,12 @@ async function fetchCategoriesWithCount(): Promise<CategoryWithCount[]> {
       .from(categories)
       .leftJoin(postCategories, eq(categories.id, postCategories.categoryId))
       .leftJoin(posts, eq(postCategories.postId, posts.id))
-      .groupBy(categories.id, categories.name, categories.slug, categories.description)
+      .groupBy(
+        categories.id,
+        categories.name,
+        categories.slug,
+        categories.description
+      )
       .orderBy(desc(sql`count(${postCategories.postId})`))
 
     if (rows.length > 0) {
@@ -567,7 +598,10 @@ async function fetchTagsWithCount(): Promise<TagWithCount[]> {
     // Graceful fallback
   }
 
-  const tagMap = new Map<string, { id: string; name: string; slug: string; count: number }>()
+  const tagMap = new Map<
+    string,
+    { id: string; name: string; slug: string; count: number }
+  >()
   for (const post of fallbackPosts) {
     for (const t of post.tags) {
       const existing = tagMap.get(t.slug)

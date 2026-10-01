@@ -1,7 +1,11 @@
 import { Container } from "@workspace/ui/components/layouts/container"
 import { getChangelogReleases, getChangelogStats } from "@/lib/queries"
 import { TimelineExplorer } from "@/components"
-import { SEO_CONFIG, getBaseUrl, createWebSiteJsonLd } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  createWebSiteJsonLd,
+} from "@workspace/ui/lib/seo"
 
 export const revalidate = 3600
 

@@ -151,7 +151,7 @@ export function CmsSidebar({
                       href={item.href}
                       onClick={() => isMobile && onClose?.()}
                       className={cn(
-                        "group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all focus:outline-hidden focus:ring-2 focus:ring-primary/20",
+                        "group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all focus:ring-2 focus:ring-primary/20 focus:outline-hidden",
                         isActive
                           ? "bg-foreground text-background shadow-xs"
                           : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
@@ -189,7 +189,7 @@ export function CmsSidebar({
         </nav>
       </div>
 
-      <div className="border-t border-border/80 p-3 space-y-2">
+      <div className="space-y-2 border-t border-border/80 p-3">
         <div className="flex items-center gap-2.5 rounded-lg bg-muted/40 p-2">
           <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-[11px] font-bold text-background">
             RR
@@ -207,7 +207,7 @@ export function CmsSidebar({
         <form action={logoutAdmin}>
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-border/70 bg-card py-2 text-xs font-medium text-destructive transition-all hover:bg-destructive/10 hover:border-destructive/30 focus:outline-hidden focus:ring-2 focus:ring-destructive/20"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-border/70 bg-card py-2 text-xs font-medium text-destructive transition-all hover:border-destructive/30 hover:bg-destructive/10 focus:ring-2 focus:ring-destructive/20 focus:outline-hidden"
           >
             <LogOut className="size-3.5" />
             <span>Keluar (Logout)</span>
@@ -228,10 +228,10 @@ export function CmsSidebar({
         className="fixed inset-0 z-50 md:hidden"
       >
         <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+          className="fixed inset-0 animate-in bg-background/80 backdrop-blur-xs transition-opacity duration-200 fade-in"
           onClick={onClose}
         />
-        <div className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] border-r border-border/80 shadow-2xl animate-in slide-in-from-left duration-200">
+        <div className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] animate-in border-r border-border/80 shadow-2xl duration-200 slide-in-from-left">
           {content}
         </div>
       </div>

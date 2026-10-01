@@ -140,4 +140,3 @@ export async function listFiles(
 
   return (data || []) as StorageFileItem[]
 }
-
