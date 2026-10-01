@@ -10,7 +10,7 @@
       "main": true
     }
   },
-  "ignoreCommand": "npx turbo-ignore",
+  "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
   "headers": [
     {
       "source": "/(.*)",

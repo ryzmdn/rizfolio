@@ -7,9 +7,19 @@
   "git": {
     "deploymentEnabled": {
       "main": true
+    },
+    "skipUnaffectedProjects": {
+      "ignorePaths": [
+        ".github/**",
+        "**/*.md",
+        "**/*.test.ts",
+        "**/*.spec.ts",
+        "LICENSE",
+        "README.md"
+      ]
     }
   },
-  "ignoreCommand": "npx turbo-ignore",
+  "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
   "headers": [
     {
       "source": "/(.*)",
