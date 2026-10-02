@@ -7,12 +7,13 @@ import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { AppHeader } from "@/components/app-header"
 import { AppFooter } from "@/components/app-footer"
 
-import { SEO_CONFIG, getBaseUrl } from "@workspace/ui/lib/seo"
+import { SEO_CONFIG, getBaseUrl, THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo"
 
 const portfolioUrl = getBaseUrl("portfolio")
 
 export const metadata: Metadata = {
   metadataBase: new URL(portfolioUrl),
+  icons: THEMED_FAVICON_METADATA,
   title: {
     default: SEO_CONFIG.sites.portfolio.defaultTitle,
     template: SEO_CONFIG.sites.portfolio.titleTemplate,

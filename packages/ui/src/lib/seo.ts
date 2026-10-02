@@ -439,3 +439,164 @@ export function createProfilePageJsonLd({
     description: description || SEO_CONFIG.sites.linkbio.description,
   }
 }
+
+export interface PwaIconItem {
+  src: string
+  sizes?: string
+  type?: string
+  purpose?: "any" | "maskable" | "monochrome"
+}
+
+export const THEMED_FAVICON_METADATA: Metadata["icons"] = {
+  icon: [
+    {
+      url: "/logos/light/favicon-32x32.png",
+      sizes: "32x32",
+      type: "image/png",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      url: "/logos/light/favicon-16x16.png",
+      sizes: "16x16",
+      type: "image/png",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      url: "/logos/light/favicon.ico",
+      sizes: "any",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      url: "/logos/dark/favicon-32x32.png",
+      sizes: "32x32",
+      type: "image/png",
+      media: "(prefers-color-scheme: dark)",
+    },
+    {
+      url: "/logos/dark/favicon-16x16.png",
+      sizes: "16x16",
+      type: "image/png",
+      media: "(prefers-color-scheme: dark)",
+    },
+    {
+      url: "/logos/dark/favicon.ico",
+      sizes: "any",
+      media: "(prefers-color-scheme: dark)",
+    },
+  ],
+  shortcut: [
+    {
+      url: "/logos/light/favicon.ico",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      url: "/logos/dark/favicon.ico",
+      media: "(prefers-color-scheme: dark)",
+    },
+  ],
+  apple: [
+    {
+      url: "/logos/light/apple-touch-icon.png",
+      sizes: "180x180",
+      type: "image/png",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      url: "/logos/dark/apple-touch-icon.png",
+      sizes: "180x180",
+      type: "image/png",
+      media: "(prefers-color-scheme: dark)",
+    },
+  ],
+}
+
+export const PWA_ICONS: PwaIconItem[] = [
+  {
+    src: "/logos/dark/android-chrome-192x192.png",
+    sizes: "192x192",
+    type: "image/png",
+    purpose: "any",
+  },
+  {
+    src: "/logos/dark/android-chrome-192x192.png",
+    sizes: "192x192",
+    type: "image/png",
+    purpose: "maskable",
+  },
+  {
+    src: "/logos/dark/android-chrome-512x512.png",
+    sizes: "512x512",
+    type: "image/png",
+    purpose: "any",
+  },
+  {
+    src: "/logos/dark/android-chrome-512x512.png",
+    sizes: "512x512",
+    type: "image/png",
+    purpose: "maskable",
+  },
+  {
+    src: "/logos/dark/apple-touch-icon.png",
+    sizes: "180x180",
+    type: "image/png",
+  },
+  {
+    src: "/logos/dark/favicon-32x32.png",
+    sizes: "32x32",
+    type: "image/png",
+  },
+  {
+    src: "/logos/dark/favicon-16x16.png",
+    sizes: "16x16",
+    type: "image/png",
+  },
+  {
+    src: "/logos/dark/favicon.ico",
+    sizes: "any",
+    type: "image/x-icon",
+  },
+  {
+    src: "/logos/light/android-chrome-192x192.png",
+    sizes: "192x192",
+    type: "image/png",
+    purpose: "any",
+  },
+  {
+    src: "/logos/light/android-chrome-192x192.png",
+    sizes: "192x192",
+    type: "image/png",
+    purpose: "maskable",
+  },
+  {
+    src: "/logos/light/android-chrome-512x512.png",
+    sizes: "512x512",
+    type: "image/png",
+    purpose: "any",
+  },
+  {
+    src: "/logos/light/android-chrome-512x512.png",
+    sizes: "512x512",
+    type: "image/png",
+    purpose: "maskable",
+  },
+  {
+    src: "/logos/light/apple-touch-icon.png",
+    sizes: "180x180",
+    type: "image/png",
+  },
+  {
+    src: "/logos/light/favicon-32x32.png",
+    sizes: "32x32",
+    type: "image/png",
+  },
+  {
+    src: "/logos/light/favicon-16x16.png",
+    sizes: "16x16",
+    type: "image/png",
+  },
+  {
+    src: "/logos/light/favicon.ico",
+    sizes: "any",
+    type: "image/x-icon",
+  },
+]

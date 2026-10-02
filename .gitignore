@@ -36,6 +36,7 @@ coverage
 *.tsbuildinfo
 next-env.d.ts
 .cache
+.shared-assets-manifest.json
 
 logs
 *.log
