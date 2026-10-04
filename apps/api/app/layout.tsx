@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import "@workspace/ui/styles/globals.css";
-import { fontVariables } from "@workspace/ui/lib/fonts";
-import { cn } from "@workspace/ui/lib/utils";
-import { AppProvider } from "@workspace/ui/components/app-provider";
-import { THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo";
+import type { Metadata } from "next"
+import "@workspace/ui/styles/globals.css"
+import { fontVariables } from "@workspace/ui/lib/fonts"
+import { cn } from "@workspace/ui/lib/utils"
+import { AppProvider } from "@workspace/ui/components/app-provider"
+import { THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo"
 
 export const metadata: Metadata = {
   title: {
@@ -13,12 +13,12 @@ export const metadata: Metadata = {
   description:
     "High-performance, secure unified REST API and Developer Portal for the Rizfolio ecosystem with interactive testing console and OpenAPI 3.1 specifications.",
   icons: THEMED_FAVICON_METADATA,
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
@@ -28,11 +28,8 @@ export default function RootLayout({
           "min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary"
         )}
       >
-        <AppProvider disableCookieConsent>
-          {children}
-        </AppProvider>
+        <AppProvider disableCookieConsent>{children}</AppProvider>
       </body>
     </html>
-  );
+  )
 }
-

@@ -20,8 +20,14 @@ function constantTimeEqual(a: string, b: string): boolean {
   return crypto.timingSafeEqual(bufferA, bufferB)
 }
 
-export function verifyApiKey(providedKey: string | null | undefined): ApiKeyVerificationResult {
-  if (!providedKey || typeof providedKey !== "string" || providedKey.trim() === "") {
+export function verifyApiKey(
+  providedKey: string | null | undefined
+): ApiKeyVerificationResult {
+  if (
+    !providedKey ||
+    typeof providedKey !== "string" ||
+    providedKey.trim() === ""
+  ) {
     return { valid: false, scopes: [] }
   }
 
@@ -40,7 +46,10 @@ export function verifyApiKey(providedKey: string | null | undefined): ApiKeyVeri
 
   // Also check if provided key matches REVALIDATION_SECRET_TOKEN for ISR revalidation
   const revalidationToken = process.env.REVALIDATION_SECRET_TOKEN?.trim()
-  if (revalidationToken && constantTimeEqual(cleanProvidedKey, revalidationToken)) {
+  if (
+    revalidationToken &&
+    constantTimeEqual(cleanProvidedKey, revalidationToken)
+  ) {
     return {
       valid: true,
       name: "REVALIDATION_KEY",

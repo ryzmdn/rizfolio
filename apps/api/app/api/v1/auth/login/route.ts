@@ -32,10 +32,7 @@ export const POST = createApiHandler(
     let userRole = "OWNER"
 
     if (existingUser) {
-      if (
-        ownerEnvEmail &&
-        existingUser.email.toLowerCase() !== ownerEnvEmail
-      ) {
+      if (ownerEnvEmail && existingUser.email.toLowerCase() !== ownerEnvEmail) {
         throw new UnauthorizedError("Invalid email or password.")
       }
 

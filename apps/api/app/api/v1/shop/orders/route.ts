@@ -1,6 +1,11 @@
 import { db, desc, eq, count, inArray } from "@workspace/db"
 import { orders, orderItems, products, coupons } from "@workspace/db/schema"
-import { createApiHandler, apiCreated, apiPaginated, ValidationError } from "@/lib/api"
+import {
+  createApiHandler,
+  apiCreated,
+  apiPaginated,
+  ValidationError,
+} from "@/lib/api"
 import { createOrderSchema, paginationQuerySchema } from "@/lib/validations"
 
 export const dynamic = "force-dynamic"
@@ -47,7 +52,14 @@ export const POST = createApiHandler(
     rateLimitTier: "PUBLIC_MUTATION",
     schema: createOrderSchema,
     auditConfig: (created) => {
-      const ord = created as { orderNumber?: string; id?: string; totalAmount?: number; currency?: string } | undefined
+      const ord = created as
+        | {
+            orderNumber?: string
+            id?: string
+            totalAmount?: number
+            currency?: string
+          }
+        | undefined
       return {
         domain: "COMMERCE",
         actionType: "ORDER_CREATED",
@@ -68,7 +80,9 @@ export const POST = createApiHandler(
       .where(inArray(products.id, productIds))
 
     if (dbProducts.length !== productIds.length) {
-      throw new ValidationError("One or more selected products are invalid or no longer available.")
+      throw new ValidationError(
+        "One or more selected products are invalid or no longer available."
+      )
     }
 
     let subtotal = 0
@@ -95,7 +109,9 @@ export const POST = createApiHandler(
       if (coupon && coupon.isActive) {
         if (!coupon.expiresAt || new Date(coupon.expiresAt) > new Date()) {
           if (!coupon.minSpend || subtotal >= coupon.minSpend) {
-            discountAmount = Math.round((subtotal * coupon.discountPercent) / 100)
+            discountAmount = Math.round(
+              (subtotal * coupon.discountPercent) / 100
+            )
           }
         }
       }

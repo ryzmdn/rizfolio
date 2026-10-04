@@ -46,7 +46,10 @@ export async function POST(request: Request) {
   const signatureHeader = request.headers.get("stripe-signature")
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
-  if (webhookSecret && !verifyStripeSignature(rawBody, signatureHeader, webhookSecret)) {
+  if (
+    webhookSecret &&
+    !verifyStripeSignature(rawBody, signatureHeader, webhookSecret)
+  ) {
     return NextResponse.json(
       { error: "Invalid Stripe signature" },
       { status: 400 }

@@ -6,7 +6,11 @@ import { AppProvider } from "@workspace/ui/components/app-provider"
 import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { BlogHeader } from "@/components/blog-header"
 import { BlogFooter } from "@/components/blog-footer"
-import { SEO_CONFIG, getBaseUrl, THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  THEMED_FAVICON_METADATA,
+} from "@workspace/ui/lib/seo"
 
 const baseUrl = getBaseUrl("blog")
 

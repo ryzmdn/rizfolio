@@ -73,8 +73,19 @@ export interface RouteSecurityOptions {
   requireAuth?: boolean
   requiredRole?: UserRole
   requiredScopes?: string[]
-  rateLimitTier?: "PUBLIC_READ" | "PUBLIC_MUTATION" | "AUTH_SENSITIVE" | "ADMIN" | "NONE"
-  auditDomain?: "COMMERCE" | "CONTENT" | "PORTFOLIO" | "CODE_DOCS" | "AUTH_SECURITY" | "SYSTEM"
+  rateLimitTier?:
+    | "PUBLIC_READ"
+    | "PUBLIC_MUTATION"
+    | "AUTH_SENSITIVE"
+    | "ADMIN"
+    | "NONE"
+  auditDomain?:
+    | "COMMERCE"
+    | "CONTENT"
+    | "PORTFOLIO"
+    | "CODE_DOCS"
+    | "AUTH_SECURITY"
+    | "SYSTEM"
   auditAction?: string
   entityType?: string
 }

@@ -1,8 +1,5 @@
 import type { NextRequest } from "next/server"
-import {
-  verifySessionToken,
-  SESSION_COOKIE_NAME,
-} from "@workspace/auth"
+import { verifySessionToken, SESSION_COOKIE_NAME } from "@workspace/auth"
 import { verifyApiKey } from "./api-key"
 import { extractClientIp } from "./rate-limit"
 import { UnauthorizedError, ForbiddenError } from "../api/errors"

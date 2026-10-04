@@ -43,11 +43,15 @@ export const GET = createApiHandler(
     }
 
     if (query.startDate) {
-      conditions.push(gte(masterTransactions.createdAt, new Date(query.startDate)))
+      conditions.push(
+        gte(masterTransactions.createdAt, new Date(query.startDate))
+      )
     }
 
     if (query.endDate) {
-      conditions.push(lte(masterTransactions.createdAt, new Date(query.endDate)))
+      conditions.push(
+        lte(masterTransactions.createdAt, new Date(query.endDate))
+      )
     }
 
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined

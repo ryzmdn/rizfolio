@@ -7,7 +7,11 @@ import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { AppHeader } from "@/components/app-header"
 import { AppFooter } from "@/components/app-footer"
 
-import { SEO_CONFIG, getBaseUrl, THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  THEMED_FAVICON_METADATA,
+} from "@workspace/ui/lib/seo"
 
 const portfolioUrl = getBaseUrl("portfolio")
 

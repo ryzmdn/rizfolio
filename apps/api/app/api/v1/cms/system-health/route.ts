@@ -59,11 +59,11 @@ export const GET = createApiHandler(
       databaseConfigured: Boolean(process.env.DATABASE_URL),
       supabaseConfigured: Boolean(
         process.env.NEXT_PUBLIC_SUPABASE_URL &&
-          process.env.SUPABASE_SERVICE_ROLE_KEY
+        process.env.SUPABASE_SERVICE_ROLE_KEY
       ),
       authSecretConfigured: Boolean(
         process.env.CMS_SESSION_SECRET &&
-          process.env.CMS_SESSION_SECRET.length >= 32
+        process.env.CMS_SESSION_SECRET.length >= 32
       ),
       revalidationSecretConfigured: Boolean(
         process.env.REVALIDATION_SECRET_TOKEN

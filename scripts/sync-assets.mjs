@@ -36,7 +36,9 @@ function getAllFiles(dir, baseDir = dir) {
       files = files.concat(getAllFiles(fullPath, baseDir))
     } else if (entry.isFile()) {
       if (entry.name !== MANIFEST_NAME && !entry.name.endsWith(".tmp")) {
-        const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, "/")
+        const relativePath = path
+          .relative(baseDir, fullPath)
+          .replace(/\\/g, "/")
         files.push(relativePath)
       }
     }
@@ -118,7 +120,11 @@ export function syncSharedAssets(options = {}) {
       }
     }
 
-    fs.writeFileSync(manifestPath, JSON.stringify(currentFiles, null, 2), "utf-8")
+    fs.writeFileSync(
+      manifestPath,
+      JSON.stringify(currentFiles, null, 2),
+      "utf-8"
+    )
   }
 
   if (!silent) {
@@ -135,14 +141,18 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   syncSharedAssets()
 
   if (isWatch) {
-    console.log(`[assets-sync] Watching for asset changes in ${path.relative(rootDir, sharedPublicDir)}...`)
+    console.log(
+      `[assets-sync] Watching for asset changes in ${path.relative(rootDir, sharedPublicDir)}...`
+    )
     let debounceTimer = null
 
     fs.watch(sharedPublicDir, { recursive: true }, (eventType, filename) => {
       if (filename && filename.includes(MANIFEST_NAME)) return
       clearTimeout(debounceTimer)
       debounceTimer = setTimeout(() => {
-        console.log(`[assets-sync] File change detected (${filename || "unknown"}). Syncing...`)
+        console.log(
+          `[assets-sync] File change detected (${filename || "unknown"}). Syncing...`
+        )
         syncSharedAssets({ silent: false })
       }, 100)
     })

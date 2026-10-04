@@ -19,7 +19,10 @@ export const slugParamSchema = z.object({
     .string()
     .trim()
     .min(1, "Slug cannot be empty")
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase alphanumeric with hyphens"),
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must be lowercase alphanumeric with hyphens"
+    ),
 })
 
 export const dateRangeQuerySchema = z.object({

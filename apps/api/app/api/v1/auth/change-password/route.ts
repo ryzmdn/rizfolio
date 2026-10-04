@@ -1,7 +1,12 @@
 import { db, eq } from "@workspace/db"
 import { users } from "@workspace/db/schema"
 import { verifyPassword, hashPassword } from "@workspace/auth"
-import { createApiHandler, apiSuccess, UnauthorizedError, NotFoundError } from "@/lib/api"
+import {
+  createApiHandler,
+  apiSuccess,
+  UnauthorizedError,
+  NotFoundError,
+} from "@/lib/api"
 import { changePasswordSchema } from "@/lib/validations"
 
 export const dynamic = "force-dynamic"

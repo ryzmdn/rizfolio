@@ -9,7 +9,11 @@ import { ShopHeader } from "../components/shop-header"
 import { ShopFooter } from "../components/shop-footer"
 import "@workspace/ui/styles/globals.css"
 
-import { SEO_CONFIG, getBaseUrl, THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  THEMED_FAVICON_METADATA,
+} from "@workspace/ui/lib/seo"
 
 const baseUrl = getBaseUrl("shop")
 

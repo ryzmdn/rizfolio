@@ -36,7 +36,9 @@ export const GET = createApiHandler(
       .limit(1)
 
     if (!user) {
-      throw new NotFoundError("Authenticated user record not found in database.")
+      throw new NotFoundError(
+        "Authenticated user record not found in database."
+      )
     }
 
     return apiSuccess({

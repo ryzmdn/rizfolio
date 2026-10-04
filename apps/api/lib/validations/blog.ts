@@ -13,7 +13,10 @@ export const createPostSchema = z.object({
     .trim()
     .min(1, "Slug is required")
     .max(255)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase alphanumeric with hyphens"),
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must be lowercase alphanumeric with hyphens"
+    ),
   title: z.string().trim().min(1, "Title is required").max(255),
   excerpt: z.string().trim().min(1, "Excerpt is required"),
   contentMd: z.string().trim().min(1, "Content markdown is required"),
@@ -36,7 +39,10 @@ export const createCategorySchema = z.object({
     .trim()
     .min(1, "Slug is required")
     .max(100)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase alphanumeric with hyphens"),
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must be lowercase alphanumeric with hyphens"
+    ),
   description: z.string().trim().optional().nullable(),
 })
 
@@ -49,13 +55,18 @@ export const createTagSchema = z.object({
     .trim()
     .min(1, "Slug is required")
     .max(100)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase alphanumeric with hyphens"),
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must be lowercase alphanumeric with hyphens"
+    ),
 })
 
 export const updateTagSchema = createTagSchema.partial()
 
 export const postReactionSchema = z.object({
-  reactionType: z.enum(["LIKE", "LOVE", "CLAP", "IDEA", "FIRE"]).default("LIKE"),
+  reactionType: z
+    .enum(["LIKE", "LOVE", "CLAP", "IDEA", "FIRE"])
+    .default("LIKE"),
 })
 
 export const newsletterSubscribeSchema = z.object({

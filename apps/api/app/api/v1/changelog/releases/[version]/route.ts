@@ -21,7 +21,10 @@ export const GET = createApiHandler(
       .from(changelogs)
       .where(
         isUuid
-          ? or(eq(changelogs.id, versionOrId), eq(changelogs.version, versionOrId))
+          ? or(
+              eq(changelogs.id, versionOrId),
+              eq(changelogs.version, versionOrId)
+            )
           : eq(changelogs.version, versionOrId)
       )
       .limit(1)
@@ -70,7 +73,10 @@ export const PUT = createApiHandler(
       .from(changelogs)
       .where(
         isUuid
-          ? or(eq(changelogs.id, versionOrId), eq(changelogs.version, versionOrId))
+          ? or(
+              eq(changelogs.id, versionOrId),
+              eq(changelogs.version, versionOrId)
+            )
           : eq(changelogs.version, versionOrId)
       )
       .limit(1)
@@ -130,7 +136,10 @@ export const DELETE = createApiHandler(
       .delete(changelogs)
       .where(
         isUuid
-          ? or(eq(changelogs.id, versionOrId), eq(changelogs.version, versionOrId))
+          ? or(
+              eq(changelogs.id, versionOrId),
+              eq(changelogs.version, versionOrId)
+            )
           : eq(changelogs.version, versionOrId)
       )
       .returning()
@@ -139,6 +148,10 @@ export const DELETE = createApiHandler(
       throw new NotFoundError(`Changelog release '${versionOrId}' not found.`)
     }
 
-    return apiSuccess({ deleted: true, id: deleted.id, version: deleted.version })
+    return apiSuccess({
+      deleted: true,
+      id: deleted.id,
+      version: deleted.version,
+    })
   }
 )

@@ -5,7 +5,11 @@ import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { ChangelogHeader, ChangelogFooter, CommandSearch } from "../components"
-import { SEO_CONFIG, getBaseUrl, THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  THEMED_FAVICON_METADATA,
+} from "@workspace/ui/lib/seo"
 
 const baseUrl = getBaseUrl("changelog")
 

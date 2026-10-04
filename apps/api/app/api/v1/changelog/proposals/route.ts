@@ -14,7 +14,10 @@ export const GET = createApiHandler(
     const list = await db
       .select()
       .from(roadmapProposals)
-      .orderBy(desc(roadmapProposals.upvotesCount), desc(roadmapProposals.createdAt))
+      .orderBy(
+        desc(roadmapProposals.upvotesCount),
+        desc(roadmapProposals.createdAt)
+      )
 
     return apiSuccess(list)
   }

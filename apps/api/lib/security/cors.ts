@@ -35,7 +35,9 @@ export function getAllowedOrigins(): string[] {
     .filter((url): url is string => Boolean(url && url.trim().length > 0))
     .map((url) => url.replace(/\/$/, "").trim())
 
-  const configured = Array.from(new Set([...DEFAULT_ALLOWED_ORIGINS, ...envOrigins]))
+  const configured = Array.from(
+    new Set([...DEFAULT_ALLOWED_ORIGINS, ...envOrigins])
+  )
   return configured
 }
 
@@ -56,10 +58,13 @@ export function isAllowedOrigin(origin: string | null | undefined): boolean {
   return allowedOrigins.includes(normalized)
 }
 
-export function getCorsHeaders(request: NextRequest | Request): Record<string, string> {
+export function getCorsHeaders(
+  request: NextRequest | Request
+): Record<string, string> {
   const origin = request.headers.get("origin")
   const headers: Record<string, string> = {
-    "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD",
+    "Access-Control-Allow-Methods":
+      "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD",
     "Access-Control-Allow-Headers":
       "Authorization, X-API-Key, Content-Type, Accept, X-Requested-With, X-Request-Id, X-CSRF-Token, X-Api-Version",
     "Access-Control-Allow-Credentials": "true",
@@ -70,7 +75,8 @@ export function getCorsHeaders(request: NextRequest | Request): Record<string, s
   if (origin && isAllowedOrigin(origin)) {
     headers["Access-Control-Allow-Origin"] = origin
   } else if (!origin) {
-    headers["Access-Control-Allow-Origin"] = DEFAULT_ALLOWED_ORIGINS[0] ?? "https://ryzmdn.me"
+    headers["Access-Control-Allow-Origin"] =
+      DEFAULT_ALLOWED_ORIGINS[0] ?? "https://ryzmdn.me"
   }
 
   return headers

@@ -170,7 +170,8 @@ export function applyThemeFavicons(theme: "dark" | "light") {
   if (typeof document === "undefined") return
 
   const folder = theme === "dark" ? "dark" : "light"
-  const currentAttr = document.documentElement.getAttribute("data-theme-favicon")
+  const currentAttr =
+    document.documentElement.getAttribute("data-theme-favicon")
   if (currentAttr === folder) return
 
   const iconSpecs = [
@@ -218,8 +219,9 @@ export function applyThemeFavicons(theme: "dark" | "light") {
     document.head.appendChild(link)
   })
 
-  let themeColorMeta =
-    document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
+  let themeColorMeta = document.querySelector<HTMLMetaElement>(
+    'meta[name="theme-color"]'
+  )
   if (!themeColorMeta) {
     themeColorMeta = document.createElement("meta")
     themeColorMeta.name = "theme-color"

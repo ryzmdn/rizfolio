@@ -7,7 +7,11 @@ import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { DocsHeader } from "../components/docs-header"
 import { DocsFooter } from "../components/docs-footer"
 import { CommandSearch } from "../components/command-search"
-import { SEO_CONFIG, getBaseUrl, THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  THEMED_FAVICON_METADATA,
+} from "@workspace/ui/lib/seo"
 
 const baseUrl = getBaseUrl("docs")
 

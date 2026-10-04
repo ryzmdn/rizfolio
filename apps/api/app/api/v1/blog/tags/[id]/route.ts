@@ -80,10 +80,7 @@ export const DELETE = createApiHandler(
   },
   async (_, { params }) => {
     const id = String(params.id)
-    const [deleted] = await db
-      .delete(tags)
-      .where(eq(tags.id, id))
-      .returning()
+    const [deleted] = await db.delete(tags).where(eq(tags.id, id)).returning()
 
     if (!deleted) {
       throw new NotFoundError(`Tag with ID '${id}' not found.`)

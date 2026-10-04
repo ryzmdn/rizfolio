@@ -1,12 +1,21 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import type { ZodSchema } from "zod"
-import { getCorsHeaders, isAllowedOrigin, handleCorsPreflight } from "../security/cors"
+import {
+  getCorsHeaders,
+  isAllowedOrigin,
+  handleCorsPreflight,
+} from "../security/cors"
 import { checkRateLimit } from "../security/rate-limit"
 import { assertSecurity } from "../security/guard"
 import { evaluateHoneypot } from "../security/honeypot"
 import { sanitizeObject } from "../security/sanitize"
-import { createErrorResponse, RateLimitError, ValidationError, ForbiddenError } from "./errors"
+import {
+  createErrorResponse,
+  RateLimitError,
+  ValidationError,
+  ForbiddenError,
+} from "./errors"
 import { logMasterTransaction, MasterAuditParams } from "./audit"
 import type {
   RequestSecurityContext,
@@ -14,7 +23,9 @@ import type {
   RouteHandlerContext,
 } from "./types"
 
-export interface ApiHandlerConfig<TBody = unknown> extends RouteSecurityOptions {
+export interface ApiHandlerConfig<
+  TBody = unknown,
+> extends RouteSecurityOptions {
   schema?: ZodSchema<TBody>
   checkHoneypot?: boolean
   auditConfig?: (
@@ -55,7 +66,9 @@ export function createApiHandler<TBody = unknown, TResponse = unknown>(
     const origin = request.headers.get("origin")
     if (origin && !isAllowedOrigin(origin)) {
       return createErrorResponse(
-        new ForbiddenError("Cross-origin request blocked by CORS security policy."),
+        new ForbiddenError(
+          "Cross-origin request blocked by CORS security policy."
+        ),
         traceId,
         corsHeaders
       )
@@ -96,7 +109,9 @@ export function createApiHandler<TBody = unknown, TResponse = unknown>(
             if (config.checkHoneypot) {
               const honeypot = evaluateHoneypot(rawJson)
               if (honeypot.isSpam) {
-                throw new ValidationError("Spam verification triggered. Submission rejected.")
+                throw new ValidationError(
+                  "Spam verification triggered. Submission rejected."
+                )
               }
             }
 
@@ -109,7 +124,9 @@ export function createApiHandler<TBody = unknown, TResponse = unknown>(
             }
           } catch (error: unknown) {
             if (error instanceof SyntaxError) {
-              throw new ValidationError("Malformed JSON payload in request body.")
+              throw new ValidationError(
+                "Malformed JSON payload in request body."
+              )
             }
             throw error
           }

@@ -12,7 +12,10 @@ export interface RateLimitConfig {
   windowMs: number
 }
 
-export const RATE_LIMIT_TIERS: Record<Exclude<RateLimitTier, "NONE">, RateLimitConfig> = {
+export const RATE_LIMIT_TIERS: Record<
+  Exclude<RateLimitTier, "NONE">,
+  RateLimitConfig
+> = {
   PUBLIC_READ: {
     maxAttempts: 120,
     windowMs: 60 * 1000, // 120 requests per minute

@@ -12,7 +12,10 @@ export const createProductSchema = z.object({
     .trim()
     .min(1, "Slug is required")
     .max(255)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase alphanumeric with hyphens"),
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must be lowercase alphanumeric with hyphens"
+    ),
   title: z.string().trim().min(1, "Title is required").max(255),
   description: z.string().trim().min(1, "Description is required"),
   price: z.coerce.number().int().min(0, "Price must be non-negative"),
@@ -54,7 +57,12 @@ export const updateOrderStatusSchema = z.object({
 })
 
 export const validateCouponSchema = z.object({
-  code: z.string().trim().min(1, "Coupon code is required").max(50).toUpperCase(),
+  code: z
+    .string()
+    .trim()
+    .min(1, "Coupon code is required")
+    .max(50)
+    .toUpperCase(),
   subtotal: z.coerce.number().int().min(0),
 })
 

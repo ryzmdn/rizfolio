@@ -12,7 +12,10 @@ export const GET = createApiHandler(
     rateLimitTier: "PUBLIC_READ",
   },
   async () => {
-    const list = await db.select().from(coupons).orderBy(desc(coupons.createdAt))
+    const list = await db
+      .select()
+      .from(coupons)
+      .orderBy(desc(coupons.createdAt))
     return apiSuccess(list)
   }
 )

@@ -1,5 +1,10 @@
-const HONEYPOT_FIELDS = ["honeypot", "_hp_website", "_hp_email", "_hp_phone", "company_website_url"]
-
+const HONEYPOT_FIELDS = [
+  "honeypot",
+  "_hp_website",
+  "_hp_email",
+  "_hp_phone",
+  "company_website_url",
+]
 
 export interface HoneypotCheckResult {
   isSpam: boolean
@@ -39,7 +44,9 @@ export function evaluateHoneypot(data: unknown): HoneypotCheckResult {
   return { isSpam: false }
 }
 
-export function sanitizeHoneypotFields<T extends Record<string, unknown>>(data: T): Partial<T> {
+export function sanitizeHoneypotFields<T extends Record<string, unknown>>(
+  data: T
+): Partial<T> {
   const result: Record<string, unknown> = { ...data }
   for (const field of HONEYPOT_FIELDS) {
     delete result[field]

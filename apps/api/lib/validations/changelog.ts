@@ -20,7 +20,9 @@ export const updateChangelogSchema = createChangelogSchema.partial()
 export const createRoadmapItemSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(255),
   description: z.string().trim().min(1, "Description is required"),
-  stage: z.enum(["PLANNED", "IN_PROGRESS", "COMPLETED", "CANCELLED"]).default("PLANNED"),
+  stage: z
+    .enum(["PLANNED", "IN_PROGRESS", "COMPLETED", "CANCELLED"])
+    .default("PLANNED"),
   quarter: z.string().trim().max(50).default("Q4 2026"),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]).default("MEDIUM"),
   scope: z.array(z.string().trim()).default([]),
@@ -35,10 +37,22 @@ export const createRoadmapProposalSchema = z.object({
   scope: z.string().trim().max(100).default("monorepo"),
   rationale: z.string().trim().min(1, "Rationale is required"),
   authorName: z.string().trim().max(255).optional().nullable(),
-  authorEmail: z.string().trim().email().optional().nullable().or(z.literal("")),
+  authorEmail: z
+    .string()
+    .trim()
+    .email()
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   _hp_website: z.string().optional(),
 })
 
 export const updateRoadmapProposalStatusSchema = z.object({
-  status: z.enum(["SUBMITTED", "UNDER_REVIEW", "ACCEPTED", "DECLINED", "SHIPPED"]),
+  status: z.enum([
+    "SUBMITTED",
+    "UNDER_REVIEW",
+    "ACCEPTED",
+    "DECLINED",
+    "SHIPPED",
+  ]),
 })

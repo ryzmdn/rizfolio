@@ -1,6 +1,11 @@
 import { db, eq } from "@workspace/db"
 import { coupons } from "@workspace/db/schema"
-import { createApiHandler, apiSuccess, ValidationError, NotFoundError } from "@/lib/api"
+import {
+  createApiHandler,
+  apiSuccess,
+  ValidationError,
+  NotFoundError,
+} from "@/lib/api"
 import { validateCouponSchema } from "@/lib/validations"
 
 export const dynamic = "force-dynamic"
@@ -32,7 +37,9 @@ export const POST = createApiHandler(
     }
 
     if (coupon.maxUses && coupon.usedCount >= coupon.maxUses) {
-      throw new ValidationError("This coupon has reached its maximum usage limit.")
+      throw new ValidationError(
+        "This coupon has reached its maximum usage limit."
+      )
     }
 
     if (coupon.minSpend && body.subtotal < coupon.minSpend) {

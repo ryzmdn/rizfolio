@@ -1,5 +1,10 @@
 import { revalidatePath, revalidateTag } from "next/cache"
-import { createApiHandler, apiSuccess, UnauthorizedError, ValidationError } from "@/lib/api"
+import {
+  createApiHandler,
+  apiSuccess,
+  UnauthorizedError,
+  ValidationError,
+} from "@/lib/api"
 import { revalidateRequestSchema } from "@/lib/validations"
 
 export const dynamic = "force-dynamic"
@@ -14,11 +19,15 @@ export const POST = createApiHandler(
       process.env.REVALIDATION_SECRET_TOKEN || process.env.API_MASTER_KEY
 
     if (!validSecret || body.secret !== validSecret) {
-      throw new UnauthorizedError("Invalid or missing revalidation secret token.")
+      throw new UnauthorizedError(
+        "Invalid or missing revalidation secret token."
+      )
     }
 
     if (!body.path && !body.tag) {
-      throw new ValidationError("Either 'path' or 'tag' must be specified for revalidation.")
+      throw new ValidationError(
+        "Either 'path' or 'tag' must be specified for revalidation."
+      )
     }
 
     const revalidated: { path?: string; tag?: string } = {}
@@ -29,7 +38,10 @@ export const POST = createApiHandler(
     }
 
     if (body.tag) {
-      (revalidateTag as (tag: string, profile?: string) => void)(body.tag, "max-age=0")
+      ;(revalidateTag as (tag: string, profile?: string) => void)(
+        body.tag,
+        "max-age=0"
+      )
       revalidated.tag = body.tag
     }
 

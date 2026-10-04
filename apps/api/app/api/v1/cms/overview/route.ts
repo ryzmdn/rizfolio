@@ -21,7 +21,9 @@ export const GET = createApiHandler(
     rateLimitTier: "PUBLIC_READ",
   },
   async () => {
-    const safeCount = async (fn: () => Promise<Array<{ val: number | string | null }>>): Promise<number> => {
+    const safeCount = async (
+      fn: () => Promise<Array<{ val: number | string | null }>>
+    ): Promise<number> => {
       try {
         const res = await fn()
         return Number(res?.[0]?.val ?? 0)
@@ -30,29 +32,55 @@ export const GET = createApiHandler(
       }
     }
 
-    const totalPosts = await safeCount(() => db.select({ val: count() }).from(posts))
+    const totalPosts = await safeCount(() =>
+      db.select({ val: count() }).from(posts)
+    )
     const publishedPosts = await safeCount(() =>
-      db.select({ val: count() }).from(posts).where(eq(posts.status, "PUBLISHED"))
+      db
+        .select({ val: count() })
+        .from(posts)
+        .where(eq(posts.status, "PUBLISHED"))
     )
 
-    const totalInquiries = await safeCount(() => db.select({ val: count() }).from(inquiries))
+    const totalInquiries = await safeCount(() =>
+      db.select({ val: count() }).from(inquiries)
+    )
     const newInquiries = await safeCount(() =>
-      db.select({ val: count() }).from(inquiries).where(eq(inquiries.status, "NEW"))
+      db
+        .select({ val: count() })
+        .from(inquiries)
+        .where(eq(inquiries.status, "NEW"))
     )
 
-    const totalProducts = await safeCount(() => db.select({ val: count() }).from(products))
-    const totalOrders = await safeCount(() => db.select({ val: count() }).from(orders))
+    const totalProducts = await safeCount(() =>
+      db.select({ val: count() }).from(products)
+    )
+    const totalOrders = await safeCount(() =>
+      db.select({ val: count() }).from(orders)
+    )
     const totalRevenue = await safeCount(() =>
-      db.select({ val: sum(orders.totalAmount) }).from(orders).where(eq(orders.status, "PAID"))
+      db
+        .select({ val: sum(orders.totalAmount) })
+        .from(orders)
+        .where(eq(orders.status, "PAID"))
     )
 
-    const totalRepos = await safeCount(() => db.select({ val: count() }).from(repositories))
-    const totalChangelogs = await safeCount(() => db.select({ val: count() }).from(changelogs))
+    const totalRepos = await safeCount(() =>
+      db.select({ val: count() }).from(repositories)
+    )
+    const totalChangelogs = await safeCount(() =>
+      db.select({ val: count() }).from(changelogs)
+    )
 
     const totalSubscribers = await safeCount(() =>
-      db.select({ val: count() }).from(newsletterSubscribers).where(eq(newsletterSubscribers.status, "ACTIVE"))
+      db
+        .select({ val: count() })
+        .from(newsletterSubscribers)
+        .where(eq(newsletterSubscribers.status, "ACTIVE"))
     )
-    const totalBioLinks = await safeCount(() => db.select({ val: count() }).from(bioLinks))
+    const totalBioLinks = await safeCount(() =>
+      db.select({ val: count() }).from(bioLinks)
+    )
 
     const recentActivity = await db
       .select()

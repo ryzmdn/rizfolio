@@ -10,7 +10,10 @@ export const GET = createApiHandler(
     rateLimitTier: "PUBLIC_READ",
   },
   async () => {
-    const list = await db.select().from(categories).orderBy(asc(categories.name))
+    const list = await db
+      .select()
+      .from(categories)
+      .orderBy(asc(categories.name))
     return apiSuccess(list)
   }
 )

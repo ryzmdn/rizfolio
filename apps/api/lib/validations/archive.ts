@@ -13,7 +13,10 @@ export const createRepositorySchema = z.object({
     .trim()
     .min(1, "Slug is required")
     .max(255)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase alphanumeric with hyphens"),
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must be lowercase alphanumeric with hyphens"
+    ),
   name: z.string().trim().min(1, "Name is required").max(255),
   description: z.string().trim().optional().nullable(),
   category: z.string().trim().max(50).default("EXPERIMENT"),

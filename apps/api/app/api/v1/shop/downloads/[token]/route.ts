@@ -1,6 +1,16 @@
 import { db, eq } from "@workspace/db"
-import { orderItems, orders, products, productFiles } from "@workspace/db/schema"
-import { createApiHandler, apiSuccess, NotFoundError, ForbiddenError } from "@/lib/api"
+import {
+  orderItems,
+  orders,
+  products,
+  productFiles,
+} from "@workspace/db/schema"
+import {
+  createApiHandler,
+  apiSuccess,
+  NotFoundError,
+  ForbiddenError,
+} from "@/lib/api"
 
 export const dynamic = "force-dynamic"
 
@@ -28,7 +38,9 @@ export const GET = createApiHandler(
       .limit(1)
 
     if (!item) {
-      throw new NotFoundError("Digital download link is invalid or does not exist.")
+      throw new NotFoundError(
+        "Digital download link is invalid or does not exist."
+      )
     }
 
     if (item.tokenExpiresAt && new Date(item.tokenExpiresAt) < new Date()) {

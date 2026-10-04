@@ -5,7 +5,13 @@ export const updateProfileSchema = z.object({
   headline: z.string().trim().min(1, "Headline is required").max(255),
   bio: z.string().trim().min(1, "Bio is required"),
   location: z.string().trim().max(255).optional().nullable(),
-  resumeUrl: z.string().trim().url("Invalid resume URL").optional().nullable().or(z.literal("")),
+  resumeUrl: z
+    .string()
+    .trim()
+    .url("Invalid resume URL")
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   status: z.string().trim().max(50).default("available"),
   socialLinks: z
     .record(z.string(), z.string().url().or(z.literal("")).or(z.string()))
@@ -48,7 +54,13 @@ export const createCertificationSchema = z.object({
   issuer: z.string().trim().min(1, "Issuer is required").max(255),
   issueDate: z.string().trim().min(1, "Issue date is required").max(50),
   expiryDate: z.string().trim().max(50).optional().nullable(),
-  credentialUrl: z.string().trim().url().optional().nullable().or(z.literal("")),
+  credentialUrl: z
+    .string()
+    .trim()
+    .url()
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   credentialId: z.string().trim().max(255).optional().nullable(),
   badgeUrl: z.string().trim().optional().nullable(),
   displayOrder: z.coerce.number().int().default(0),
@@ -63,7 +75,10 @@ export const createServiceSchema = z.object({
     .trim()
     .min(1, "Slug is required")
     .max(255)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase alphanumeric with hyphens"),
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must be lowercase alphanumeric with hyphens"
+    ),
   summary: z.string().trim().min(1, "Summary is required"),
   description: z.string().trim().min(1, "Description is required"),
   deliverables: z.array(z.string().trim()).default([]),
@@ -80,7 +95,10 @@ export const createCaseStudySchema = z.object({
     .trim()
     .min(1, "Slug is required")
     .max(255)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase alphanumeric with hyphens"),
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Slug must be lowercase alphanumeric with hyphens"
+    ),
   title: z.string().trim().min(1, "Title is required").max(255),
   clientName: z.string().trim().max(255).optional().nullable(),
   summary: z.string().trim().min(1, "Summary is required"),
@@ -114,7 +132,13 @@ export const createInquirySchema = z.object({
   subject: z.string().trim().max(255).optional().nullable(),
   message: z.string().trim().min(1, "Message is required"),
   projectScope: z
-    .enum(["FULL_TIME", "CONTRACT", "CONSULTING", "ADVISORY", "PROJECT_INQUIRY"])
+    .enum([
+      "FULL_TIME",
+      "CONTRACT",
+      "CONSULTING",
+      "ADVISORY",
+      "PROJECT_INQUIRY",
+    ])
     .default("PROJECT_INQUIRY"),
   budgetRange: z.string().trim().max(100).optional().nullable(),
   // Honeypot fields to detect bots

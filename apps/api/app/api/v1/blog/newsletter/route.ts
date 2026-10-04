@@ -1,6 +1,12 @@
 import { db, desc, eq, count } from "@workspace/db"
 import { newsletterSubscribers } from "@workspace/db/schema"
-import { createApiHandler, apiSuccess, apiCreated, apiPaginated, NotFoundError } from "@/lib/api"
+import {
+  createApiHandler,
+  apiSuccess,
+  apiCreated,
+  apiPaginated,
+  NotFoundError,
+} from "@/lib/api"
 import {
   newsletterSubscribeSchema,
   newsletterUnsubscribeSchema,
