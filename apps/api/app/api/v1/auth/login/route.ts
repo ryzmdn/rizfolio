@@ -17,7 +17,7 @@ export const POST = createApiHandler(
     rateLimitTier: "AUTH_SENSITIVE",
     schema: loginSchema,
   },
-  async (_, { body, security }) => {
+  async (_, { body }) => {
     const normalizedEmail = body.email.toLowerCase().trim()
     const ownerEnvEmail = process.env.CMS_OWNER_EMAIL?.toLowerCase().trim()
     const ownerEnvPassword = process.env.CMS_OWNER_PASSWORD

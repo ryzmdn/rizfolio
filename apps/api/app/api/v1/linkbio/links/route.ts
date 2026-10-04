@@ -32,7 +32,7 @@ export const POST = createApiHandler(
       domain: "SYSTEM",
       actionType: "BIO_LINK_CREATED",
       entityType: "bio_links",
-      entityId: (created as any)?.id || "new",
+      entityId: (created as { id?: string })?.id || "new",
       status: "COMPLETED",
     }),
   },

@@ -50,7 +50,7 @@ export const POST = createApiHandler(
       domain: "CODE_DOCS",
       actionType: "RELEASE_PUBLISHED",
       entityType: "repo_releases",
-      entityId: (created as any)?.id || "release",
+      entityId: (created as { id?: string })?.id || "release",
       repoId: String(params.slug),
       status: "COMPLETED",
     }),
