@@ -21,68 +21,68 @@ export const GET = createApiHandler(
     rateLimitTier: "PUBLIC_READ",
   },
   async () => {
-    // 1. Posts count
-    const [postsRec] = await db.select({ val: count() }).from(posts)
-    const [publishedPostsRec] = await db
-      .select({ val: count() })
-      .from(posts)
-      .where(eq(posts.status, "PUBLISHED"))
+    const safeCount = async (fn: () => Promise<Array<{ val: number | string | null }>>): Promise<number> => {
+      try {
+        const res = await fn()
+        return Number(res?.[0]?.val ?? 0)
+      } catch {
+        return 0
+      }
+    }
 
-    // 2. Inquiries count
-    const [inquiriesRec] = await db.select({ val: count() }).from(inquiries)
-    const [newInquiriesRec] = await db
-      .select({ val: count() })
-      .from(inquiries)
-      .where(eq(inquiries.status, "NEW"))
+    const totalPosts = await safeCount(() => db.select({ val: count() }).from(posts))
+    const publishedPosts = await safeCount(() =>
+      db.select({ val: count() }).from(posts).where(eq(posts.status, "PUBLISHED"))
+    )
 
-    // 3. Products & Orders
-    const [productsRec] = await db.select({ val: count() }).from(products)
-    const [ordersRec] = await db.select({ val: count() }).from(orders)
-    const [revenueRec] = await db
-      .select({ val: sum(orders.totalAmount) })
-      .from(orders)
-      .where(eq(orders.status, "PAID"))
+    const totalInquiries = await safeCount(() => db.select({ val: count() }).from(inquiries))
+    const newInquiries = await safeCount(() =>
+      db.select({ val: count() }).from(inquiries).where(eq(inquiries.status, "NEW"))
+    )
 
-    // 4. Repositories & Releases
-    const [reposRec] = await db.select({ val: count() }).from(repositories)
-    const [changelogsRec] = await db.select({ val: count() }).from(changelogs)
+    const totalProducts = await safeCount(() => db.select({ val: count() }).from(products))
+    const totalOrders = await safeCount(() => db.select({ val: count() }).from(orders))
+    const totalRevenue = await safeCount(() =>
+      db.select({ val: sum(orders.totalAmount) }).from(orders).where(eq(orders.status, "PAID"))
+    )
 
-    // 5. Subscribers & Bio links
-    const [subscribersRec] = await db
-      .select({ val: count() })
-      .from(newsletterSubscribers)
-      .where(eq(newsletterSubscribers.status, "ACTIVE"))
-    const [bioLinksRec] = await db.select({ val: count() }).from(bioLinks)
+    const totalRepos = await safeCount(() => db.select({ val: count() }).from(repositories))
+    const totalChangelogs = await safeCount(() => db.select({ val: count() }).from(changelogs))
 
-    // 6. Recent activity
+    const totalSubscribers = await safeCount(() =>
+      db.select({ val: count() }).from(newsletterSubscribers).where(eq(newsletterSubscribers.status, "ACTIVE"))
+    )
+    const totalBioLinks = await safeCount(() => db.select({ val: count() }).from(bioLinks))
+
     const recentActivity = await db
       .select()
       .from(masterTransactions)
       .orderBy(desc(masterTransactions.createdAt))
       .limit(8)
+      .catch(() => [])
 
     return apiSuccess({
       metrics: {
         posts: {
-          total: postsRec?.val ?? 0,
-          published: publishedPostsRec?.val ?? 0,
+          total: totalPosts,
+          published: publishedPosts,
         },
         inquiries: {
-          total: inquiriesRec?.val ?? 0,
-          new: newInquiriesRec?.val ?? 0,
+          total: totalInquiries,
+          new: newInquiries,
         },
         commerce: {
-          products: productsRec?.val ?? 0,
-          orders: ordersRec?.val ?? 0,
-          revenueIdr: Number(revenueRec?.val ?? 0),
+          products: totalProducts,
+          orders: totalOrders,
+          revenueIdr: totalRevenue,
         },
         archive: {
-          repositories: reposRec?.val ?? 0,
-          changelogs: changelogsRec?.val ?? 0,
+          repositories: totalRepos,
+          changelogs: totalChangelogs,
         },
         audience: {
-          subscribers: subscribersRec?.val ?? 0,
-          bioLinks: bioLinksRec?.val ?? 0,
+          subscribers: totalSubscribers,
+          bioLinks: totalBioLinks,
         },
       },
       recentActivity,
