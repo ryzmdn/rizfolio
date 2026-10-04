@@ -1,6 +1,6 @@
 import { db, desc, eq, count } from "@workspace/db"
 import { inquiries } from "@workspace/db/schema"
-import { createApiHandler, apiSuccess, apiCreated, apiPaginated } from "@/lib/api"
+import { createApiHandler, apiCreated, apiPaginated } from "@/lib/api"
 import { createInquirySchema, paginationQuerySchema } from "@/lib/validations"
 import { sanitizeHoneypotFields } from "@/lib/security/honeypot"
 
@@ -63,7 +63,7 @@ export const POST = createApiHandler(
       domain: "PORTFOLIO",
       actionType: "INQUIRY_RECEIVED",
       entityType: "inquiries",
-      entityId: (created as any)?.id || "new",
+      entityId: (created as { id?: string })?.id || "new",
       status: "COMPLETED",
     }),
   },

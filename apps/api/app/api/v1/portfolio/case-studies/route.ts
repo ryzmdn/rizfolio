@@ -25,14 +25,17 @@ export const POST = createApiHandler(
     requiredRole: "OWNER",
     rateLimitTier: "PUBLIC_MUTATION",
     schema: createCaseStudySchema,
-    auditConfig: (created) => ({
-      domain: "PORTFOLIO",
-      actionType: "CASE_STUDY_CREATED",
-      entityType: "case_studies",
-      entityId: (created as any)?.id || "new",
-      caseStudyId: (created as any)?.id,
-      status: "COMPLETED",
-    }),
+    auditConfig: (created) => {
+      const cs = created as { id?: string } | undefined
+      return {
+        domain: "PORTFOLIO",
+        actionType: "CASE_STUDY_CREATED",
+        entityType: "case_studies",
+        entityId: cs?.id || "new",
+        caseStudyId: cs?.id,
+        status: "COMPLETED",
+      }
+    },
   },
   async (_, { body }) => {
     const [created] = await db

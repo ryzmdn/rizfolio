@@ -29,7 +29,7 @@ export const POST = createApiHandler(
       domain: "PORTFOLIO",
       actionType: "SERVICE_CREATED",
       entityType: "services",
-      entityId: (created as any)?.id || "new",
+      entityId: (created as { id?: string })?.id || "new",
       status: "COMPLETED",
     }),
   },
