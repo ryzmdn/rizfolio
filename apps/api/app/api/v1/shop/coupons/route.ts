@@ -27,7 +27,7 @@ export const POST = createApiHandler(
       domain: "COMMERCE",
       actionType: "COUPON_CREATED",
       entityType: "coupons",
-      entityId: (created as any)?.code || "code",
+      entityId: (created as { code?: string })?.code || "code",
       status: "COMPLETED",
     }),
   },

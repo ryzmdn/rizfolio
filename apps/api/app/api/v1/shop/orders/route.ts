@@ -1,6 +1,6 @@
 import { db, desc, eq, count, inArray } from "@workspace/db"
 import { orders, orderItems, products, coupons } from "@workspace/db/schema"
-import { createApiHandler, apiSuccess, apiCreated, apiPaginated, ValidationError } from "@/lib/api"
+import { createApiHandler, apiCreated, apiPaginated, ValidationError } from "@/lib/api"
 import { createOrderSchema, paginationQuerySchema } from "@/lib/validations"
 
 export const dynamic = "force-dynamic"
@@ -46,16 +46,19 @@ export const POST = createApiHandler(
   {
     rateLimitTier: "PUBLIC_MUTATION",
     schema: createOrderSchema,
-    auditConfig: (created) => ({
-      domain: "COMMERCE",
-      actionType: "ORDER_CREATED",
-      entityType: "orders",
-      entityId: (created as any)?.orderNumber || "order",
-      orderId: (created as any)?.id,
-      amount: (created as any)?.totalAmount,
-      currency: (created as any)?.currency,
-      status: "PENDING",
-    }),
+    auditConfig: (created) => {
+      const ord = created as { orderNumber?: string; id?: string; totalAmount?: number; currency?: string } | undefined
+      return {
+        domain: "COMMERCE",
+        actionType: "ORDER_CREATED",
+        entityType: "orders",
+        entityId: ord?.orderNumber || "order",
+        orderId: ord?.id,
+        amount: ord?.totalAmount,
+        currency: ord?.currency,
+        status: "PENDING",
+      }
+    },
   },
   async (_, { body }) => {
     const productIds = body.items.map((i) => i.productId)

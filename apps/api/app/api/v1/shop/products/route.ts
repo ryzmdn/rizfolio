@@ -1,6 +1,6 @@
 import { db, desc, eq, count, ilike, and } from "@workspace/db"
 import { products } from "@workspace/db/schema"
-import { createApiHandler, apiSuccess, apiCreated, apiPaginated } from "@/lib/api"
+import { createApiHandler, apiCreated, apiPaginated } from "@/lib/api"
 import { queryProductsSchema, createProductSchema } from "@/lib/validations"
 
 export const dynamic = "force-dynamic"
@@ -69,14 +69,17 @@ export const POST = createApiHandler(
     requiredRole: "OWNER",
     rateLimitTier: "PUBLIC_MUTATION",
     schema: createProductSchema,
-    auditConfig: (created) => ({
-      domain: "COMMERCE",
-      actionType: "PRODUCT_CREATED",
-      entityType: "products",
-      entityId: (created as any)?.id || "new",
-      productId: (created as any)?.id,
-      status: "COMPLETED",
-    }),
+    auditConfig: (created) => {
+      const prod = created as { id?: string } | undefined
+      return {
+        domain: "COMMERCE",
+        actionType: "PRODUCT_CREATED",
+        entityType: "products",
+        entityId: prod?.id || "new",
+        productId: prod?.id,
+        status: "COMPLETED",
+      }
+    },
   },
   async (_, { body }) => {
     const [created] = await db

@@ -47,7 +47,7 @@ export const POST = createApiHandler(
       domain: "COMMERCE",
       actionType: "REVIEW_SUBMITTED",
       entityType: "product_reviews",
-      entityId: (created as any)?.id || "new",
+      entityId: (created as { id?: string })?.id || "new",
       status: "COMPLETED",
     }),
   },
@@ -73,7 +73,7 @@ export const POST = createApiHandler(
         authorRole: clean.authorRole || "Verified Developer",
         rating: clean.rating || 5,
         content: clean.content!,
-        status: "PENDING", // Requires owner approval
+        status: "PENDING",
       })
       .returning()
 
