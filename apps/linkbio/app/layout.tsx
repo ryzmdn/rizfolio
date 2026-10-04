@@ -7,12 +7,14 @@ import {
   SEO_CONFIG,
   getBaseUrl,
   createProfilePageJsonLd,
+  THEMED_FAVICON_METADATA,
 } from "@workspace/ui/lib/seo"
 
 const linkbioUrl = getBaseUrl("linkbio")
 
 export const metadata: Metadata = {
   metadataBase: new URL(linkbioUrl),
+  icons: THEMED_FAVICON_METADATA,
   title: {
     default: SEO_CONFIG.sites.linkbio.defaultTitle,
     template: SEO_CONFIG.sites.linkbio.titleTemplate,

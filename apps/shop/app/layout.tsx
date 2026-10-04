@@ -9,12 +9,17 @@ import { ShopHeader } from "../components/shop-header"
 import { ShopFooter } from "../components/shop-footer"
 import "@workspace/ui/styles/globals.css"
 
-import { SEO_CONFIG, getBaseUrl } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  THEMED_FAVICON_METADATA,
+} from "@workspace/ui/lib/seo"
 
 const baseUrl = getBaseUrl("shop")
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
+  icons: THEMED_FAVICON_METADATA,
   title: {
     default: SEO_CONFIG.sites.shop.defaultTitle,
     template: SEO_CONFIG.sites.shop.titleTemplate,
