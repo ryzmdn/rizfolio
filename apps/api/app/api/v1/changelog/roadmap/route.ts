@@ -29,7 +29,7 @@ export const POST = createApiHandler(
       domain: "CONTENT",
       actionType: "ROADMAP_ITEM_CREATED",
       entityType: "roadmap_items",
-      entityId: (created as any)?.id || "new",
+      entityId: (created as { id?: string })?.id || "new",
       status: "COMPLETED",
     }),
   },

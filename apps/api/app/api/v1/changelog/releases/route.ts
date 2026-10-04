@@ -39,14 +39,17 @@ export const POST = createApiHandler(
     requiredRole: "OWNER",
     rateLimitTier: "PUBLIC_MUTATION",
     schema: createChangelogSchema,
-    auditConfig: (created) => ({
-      domain: "CONTENT",
-      actionType: "CHANGELOG_CREATED",
-      entityType: "changelogs",
-      entityId: (created as any)?.version || "version",
-      changelogId: (created as any)?.id,
-      status: "COMPLETED",
-    }),
+    auditConfig: (created) => {
+      const rel = created as { version?: string; id?: string } | undefined
+      return {
+        domain: "CONTENT",
+        actionType: "CHANGELOG_CREATED",
+        entityType: "changelogs",
+        entityId: rel?.version || "version",
+        changelogId: rel?.id,
+        status: "COMPLETED",
+      }
+    },
   },
   async (_, { body }) => {
     const { items, ...changelogData } = body
