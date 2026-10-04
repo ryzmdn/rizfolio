@@ -25,7 +25,7 @@ export const POST = createApiHandler(
       domain: "CONTENT",
       actionType: "CATEGORY_CREATED",
       entityType: "categories",
-      entityId: (created as any)?.id || "new",
+      entityId: (created as { id?: string })?.id || "new",
       status: "COMPLETED",
     }),
   },

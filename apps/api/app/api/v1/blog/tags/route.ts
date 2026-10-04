@@ -25,7 +25,7 @@ export const POST = createApiHandler(
       domain: "CONTENT",
       actionType: "TAG_CREATED",
       entityType: "tags",
-      entityId: (created as any)?.id || "new",
+      entityId: (created as { id?: string })?.id || "new",
       status: "COMPLETED",
     }),
   },

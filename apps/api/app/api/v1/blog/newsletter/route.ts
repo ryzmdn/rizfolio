@@ -59,7 +59,7 @@ export const POST = createApiHandler(
       domain: "CONTENT",
       actionType: "NEWSLETTER_SUBSCRIBED",
       entityType: "newsletter_subscribers",
-      entityId: (created as any)?.email || "email",
+      entityId: (created as { email?: string })?.email || "email",
       status: "COMPLETED",
     }),
   },

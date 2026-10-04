@@ -5,10 +5,8 @@ import {
   postTags,
   postViews,
   postReactions,
-  categories,
-  tags,
 } from "@workspace/db/schema"
-import { createApiHandler, apiSuccess, apiCreated, apiPaginated } from "@/lib/api"
+import { createApiHandler, apiCreated, apiPaginated } from "@/lib/api"
 import { queryPostsSchema, createPostSchema } from "@/lib/validations"
 
 export const dynamic = "force-dynamic"
@@ -74,14 +72,17 @@ export const POST = createApiHandler(
     requiredRole: "OWNER",
     rateLimitTier: "PUBLIC_MUTATION",
     schema: createPostSchema,
-    auditConfig: (created) => ({
-      domain: "CONTENT",
-      actionType: "POST_CREATED",
-      entityType: "posts",
-      entityId: (created as any)?.id || "new",
-      postId: (created as any)?.id,
-      status: "COMPLETED",
-    }),
+    auditConfig: (created) => {
+      const p = created as { id?: string } | undefined
+      return {
+        domain: "CONTENT",
+        actionType: "POST_CREATED",
+        entityType: "posts",
+        entityId: p?.id || "new",
+        postId: p?.id,
+        status: "COMPLETED",
+      }
+    },
   },
   async (_, { body }) => {
     const { categoryIds, tagIds, publishedAt, ...postData } = body
