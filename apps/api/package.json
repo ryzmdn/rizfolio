@@ -11,6 +11,7 @@
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
+    "test:live": "node ../../scripts/test-api-live.mjs",
     "clean": "node -e \"fs.rmSync('.next',{recursive:true,force:true});fs.rmSync('.turbo',{recursive:true,force:true})\""
   },
   "dependencies": {
