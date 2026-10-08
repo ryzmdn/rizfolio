@@ -5,12 +5,17 @@ import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 import { ProgressiveBlur } from "@workspace/ui/components/progressive-blur"
 import { ChangelogHeader, ChangelogFooter, CommandSearch } from "../components"
-import { SEO_CONFIG, getBaseUrl } from "@workspace/ui/lib/seo"
+import {
+  SEO_CONFIG,
+  getBaseUrl,
+  THEMED_FAVICON_METADATA,
+} from "@workspace/ui/lib/seo"
 
 const baseUrl = getBaseUrl("changelog")
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
+  icons: THEMED_FAVICON_METADATA,
   title: {
     default: SEO_CONFIG.sites.changelog.defaultTitle,
     template: SEO_CONFIG.sites.changelog.titleTemplate,

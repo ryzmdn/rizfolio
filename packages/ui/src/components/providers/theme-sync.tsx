@@ -163,5 +163,105 @@ export function ThemeSynchronizer() {
     }
   }, [setTheme])
 
+  return <FaviconSynchronizer />
+}
+
+export function applyThemeFavicons(theme: "dark" | "light") {
+  if (typeof document === "undefined") return
+
+  const folder = theme === "dark" ? "dark" : "light"
+  const currentAttr =
+    document.documentElement.getAttribute("data-theme-favicon")
+  if (currentAttr === folder) return
+
+  const iconSpecs = [
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "32x32",
+      href: `/logos/${folder}/favicon-32x32.png`,
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "16x16",
+      href: `/logos/${folder}/favicon-16x16.png`,
+    },
+    {
+      rel: "icon",
+      type: "image/x-icon",
+      sizes: "any",
+      href: `/logos/${folder}/favicon.ico`,
+    },
+    {
+      rel: "shortcut icon",
+      href: `/logos/${folder}/favicon.ico`,
+    },
+    {
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      href: `/logos/${folder}/apple-touch-icon.png`,
+    },
+  ]
+
+  const existingIcons = document.querySelectorAll<HTMLLinkElement>(
+    "link[rel*='icon'], link[rel='apple-touch-icon']"
+  )
+  existingIcons.forEach((el) => el.remove())
+
+  iconSpecs.forEach((spec) => {
+    const link = document.createElement("link")
+    link.rel = spec.rel
+    if (spec.type) link.type = spec.type
+    if (spec.sizes) link.setAttribute("sizes", spec.sizes)
+    link.href = spec.href
+    link.setAttribute("data-theme-favicon", folder)
+    document.head.appendChild(link)
+  })
+
+  let themeColorMeta = document.querySelector<HTMLMetaElement>(
+    'meta[name="theme-color"]'
+  )
+  if (!themeColorMeta) {
+    themeColorMeta = document.createElement("meta")
+    themeColorMeta.name = "theme-color"
+    document.head.appendChild(themeColorMeta)
+  }
+  themeColorMeta.content = folder === "dark" ? "#09090b" : "#ffffff"
+
+  document.documentElement.setAttribute("data-theme-favicon", folder)
+}
+
+export function FaviconSynchronizer() {
+  const { resolvedTheme } = useTheme()
+
+  React.useEffect(() => {
+    const resolveCurrentTheme = (): "dark" | "light" => {
+      if (typeof document === "undefined") return "dark"
+      if (document.documentElement.classList.contains("dark")) return "dark"
+      if (document.documentElement.classList.contains("light")) return "light"
+      if (resolvedTheme === "dark" || resolvedTheme === "light")
+        return resolvedTheme
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+    }
+
+    applyThemeFavicons(resolveCurrentTheme())
+
+    const observer = new MutationObserver(() => {
+      applyThemeFavicons(resolveCurrentTheme())
+    })
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [resolvedTheme])
+
   return null
 }

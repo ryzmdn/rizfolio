@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
+    "sync:assets": "node scripts/sync-assets.mjs",
+    "sync:assets:watch": "node scripts/sync-assets.mjs --watch",
+    "build": "node scripts/sync-assets.mjs && turbo build",
+    "dev": "node scripts/sync-assets.mjs && turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
