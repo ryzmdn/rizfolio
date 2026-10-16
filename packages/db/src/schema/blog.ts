@@ -4,6 +4,7 @@ import {
   varchar,
   text,
   integer,
+  boolean,
   timestamp,
   primaryKey,
 } from "drizzle-orm/pg-core"
@@ -16,6 +17,7 @@ export const posts = pgTable("posts", {
   contentMd: text("content_md").notNull(),
   coverImageUrl: text("cover_image_url"),
   readingTime: integer("reading_time").notNull().default(1),
+  isFeatured: boolean("is_featured").notNull().default(false),
   status: varchar("status", { length: 50 }).notNull().default("DRAFT"),
   publishedAt: timestamp("published_at", { withTimezone: true }),
   seoTitle: varchar("seo_title", { length: 255 }),
@@ -103,3 +105,6 @@ export const newsletterSubscribers = pgTable("newsletter_subscribers", {
     .notNull(),
   unsubscribedAt: timestamp("unsubscribed_at", { withTimezone: true }),
 })
+
+export type Post = typeof posts.$inferSelect
+export type NewPost = typeof posts.$inferInsert

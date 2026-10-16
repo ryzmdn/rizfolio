@@ -103,6 +103,7 @@ async function fetchPublishedPosts({
         excerpt: posts.excerpt,
         coverImageUrl: posts.coverImageUrl,
         readingTime: posts.readingTime,
+        isFeatured: posts.isFeatured,
         publishedAt: posts.publishedAt,
         createdAt: posts.createdAt,
         viewsCount: sql<number>`coalesce(${postViews.viewCount}, 0)`.as(
@@ -196,6 +197,7 @@ async function fetchPublishedPosts({
         categories: catsByPost.get(r.id) || [],
         tags: tagsByPost.get(r.id) || [],
         viewsCount: Number(r.viewsCount || 0),
+        featured: Boolean(r.isFeatured),
       }))
 
       return {
@@ -286,6 +288,7 @@ async function fetchPostBySlug(slug: string): Promise<BlogPostItem | null> {
         contentMd: posts.contentMd,
         coverImageUrl: posts.coverImageUrl,
         readingTime: posts.readingTime,
+        isFeatured: posts.isFeatured,
         publishedAt: posts.publishedAt,
         createdAt: posts.createdAt,
         viewsCount: sql<number>`coalesce(${postViews.viewCount}, 0)`.as(
@@ -335,6 +338,7 @@ async function fetchPostBySlug(slug: string): Promise<BlogPostItem | null> {
         categories: catRows,
         tags: tagRows,
         viewsCount: Number(post.viewsCount || 0),
+        featured: Boolean(post.isFeatured),
       }
     }
   } catch (error) {

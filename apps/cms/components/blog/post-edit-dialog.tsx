@@ -27,6 +27,7 @@ interface PostItem {
   coverImageUrl?: string | null
   status: string
   readingTime: number
+  isFeatured?: boolean
   publishedAt?: Date | null
   seoTitle?: string | null
   seoDesc?: string | null

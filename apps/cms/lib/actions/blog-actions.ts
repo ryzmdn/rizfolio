@@ -34,6 +34,7 @@ export async function getPosts() {
         coverImageUrl: posts.coverImageUrl,
         status: posts.status,
         readingTime: posts.readingTime,
+        isFeatured: posts.isFeatured,
         publishedAt: posts.publishedAt,
         seoTitle: posts.seoTitle,
         seoDesc: posts.seoDesc,
