@@ -38,7 +38,7 @@
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "shiki": "^3.23.0",
-    "turbo": "^2.9.18",
+    "turbo": "^2.11.9",
     "typescript": "^5"
   },
   "packageManager": "pnpm@10.33.4",
