@@ -76,7 +76,7 @@ export function createApiHandler<TBody = unknown, TResponse = unknown>(
 
     try {
       const rateLimitTier = config.rateLimitTier || "PUBLIC_READ"
-      const rateLimitResult = checkRateLimit(request, rateLimitTier)
+      const rateLimitResult = await checkRateLimit(request, rateLimitTier)
 
       const mergedHeaders = {
         ...corsHeaders,
@@ -85,9 +85,13 @@ export function createApiHandler<TBody = unknown, TResponse = unknown>(
       }
 
       if (!rateLimitResult.allowed) {
-        throw new RateLimitError(
-          `Rate limit exceeded. Try again in ${rateLimitResult.retryAfterSeconds} seconds.`,
-          rateLimitResult.retryAfterSeconds
+        return createErrorResponse(
+          new RateLimitError(
+            `Rate limit exceeded. Try again in ${rateLimitResult.retryAfterSeconds} seconds.`,
+            rateLimitResult.retryAfterSeconds
+          ),
+          traceId,
+          mergedHeaders
         )
       }
 
