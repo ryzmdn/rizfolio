@@ -26,3 +26,9 @@ export const reorderBioLinksSchema = z.object({
     )
     .min(1, "At least one item required for reordering"),
 })
+
+export const createBioLinkClickSchema = z.object({
+  referrer: z.string().trim().optional().nullable(),
+  userAgent: z.string().trim().optional().nullable(),
+  ipHash: z.string().trim().max(64).optional().nullable(),
+})
