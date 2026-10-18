@@ -1,6 +1,12 @@
 "use server"
 
-import { db, roadmapProposals, masterTransactions, sql } from "@workspace/db"
+import {
+  db,
+  roadmapProposals,
+  changelogSubscribers,
+  masterTransactions,
+  eq,
+} from "@workspace/db"
 
 export interface SubmitRoadmapProposalInput {
   title: string
@@ -65,8 +71,8 @@ export async function submitRoadmapProposalAction(
           entityId: proposal.id,
           metadata: { title, scope, rationale },
         })
-      } catch {
-        // Non-blocking audit record
+      } catch (err) {
+        void err
       }
     }
 
@@ -81,6 +87,50 @@ export async function submitRoadmapProposalAction(
     )
     return {
       success: true,
+    }
+  }
+}
+
+export async function subscribeChangelogAction(
+  email: string
+): Promise<{ success: boolean; error?: string }> {
+  const cleanEmail = email?.trim()?.toLowerCase()
+  if (!cleanEmail || !cleanEmail.includes("@")) {
+    return {
+      success: false,
+      error: "Please enter a valid email address.",
+    }
+  }
+
+  try {
+    const [existing] = await db
+      .select()
+      .from(changelogSubscribers)
+      .where(eq(changelogSubscribers.email, cleanEmail))
+      .limit(1)
+
+    if (existing) {
+      if (!existing.isActive) {
+        await db
+          .update(changelogSubscribers)
+          .set({ isActive: true })
+          .where(eq(changelogSubscribers.id, existing.id))
+      }
+      return { success: true }
+    }
+
+    const unsubscribeToken = crypto.randomUUID()
+    await db.insert(changelogSubscribers).values({
+      email: cleanEmail,
+      unsubscribeToken,
+      isActive: true,
+    })
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to subscribe.",
     }
   }
 }
