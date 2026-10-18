@@ -259,6 +259,7 @@ async function fetchCaseStudiesInternal(): Promise<CaseStudyItem[]> {
         liveUrl: caseStudies.liveUrl,
         repoUrl: caseStudies.repoUrl,
         metrics: caseStudies.metrics,
+        viewsCount: caseStudies.viewsCount,
       })
       .from(caseStudies)
       .where(eq(caseStudies.isPublished, true))
@@ -294,6 +295,7 @@ async function fetchCaseStudiesInternal(): Promise<CaseStudyItem[]> {
           ],
           year: fallback?.year || "2025",
           role: fallback?.role || "Lead Architect",
+          viewsCount: cs.viewsCount || 0,
         }
       })
     }
@@ -343,6 +345,7 @@ async function fetchCaseStudyBySlugInternal(
         liveUrl: caseStudies.liveUrl,
         repoUrl: caseStudies.repoUrl,
         metrics: caseStudies.metrics,
+        viewsCount: caseStudies.viewsCount,
       })
       .from(caseStudies)
       .where(eq(caseStudies.slug, slug))
@@ -376,6 +379,7 @@ async function fetchCaseStudyBySlugInternal(
         ],
         year: fallback?.year || "2025",
         role: fallback?.role || "Lead Architect",
+        viewsCount: cs.viewsCount || 0,
       }
     }
   } catch (error: unknown) {
