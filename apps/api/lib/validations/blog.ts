@@ -81,3 +81,18 @@ export const newsletterSubscribeSchema = z.object({
 export const newsletterUnsubscribeSchema = z.object({
   email: z.string().trim().email("Invalid email address").max(255),
 })
+
+export const createCommentSchema = z.object({
+  authorName: z
+    .string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(255),
+  authorEmail: z.string().trim().email("Invalid email address").max(255),
+  content: z
+    .string()
+    .trim()
+    .min(3, "Comment must be at least 3 characters")
+    .max(3000),
+  parentId: z.string().uuid().optional().nullable(),
+})
