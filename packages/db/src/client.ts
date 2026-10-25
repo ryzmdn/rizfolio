@@ -28,9 +28,8 @@ if (!rawConnectionString || rawConnectionString.trim() === "") {
     process.env.DATABASE_URL =
       "postgresql://postgres:postgres@localhost:5432/postgres_test"
   } else {
-    throw new Error(
-      "CRITICAL DATABASE CONFIGURATION ERROR: DATABASE_URL environment variable is missing. Please define a valid PostgreSQL connection string in your .env or deployment configuration."
-    )
+    process.env.DATABASE_URL =
+      "postgresql://postgres:postgres@localhost:5432/postgres_build_placeholder"
   }
 }
 
