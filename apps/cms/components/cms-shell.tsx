@@ -6,7 +6,20 @@ import { CmsSidebar } from "./cms-sidebar"
 import { CmsHeader } from "./cms-header"
 import { CmsCommandPalette } from "./cms-command-palette"
 
-export function CmsShell({ children }: { children: ReactNode }) {
+export interface CmsUserProfile {
+  email?: string
+  name?: string
+  role?: string
+  avatarUrl?: string
+}
+
+export function CmsShell({
+  children,
+  user,
+}: {
+  children: ReactNode
+  user?: CmsUserProfile | null
+}) {
   const pathname = usePathname()
   const isLoginPage = pathname === "/login"
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -38,12 +51,21 @@ export function CmsShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
-      <CmsSidebar />
+      <CmsSidebar
+        userEmail={user?.email}
+        userName={user?.name}
+        userRole={user?.role}
+        userAvatar={user?.avatarUrl}
+      />
 
       <CmsSidebar
         isMobile
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
+        userEmail={user?.email}
+        userName={user?.name}
+        userRole={user?.role}
+        userAvatar={user?.avatarUrl}
       />
 
       <div className="flex flex-col md:pl-64">
