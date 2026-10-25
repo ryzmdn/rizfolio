@@ -20,6 +20,7 @@ import {
   CornerDownLeft,
   Inbox,
   Link2,
+  MessageSquare,
 } from "lucide-react"
 
 interface CommandItem {
@@ -72,6 +73,14 @@ const COMMAND_ITEMS: CommandItem[] = [
     category: "Navigasi",
     href: "/blog",
     icon: FileText,
+  },
+  {
+    id: "nav-comments",
+    title: "Blog Comments",
+    description: "Moderasi komentar artikel blog, persetujuan dan filter spam",
+    category: "Navigasi",
+    href: "/comments",
+    icon: MessageSquare,
   },
   {
     id: "nav-shop",

@@ -5,6 +5,7 @@ import { cn } from "@workspace/ui/lib/utils"
 import { AppProvider } from "@workspace/ui/components/app-provider"
 import { THEMED_FAVICON_METADATA } from "@workspace/ui/lib/seo"
 import { CmsShell } from "../components/cms-shell"
+import { getCmsUserProfile } from "@/lib/actions/settings-actions"
 
 export const metadata: Metadata = {
   icons: THEMED_FAVICON_METADATA,
@@ -22,11 +23,13 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const user = await getCmsUserProfile()
+
   return (
     <html lang="en" className="w-full scroll-smooth" suppressHydrationWarning>
       <body
@@ -42,7 +45,7 @@ export default function RootLayout({
           >
             Skip to main content
           </a>
-          <CmsShell>{children}</CmsShell>
+          <CmsShell user={user}>{children}</CmsShell>
         </AppProvider>
       </body>
     </html>

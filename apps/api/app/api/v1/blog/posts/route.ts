@@ -24,12 +24,17 @@ export const GET = createApiHandler(
       status: url.searchParams.get("status") || undefined,
       category: url.searchParams.get("category") || undefined,
       tag: url.searchParams.get("tag") || undefined,
+      featured: url.searchParams.get("featured") || undefined,
     })
 
     const conditions = []
 
     if (query.status) {
       conditions.push(eq(posts.status, query.status))
+    }
+
+    if (query.featured !== undefined) {
+      conditions.push(eq(posts.isFeatured, query.featured))
     }
 
     if (query.search) {

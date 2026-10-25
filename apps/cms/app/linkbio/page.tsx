@@ -4,7 +4,7 @@ import {
   getBioLinkStats,
 } from "@/lib/actions/linkbio-actions"
 import { LinkbioManagerClient } from "@/components/linkbio/linkbio-manager-client"
-import { Link2, MousePointerClick, CheckCircle2, Globe } from "lucide-react"
+import { Link2, MousePointerClick, CheckCircle2 } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 

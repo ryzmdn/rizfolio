@@ -1,45 +1,15 @@
 import { NextResponse } from "next/server"
-import crypto from "crypto"
 import { db, eq } from "@workspace/db"
-import { orders } from "@workspace/db/schema"
+import { orders, orderItems, products } from "@workspace/db/schema"
 import { logMasterTransaction } from "@/lib/api/audit"
+import { sendOrderConfirmationEmail } from "@workspace/email"
+
+import {
+  verifyStripeSignature,
+  generateDownloadToken,
+} from "@/lib/security/commerce"
 
 export const dynamic = "force-dynamic"
-
-function verifyStripeSignature(
-  rawBody: string,
-  signatureHeader: string | null,
-  secret: string
-): boolean {
-  if (!signatureHeader || !secret) return false
-
-  const parts = signatureHeader.split(",")
-  let timestamp = ""
-  let signature = ""
-
-  for (const part of parts) {
-    const [key, val] = part.split("=")
-    if (key === "t" && val) timestamp = val
-    if (key === "v1" && val) signature = val
-  }
-
-  if (!timestamp || !signature) return false
-
-  const payload = `${timestamp}.${rawBody}`
-  const expectedSignature = crypto
-    .createHmac("sha256", secret)
-    .update(payload, "utf8")
-    .digest("hex")
-
-  try {
-    const expectedBuf = Buffer.from(expectedSignature)
-    const actualBuf = Buffer.from(signature)
-    if (expectedBuf.length !== actualBuf.length) return false
-    return crypto.timingSafeEqual(expectedBuf, actualBuf)
-  } catch {
-    return false
-  }
-}
 
 export async function POST(request: Request) {
   const rawBody = await request.text()
@@ -51,7 +21,7 @@ export async function POST(request: Request) {
     !verifyStripeSignature(rawBody, signatureHeader, webhookSecret)
   ) {
     return NextResponse.json(
-      { error: "Invalid Stripe signature" },
+      { error: "Invalid Stripe signature or timestamp expired" },
       { status: 400 }
     )
   }
@@ -77,14 +47,60 @@ export async function POST(request: Request) {
           .limit(1)
 
         if (existing) {
+          const paymentRef =
+            typeof dataObj.payment_intent === "string"
+              ? dataObj.payment_intent
+              : dataObj.id
+
           await db
             .update(orders)
             .set({
-              status: "PAID",
-              paymentRef: dataObj.id,
+              status: "COMPLETED",
+              paymentRef,
+              paymentProvider: "STRIPE",
               updatedAt: new Date(),
             })
             .where(eq(orders.id, existing.id))
+
+          const existingItems = await db
+            .select()
+            .from(orderItems)
+            .where(eq(orderItems.orderId, existing.id))
+
+          const generated = generateDownloadToken(7)
+          const expiryDate = generated.expiresAt
+          const shopBaseUrl =
+            process.env.NEXT_PUBLIC_SHOP_URL || "https://shop.ryzmdn.me"
+          const emailItems = []
+
+          for (const item of existingItems) {
+            const assignedToken =
+              item.downloadToken || generateDownloadToken(7).token
+
+            if (!item.downloadToken) {
+              await db
+                .update(orderItems)
+                .set({
+                  downloadToken: assignedToken,
+                  tokenExpiresAt: expiryDate,
+                })
+                .where(eq(orderItems.id, item.id))
+            }
+
+            const [prod] = await db
+              .select({ title: products.title })
+              .from(products)
+              .where(eq(products.id, item.productId))
+              .limit(1)
+
+            emailItems.push({
+              title: prod?.title || "Digital Download Asset",
+              price: item.pricePaid,
+              quantity: 1,
+              downloadToken: assignedToken,
+              downloadUrl: `${shopBaseUrl}/order/${orderNumber}?token=${assignedToken}`,
+            })
+          }
 
           await logMasterTransaction({
             domain: "COMMERCE",
@@ -99,8 +115,38 @@ export async function POST(request: Request) {
               stripeEventId: event.id,
               stripeEventType: event.type,
               paymentIntentId: dataObj.id,
+              itemsCount: emailItems.length,
             },
           })
+
+          try {
+            const customerEmail =
+              dataObj.customer_details?.email ||
+              dataObj.customer_email ||
+              existing.customerEmail
+
+            if (customerEmail) {
+              await sendOrderConfirmationEmail({
+                customerName:
+                  dataObj.customer_details?.name ||
+                  existing.customerName ||
+                  undefined,
+                customerEmail,
+                orderNumber,
+                orderDate: existing.createdAt,
+                items: emailItems,
+                totalAmount: existing.totalAmount,
+                currency: existing.currency,
+                shopUrl: shopBaseUrl,
+                downloadTokenExpiresInDays: 7,
+              })
+            }
+          } catch (mailError) {
+            console.warn(
+              "[Stripe Webhook] Order confirmation email dispatch failed:",
+              mailError instanceof Error ? mailError.message : "Email error"
+            )
+          }
         }
       }
     }

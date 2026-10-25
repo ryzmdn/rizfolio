@@ -64,3 +64,26 @@ export const roadmapProposals = pgTable("roadmap_proposals", {
     .defaultNow()
     .notNull(),
 })
+
+export const changelogSubscribers = pgTable("changelog_subscribers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  isActive: boolean("is_active").notNull().default(true),
+  unsubscribeToken: varchar("unsubscribe_token", { length: 255 })
+    .notNull()
+    .unique(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
+
+export type Changelog = typeof changelogs.$inferSelect
+export type NewChangelog = typeof changelogs.$inferInsert
+export type ChangelogItem = typeof changelogItems.$inferSelect
+export type NewChangelogItem = typeof changelogItems.$inferInsert
+export type RoadmapItem = typeof roadmapItems.$inferSelect
+export type NewRoadmapItem = typeof roadmapItems.$inferInsert
+export type RoadmapProposal = typeof roadmapProposals.$inferSelect
+export type NewRoadmapProposal = typeof roadmapProposals.$inferInsert
+export type ChangelogSubscriber = typeof changelogSubscribers.$inferSelect
+export type NewChangelogSubscriber = typeof changelogSubscribers.$inferInsert

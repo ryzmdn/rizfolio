@@ -98,10 +98,23 @@ export const caseStudies = pgTable("case_studies", {
   metrics: jsonb("metrics"),
   isPublished: boolean("is_published").notNull().default(false),
   displayOrder: integer("display_order").notNull().default(0),
+  viewsCount: integer("views_count").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
+
+export const caseStudyViews = pgTable("case_study_views", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  caseStudyId: uuid("case_study_id")
+    .notNull()
+    .references(() => caseStudies.id, { onDelete: "cascade" }),
+  ipHash: varchar("ip_hash", { length: 64 }),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
 })
@@ -129,9 +142,9 @@ export const inquiries = pgTable("inquiries", {
   message: text("message").notNull(),
   projectScope: varchar("project_scope", { length: 100 }).default(
     "PROJECT_INQUIRY"
-  ), // 'FULL_TIME', 'CONTRACT', 'CONSULTING', 'ADVISORY', 'PROJECT_INQUIRY'
+  ),
   budgetRange: varchar("budget_range", { length: 100 }),
-  status: varchar("status", { length: 50 }).notNull().default("NEW"), // 'NEW', 'IN_REVIEW', 'RESPONDED', 'ARCHIVED'
+  status: varchar("status", { length: 50 }).notNull().default("NEW"),
   replyNotes: text("reply_notes"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
@@ -139,5 +152,9 @@ export const inquiries = pgTable("inquiries", {
   respondedAt: timestamp("responded_at", { withTimezone: true }),
 })
 
+export type CaseStudy = typeof caseStudies.$inferSelect
+export type NewCaseStudy = typeof caseStudies.$inferInsert
+export type CaseStudyView = typeof caseStudyViews.$inferSelect
+export type NewCaseStudyView = typeof caseStudyViews.$inferInsert
 export type Inquiry = typeof inquiries.$inferSelect
 export type NewInquiry = typeof inquiries.$inferInsert

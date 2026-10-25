@@ -10,6 +10,7 @@ import { checkRateLimit } from "../security/rate-limit"
 import { assertSecurity } from "../security/guard"
 import { evaluateHoneypot } from "../security/honeypot"
 import { sanitizeObject } from "../security/sanitize"
+import { verifyMutationOrigin } from "../security/origin"
 import {
   createErrorResponse,
   RateLimitError,
@@ -74,9 +75,21 @@ export function createApiHandler<TBody = unknown, TResponse = unknown>(
       )
     }
 
+    const mutationOrigin = verifyMutationOrigin(request)
+    if (!mutationOrigin.allowed) {
+      return createErrorResponse(
+        new ForbiddenError(
+          mutationOrigin.reason ||
+            "Mutating request blocked by CSRF / Origin security policy."
+        ),
+        traceId,
+        corsHeaders
+      )
+    }
+
     try {
       const rateLimitTier = config.rateLimitTier || "PUBLIC_READ"
-      const rateLimitResult = checkRateLimit(request, rateLimitTier)
+      const rateLimitResult = await checkRateLimit(request, rateLimitTier)
 
       const mergedHeaders = {
         ...corsHeaders,
@@ -85,9 +98,13 @@ export function createApiHandler<TBody = unknown, TResponse = unknown>(
       }
 
       if (!rateLimitResult.allowed) {
-        throw new RateLimitError(
-          `Rate limit exceeded. Try again in ${rateLimitResult.retryAfterSeconds} seconds.`,
-          rateLimitResult.retryAfterSeconds
+        return createErrorResponse(
+          new RateLimitError(
+            `Rate limit exceeded. Try again in ${rateLimitResult.retryAfterSeconds} seconds.`,
+            rateLimitResult.retryAfterSeconds
+          ),
+          traceId,
+          mergedHeaders
         )
       }
 

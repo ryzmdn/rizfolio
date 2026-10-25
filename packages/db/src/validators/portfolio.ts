@@ -6,7 +6,9 @@ import {
   certifications,
   services,
   caseStudies,
+  caseStudyViews,
   testimonials,
+  inquiries,
 } from "@workspace/db/schema/portfolio"
 
 export const insertProfileSchema = createInsertSchema(profile)
@@ -27,5 +29,11 @@ export const selectServiceSchema = createSelectSchema(services)
 export const insertCaseStudySchema = createInsertSchema(caseStudies)
 export const selectCaseStudySchema = createSelectSchema(caseStudies)
 
+export const insertCaseStudyViewSchema = createInsertSchema(caseStudyViews)
+export const selectCaseStudyViewSchema = createSelectSchema(caseStudyViews)
+
 export const insertTestimonialSchema = createInsertSchema(testimonials)
 export const selectTestimonialSchema = createSelectSchema(testimonials)
+
+export const insertInquirySchema = createInsertSchema(inquiries)
+export const selectInquirySchema = createSelectSchema(inquiries)

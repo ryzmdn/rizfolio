@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import Link from "next/link"
 import { Container } from "@workspace/ui/components/layouts"
 import { RotateCcw, Home, AlertCircle } from "lucide-react"
+import { reportClientError } from "@workspace/ui/lib/diagnostics"
 
 export default function ErrorBoundary({
   error,
@@ -13,7 +14,7 @@ export default function ErrorBoundary({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error("[Portfolio Runtime Error]:", error)
+    reportClientError(error, "Portfolio")
   }, [error])
 
   return (

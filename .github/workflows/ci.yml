@@ -41,12 +41,17 @@ jobs:
       - name: Run TypeScript Verification
         run: pnpm typecheck
 
+      - name: Run Test Suite
+        run: pnpm test
+
   build-validation:
     name: Production Build Verification
     needs: [quality-checks]
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      API_MASTER_KEY: mock-api-master-key-for-ci-pipeline-1234
+      NEXT_PUBLIC_API_URL: https://api.ryzmdn.me
       NEXT_PUBLIC_SUPABASE_URL: https://mock-supabase.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: mock-anon-key-for-ci-pipeline
       SUPABASE_SERVICE_ROLE_KEY: mock-service-role-key-for-ci-pipeline

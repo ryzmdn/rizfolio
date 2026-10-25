@@ -1,6 +1,6 @@
 import { Container } from "@workspace/ui/components/layouts/container"
 import { getChangelogReleases, getChangelogStats } from "@/lib/queries"
-import { TimelineExplorer } from "@/components"
+import { TimelineExplorer, SubscribeCard } from "@/components"
 import {
   SEO_CONFIG,
   getBaseUrl,
@@ -71,7 +71,8 @@ export default async function ChangelogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-      <Container className="max-w-6xl py-10 sm:py-16">
+      <Container className="max-w-6xl space-y-8 py-10 sm:py-16">
+        <SubscribeCard />
         <TimelineExplorer initialReleases={releases} stats={stats} />
       </Container>
     </>

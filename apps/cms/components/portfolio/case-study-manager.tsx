@@ -36,6 +36,7 @@ interface CaseStudyItem {
   metrics: unknown
   isPublished: boolean
   displayOrder: number
+  viewsCount?: number
   createdAt: Date
   updatedAt: Date
 }

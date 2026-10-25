@@ -54,7 +54,7 @@ export async function loginAdmin(
   formData: FormData
 ): Promise<AuthState | null> {
   const clientIp = await getClientIp()
-  const rateLimitStatus = checkRateLimit(clientIp)
+  const rateLimitStatus = await checkRateLimit(clientIp)
 
   if (!rateLimitStatus.allowed) {
     const minutes = Math.ceil(rateLimitStatus.retryAfterSeconds / 60)
@@ -89,7 +89,7 @@ export async function loginAdmin(
         existingUser.role !== "OWNER" ||
         existingUser.email.toLowerCase() !== ownerEnvEmail
       ) {
-        consumeRateLimit(clientIp)
+        await consumeRateLimit(clientIp)
         console.warn(
           "[CMS Auth] Unauthorized login attempt for non-owner user",
           {
@@ -106,7 +106,7 @@ export async function loginAdmin(
       )
 
       if (!isPasswordValid) {
-        consumeRateLimit(clientIp)
+        await consumeRateLimit(clientIp)
         console.warn("[CMS Auth] Failed login attempt: Invalid password", {
           ip: clientIp,
           timestamp: Date.now(),
@@ -122,7 +122,7 @@ export async function loginAdmin(
         .where(eq(users.id, existingUser.id))
     } else {
       if (normalizedEmail !== ownerEnvEmail) {
-        consumeRateLimit(clientIp)
+        await consumeRateLimit(clientIp)
         console.warn("[CMS Auth] Failed login attempt: Unrecognized email", {
           ip: clientIp,
           timestamp: Date.now(),
@@ -143,7 +143,7 @@ export async function loginAdmin(
       const isPasswordValid = await verifyPassword(password, envPasswordHash)
 
       if (!isPasswordValid) {
-        consumeRateLimit(clientIp)
+        await consumeRateLimit(clientIp)
         console.warn(
           "[CMS Auth] Failed initial provisioning: Invalid owner password",
           {

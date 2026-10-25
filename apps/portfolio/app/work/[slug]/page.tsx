@@ -11,6 +11,7 @@ import {
   Award,
   BarChart3,
   CheckCircle2,
+  Eye,
 } from "lucide-react"
 import { GitHub } from "@workspace/ui/constants/icons"
 import { Container } from "@workspace/ui/components/layouts"
@@ -19,6 +20,7 @@ import {
   getAllCaseStudySlugs,
   getCaseStudies,
 } from "@/lib/queries"
+import { CaseStudyTracker } from "@/components/case-study-tracker"
 import { getBaseUrl, SEO_CONFIG } from "@workspace/ui/lib/seo"
 
 interface CaseStudyPageProps {
@@ -106,6 +108,7 @@ export default async function CaseStudyDetailPage({
 
   return (
     <>
+      <CaseStudyTracker caseStudyId={study.id} slug={study.slug} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -137,6 +140,12 @@ export default async function CaseStudyDetailPage({
             {study.clientName && (
               <span className="text-xs text-muted-foreground">
                 • {study.clientName}
+              </span>
+            )}
+            {study.viewsCount !== undefined && study.viewsCount > 0 && (
+              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                <Eye className="size-3" />
+                {study.viewsCount} {study.viewsCount === 1 ? "view" : "views"}
               </span>
             )}
           </div>

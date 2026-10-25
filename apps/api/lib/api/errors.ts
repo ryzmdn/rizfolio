@@ -21,6 +21,13 @@ export class ApiError extends Error {
   }
 }
 
+export class BadRequestError extends ApiError {
+  constructor(message = "Bad request", details?: ApiErrorDetail[]) {
+    super(message, 400, "BAD_REQUEST", details)
+    this.name = "BadRequestError"
+  }
+}
+
 export class ValidationError extends ApiError {
   constructor(message = "Validation failed", details?: ApiErrorDetail[]) {
     super(message, 400, "VALIDATION_ERROR", details)

@@ -109,6 +109,7 @@ export const createCaseStudySchema = z.object({
   metrics: z.record(z.string(), z.unknown()).optional().nullable(),
   isPublished: z.boolean().default(false),
   displayOrder: z.coerce.number().int().default(0),
+  viewsCount: z.coerce.number().int().default(0),
 })
 
 export const updateCaseStudySchema = createCaseStudySchema.partial()

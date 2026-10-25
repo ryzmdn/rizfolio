@@ -5,6 +5,7 @@ export const queryPostsSchema = paginationQuerySchema.extend({
   status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).optional(),
   category: z.string().trim().optional(),
   tag: z.string().trim().optional(),
+  featured: z.coerce.boolean().optional(),
 })
 
 export const createPostSchema = z.object({
@@ -22,6 +23,7 @@ export const createPostSchema = z.object({
   contentMd: z.string().trim().min(1, "Content markdown is required"),
   coverImageUrl: z.string().trim().optional().nullable(),
   readingTime: z.coerce.number().int().min(1).default(1),
+  isFeatured: z.boolean().default(false),
   status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).default("DRAFT"),
   publishedAt: z.string().datetime().optional().nullable(),
   seoTitle: z.string().trim().max(255).optional().nullable(),
@@ -78,4 +80,19 @@ export const newsletterSubscribeSchema = z.object({
 
 export const newsletterUnsubscribeSchema = z.object({
   email: z.string().trim().email("Invalid email address").max(255),
+})
+
+export const createCommentSchema = z.object({
+  authorName: z
+    .string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(255),
+  authorEmail: z.string().trim().email("Invalid email address").max(255),
+  content: z
+    .string()
+    .trim()
+    .min(3, "Comment must be at least 3 characters")
+    .max(3000),
+  parentId: z.string().uuid().optional().nullable(),
 })

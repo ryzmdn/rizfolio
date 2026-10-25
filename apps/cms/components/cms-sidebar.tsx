@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
+import NextImage from "next/image"
 import { usePathname } from "next/navigation"
 import {
   LayoutDashboard,
@@ -18,6 +19,7 @@ import {
   X,
   Inbox,
   Link2,
+  MessageSquare,
 } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 import { logoutAdmin } from "@/lib/auth-actions"
@@ -49,6 +51,7 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { href: "/portfolio", label: "Portfolio Manager", icon: User },
       { href: "/blog", label: "Blog Articles", icon: FileText },
+      { href: "/comments", label: "Blog Comments", icon: MessageSquare },
       { href: "/shop", label: "Digital Shop", icon: ShoppingBag },
       { href: "/docs", label: "Docs & Repos", icon: BookOpen },
       { href: "/changelog", label: "Changelog Releases", icon: History },
@@ -64,8 +67,22 @@ const NAV_SECTIONS: NavSection[] = [
   },
 ]
 
+function getInitials(name?: string, fallback = "RR"): string {
+  if (!name || !name.trim()) return fallback
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 1) {
+    return (parts[0]?.slice(0, 2) || fallback).toUpperCase()
+  }
+  const first = parts[0]?.[0] || ""
+  const last = parts[parts.length - 1]?.[0] || ""
+  return (first + last).toUpperCase() || fallback
+}
+
 interface CmsSidebarProps {
   userEmail?: string
+  userName?: string
+  userRole?: string
+  userAvatar?: string
   isMobile?: boolean
   isOpen?: boolean
   onClose?: () => void
@@ -73,6 +90,9 @@ interface CmsSidebarProps {
 
 export function CmsSidebar({
   userEmail,
+  userName,
+  userRole,
+  userAvatar,
   isMobile = false,
   isOpen = false,
   onClose,
@@ -191,13 +211,31 @@ export function CmsSidebar({
 
       <div className="space-y-2 border-t border-border/80 p-3">
         <div className="flex items-center gap-2.5 rounded-lg bg-muted/40 p-2">
-          <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-[11px] font-bold text-background">
-            RR
-          </div>
+          {userAvatar ? (
+            <NextImage
+              src={userAvatar}
+              alt={userName || "Owner Avatar"}
+              width={28}
+              height={28}
+              unoptimized
+              className="size-7 shrink-0 rounded-md border border-border/80 object-cover"
+            />
+          ) : (
+            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-[11px] font-bold text-background shadow-xs">
+              {getInitials(userName || "Rizky Ramadhan")}
+            </div>
+          )}
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-semibold text-foreground">
-              Rizky Ramadhan
-            </p>
+            <div className="flex items-center justify-between gap-1">
+              <p className="truncate text-xs font-semibold text-foreground">
+                {userName || "Rizky Ramadhan"}
+              </p>
+              {userRole && (
+                <span className="py-0.2 shrink-0 rounded bg-primary/10 px-1 font-mono text-[9px] font-bold text-primary">
+                  {userRole}
+                </span>
+              )}
+            </div>
             <p className="truncate font-mono text-[10px] text-muted-foreground">
               {userEmail || "owner@rizkyramadhan.dev"}
             </p>

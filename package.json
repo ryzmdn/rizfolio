@@ -5,12 +5,13 @@
   "scripts": {
     "sync:assets": "node scripts/sync-assets.mjs",
     "sync:assets:watch": "node scripts/sync-assets.mjs --watch",
-    "build": "node scripts/sync-assets.mjs && turbo build",
-    "dev": "node scripts/sync-assets.mjs && turbo dev",
+    "build": "node scripts/validate-env.mjs && node scripts/sync-assets.mjs && turbo build",
+    "dev": "node scripts/validate-env.mjs && node scripts/sync-assets.mjs && turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
     "typecheck": "turbo typecheck",
+    "test": "turbo test",
     "clean": "turbo clean",
     "db:seed": "pnpm --filter @workspace/db db:seed",
     "db:keep-alive": "pnpm --filter @workspace/db db:keep-alive",
@@ -38,8 +39,9 @@
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "shiki": "^3.23.0",
-    "turbo": "^2.9.18",
-    "typescript": "^5"
+    "turbo": "^2.11.9",
+    "typescript": "^5",
+    "vitest": "^5.0.5"
   },
   "packageManager": "pnpm@10.33.4",
   "engines": {

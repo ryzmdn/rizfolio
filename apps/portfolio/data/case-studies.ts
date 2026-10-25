@@ -13,6 +13,7 @@ export interface CaseStudy {
   repoUrl?: string
   year?: string
   role?: string
+  viewsCount?: number
 }
 
 export const caseStudies: CaseStudy[] = [

@@ -56,3 +56,7 @@ export const updateRoadmapProposalStatusSchema = z.object({
     "SHIPPED",
   ]),
 })
+
+export const subscribeChangelogSchema = z.object({
+  email: z.string().trim().email("Invalid email address"),
+})

@@ -10,11 +10,15 @@ import {
   X,
   Send,
   User,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
 } from "lucide-react"
 import type { Inquiry } from "@workspace/db"
 import {
   updateInquiryStatusAction,
   deleteInquiryAction,
+  sendInquiryReplyAction,
 } from "@/lib/actions/inbox-actions"
 
 interface InboxManagerClientProps {
@@ -50,11 +54,83 @@ export function InboxManagerClient({
   const [statusFilter, setStatusFilter] = useState("ALL")
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null)
   const [replyNotes, setReplyNotes] = useState("")
+  const [replyModalOpen, setReplyModalOpen] = useState(false)
+  const [replySubject, setReplySubject] = useState("")
+  const [replyContent, setReplyContent] = useState("")
+  const [replyStatusMessage, setReplyStatusMessage] = useState<{
+    type: "success" | "error"
+    text: string
+  } | null>(null)
+  const [isSendingReply, setIsSendingReply] = useState(false)
   const [isPending, startTransition] = useTransition()
 
   function handleSelectInquiry(inq: Inquiry) {
     setSelectedInquiry(inq)
     setReplyNotes(inq.replyNotes || "")
+  }
+
+  function handleOpenReplyModal() {
+    if (!selectedInquiry) return
+    setReplySubject(`Re: ${selectedInquiry.subject || "Project Inquiry"}`)
+    setReplyContent(
+      `Hi ${selectedInquiry.name},\n\nThank you for reaching out regarding your project inquiry. I have reviewed your project parameters and would love to discuss next steps.\n\n`
+    )
+    setReplyStatusMessage(null)
+    setReplyModalOpen(true)
+  }
+
+  async function handleSendReply() {
+    if (!selectedInquiry || !replySubject.trim() || !replyContent.trim()) return
+
+    setIsSendingReply(true)
+    setReplyStatusMessage(null)
+
+    const res = await sendInquiryReplyAction({
+      inquiryId: selectedInquiry.id,
+      replySubject: replySubject.trim(),
+      replyContent: replyContent.trim(),
+    })
+
+    setIsSendingReply(false)
+
+    if (res.success) {
+      setReplyStatusMessage({
+        type: "success",
+        text: "Email reply delivered successfully via Resend!",
+      })
+      const now = new Date()
+      setInquiries((prev) =>
+        prev.map((item) =>
+          item.id === selectedInquiry.id
+            ? {
+                ...item,
+                status: "RESPONDED",
+                replyNotes: replyContent.trim(),
+                respondedAt: now,
+              }
+            : item
+        )
+      )
+      setSelectedInquiry((prev) =>
+        prev
+          ? {
+              ...prev,
+              status: "RESPONDED",
+              replyNotes: replyContent.trim(),
+              respondedAt: now,
+            }
+          : null
+      )
+      setTimeout(() => {
+        setReplyModalOpen(false)
+        setReplyStatusMessage(null)
+      }, 1200)
+    } else {
+      setReplyStatusMessage({
+        type: "error",
+        text: res.error || "Failed to send email reply via Resend.",
+      })
+    }
   }
 
   function handleUpdateStatus(newStatus: string) {
@@ -379,14 +455,23 @@ export function InboxManagerClient({
               </div>
 
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleOpenReplyModal}
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                >
+                  <Send className="size-3" />
+                  <span>Reply via Resend</span>
+                </button>
+
                 <a
                   href={`mailto:${selectedInquiry.email}?subject=${encodeURIComponent(
                     `Re: ${selectedInquiry.subject || "Project Inquiry"}`
                   )}`}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                  className="inline-flex items-center gap-1 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                  title="Open in default mail client"
                 >
-                  <Send className="size-3" />
-                  <span>Reply via Email</span>
+                  <ExternalLink className="size-3" />
                 </a>
 
                 <button
@@ -399,6 +484,127 @@ export function InboxManagerClient({
                   <Trash2 className="size-3.5" />
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {replyModalOpen && selectedInquiry && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-60 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs"
+        >
+          <div
+            className="w-full max-w-xl space-y-4 rounded-2xl border border-border bg-card p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-border/60 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Send className="size-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Compose Email Reply
+                  </h3>
+                  <p className="font-mono text-[10px] text-muted-foreground">
+                    Dispatched securely via Resend
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                disabled={isSendingReply}
+                onClick={() => setReplyModalOpen(false)}
+                className="cursor-pointer rounded-lg p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+
+            <div className="space-y-1 rounded-lg border border-border/60 bg-muted/20 p-2.5">
+              <div className="text-[10px] font-semibold text-muted-foreground uppercase">
+                Recipient
+              </div>
+              <div className="font-mono text-xs text-foreground">
+                {selectedInquiry.name} &lt;{selectedInquiry.email}&gt;
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-foreground">
+                Email Subject
+              </label>
+              <input
+                type="text"
+                value={replySubject}
+                onChange={(e) => setReplySubject(e.target.value)}
+                placeholder="Subject line..."
+                className="w-full rounded-lg border border-border bg-background p-2.5 text-xs text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-hidden"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-foreground">
+                Message Body
+              </label>
+              <textarea
+                rows={7}
+                value={replyContent}
+                onChange={(e) => setReplyContent(e.target.value)}
+                placeholder="Type your response to the client..."
+                className="w-full rounded-lg border border-border bg-background p-3 text-xs leading-relaxed text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-hidden"
+              />
+            </div>
+
+            {replyStatusMessage && (
+              <div
+                className={`flex items-center gap-2 rounded-lg border p-3 text-xs ${
+                  replyStatusMessage.type === "success"
+                    ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-500"
+                    : "border-rose-500/25 bg-rose-500/10 text-rose-500"
+                }`}
+              >
+                {replyStatusMessage.type === "success" ? (
+                  <CheckCircle className="size-4 shrink-0" />
+                ) : (
+                  <AlertCircle className="size-4 shrink-0" />
+                )}
+                <span>{replyStatusMessage.text}</span>
+              </div>
+            )}
+
+            <div className="flex items-center justify-end gap-2 border-t border-border/60 pt-3">
+              <button
+                type="button"
+                disabled={isSendingReply}
+                onClick={() => setReplyModalOpen(false)}
+                className="cursor-pointer rounded-lg border border-border px-3.5 py-1.5 text-xs font-medium text-foreground hover:bg-muted"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={
+                  isSendingReply || !replySubject.trim() || !replyContent.trim()
+                }
+                onClick={handleSendReply}
+                className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              >
+                {isSendingReply ? (
+                  <>
+                    <Loader2 className="size-3.5 animate-spin" />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="size-3.5" />
+                    <span>Send Reply via Resend</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>

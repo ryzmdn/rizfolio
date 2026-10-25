@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import Link from "next/link"
 import { Container } from "@workspace/ui/components/layouts/container"
 import { ArrowLeft, RotateCcw } from "lucide-react"
+import { reportClientError } from "@workspace/ui/lib/diagnostics"
 
 export default function ErrorBoundary({
   error,
@@ -13,7 +14,7 @@ export default function ErrorBoundary({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error("[Blog Client Error Boundary]:", error)
+    reportClientError(error, "Blog")
   }, [error])
 
   return (

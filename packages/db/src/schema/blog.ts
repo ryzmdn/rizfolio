@@ -4,8 +4,10 @@ import {
   varchar,
   text,
   integer,
+  boolean,
   timestamp,
   primaryKey,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core"
 
 export const posts = pgTable("posts", {
@@ -16,6 +18,7 @@ export const posts = pgTable("posts", {
   contentMd: text("content_md").notNull(),
   coverImageUrl: text("cover_image_url"),
   readingTime: integer("reading_time").notNull().default(1),
+  isFeatured: boolean("is_featured").notNull().default(false),
   status: varchar("status", { length: 50 }).notNull().default("DRAFT"),
   publishedAt: timestamp("published_at", { withTimezone: true }),
   seoTitle: varchar("seo_title", { length: 255 }),
@@ -103,3 +106,28 @@ export const newsletterSubscribers = pgTable("newsletter_subscribers", {
     .notNull(),
   unsubscribedAt: timestamp("unsubscribed_at", { withTimezone: true }),
 })
+
+export const postComments = pgTable("post_comments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  postId: uuid("post_id")
+    .notNull()
+    .references(() => posts.id, { onDelete: "cascade" }),
+  parentId: uuid("parent_id").references((): AnyPgColumn => postComments.id, {
+    onDelete: "cascade",
+  }),
+  authorName: varchar("author_name", { length: 255 }).notNull(),
+  authorEmail: varchar("author_email", { length: 255 }).notNull(),
+  content: text("content").notNull(),
+  status: varchar("status", { length: 50 }).notNull().default("APPROVED"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+})
+
+export type Post = typeof posts.$inferSelect
+export type NewPost = typeof posts.$inferInsert
+export type PostComment = typeof postComments.$inferSelect
+export type NewPostComment = typeof postComments.$inferInsert

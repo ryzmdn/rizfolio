@@ -1,18 +1,15 @@
 import { db, eq } from "@workspace/db"
 import { coupons } from "@workspace/db/schema"
-import {
-  createApiHandler,
-  apiSuccess,
-  ValidationError,
-  NotFoundError,
-} from "@/lib/api"
+import { createApiHandler, apiSuccess, ValidationError } from "@/lib/api"
 import { validateCouponSchema } from "@/lib/validations"
+
+import { constantTimeCompare } from "@/lib/security/commerce"
 
 export const dynamic = "force-dynamic"
 
 export const POST = createApiHandler(
   {
-    rateLimitTier: "PUBLIC_READ",
+    rateLimitTier: "PUBLIC_MUTATION",
     schema: validateCouponSchema,
   },
   async (_, { body }) => {
@@ -24,27 +21,25 @@ export const POST = createApiHandler(
       .where(eq(coupons.code, code))
       .limit(1)
 
-    if (!coupon) {
-      throw new NotFoundError(`Coupon code '${code}' is invalid.`)
+    const isMatch = coupon ? constantTimeCompare(coupon.code, code) : false
+
+    if (!coupon || !isMatch) {
+      constantTimeCompare(code, "DUMMY_COUPON_CODE_FOR_TIMING_ALIGNMENT")
+      throw new ValidationError("Invalid or ineligible coupon code.")
     }
 
-    if (!coupon.isActive) {
-      throw new ValidationError("This coupon is no longer active.")
-    }
+    const isExpired =
+      Boolean(coupon.expiresAt) && new Date(coupon.expiresAt!) < new Date()
+    const isExhausted =
+      typeof coupon.maxUses === "number" && coupon.usedCount >= coupon.maxUses
 
-    if (coupon.expiresAt && new Date(coupon.expiresAt) < new Date()) {
-      throw new ValidationError("This coupon has expired.")
-    }
-
-    if (coupon.maxUses && coupon.usedCount >= coupon.maxUses) {
-      throw new ValidationError(
-        "This coupon has reached its maximum usage limit."
-      )
+    if (!coupon.isActive || isExpired || isExhausted) {
+      throw new ValidationError("Invalid or ineligible coupon code.")
     }
 
     if (coupon.minSpend && body.subtotal < coupon.minSpend) {
       throw new ValidationError(
-        `Minimum spend of IDR ${coupon.minSpend.toLocaleString()} is required to use this coupon.`
+        `Minimum order spend of IDR ${coupon.minSpend.toLocaleString()} is required for this coupon.`
       )
     }
 

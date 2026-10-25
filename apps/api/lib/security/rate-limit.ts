@@ -1,3 +1,5 @@
+import { Ratelimit } from "@upstash/ratelimit"
+import { Redis } from "@upstash/redis"
 import type { NextRequest } from "next/server"
 
 export type RateLimitTier =
@@ -18,19 +20,19 @@ export const RATE_LIMIT_TIERS: Record<
 > = {
   PUBLIC_READ: {
     maxAttempts: 120,
-    windowMs: 60 * 1000, // 120 requests per minute
+    windowMs: 60 * 1000,
   },
   PUBLIC_MUTATION: {
-    maxAttempts: 15,
-    windowMs: 60 * 1000, // 15 write requests per minute
+    maxAttempts: 20,
+    windowMs: 60 * 1000,
   },
   AUTH_SENSITIVE: {
     maxAttempts: 5,
-    windowMs: 15 * 60 * 1000, // 5 attempts per 15 minutes
+    windowMs: 15 * 60 * 1000,
   },
   ADMIN: {
     maxAttempts: 300,
-    windowMs: 60 * 1000, // 300 requests per minute
+    windowMs: 60 * 1000,
   },
 }
 
@@ -76,7 +78,53 @@ export interface RateLimitCheckResult {
   headers: Record<string, string>
 }
 
-export function evaluateRateLimit(
+let redisInstance: Redis | null | undefined
+
+function getRedisInstance(): Redis | null {
+  if (redisInstance !== undefined) {
+    return redisInstance
+  }
+  const url = process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN
+  if (!url || !token) {
+    redisInstance = null
+    return null
+  }
+  try {
+    redisInstance = new Redis({ url, token })
+    return redisInstance
+  } catch {
+    redisInstance = null
+    return null
+  }
+}
+
+const upstashLimiters = new Map<string, Ratelimit>()
+
+function getUpstashLimiter(
+  tier: Exclude<RateLimitTier, "NONE">
+): Ratelimit | null {
+  const redis = getRedisInstance()
+  if (!redis) return null
+
+  let limiter = upstashLimiters.get(tier)
+  if (!limiter) {
+    const config = RATE_LIMIT_TIERS[tier]
+    limiter = new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(
+        config.maxAttempts,
+        `${config.windowMs} ms`
+      ),
+      analytics: true,
+      prefix: `rizfolio:api:ratelimit:${tier.toLowerCase()}`,
+    })
+    upstashLimiters.set(tier, limiter)
+  }
+  return limiter
+}
+
+export function evaluateRateLimitMemory(
   key: string,
   config: RateLimitConfig
 ): RateLimitCheckResult {
@@ -121,11 +169,18 @@ export function evaluateRateLimit(
   }
 }
 
-export function checkRateLimit(
+export function evaluateRateLimit(
+  key: string,
+  config: RateLimitConfig
+): RateLimitCheckResult {
+  return evaluateRateLimitMemory(key, config)
+}
+
+export async function checkRateLimitAsync(
   request: NextRequest | Request,
   tier: RateLimitTier = "PUBLIC_READ",
   customIdentifier?: string
-): RateLimitCheckResult {
+): Promise<RateLimitCheckResult> {
   if (tier === "NONE") {
     return {
       allowed: true,
@@ -142,9 +197,98 @@ export function checkRateLimit(
   const rateLimitKey = `${tier}:${identifier}`
   const config = RATE_LIMIT_TIERS[tier]
 
-  return evaluateRateLimit(rateLimitKey, config)
+  const limiter = getUpstashLimiter(tier)
+  if (limiter) {
+    try {
+      const res = await limiter.limit(identifier)
+      const now = Date.now()
+      const retryAfterSeconds = res.success
+        ? 0
+        : Math.max(1, Math.ceil((res.reset - now) / 1000))
+
+      const headers: Record<string, string> = {
+        "X-RateLimit-Limit": String(res.limit),
+        "X-RateLimit-Remaining": String(Math.max(0, res.remaining)),
+        "X-RateLimit-Reset": String(Math.ceil(res.reset / 1000)),
+      }
+
+      if (!res.success) {
+        headers["Retry-After"] = String(retryAfterSeconds)
+      }
+
+      return {
+        allowed: res.success,
+        remaining: Math.max(0, res.remaining),
+        resetAt: res.reset,
+        retryAfterSeconds,
+        limit: res.limit,
+        headers,
+      }
+    } catch {
+      return evaluateRateLimitMemory(rateLimitKey, config)
+    }
+  }
+
+  return evaluateRateLimitMemory(rateLimitKey, config)
 }
 
-export function resetRateLimitKey(key: string): void {
+function createHybridCheckResult(
+  syncResult: RateLimitCheckResult,
+  asyncPromise: Promise<RateLimitCheckResult>
+): RateLimitCheckResult & Promise<RateLimitCheckResult> {
+  const p = asyncPromise as unknown as RateLimitCheckResult &
+    Promise<RateLimitCheckResult>
+  p.allowed = syncResult.allowed
+  p.remaining = syncResult.remaining
+  p.resetAt = syncResult.resetAt
+  p.retryAfterSeconds = syncResult.retryAfterSeconds
+  p.limit = syncResult.limit
+  p.headers = syncResult.headers
+  return p
+}
+
+export function checkRateLimit(
+  request: NextRequest | Request,
+  tier: RateLimitTier = "PUBLIC_READ",
+  customIdentifier?: string
+): RateLimitCheckResult & Promise<RateLimitCheckResult> {
+  if (tier === "NONE") {
+    const noneResult: RateLimitCheckResult = {
+      allowed: true,
+      remaining: 999999,
+      resetAt: Date.now() + 60000,
+      retryAfterSeconds: 0,
+      limit: 999999,
+      headers: {},
+    }
+    return createHybridCheckResult(noneResult, Promise.resolve(noneResult))
+  }
+
+  const clientIp = extractClientIp(request)
+  const identifier = customIdentifier || clientIp
+  const rateLimitKey = `${tier}:${identifier}`
+  const config = RATE_LIMIT_TIERS[tier]
+
+  const syncResult = evaluateRateLimitMemory(rateLimitKey, config)
+  const redis = getRedisInstance()
+  const asyncPromise = redis
+    ? checkRateLimitAsync(request, tier, customIdentifier)
+    : Promise.resolve(syncResult)
+
+  return createHybridCheckResult(syncResult, asyncPromise)
+}
+
+export async function resetRateLimitKey(key: string): Promise<void> {
   memoryStore.delete(key)
+  const redis = getRedisInstance()
+  if (redis) {
+    try {
+      const keys = await redis.keys(`rizfolio:api:ratelimit:*${key}*`)
+      if (keys.length > 0) {
+        await redis.del(...keys)
+      }
+    } catch (error) {
+      void error
+    }
+  }
 }
