@@ -1,8 +1,15 @@
 "use server"
 
-import { db } from "@workspace/db"
-import { inquiries, masterTransactions } from "@workspace/db/schema"
+import { db, eq, sql } from "@workspace/db"
+import {
+  inquiries,
+  masterTransactions,
+  caseStudies,
+  caseStudyViews,
+} from "@workspace/db/schema"
 import { sendInquiryAlertEmail } from "@workspace/email"
+import { headers } from "next/headers"
+import { createHash } from "crypto"
 
 export interface SubmitInquiryInput {
   name: string
@@ -84,7 +91,8 @@ export async function submitInquiryAction(
             budgetRange,
           },
         })
-      } catch {
+      } catch (auditError) {
+        void auditError
       }
 
       try {
@@ -125,5 +133,58 @@ export async function submitInquiryAction(
       message:
         "Inquiry received! I have noted your contact details and will reach out promptly.",
     }
+  }
+}
+
+export async function trackCaseStudyViewAction(
+  caseStudyId: string
+): Promise<{ success: boolean; viewsCount?: number }> {
+  if (
+    !caseStudyId ||
+    caseStudyId.startsWith("mock-") ||
+    caseStudyId.startsWith("cs-")
+  ) {
+    return { success: false }
+  }
+
+  try {
+    const headersList = await headers()
+    const userAgent = headersList.get("user-agent") || null
+    const forwardedFor = headersList.get("x-forwarded-for")
+    const realIp = headersList.get("x-real-ip")
+    const cfIp = headersList.get("cf-connecting-ip")
+    const rawIp = forwardedFor
+      ? forwardedFor.split(",")[0]?.trim() || null
+      : realIp
+        ? realIp.trim()
+        : cfIp
+          ? cfIp.trim()
+          : null
+    const ipHash = rawIp
+      ? createHash("sha256").update(rawIp).digest("hex")
+      : null
+
+    const [updated] = await Promise.all([
+      db
+        .update(caseStudies)
+        .set({
+          viewsCount: sql`${caseStudies.viewsCount} + 1`,
+          updatedAt: new Date(),
+        })
+        .where(eq(caseStudies.id, caseStudyId))
+        .returning({ viewsCount: caseStudies.viewsCount }),
+      db.insert(caseStudyViews).values({
+        caseStudyId,
+        ipHash,
+        userAgent,
+      }),
+    ])
+
+    return {
+      success: true,
+      viewsCount: updated[0]?.viewsCount,
+    }
+  } catch {
+    return { success: false }
   }
 }
