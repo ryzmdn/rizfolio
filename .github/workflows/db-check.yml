@@ -40,3 +40,6 @@ jobs:
 
       - name: Run Database Package Lint
         run: pnpm --filter @workspace/db lint
+
+      - name: Verify Drizzle Migrations & Schema Check
+        run: pnpm --filter @workspace/db db:check

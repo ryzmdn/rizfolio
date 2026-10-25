@@ -1,4 +1,3 @@
-import crypto from "crypto"
 import { db, eq } from "@workspace/db"
 import { coupons } from "@workspace/db/schema"
 import {
@@ -8,17 +7,9 @@ import {
 } from "@/lib/api"
 import { validateCouponSchema } from "@/lib/validations"
 
-export const dynamic = "force-dynamic"
+import { constantTimeCompare } from "@/lib/security/commerce"
 
-function constantTimeCompare(a: string, b: string): boolean {
-  const bufA = Buffer.from(a)
-  const bufB = Buffer.from(b)
-  if (bufA.length !== bufB.length) {
-    crypto.timingSafeEqual(bufA, bufA)
-    return false
-  }
-  return crypto.timingSafeEqual(bufA, bufB)
-}
+export const dynamic = "force-dynamic"
 
 export const POST = createApiHandler(
   {

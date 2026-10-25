@@ -455,6 +455,35 @@ export const API_ENDPOINTS_CATALOG: EndpointDefinition[] = [
       ),
     },
   },
+  {
+    id: "portfolio-case-study-views-post",
+    tag: "Portfolio",
+    method: "POST",
+    path: "/api/v1/portfolio/case-studies/{slug}/views",
+    summary: "Track case study view with IP deduplication",
+    description:
+      "Records an anonymous time-series view event and increments case study total views counter.",
+    access: "Rate-Limited",
+    parameters: [
+      {
+        name: "slug",
+        in: "path",
+        required: true,
+        description: "Case study slug identifier",
+        type: "string",
+        example: "enterprise-cloud-migration",
+      },
+    ],
+    responseSample: {
+      status: 200,
+      description: "View tracked successfully",
+      sampleJson: JSON.stringify(
+        { success: true, data: { viewsCount: 142 } },
+        null,
+        2
+      ),
+    },
+  },
 
   // --- BLOG ---
   {
@@ -613,6 +642,102 @@ export const API_ENDPOINTS_CATALOG: EndpointDefinition[] = [
       description: "Subscription registered",
       sampleJson: JSON.stringify(
         { success: true, data: { message: "Subscribed successfully" } },
+        null,
+        2
+      ),
+    },
+  },
+  {
+    id: "blog-post-comments-get",
+    tag: "Blog",
+    method: "GET",
+    path: "/api/v1/blog/posts/{slug}/comments",
+    summary: "Fetch approved comments for an article",
+    description:
+      "Returns all approved reader comments and threaded discussion responses for a specific post slug.",
+    access: "Public",
+    parameters: [
+      {
+        name: "slug",
+        in: "path",
+        required: true,
+        description: "Post slug identifier",
+        type: "string",
+        example: "architecting-resilient-monorepos-nextjs-16",
+      },
+    ],
+    responseSample: {
+      status: 200,
+      description: "List of approved comments",
+      sampleJson: JSON.stringify(
+        {
+          success: true,
+          data: [
+            {
+              id: "cmt_01",
+              postId: "post_01",
+              parentId: null,
+              authorName: "Sarah Jenkins",
+              content:
+                "Great architectural breakdown! The zero-latency caching explanation was spot-on.",
+              createdAt: "2026-10-02T10:15:00.000Z",
+            },
+          ],
+        },
+        null,
+        2
+      ),
+    },
+  },
+  {
+    id: "blog-post-comments-post",
+    tag: "Blog",
+    method: "POST",
+    path: "/api/v1/blog/posts/{slug}/comments",
+    summary: "Submit a reader comment on an article",
+    description:
+      "Submits a comment or threaded reply with anti-abuse validation and audit trail logging.",
+    access: "Rate-Limited",
+    parameters: [
+      {
+        name: "slug",
+        in: "path",
+        required: true,
+        description: "Post slug identifier",
+        type: "string",
+        example: "architecting-resilient-monorepos-nextjs-16",
+      },
+    ],
+    requestBody: {
+      contentType: "application/json",
+      sampleJson: JSON.stringify(
+        {
+          authorName: "Sarah Jenkins",
+          authorEmail: "sarah.jenkins@example.com",
+          content:
+            "Great architectural breakdown! The zero-latency caching explanation was spot-on.",
+          parentId: null,
+        },
+        null,
+        2
+      ),
+    },
+    responseSample: {
+      status: 201,
+      description: "Comment submitted and approved",
+      sampleJson: JSON.stringify(
+        {
+          success: true,
+          data: {
+            id: "cmt_01",
+            postId: "post_01",
+            parentId: null,
+            authorName: "Sarah Jenkins",
+            content:
+              "Great architectural breakdown! The zero-latency caching explanation was spot-on.",
+            createdAt: "2026-10-02T10:15:00.000Z",
+          },
+        },
         null,
         2
       ),
@@ -895,6 +1020,38 @@ export const API_ENDPOINTS_CATALOG: EndpointDefinition[] = [
       description: "Proposal submitted",
       sampleJson: JSON.stringify(
         { success: true, data: { id: "prop_01", status: "SUBMITTED" } },
+        null,
+        2
+      ),
+    },
+  },
+  {
+    id: "changelog-subscribe-post",
+    tag: "Changelog",
+    method: "POST",
+    path: "/api/v1/changelog/subscribe",
+    summary: "Subscribe to product release notifications",
+    description:
+      "Registers an email for release dispatches and sends a welcome notification via Resend.",
+    access: "Rate-Limited",
+    requestBody: {
+      contentType: "application/json",
+      sampleJson: JSON.stringify(
+        { email: "developer@example.com" },
+        null,
+        2
+      ),
+    },
+    responseSample: {
+      status: 200,
+      description: "Subscription confirmed",
+      sampleJson: JSON.stringify(
+        {
+          success: true,
+          data: {
+            message: "Thank you for subscribing to release notifications.",
+          },
+        },
         null,
         2
       ),

@@ -11,6 +11,7 @@
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "test:live": "node ../../scripts/test-api-live.mjs",
     "clean": "node -e \"fs.rmSync('.next',{recursive:true,force:true});fs.rmSync('.turbo',{recursive:true,force:true})\""
   },
@@ -41,7 +42,8 @@
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.5"
   },
   "packageManager": "pnpm@11.6.0"
 }
