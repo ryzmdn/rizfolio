@@ -1,3 +1,4 @@
+import crypto from "crypto"
 import { db, desc, eq, count, inArray } from "@workspace/db"
 import { orders, orderItems, products, coupons } from "@workspace/db/schema"
 import {
@@ -138,18 +139,21 @@ export const POST = createApiHandler(
       throw new Error("Failed to create order record.")
     }
 
-    // Insert order items
     for (const item of body.items) {
       const prod = itemMap.get(item.productId)!
-      const downloadToken = crypto.randomUUID()
+      const qty = item.quantity ?? 1
 
-      await db.insert(orderItems).values({
-        orderId: newOrder.id,
-        productId: prod.id,
-        pricePaid: prod.price,
-        downloadToken,
-        tokenExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days download validity
-      })
+      for (let i = 0; i < qty; i++) {
+        const downloadToken = crypto.randomBytes(32).toString("hex")
+
+        await db.insert(orderItems).values({
+          orderId: newOrder.id,
+          productId: prod.id,
+          pricePaid: prod.price,
+          downloadToken,
+          tokenExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        })
+      }
     }
 
     return apiCreated({

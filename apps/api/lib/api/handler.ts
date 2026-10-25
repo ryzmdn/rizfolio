@@ -10,6 +10,7 @@ import { checkRateLimit } from "../security/rate-limit"
 import { assertSecurity } from "../security/guard"
 import { evaluateHoneypot } from "../security/honeypot"
 import { sanitizeObject } from "../security/sanitize"
+import { verifyMutationOrigin } from "../security/origin"
 import {
   createErrorResponse,
   RateLimitError,
@@ -68,6 +69,18 @@ export function createApiHandler<TBody = unknown, TResponse = unknown>(
       return createErrorResponse(
         new ForbiddenError(
           "Cross-origin request blocked by CORS security policy."
+        ),
+        traceId,
+        corsHeaders
+      )
+    }
+
+    const mutationOrigin = verifyMutationOrigin(request)
+    if (!mutationOrigin.allowed) {
+      return createErrorResponse(
+        new ForbiddenError(
+          mutationOrigin.reason ||
+            "Mutating request blocked by CSRF / Origin security policy."
         ),
         traceId,
         corsHeaders

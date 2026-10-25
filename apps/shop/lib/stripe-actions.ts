@@ -34,7 +34,7 @@ function generateOrderNumber(): string {
 }
 
 function generateDownloadToken(): string {
-  return `tok_${randomBytes(24).toString("hex")}`
+  return randomBytes(32).toString("hex")
 }
 
 function generateLicenseKey(slug: string, licenseType: string): string {
@@ -92,7 +92,7 @@ export async function createStripeCheckoutSessionAction(
   const finalTotalInCurrency = convertFromIdr(finalTotalIdr, selectedCurrency)
   const orderNumber = generateOrderNumber()
   const now = new Date().toISOString()
-  const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+  const expiryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
   const populatedItems = input.items.map((it) => {
     const itemPriceInCurrency = convertFromIdr(it.pricePaid, selectedCurrency)
@@ -250,7 +250,6 @@ export async function createStripeCheckoutSessionAction(
         })
         .where(eq(orders.orderNumber, orderNumber))
     } catch {
-      // Ignored for resilient memory fallback
     }
 
     return {
@@ -310,7 +309,7 @@ export async function verifyAndFulfillStripeSession(
             .from(orderItems)
             .where(eq(orderItems.orderId, ord.id))
 
-          const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+          const expiryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
           for (const item of items) {
             if (!item.downloadToken) {

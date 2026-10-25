@@ -12,7 +12,6 @@ function constantTimeEqual(a: string, b: string): boolean {
   const bufferB = Buffer.from(b)
 
   if (bufferA.length !== bufferB.length) {
-    // Constant time dummy comparison to avoid length leak timing differences
     crypto.timingSafeEqual(bufferA, bufferA)
     return false
   }
@@ -44,10 +43,44 @@ export function verifyApiKey(
     }
   }
 
-  // Also check if provided key matches REVALIDATION_SECRET_TOKEN for ISR revalidation
+  const rotationKeys = (process.env.API_ROTATION_KEYS || "")
+    .split(",")
+    .map((k) => k.trim())
+    .filter((k) => k.length >= 16)
+
+  for (const rotKey of rotationKeys) {
+    if (constantTimeEqual(cleanProvidedKey, rotKey)) {
+      return {
+        valid: true,
+        name: "ROTATION_MASTER_KEY",
+        scopes: ["*"],
+      }
+    }
+  }
+
+  const serviceEntries = (process.env.API_SERVICE_KEYS || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s.includes(":"))
+
+  for (const entry of serviceEntries) {
+    const colonIdx = entry.indexOf(":")
+    const service = entry.substring(0, colonIdx).trim().toLowerCase()
+    const key = entry.substring(colonIdx + 1).trim()
+
+    if (key.length >= 16 && constantTimeEqual(cleanProvidedKey, key)) {
+      return {
+        valid: true,
+        name: `${service.toUpperCase()}_SERVICE_KEY`,
+        scopes: [service, "read", "write"],
+      }
+    }
+  }
+
   const revalidationToken = process.env.REVALIDATION_SECRET_TOKEN?.trim()
   if (
     revalidationToken &&
+    revalidationToken.length >= 16 &&
     constantTimeEqual(cleanProvidedKey, revalidationToken)
   ) {
     return {
@@ -58,4 +91,13 @@ export function verifyApiKey(
   }
 
   return { valid: false, scopes: [] }
+}
+
+export function hasApiKeyScope(
+  verification: ApiKeyVerificationResult,
+  requiredScope: string
+): boolean {
+  if (!verification.valid) return false
+  if (verification.scopes.includes("*")) return true
+  return verification.scopes.includes(requiredScope)
 }

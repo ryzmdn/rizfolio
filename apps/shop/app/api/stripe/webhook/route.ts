@@ -3,14 +3,14 @@ import { revalidatePath } from "next/cache"
 import { randomBytes } from "crypto"
 import type Stripe from "stripe"
 import { stripe } from "@/lib/stripe"
-import { db, orders, orderItems, masterTransactions, eq } from "@workspace/db"
+import { db, orders, orderItems, products, masterTransactions, eq } from "@workspace/db"
 import { sendOrderConfirmationEmail } from "@workspace/email"
 import { fallbackOrders } from "@/data"
 
 export const dynamic = "force-dynamic"
 
 function generateDownloadToken(): string {
-  return `tok_${randomBytes(24).toString("hex")}`
+  return randomBytes(32).toString("hex")
 }
 
 export async function POST(request: NextRequest) {
@@ -18,11 +18,29 @@ export async function POST(request: NextRequest) {
   const signature = request.headers.get("stripe-signature")
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
+  if (signature) {
+    const parts = signature.split(",")
+    let timestamp = ""
+    for (const part of parts) {
+      const [key, val] = part.split("=")
+      if (key === "t" && val) timestamp = val
+    }
+    if (timestamp) {
+      const timestampSec = Number(timestamp)
+      const currentSec = Math.floor(Date.now() / 1000)
+      if (isNaN(timestampSec) || Math.abs(currentSec - timestampSec) > 300) {
+        return new NextResponse("Webhook signature timestamp expired", {
+          status: 400,
+        })
+      }
+    }
+  }
+
   let event: Stripe.Event
 
   if (webhookSecret && signature && stripe) {
     try {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret, 300)
     } catch (err) {
       console.error(
         "Stripe webhook signature verification failed:",
@@ -84,7 +102,7 @@ export async function POST(request: NextRequest) {
               .from(orderItems)
               .where(eq(orderItems.orderId, dbOrder.id))
 
-            const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+            const expiryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
             const shopBaseUrl =
               process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3002"
 
@@ -103,10 +121,16 @@ export async function POST(request: NextRequest) {
                   .where(eq(orderItems.id, item.id))
               }
 
+              const [prod] = await db
+                .select({ title: products.title })
+                .from(products)
+                .where(eq(products.id, item.productId))
+                .limit(1)
+
               emailItems.push({
-                title: item.title,
-                price: Number(item.price),
-                quantity: item.quantity,
+                title: prod?.title || "Digital Download Asset",
+                price: item.pricePaid,
+                quantity: 1,
                 downloadToken: assignedToken,
                 downloadUrl: `${shopBaseUrl}/order/${orderNumber}?token=${assignedToken}`,
               })
@@ -148,7 +172,7 @@ export async function POST(request: NextRequest) {
                     session.currency || dbOrder.currency
                   ).toUpperCase(),
                   shopUrl: shopBaseUrl,
-                  downloadTokenExpiresInDays: 30,
+                  downloadTokenExpiresInDays: 7,
                 })
               }
             } catch (mailError) {
@@ -165,7 +189,6 @@ export async function POST(request: NextRequest) {
           )
         }
 
-        // Update in-memory fallback store
         const memoryOrder = fallbackOrders.find(
           (o) => o.orderNumber === orderNumber
         )
@@ -193,7 +216,6 @@ export async function POST(request: NextRequest) {
               })
               .where(eq(orders.orderNumber, orderNumber))
           } catch {
-            // Ignored
           }
 
           const memoryOrder = fallbackOrders.find(
