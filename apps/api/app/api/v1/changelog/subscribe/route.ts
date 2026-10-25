@@ -3,6 +3,7 @@ import { changelogSubscribers } from "@workspace/db/schema"
 import { createApiHandler, apiSuccess, apiCreated } from "@/lib/api"
 import { subscribeChangelogSchema } from "@/lib/validations"
 import { randomUUID } from "crypto"
+import { sendNewsletterWelcomeEmail } from "@workspace/email"
 
 export const dynamic = "force-dynamic"
 
@@ -36,6 +37,15 @@ export const POST = createApiHandler(
       unsubscribeToken,
       isActive: true,
     })
+
+    try {
+      await sendNewsletterWelcomeEmail({
+        email,
+        blogUrl:
+          process.env.NEXT_PUBLIC_CHANGELOG_URL || "http://localhost:3003",
+      })
+    } catch {
+    }
 
     return apiCreated({ subscribed: true, email })
   }

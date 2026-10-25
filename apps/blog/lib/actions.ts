@@ -9,6 +9,7 @@ import {
   sql,
   eq,
 } from "@workspace/db"
+import { sendNewsletterWelcomeEmail } from "@workspace/email"
 
 export async function incrementPostView(
   postId: string
@@ -124,7 +125,18 @@ export async function subscribeNewsletterAction(
           metadata: { email, source: "BLOG_FOOTER" },
         })
       } catch {
-        // Non-blocking audit log
+      }
+
+      try {
+        await sendNewsletterWelcomeEmail({
+          email,
+          blogUrl: process.env.NEXT_PUBLIC_BLOG_URL,
+        })
+      } catch (mailError) {
+        console.warn(
+          "[Blog Actions] Welcome newsletter email dispatch failed:",
+          mailError instanceof Error ? mailError.message : "Email error"
+        )
       }
     }
 

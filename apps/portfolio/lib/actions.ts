@@ -2,6 +2,7 @@
 
 import { db } from "@workspace/db"
 import { inquiries, masterTransactions } from "@workspace/db/schema"
+import { sendInquiryAlertEmail } from "@workspace/email"
 
 export interface SubmitInquiryInput {
   name: string
@@ -84,7 +85,27 @@ export async function submitInquiryAction(
           },
         })
       } catch {
-        // Non-blocking audit record
+      }
+
+      try {
+        await sendInquiryAlertEmail({
+          inquiryId: inquiry.id,
+          name,
+          email,
+          subject,
+          projectScope,
+          budgetRange,
+          message,
+          receivedAt: inquiry.createdAt,
+          cmsInboxUrl: process.env.NEXT_PUBLIC_CMS_URL
+            ? `${process.env.NEXT_PUBLIC_CMS_URL}/inbox`
+            : undefined,
+        })
+      } catch (emailError) {
+        console.warn(
+          "[Portfolio Actions] Email alert dispatch skipped:",
+          emailError instanceof Error ? emailError.message : "Email error"
+        )
       }
     }
 

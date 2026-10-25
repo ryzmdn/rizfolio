@@ -7,6 +7,7 @@ import {
   masterTransactions,
   eq,
 } from "@workspace/db"
+import { sendNewsletterWelcomeEmail } from "@workspace/email"
 
 export interface SubmitRoadmapProposalInput {
   title: string
@@ -125,6 +126,19 @@ export async function subscribeChangelogAction(
       unsubscribeToken,
       isActive: true,
     })
+
+    try {
+      await sendNewsletterWelcomeEmail({
+        email: cleanEmail,
+        blogUrl:
+          process.env.NEXT_PUBLIC_CHANGELOG_URL || "http://localhost:3003",
+      })
+    } catch (mailError) {
+      console.warn(
+        "[Changelog Actions] Welcome email dispatch failed:",
+        mailError instanceof Error ? mailError.message : "Email error"
+      )
+    }
 
     return { success: true }
   } catch (error) {

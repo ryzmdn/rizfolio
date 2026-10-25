@@ -3,6 +3,7 @@ import { inquiries } from "@workspace/db/schema"
 import { createApiHandler, apiCreated, apiPaginated } from "@/lib/api"
 import { createInquirySchema, paginationQuerySchema } from "@/lib/validations"
 import { sanitizeHoneypotFields } from "@/lib/security/honeypot"
+import { sendInquiryAlertEmail } from "@workspace/email"
 
 export const dynamic = "force-dynamic"
 
@@ -85,6 +86,23 @@ export const POST = createApiHandler(
 
     if (!created) {
       throw new Error("Failed to persist inquiry to database.")
+    }
+
+    try {
+      await sendInquiryAlertEmail({
+        inquiryId: created.id,
+        name: created.name,
+        email: created.email,
+        subject: created.subject || undefined,
+        message: created.message,
+        projectScope: created.projectScope || undefined,
+        budgetRange: created.budgetRange || undefined,
+        receivedAt: created.createdAt,
+        cmsInboxUrl: process.env.NEXT_PUBLIC_CMS_URL
+          ? `${process.env.NEXT_PUBLIC_CMS_URL}/inbox`
+          : undefined,
+      })
+    } catch {
     }
 
     return apiCreated({

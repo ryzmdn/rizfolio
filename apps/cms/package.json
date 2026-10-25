@@ -16,6 +16,7 @@
   "dependencies": {
     "@workspace/auth": "workspace:*",
     "@workspace/db": "workspace:*",
+    "@workspace/email": "workspace:*",
     "@workspace/storage": "workspace:*",
     "@workspace/ui": "workspace:*",
     "lucide-react": "^1.31.0",

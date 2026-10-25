@@ -19,6 +19,7 @@
     "@upstash/redis": "^1.39.0",
     "@workspace/auth": "workspace:*",
     "@workspace/db": "workspace:*",
+    "@workspace/email": "workspace:*",
     "@workspace/storage": "workspace:*",
     "@workspace/ui": "workspace:*",
     "drizzle-orm": "^0.40.0",

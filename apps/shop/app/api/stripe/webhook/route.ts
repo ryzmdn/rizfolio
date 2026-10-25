@@ -4,6 +4,7 @@ import { randomBytes } from "crypto"
 import type Stripe from "stripe"
 import { stripe } from "@/lib/stripe"
 import { db, orders, orderItems, masterTransactions, eq } from "@workspace/db"
+import { sendOrderConfirmationEmail } from "@workspace/email"
 import { fallbackOrders } from "@/data"
 
 export const dynamic = "force-dynamic"
@@ -58,7 +59,6 @@ export async function POST(request: NextRequest) {
             ? session.payment_intent
             : session.id
 
-        // Update database order
         try {
           const matchedOrders = await db
             .select()
@@ -85,17 +85,31 @@ export async function POST(request: NextRequest) {
               .where(eq(orderItems.orderId, dbOrder.id))
 
             const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+            const shopBaseUrl =
+              process.env.NEXT_PUBLIC_SHOP_URL || "http://localhost:3002"
+
+            const emailItems = []
 
             for (const item of existingItems) {
+              const assignedToken =
+                item.downloadToken || generateDownloadToken()
               if (!item.downloadToken) {
                 await db
                   .update(orderItems)
                   .set({
-                    downloadToken: generateDownloadToken(),
+                    downloadToken: assignedToken,
                     tokenExpiresAt: expiryDate,
                   })
                   .where(eq(orderItems.id, item.id))
               }
+
+              emailItems.push({
+                title: item.title,
+                price: Number(item.price),
+                quantity: item.quantity,
+                downloadToken: assignedToken,
+                downloadUrl: `${shopBaseUrl}/order/${orderNumber}?token=${assignedToken}`,
+              })
             }
 
             await db.insert(masterTransactions).values({
@@ -117,6 +131,32 @@ export async function POST(request: NextRequest) {
                 paymentStatus: session.payment_status,
               },
             })
+
+            try {
+              const customerEmail =
+                session.customer_details?.email || dbOrder.customerEmail
+              if (customerEmail) {
+                await sendOrderConfirmationEmail({
+                  customerName:
+                    session.customer_details?.name || undefined,
+                  customerEmail,
+                  orderNumber,
+                  orderDate: dbOrder.createdAt,
+                  items: emailItems,
+                  totalAmount: Number(dbOrder.totalAmount),
+                  currency: (
+                    session.currency || dbOrder.currency
+                  ).toUpperCase(),
+                  shopUrl: shopBaseUrl,
+                  downloadTokenExpiresInDays: 30,
+                })
+              }
+            } catch (mailError) {
+              console.warn(
+                "[Shop Webhook] Order confirmation email dispatch failed:",
+                mailError instanceof Error ? mailError.message : "Email error"
+              )
+            }
           }
         } catch (dbErr) {
           console.warn(
