@@ -19,7 +19,8 @@ export function reportClientError(
     digest: error.digest,
     timestamp: new Date().toISOString(),
     url: typeof window !== "undefined" ? window.location.href : undefined,
-    userAgent: typeof navigator !== "undefined" ? navigator.userAgent : undefined,
+    userAgent:
+      typeof navigator !== "undefined" ? navigator.userAgent : undefined,
   }
 
   const prefix = context ? `[${context}]` : "[Client Error Boundary]"

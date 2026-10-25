@@ -4,7 +4,10 @@ import { orders, orderItems, products } from "@workspace/db/schema"
 import { logMasterTransaction } from "@/lib/api/audit"
 import { sendOrderConfirmationEmail } from "@workspace/email"
 
-import { verifyStripeSignature, generateDownloadToken } from "@/lib/security/commerce"
+import {
+  verifyStripeSignature,
+  generateDownloadToken,
+} from "@/lib/security/commerce"
 
 export const dynamic = "force-dynamic"
 

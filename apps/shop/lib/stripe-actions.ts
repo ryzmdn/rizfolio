@@ -249,8 +249,7 @@ export async function createStripeCheckoutSessionAction(
           paymentRef: session.id,
         })
         .where(eq(orders.orderNumber, orderNumber))
-    } catch {
-    }
+    } catch {}
 
     return {
       success: true,

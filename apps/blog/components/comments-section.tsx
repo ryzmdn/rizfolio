@@ -192,7 +192,7 @@ export function CommentsSection({
       {notification && (
         <div
           className={cn(
-            "mb-6 flex items-center justify-between rounded-xl p-3.5 text-xs font-medium transition-all animate-in fade-in",
+            "mb-6 flex animate-in items-center justify-between rounded-xl p-3.5 text-xs font-medium transition-all fade-in",
             notification.type === "success"
               ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
               : "border border-destructive/30 bg-destructive/10 text-destructive"
@@ -400,9 +400,7 @@ export function CommentsSection({
                       <button
                         type="submit"
                         disabled={
-                          isPending ||
-                          !replyContent.trim() ||
-                          !replyName.trim()
+                          isPending || !replyContent.trim() || !replyName.trim()
                         }
                         className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-xs font-semibold text-background hover:opacity-90 disabled:opacity-40"
                       >

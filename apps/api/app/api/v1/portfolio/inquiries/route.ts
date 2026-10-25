@@ -102,8 +102,7 @@ export const POST = createApiHandler(
           ? `${process.env.NEXT_PUBLIC_CMS_URL}/inbox`
           : undefined,
       })
-    } catch {
-    }
+    } catch {}
 
     return apiCreated({
       id: created.id,

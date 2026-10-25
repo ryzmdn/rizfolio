@@ -1,10 +1,6 @@
 import { db, eq } from "@workspace/db"
 import { coupons } from "@workspace/db/schema"
-import {
-  createApiHandler,
-  apiSuccess,
-  ValidationError,
-} from "@/lib/api"
+import { createApiHandler, apiSuccess, ValidationError } from "@/lib/api"
 import { validateCouponSchema } from "@/lib/validations"
 
 import { constantTimeCompare } from "@/lib/security/commerce"

@@ -53,7 +53,8 @@ export function verifyMutationOrigin(
       }
       return {
         allowed: false,
-        reason: "Forbidden: Referer origin not permitted for mutating requests.",
+        reason:
+          "Forbidden: Referer origin not permitted for mutating requests.",
       }
     } catch {
       return {

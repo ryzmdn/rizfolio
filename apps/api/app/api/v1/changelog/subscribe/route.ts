@@ -44,8 +44,7 @@ export const POST = createApiHandler(
         blogUrl:
           process.env.NEXT_PUBLIC_CHANGELOG_URL || "http://localhost:3003",
       })
-    } catch {
-    }
+    } catch {}
 
     return apiCreated({ subscribed: true, email })
   }

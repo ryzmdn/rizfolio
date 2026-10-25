@@ -218,7 +218,7 @@ export function CmsSidebar({
               width={28}
               height={28}
               unoptimized
-              className="size-7 shrink-0 rounded-md object-cover border border-border/80"
+              className="size-7 shrink-0 rounded-md border border-border/80 object-cover"
             />
           ) : (
             <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-[11px] font-bold text-background shadow-xs">
@@ -231,7 +231,7 @@ export function CmsSidebar({
                 {userName || "Rizky Ramadhan"}
               </p>
               {userRole && (
-                <span className="shrink-0 rounded bg-primary/10 px-1 py-0.2 font-mono text-[9px] font-bold text-primary">
+                <span className="py-0.2 shrink-0 rounded bg-primary/10 px-1 font-mono text-[9px] font-bold text-primary">
                   {userRole}
                 </span>
               )}

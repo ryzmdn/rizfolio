@@ -112,8 +112,8 @@ export function BlogHeader() {
             className="inline-flex items-center gap-2 rounded-md border border-border/60 bg-muted/40 px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground"
           >
             <Search className="size-3.5" />
-            <span className="hidden lg:inline text-[11px]">Search...</span>
-            <kbd className="hidden rounded border border-border/70 bg-background/80 px-1 py-0.2 font-mono text-[9px] sm:inline-block">
+            <span className="hidden text-[11px] lg:inline">Search...</span>
+            <kbd className="py-0.2 hidden rounded border border-border/70 bg-background/80 px-1 font-mono text-[9px] sm:inline-block">
               ⌘K
             </kbd>
           </button>
@@ -156,10 +156,7 @@ export function BlogHeader() {
         </div>
       </div>
 
-      <SearchModal
-        isOpen={searchOpen}
-        onClose={() => setSearchOpen(false)}
-      />
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {mobileOpen && (
         <div className="border-t border-border/50 bg-background/98 backdrop-blur-xl md:hidden">

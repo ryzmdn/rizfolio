@@ -2,14 +2,7 @@
 
 import { useState, useEffect, useRef, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import {
-  Search,
-  X,
-  FileText,
-  Clock,
-  ArrowRight,
-  Loader2,
-} from "lucide-react"
+import { Search, X, FileText, Clock, ArrowRight, Loader2 } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 import { searchBlogPostsAction } from "@/lib/actions"
 import type { BlogPostItem } from "@/data"
@@ -44,9 +37,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
       } else if (e.key === "ArrowUp") {
         e.preventDefault()
         setSelectedIndex((prev) =>
-          results.length > 0
-            ? (prev - 1 + results.length) % results.length
-            : 0
+          results.length > 0 ? (prev - 1 + results.length) % results.length : 0
         )
       } else if (e.key === "Enter" && results[selectedIndex]) {
         e.preventDefault()
@@ -103,11 +94,11 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
       className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-16 sm:pt-24"
     >
       <div
-        className="fixed inset-0 bg-background/80 backdrop-blur-md animate-in fade-in"
+        className="fixed inset-0 animate-in bg-background/80 backdrop-blur-md fade-in"
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xl animate-in zoom-in-95 duration-150">
+      <div className="relative w-full max-w-2xl animate-in overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xl duration-150 zoom-in-95">
         <div className="flex items-center border-b border-border/60 px-4 py-3">
           <Search className="size-4 shrink-0 text-muted-foreground" />
           <input
@@ -175,7 +166,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                         : "hover:bg-muted/50"
                     )}
                   >
-                    <div className="flex items-start gap-3 min-w-0">
+                    <div className="flex min-w-0 items-start gap-3">
                       <div
                         className={cn(
                           "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg border",
@@ -190,7 +181,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                         <div className="flex flex-wrap items-center gap-1.5">
                           <h4
                             className={cn(
-                              "text-xs font-semibold leading-snug line-clamp-1",
+                              "line-clamp-1 text-xs leading-snug font-semibold",
                               isSelected ? "text-background" : "text-foreground"
                             )}
                           >
@@ -199,7 +190,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                           {post.featured && (
                             <span
                               className={cn(
-                                "rounded px-1.5 py-0.2 font-mono text-[9px] font-bold uppercase",
+                                "py-0.2 rounded px-1.5 font-mono text-[9px] font-bold uppercase",
                                 isSelected
                                   ? "bg-background/20 text-background"
                                   : "bg-primary/10 text-primary"
@@ -211,7 +202,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                         </div>
                         <p
                           className={cn(
-                            "text-[11px] line-clamp-1 leading-normal",
+                            "line-clamp-1 text-[11px] leading-normal",
                             isSelected
                               ? "text-background/80"
                               : "text-muted-foreground"
@@ -253,7 +244,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                           "size-3.5 transition-transform",
                           isSelected
                             ? "translate-x-0.5 text-background"
-                            : "opacity-0 text-muted-foreground group-hover:opacity-100"
+                            : "text-muted-foreground opacity-0 group-hover:opacity-100"
                         )}
                       />
                     </div>
@@ -267,16 +258,16 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
         <div className="flex items-center justify-between border-t border-border/60 bg-muted/20 px-4 py-2.5 text-[11px] text-muted-foreground">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-background px-1 py-0.2 font-mono text-[9px]">
+              <kbd className="py-0.2 rounded border border-border bg-background px-1 font-mono text-[9px]">
                 ↑
               </kbd>
-              <kbd className="rounded border border-border bg-background px-1 py-0.2 font-mono text-[9px]">
+              <kbd className="py-0.2 rounded border border-border bg-background px-1 font-mono text-[9px]">
                 ↓
               </kbd>
               <span>navigate</span>
             </span>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-background px-1 py-0.2 font-mono text-[9px]">
+              <kbd className="py-0.2 rounded border border-border bg-background px-1 font-mono text-[9px]">
                 ↵
               </kbd>
               <span>select</span>
@@ -284,7 +275,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
           </div>
 
           <span className="flex items-center gap-1">
-            <kbd className="rounded border border-border bg-background px-1 py-0.2 font-mono text-[9px]">
+            <kbd className="py-0.2 rounded border border-border bg-background px-1 font-mono text-[9px]">
               esc
             </kbd>
             <span>close</span>

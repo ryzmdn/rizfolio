@@ -55,7 +55,10 @@ export function validateEnvironment() {
     if (!process.env[config.key]) {
       if (config.fallback) {
         process.env[config.key] = config.fallback
-      } else if (process.env.NODE_ENV === "production" && config.requiredInProduction) {
+      } else if (
+        process.env.NODE_ENV === "production" &&
+        config.requiredInProduction
+      ) {
         console.error(
           `[Environment Validation Error]: Required environment variable '${config.key}' is missing.`
         )

@@ -1036,11 +1036,7 @@ export const API_ENDPOINTS_CATALOG: EndpointDefinition[] = [
     access: "Rate-Limited",
     requestBody: {
       contentType: "application/json",
-      sampleJson: JSON.stringify(
-        { email: "developer@example.com" },
-        null,
-        2
-      ),
+      sampleJson: JSON.stringify({ email: "developer@example.com" }, null, 2),
     },
     responseSample: {
       status: 200,

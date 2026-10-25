@@ -10,7 +10,9 @@ export interface InquiryAlertTemplateProps {
   cmsInboxUrl?: string
 }
 
-export function renderInquiryAlertEmail(props: InquiryAlertTemplateProps): string {
+export function renderInquiryAlertEmail(
+  props: InquiryAlertTemplateProps
+): string {
   const cmsUrl = props.cmsInboxUrl || "http://localhost:3004/inbox"
   const formattedDate = props.receivedAt
     ? new Date(props.receivedAt).toUTCString()

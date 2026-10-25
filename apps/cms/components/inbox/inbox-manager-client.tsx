@@ -458,7 +458,7 @@ export function InboxManagerClient({
                 <button
                   type="button"
                   onClick={handleOpenReplyModal}
-                  className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
                 >
                   <Send className="size-3" />
                   <span>Reply via Resend</span>
@@ -588,12 +588,10 @@ export function InboxManagerClient({
               <button
                 type="button"
                 disabled={
-                  isSendingReply ||
-                  !replySubject.trim() ||
-                  !replyContent.trim()
+                  isSendingReply || !replySubject.trim() || !replyContent.trim()
                 }
                 onClick={handleSendReply}
-                className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
               >
                 {isSendingReply ? (
                   <>

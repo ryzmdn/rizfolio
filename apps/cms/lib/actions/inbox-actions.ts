@@ -186,7 +186,8 @@ export async function sendInquiryReplyAction(
     if (!emailResult.success) {
       return {
         success: false,
-        error: emailResult.error || "Failed to dispatch email reply via Resend.",
+        error:
+          emailResult.error || "Failed to dispatch email reply via Resend.",
       }
     }
 
@@ -227,4 +228,3 @@ export async function sendInquiryReplyAction(
     }
   }
 }
-

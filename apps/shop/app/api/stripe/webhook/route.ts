@@ -3,7 +3,14 @@ import { revalidatePath } from "next/cache"
 import { randomBytes } from "crypto"
 import type Stripe from "stripe"
 import { stripe } from "@/lib/stripe"
-import { db, orders, orderItems, products, masterTransactions, eq } from "@workspace/db"
+import {
+  db,
+  orders,
+  orderItems,
+  products,
+  masterTransactions,
+  eq,
+} from "@workspace/db"
 import { sendOrderConfirmationEmail } from "@workspace/email"
 import { fallbackOrders } from "@/data"
 
@@ -40,7 +47,12 @@ export async function POST(request: NextRequest) {
 
   if (webhookSecret && signature && stripe) {
     try {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret, 300)
+      event = stripe.webhooks.constructEvent(
+        body,
+        signature,
+        webhookSecret,
+        300
+      )
     } catch (err) {
       console.error(
         "Stripe webhook signature verification failed:",
@@ -161,8 +173,7 @@ export async function POST(request: NextRequest) {
                 session.customer_details?.email || dbOrder.customerEmail
               if (customerEmail) {
                 await sendOrderConfirmationEmail({
-                  customerName:
-                    session.customer_details?.name || undefined,
+                  customerName: session.customer_details?.name || undefined,
                   customerEmail,
                   orderNumber,
                   orderDate: dbOrder.createdAt,
@@ -215,8 +226,7 @@ export async function POST(request: NextRequest) {
                 updatedAt: new Date(),
               })
               .where(eq(orders.orderNumber, orderNumber))
-          } catch {
-          }
+          } catch {}
 
           const memoryOrder = fallbackOrders.find(
             (o) => o.orderNumber === orderNumber

@@ -155,7 +155,7 @@ export function SettingsManagerClient({
       {feedback && (
         <div
           className={cn(
-            "flex items-center justify-between rounded-xl p-4 text-xs font-semibold shadow-sm transition-all animate-in fade-in slide-in-from-top-2",
+            "flex animate-in items-center justify-between rounded-xl p-4 text-xs font-semibold shadow-sm transition-all fade-in slide-in-from-top-2",
             feedback.type === "success"
               ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
               : "border border-destructive/30 bg-destructive/10 text-destructive"

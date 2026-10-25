@@ -14,9 +14,16 @@ describe("Stripe Webhook Signature & Replay Attack Defense", () => {
     type: "checkout.session.completed",
   })
 
-  function generateValidHeader(body: string, timestamp: number, webhookSecret: string): string {
+  function generateValidHeader(
+    body: string,
+    timestamp: number,
+    webhookSecret: string
+  ): string {
     const payload = `${timestamp}.${body}`
-    const sig = crypto.createHmac("sha256", webhookSecret).update(payload).digest("hex")
+    const sig = crypto
+      .createHmac("sha256", webhookSecret)
+      .update(payload)
+      .digest("hex")
     return `t=${timestamp},v1=${sig}`
   }
 

@@ -149,13 +149,12 @@ export async function getProfileSettings() {
       location: profileData?.location || "Jakarta, Indonesia",
       resumeUrl: profileData?.resumeUrl || "",
       status: profileData?.status || "available",
-      socialLinks:
-        (profileData?.socialLinks as Record<string, string>) || {
-          github: "https://github.com/ryzmdn",
-          linkedin: "https://linkedin.com/in/ryzmdn",
-          twitter: "https://twitter.com/ryzmdn",
-          website: "https://rizkyramadhan.dev",
-        },
+      socialLinks: (profileData?.socialLinks as Record<string, string>) || {
+        github: "https://github.com/ryzmdn",
+        linkedin: "https://linkedin.com/in/ryzmdn",
+        twitter: "https://twitter.com/ryzmdn",
+        website: "https://rizkyramadhan.dev",
+      },
       avatarUrl,
     }
   } catch (error) {

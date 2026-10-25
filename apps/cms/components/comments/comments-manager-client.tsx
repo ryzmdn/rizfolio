@@ -293,7 +293,7 @@ export function CommentsManagerClient({
       {feedback && (
         <div
           className={cn(
-            "flex items-center justify-between rounded-xl p-4 text-xs font-medium shadow-sm transition-all animate-in fade-in slide-in-from-top-2",
+            "flex animate-in items-center justify-between rounded-xl p-4 text-xs font-medium shadow-sm transition-all fade-in slide-in-from-top-2",
             feedback.type === "success"
               ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
               : "border border-destructive/30 bg-destructive/10 text-destructive"
@@ -320,7 +320,7 @@ export function CommentsManagerClient({
           </p>
         </div>
         <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 shadow-2xs">
-          <p className="text-[11px] font-medium text-amber-600 dark:text-amber-400 uppercase">
+          <p className="text-[11px] font-medium text-amber-600 uppercase dark:text-amber-400">
             Menunggu Review
           </p>
           <p className="mt-1 font-mono text-2xl font-bold text-amber-600 dark:text-amber-400">
@@ -328,7 +328,7 @@ export function CommentsManagerClient({
           </p>
         </div>
         <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 shadow-2xs">
-          <p className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 uppercase">
+          <p className="text-[11px] font-medium text-emerald-600 uppercase dark:text-emerald-400">
             Disetujui
           </p>
           <p className="mt-1 font-mono text-2xl font-bold text-emerald-600 dark:text-emerald-400">
@@ -336,7 +336,7 @@ export function CommentsManagerClient({
           </p>
         </div>
         <div className="rounded-xl border border-rose-500/30 bg-rose-500/5 p-4 shadow-2xs">
-          <p className="text-[11px] font-medium text-rose-600 dark:text-rose-400 uppercase">
+          <p className="text-[11px] font-medium text-rose-600 uppercase dark:text-rose-400">
             Terdeteksi Spam
           </p>
           <p className="mt-1 font-mono text-2xl font-bold text-rose-600 dark:text-rose-400">
@@ -344,7 +344,7 @@ export function CommentsManagerClient({
           </p>
         </div>
         <div className="col-span-2 rounded-xl border border-zinc-500/30 bg-zinc-500/5 p-4 shadow-2xs sm:col-span-1">
-          <p className="text-[11px] font-medium text-zinc-600 dark:text-zinc-400 uppercase">
+          <p className="text-[11px] font-medium text-zinc-600 uppercase dark:text-zinc-400">
             Ditolak
           </p>
           <p className="mt-1 font-mono text-2xl font-bold text-zinc-600 dark:text-zinc-400">
@@ -377,7 +377,7 @@ export function CommentsManagerClient({
                 <span>{tab.label}</span>
                 <span
                   className={cn(
-                    "rounded-full px-1.5 py-0.2 font-mono text-[10px]",
+                    "py-0.2 rounded-full px-1.5 font-mono text-[10px]",
                     isActive
                       ? "bg-background/20 text-background"
                       : "bg-muted text-muted-foreground"
@@ -403,7 +403,7 @@ export function CommentsManagerClient({
       </div>
 
       {selectedIds.length > 0 && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 p-3 animate-in fade-in slide-in-from-top-1">
+        <div className="flex animate-in flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 p-3 fade-in slide-in-from-top-1">
           <div className="flex items-center gap-2">
             <ShieldCheck className="size-4 text-primary" />
             <span className="text-xs font-semibold text-foreground">
@@ -416,7 +416,7 @@ export function CommentsManagerClient({
               type="button"
               disabled={isPending}
               onClick={() => handleBatchStatusChange("APPROVED")}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-500/20 dark:text-emerald-300 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-500/20 disabled:opacity-50 dark:text-emerald-300"
             >
               <CheckCircle2 className="size-3.5" />
               <span>Setujui Semua</span>
@@ -426,7 +426,7 @@ export function CommentsManagerClient({
               type="button"
               disabled={isPending}
               onClick={() => handleBatchStatusChange("SPAM")}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/40 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-700 hover:bg-rose-500/20 dark:text-rose-300 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-rose-500/40 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-700 hover:bg-rose-500/20 disabled:opacity-50 dark:text-rose-300"
             >
               <AlertTriangle className="size-3.5" />
               <span>Tandai Spam</span>
@@ -436,7 +436,7 @@ export function CommentsManagerClient({
               type="button"
               disabled={isPending}
               onClick={() => handleBatchStatusChange("REJECTED")}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-500/40 bg-zinc-500/10 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-500/20 dark:text-zinc-300 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-500/40 bg-zinc-500/10 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-500/20 disabled:opacity-50 dark:text-zinc-300"
             >
               <XCircle className="size-3.5" />
               <span>Tolak</span>
@@ -451,7 +451,7 @@ export function CommentsManagerClient({
                   type="button"
                   disabled={isPending}
                   onClick={handleBatchDelete}
-                  className="rounded bg-destructive px-2 py-0.5 text-[11px] font-semibold text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50"
+                  className="text-destructive-foreground rounded bg-destructive px-2 py-0.5 text-[11px] font-semibold hover:bg-destructive/90 disabled:opacity-50"
                 >
                   {isPending ? (
                     <Loader2 className="size-3 animate-spin" />
@@ -574,7 +574,7 @@ export function CommentsManagerClient({
                           <span className="font-medium text-foreground/80">
                             Artikel:
                           </span>
-                          <span className="truncate max-w-[220px] font-semibold text-foreground">
+                          <span className="max-w-[220px] truncate font-semibold text-foreground">
                             {comment.postTitle}
                           </span>
                           {comment.postSlug && (
@@ -605,7 +605,7 @@ export function CommentsManagerClient({
 
                   <div className="flex-1 px-0 sm:px-6">
                     <div className="rounded-xl border border-border/60 bg-muted/20 p-3 text-xs leading-relaxed text-foreground">
-                      <p className="whitespace-pre-wrap break-words">
+                      <p className="break-words whitespace-pre-wrap">
                         {isExpanded || comment.content.length <= 160
                           ? comment.content
                           : `${comment.content.slice(0, 160)}...`}
@@ -616,9 +616,7 @@ export function CommentsManagerClient({
                           onClick={() => toggleExpand(comment.id)}
                           className="mt-1 text-[11px] font-semibold text-primary hover:underline"
                         >
-                          {isExpanded
-                            ? "Sembunyikan"
-                            : "Baca selengkapnya..."}
+                          {isExpanded ? "Sembunyikan" : "Baca selengkapnya..."}
                         </button>
                       )}
                     </div>
@@ -671,7 +669,7 @@ export function CommentsManagerClient({
                           type="button"
                           disabled={isPending}
                           onClick={() => handleDeleteSingle(comment.id)}
-                          className="rounded bg-destructive px-2 py-0.5 text-[10px] font-semibold text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50"
+                          className="text-destructive-foreground rounded bg-destructive px-2 py-0.5 text-[10px] font-semibold hover:bg-destructive/90 disabled:opacity-50"
                         >
                           {isPending ? (
                             <Loader2 className="size-3 animate-spin" />

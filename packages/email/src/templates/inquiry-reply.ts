@@ -7,13 +7,17 @@ export interface InquiryReplyTemplateProps {
   portfolioUrl?: string
 }
 
-export function renderInquiryReplyEmail(props: InquiryReplyTemplateProps): string {
+export function renderInquiryReplyEmail(
+  props: InquiryReplyTemplateProps
+): string {
   const senderName = props.senderName || "Rizky Ramadhan"
   const portfolioUrl = props.portfolioUrl || "https://rizfolio.dev"
   const safeClientName = escapeHtml(props.clientName)
   const safeSubject = escapeHtml(props.replySubject)
   const safeReply = escapeHtml(props.replyContent).replace(/\n/g, "<br>")
-  const safeOriginal = props.originalMessage ? escapeHtml(props.originalMessage) : null
+  const safeOriginal = props.originalMessage
+    ? escapeHtml(props.originalMessage)
+    : null
 
   return `<!DOCTYPE html>
 <html lang="en">

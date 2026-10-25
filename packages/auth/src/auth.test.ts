@@ -163,7 +163,9 @@ describe("Download Token Regex & Format Validation", () => {
   it("should validate secure tokens and reject malicious payloads", () => {
     expect(SECURE_TOKEN_REGEX.test("a".repeat(32))).toBe(true)
     expect(SECURE_TOKEN_REGEX.test("a".repeat(64))).toBe(true)
-    expect(SECURE_TOKEN_REGEX.test("e4b3c2a1-5d6e-7f8a-9b0c-1d2e3f4a5b6c")).toBe(true)
+    expect(
+      SECURE_TOKEN_REGEX.test("e4b3c2a1-5d6e-7f8a-9b0c-1d2e3f4a5b6c")
+    ).toBe(true)
 
     expect(SECURE_TOKEN_REGEX.test("short")).toBe(false)
     expect(SECURE_TOKEN_REGEX.test("' OR '1'='1")).toBe(false)

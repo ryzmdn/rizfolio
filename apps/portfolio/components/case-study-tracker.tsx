@@ -8,10 +8,7 @@ interface CaseStudyTrackerProps {
   slug: string
 }
 
-export function CaseStudyTracker({
-  caseStudyId,
-  slug,
-}: CaseStudyTrackerProps) {
+export function CaseStudyTracker({ caseStudyId, slug }: CaseStudyTrackerProps) {
   const hasTriggeredRef = useRef(false)
 
   useEffect(() => {

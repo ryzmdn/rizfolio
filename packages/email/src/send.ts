@@ -1,8 +1,4 @@
-import {
-  sendEmail,
-  DEFAULT_OWNER_EMAIL,
-  type SendEmailResult,
-} from "./client"
+import { sendEmail, DEFAULT_OWNER_EMAIL, type SendEmailResult } from "./client"
 import {
   renderInquiryAlertEmail,
   type InquiryAlertTemplateProps,

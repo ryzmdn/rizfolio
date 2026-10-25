@@ -355,8 +355,7 @@ export async function submitPostCommentAction(
   } catch (error) {
     return {
       success: false,
-      error:
-        error instanceof Error ? error.message : "Failed to post comment.",
+      error: error instanceof Error ? error.message : "Failed to post comment.",
     }
   }
 }

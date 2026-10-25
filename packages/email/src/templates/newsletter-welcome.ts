@@ -9,7 +9,9 @@ export function renderNewsletterWelcomeEmail(
   props: NewsletterWelcomeTemplateProps
 ): string {
   const blogUrl = props.blogUrl || "http://localhost:3001"
-  const safeName = props.subscriberName ? escapeHtml(props.subscriberName) : "Reader"
+  const safeName = props.subscriberName
+    ? escapeHtml(props.subscriberName)
+    : "Reader"
   const safeEmail = escapeHtml(props.email)
 
   return `<!DOCTYPE html>
