@@ -120,7 +120,11 @@ async function fetchPublishedPosts({
             desc(sql`coalesce(${postViews.viewCount}, 0)`),
             desc(posts.publishedAt),
           ]
-        : [desc(posts.publishedAt), desc(posts.createdAt)]
+        : [
+            desc(posts.isFeatured),
+            desc(posts.publishedAt),
+            desc(posts.createdAt),
+          ]
 
     const [rows, countRows] = await Promise.all([
       baseQuery

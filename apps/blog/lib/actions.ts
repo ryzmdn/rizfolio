@@ -5,11 +5,15 @@ import {
   postViews,
   postReactions,
   newsletterSubscribers,
+  postComments,
   masterTransactions,
   sql,
   eq,
+  and,
+  asc,
 } from "@workspace/db"
 import { sendNewsletterWelcomeEmail } from "@workspace/email"
+import { getPublishedPosts, type BlogPostItem } from "./queries"
 
 export async function incrementPostView(
   postId: string
@@ -124,7 +128,8 @@ export async function subscribeNewsletterAction(
           entityId: subscriber.id,
           metadata: { email, source: "BLOG_FOOTER" },
         })
-      } catch {
+      } catch (auditError) {
+        void auditError
       }
 
       try {
@@ -177,7 +182,7 @@ export async function togglePostReactionAction(
       .where(eq(postReactions.postId, postId))
       .limit(1)
 
-    let currentCount = existing[0]?.count ?? 12
+    const currentCount = existing[0]?.count ?? 12
 
     if (existing.length === 0) {
       const initialCount = increment ? 13 : 12
@@ -236,5 +241,137 @@ export async function getPostReactionCount(postId: string): Promise<number> {
     return rows[0]?.count ?? 12
   } catch {
     return 12
+  }
+}
+
+export interface CommentItem {
+  id: string
+  postId: string
+  parentId: string | null
+  authorName: string
+  content: string
+  createdAt: Date | string
+}
+
+export async function getPostCommentsAction(
+  postId: string
+): Promise<CommentItem[]> {
+  if (!postId) return []
+  try {
+    const rows = await db
+      .select({
+        id: postComments.id,
+        postId: postComments.postId,
+        parentId: postComments.parentId,
+        authorName: postComments.authorName,
+        content: postComments.content,
+        createdAt: postComments.createdAt,
+      })
+      .from(postComments)
+      .where(
+        and(
+          eq(postComments.postId, postId),
+          eq(postComments.status, "APPROVED")
+        )
+      )
+      .orderBy(asc(postComments.createdAt))
+
+    return rows
+  } catch (err) {
+    console.warn("[Blog Actions] Failed to fetch comments:", err)
+    return []
+  }
+}
+
+export interface SubmitCommentInput {
+  postId: string
+  authorName: string
+  authorEmail: string
+  content: string
+  parentId?: string | null
+}
+
+export async function submitPostCommentAction(
+  input: SubmitCommentInput
+): Promise<{ success: boolean; comment?: CommentItem; error?: string }> {
+  const name = input.authorName?.trim()
+  const email = input.authorEmail?.trim()?.toLowerCase()
+  const content = input.content?.trim()
+  const postId = input.postId
+
+  if (!postId) return { success: false, error: "Post ID is required." }
+  if (!name || name.length < 2) {
+    return { success: false, error: "Name must be at least 2 characters." }
+  }
+  if (!email || !email.includes("@")) {
+    return { success: false, error: "Please enter a valid email address." }
+  }
+  if (!content || content.length < 3) {
+    return { success: false, error: "Comment must be at least 3 characters." }
+  }
+
+  try {
+    const [inserted] = await db
+      .insert(postComments)
+      .values({
+        postId,
+        parentId: input.parentId || null,
+        authorName: name,
+        authorEmail: email,
+        content,
+        status: "APPROVED",
+      })
+      .returning({
+        id: postComments.id,
+        postId: postComments.postId,
+        parentId: postComments.parentId,
+        authorName: postComments.authorName,
+        content: postComments.content,
+        createdAt: postComments.createdAt,
+      })
+
+    if (inserted) {
+      try {
+        await db.insert(masterTransactions).values({
+          trxNumber: `CMT-${Date.now().toString(36).toUpperCase()}`,
+          domain: "CONTENT",
+          actionType: "COMMENT_CREATED",
+          status: "COMPLETED",
+          actorType: "CUSTOMER",
+          entityType: "post_comments",
+          entityId: inserted.id,
+          postId,
+          metadata: { authorName: name, authorEmail: email },
+        })
+      } catch (auditError) {
+        void auditError
+      }
+    }
+
+    return {
+      success: true,
+      comment: inserted,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to post comment.",
+    }
+  }
+}
+
+export async function searchBlogPostsAction(
+  searchQuery: string
+): Promise<BlogPostItem[]> {
+  if (!searchQuery || !searchQuery.trim()) return []
+  try {
+    const { posts } = await getPublishedPosts({
+      query: searchQuery.trim(),
+      limit: 8,
+    })
+    return posts
+  } catch {
+    return []
   }
 }

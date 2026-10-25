@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X, Rss, ArrowUpRight } from "lucide-react"
+import { Menu, X, Rss, ArrowUpRight, Search } from "lucide-react"
 import { Header } from "@workspace/ui/components/layouts"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 import { cn } from "@workspace/ui/lib/utils"
+import { SearchModal } from "./search-modal"
 
 const navItems = [
   { href: "/", label: "All" },
@@ -18,8 +19,29 @@ const navItems = [
 export function BlogHeader() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const portfolioUrl =
     process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://rizkyramadhan.dev"
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault()
+        setSearchOpen((prev) => !prev)
+      } else if (
+        e.key === "/" &&
+        !["INPUT", "TEXTAREA"].includes(
+          (document.activeElement?.tagName || "").toUpperCase()
+        )
+      ) {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
 
   useEffect(() => {
     let rafId: number | null = null
@@ -83,6 +105,19 @@ export function BlogHeader() {
         </nav>
 
         <div className="flex items-center gap-x-1.5">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search articles (Cmd+K or /)"
+            className="inline-flex items-center gap-2 rounded-md border border-border/60 bg-muted/40 px-2.5 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted hover:text-foreground"
+          >
+            <Search className="size-3.5" />
+            <span className="hidden lg:inline text-[11px]">Search...</span>
+            <kbd className="hidden rounded border border-border/70 bg-background/80 px-1 py-0.2 font-mono text-[9px] sm:inline-block">
+              ⌘K
+            </kbd>
+          </button>
+
           <a
             href="/rss.xml"
             target="_blank"
@@ -120,6 +155,11 @@ export function BlogHeader() {
           </button>
         </div>
       </div>
+
+      <SearchModal
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+      />
 
       {mobileOpen && (
         <div className="border-t border-border/50 bg-background/98 backdrop-blur-xl md:hidden">

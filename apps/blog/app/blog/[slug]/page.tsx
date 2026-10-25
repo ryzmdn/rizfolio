@@ -17,6 +17,7 @@ import { ShareToolbar } from "@/components/share-toolbar"
 import { PostReactions } from "@/components/post-reactions"
 import { AuthorBio } from "@/components/author-bio"
 import { PostNavigation } from "@/components/post-navigation"
+import { CommentsSection } from "@/components/comments-section"
 import { ArrowLeft, Calendar, Clock, Eye, ChevronRight } from "lucide-react"
 import { getPostReactionCount } from "@/lib/actions"
 import {
@@ -308,6 +309,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <AuthorBio />
 
               <PostNavigation prev={adjacent.prev} next={adjacent.next} />
+
+              <CommentsSection postId={post.id} postSlug={post.slug} />
             </div>
 
             <aside className="hidden lg:col-span-4 lg:block">
