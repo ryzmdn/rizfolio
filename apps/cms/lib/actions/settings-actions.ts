@@ -102,7 +102,7 @@ export async function updateSiteSettings(
 
   await db.transaction(async (tx) => {
     const [existing] = await tx
-      .select({ id: siteSettings.id })
+      .select({ key: siteSettings.key })
       .from(siteSettings)
       .where(eq(siteSettings.key, key))
       .limit(1)
@@ -219,7 +219,7 @@ export async function updateProfileSettingsAction(
       }
     }
 
-    const profileValues = insertProfileSchema.partial().parse({
+    const profileValues = insertProfileSchema.parse({
       fullName: input.fullName.trim(),
       headline: input.headline.trim(),
       bio: input.bio.trim(),
