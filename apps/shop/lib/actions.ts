@@ -8,6 +8,7 @@ import {
   productReviews,
   products,
   eq,
+  and,
   inArray,
 } from "@workspace/db"
 import {
@@ -59,12 +60,14 @@ export interface SubmitReviewInput {
   authorRole?: string
   rating: number
   content: string
+  customerEmail?: string
 }
 
 export interface SubmitReviewResult {
   success: boolean
   review?: ProductReview
   error?: string
+  status?: "APPROVED" | "PENDING"
 }
 
 function generateRandomNumber(): string {
@@ -335,15 +338,44 @@ export async function submitReviewAction(
     return { success: false, error: "Rating must be between 1 and 5 stars." }
   }
 
+  let isVerified = false
+  if (input.customerEmail && input.customerEmail.trim()) {
+    try {
+      const email = input.customerEmail.trim().toLowerCase()
+      const verifiedOrders = await db
+        .select({ id: orders.id })
+        .from(orders)
+        .innerJoin(orderItems, eq(orders.id, orderItems.orderId))
+        .innerJoin(products, eq(orderItems.productId, products.id))
+        .where(
+          and(
+            eq(orders.customerEmail, email),
+            eq(products.slug, input.productSlug),
+            inArray(orders.status, ["PAID", "COMPLETED"])
+          )
+        )
+        .limit(1)
+
+      if (verifiedOrders.length > 0) {
+        isVerified = true
+      }
+    } catch {
+      isVerified = false
+    }
+  }
+
+  const reviewStatus = isVerified ? "APPROVED" : "PENDING"
+  const defaultRole = isVerified ? "Verified Developer" : "Community Reviewer"
+
   const newReview: ProductReview = {
     id: `rev-${randomBytes(6).toString("hex")}`,
     productSlug: input.productSlug,
     authorName: name,
-    authorRole: input.authorRole?.trim() || "Verified Developer",
+    authorRole: input.authorRole?.trim() || defaultRole,
     rating: Math.round(input.rating),
     content,
     createdAt: new Date().toISOString(),
-    verifiedPurchase: true,
+    verifiedPurchase: isVerified,
   }
 
   try {
@@ -352,11 +384,11 @@ export async function submitReviewAction(
       .values({
         productSlug: input.productSlug,
         authorName: name,
-        authorRole: input.authorRole?.trim() || "Verified Developer",
+        authorRole: input.authorRole?.trim() || defaultRole,
         rating: Math.round(input.rating),
         content,
-        verifiedPurchase: true,
-        status: "APPROVED",
+        verifiedPurchase: isVerified,
+        status: reviewStatus,
       })
       .returning()
 
@@ -377,11 +409,11 @@ export async function submitReviewAction(
             productSlug: input.productSlug,
             rating: Math.round(input.rating),
             author: name,
+            verifiedPurchase: isVerified,
+            status: reviewStatus,
           },
         })
-      } catch {
-        // Non-blocking audit record
-      }
+      } catch {}
     }
   } catch (error) {
     console.warn(
@@ -390,10 +422,13 @@ export async function submitReviewAction(
     )
   }
 
-  fallbackReviews.unshift(newReview)
+  if (isVerified) {
+    fallbackReviews.unshift(newReview)
+  }
 
   return {
     success: true,
+    status: reviewStatus,
     review: newReview,
   }
 }

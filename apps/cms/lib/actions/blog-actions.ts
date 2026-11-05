@@ -8,6 +8,11 @@ import {
   postCategories,
   postTags,
 } from "@workspace/db/schema"
+import {
+  insertPostSchema,
+  insertCategorySchema,
+  insertTagSchema,
+} from "@workspace/db"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 import { dispatchBackgroundRevalidation } from "../revalidate"
@@ -103,29 +108,36 @@ export async function getPostById(id: string) {
 }
 
 export async function createPost(input: CreatePostInput) {
-  const { categoryIds, tagIds, ...postValues } = input
+  const { categoryIds, tagIds, ...rawPostValues } = input
+  const postValues = insertPostSchema.parse(rawPostValues)
 
-  const [created] = await db.insert(posts).values(postValues).returning()
+  const created = await db.transaction(async (tx) => {
+    const [inserted] = await tx.insert(posts).values(postValues).returning()
+
+    if (inserted) {
+      if (categoryIds && categoryIds.length > 0) {
+        await tx.insert(postCategories).values(
+          categoryIds.map((categoryId) => ({
+            postId: inserted.id,
+            categoryId,
+          }))
+        )
+      }
+
+      if (tagIds && tagIds.length > 0) {
+        await tx.insert(postTags).values(
+          tagIds.map((tagId) => ({
+            postId: inserted.id,
+            tagId,
+          }))
+        )
+      }
+    }
+
+    return inserted
+  })
 
   if (created) {
-    if (categoryIds && categoryIds.length > 0) {
-      await db.insert(postCategories).values(
-        categoryIds.map((categoryId) => ({
-          postId: created.id,
-          categoryId,
-        }))
-      )
-    }
-
-    if (tagIds && tagIds.length > 0) {
-      await db.insert(postTags).values(
-        tagIds.map((tagId) => ({
-          postId: created.id,
-          tagId,
-        }))
-      )
-    }
-
     logTransaction({
       domain: "CONTENT",
       actionType:
@@ -148,39 +160,46 @@ export async function createPost(input: CreatePostInput) {
 }
 
 export async function updatePost(id: string, input: UpdatePostInput) {
-  const { categoryIds, tagIds, ...postValues } = input
+  const { categoryIds, tagIds, ...rawPostValues } = input
+  const postValues = insertPostSchema.partial().parse(rawPostValues)
 
-  const [updated] = await db
-    .update(posts)
-    .set({ ...postValues, updatedAt: new Date() })
-    .where(eq(posts.id, id))
-    .returning()
+  const updated = await db.transaction(async (tx) => {
+    const [saved] = await tx
+      .update(posts)
+      .set({ ...postValues, updatedAt: new Date() })
+      .where(eq(posts.id, id))
+      .returning()
+
+    if (saved) {
+      if (Array.isArray(categoryIds)) {
+        await tx.delete(postCategories).where(eq(postCategories.postId, id))
+        if (categoryIds.length > 0) {
+          await tx.insert(postCategories).values(
+            categoryIds.map((categoryId) => ({
+              postId: id,
+              categoryId,
+            }))
+          )
+        }
+      }
+
+      if (Array.isArray(tagIds)) {
+        await tx.delete(postTags).where(eq(postTags.postId, id))
+        if (tagIds.length > 0) {
+          await tx.insert(postTags).values(
+            tagIds.map((tagId) => ({
+              postId: id,
+              tagId,
+            }))
+          )
+        }
+      }
+    }
+
+    return saved
+  })
 
   if (updated) {
-    if (Array.isArray(categoryIds)) {
-      await db.delete(postCategories).where(eq(postCategories.postId, id))
-      if (categoryIds.length > 0) {
-        await db.insert(postCategories).values(
-          categoryIds.map((categoryId) => ({
-            postId: id,
-            categoryId,
-          }))
-        )
-      }
-    }
-
-    if (Array.isArray(tagIds)) {
-      await db.delete(postTags).where(eq(postTags.postId, id))
-      if (tagIds.length > 0) {
-        await db.insert(postTags).values(
-          tagIds.map((tagId) => ({
-            postId: id,
-            tagId,
-          }))
-        )
-      }
-    }
-
     logTransaction({
       domain: "CONTENT",
       actionType: "POST_UPDATED",
@@ -234,7 +253,8 @@ export async function getBlogCategories() {
 export async function createBlogCategory(
   values: typeof categories.$inferInsert
 ) {
-  const [created] = await db.insert(categories).values(values).returning()
+  const validated = insertCategorySchema.parse(values)
+  const [created] = await db.insert(categories).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "CONTENT",
@@ -275,7 +295,8 @@ export async function getBlogTags() {
 }
 
 export async function createBlogTag(values: typeof tags.$inferInsert) {
-  const [created] = await db.insert(tags).values(values).returning()
+  const validated = insertTagSchema.parse(values)
+  const [created] = await db.insert(tags).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "CONTENT",

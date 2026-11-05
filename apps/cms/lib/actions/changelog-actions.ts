@@ -2,6 +2,11 @@
 
 import { db, eq, desc, asc } from "@workspace/db"
 import { changelogs, changelogItems, roadmapItems } from "@workspace/db/schema"
+import {
+  insertChangelogSchema,
+  insertChangelogItemSchema,
+  insertRoadmapItemSchema,
+} from "@workspace/db"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 import { dispatchBackgroundRevalidation } from "../revalidate"
@@ -53,7 +58,8 @@ export async function getChangelogById(id: string) {
 }
 
 export async function createChangelog(values: CreateChangelogInput) {
-  const [created] = await db.insert(changelogs).values(values).returning()
+  const validated = insertChangelogSchema.parse(values)
+  const [created] = await db.insert(changelogs).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "SYSTEM",
@@ -75,9 +81,10 @@ export async function updateChangelog(
   id: string,
   values: UpdateChangelogInput
 ) {
+  const validated = insertChangelogSchema.partial().parse(values)
   const [updated] = await db
     .update(changelogs)
-    .set(values)
+    .set(validated)
     .where(eq(changelogs.id, id))
     .returning()
   if (updated) {
@@ -88,7 +95,7 @@ export async function updateChangelog(
       entityType: "changelogs",
       entityId: updated.id,
       changelogId: updated.id,
-      payloadAfter: values,
+      payloadAfter: validated,
     })
     dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   }
@@ -150,7 +157,8 @@ export async function getChangelogItems(changelogId: string) {
 }
 
 export async function createChangelogItem(values: CreateChangelogItemInput) {
-  const [created] = await db.insert(changelogItems).values(values).returning()
+  const validated = insertChangelogItemSchema.parse(values)
+  const [created] = await db.insert(changelogItems).values(validated).returning()
   dispatchBackgroundRevalidation({ app: "changelog", path: "/" })
   revalidatePath("/changelog")
   return created
@@ -190,7 +198,8 @@ export async function getRoadmapItems() {
 }
 
 export async function createRoadmapItem(values: CreateRoadmapItemInput) {
-  const [created] = await db.insert(roadmapItems).values(values).returning()
+  const validated = insertRoadmapItemSchema.parse(values)
+  const [created] = await db.insert(roadmapItems).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "SYSTEM",
@@ -210,9 +219,10 @@ export async function updateRoadmapItem(
   id: string,
   values: UpdateRoadmapItemInput
 ) {
+  const validated = insertRoadmapItemSchema.partial().parse(values)
   const [updated] = await db
     .update(roadmapItems)
-    .set({ ...values, updatedAt: new Date() })
+    .set({ ...validated, updatedAt: new Date() })
     .where(eq(roadmapItems.id, id))
     .returning()
   if (updated) {
@@ -222,7 +232,7 @@ export async function updateRoadmapItem(
       status: "COMPLETED",
       entityType: "roadmap_items",
       entityId: updated.id,
-      payloadAfter: values,
+      payloadAfter: validated,
     })
     dispatchBackgroundRevalidation({ app: "changelog", path: "/roadmap" })
   }

@@ -10,6 +10,15 @@ import {
   caseStudies,
   testimonials,
 } from "@workspace/db/schema"
+import {
+  insertProfileSchema,
+  insertExperienceSchema,
+  insertEducationSchema,
+  insertCertificationSchema,
+  insertServiceSchema,
+  insertCaseStudySchema,
+  insertTestimonialSchema,
+} from "@workspace/db"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 import { dispatchBackgroundRevalidation } from "../revalidate"
@@ -35,30 +44,36 @@ export async function getProfile() {
 }
 
 export async function upsertProfile(values: typeof profile.$inferInsert) {
-  const existing = await getProfile()
-  if (existing) {
-    await db.update(profile).set(values).where(eq(profile.id, existing.id))
-    logTransaction({
-      domain: "PORTFOLIO",
-      actionType: "PROFILE_UPDATED",
-      status: "COMPLETED",
-      entityType: "profile",
-      entityId: existing.id,
-      payloadAfter: values,
-    })
-  } else {
-    const [inserted] = await db.insert(profile).values(values).returning()
-    if (inserted) {
+  const validated = insertProfileSchema.partial().parse(values)
+  await db.transaction(async (tx) => {
+    const [existing] = await tx.select().from(profile).limit(1)
+    if (existing) {
+      await tx.update(profile).set(validated).where(eq(profile.id, existing.id))
       logTransaction({
         domain: "PORTFOLIO",
-        actionType: "PROFILE_CREATED",
+        actionType: "PROFILE_UPDATED",
         status: "COMPLETED",
         entityType: "profile",
-        entityId: inserted.id,
-        payloadAfter: values,
+        entityId: existing.id,
+        payloadAfter: validated,
       })
+    } else {
+      const [inserted] = await tx
+        .insert(profile)
+        .values(validated as typeof profile.$inferInsert)
+        .returning()
+      if (inserted) {
+        logTransaction({
+          domain: "PORTFOLIO",
+          actionType: "PROFILE_CREATED",
+          status: "COMPLETED",
+          entityType: "profile",
+          entityId: inserted.id,
+          payloadAfter: validated,
+        })
+      }
     }
-  }
+  })
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
@@ -82,7 +97,8 @@ export async function getExperiences() {
 export async function createExperience(
   values: typeof experiences.$inferInsert
 ) {
-  const [created] = await db.insert(experiences).values(values).returning()
+  const validated = insertExperienceSchema.parse(values)
+  const [created] = await db.insert(experiences).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "PORTFOLIO",
@@ -103,14 +119,15 @@ export async function updateExperience(
   id: string,
   values: Partial<typeof experiences.$inferInsert>
 ) {
-  await db.update(experiences).set(values).where(eq(experiences.id, id))
+  const validated = insertExperienceSchema.partial().parse(values)
+  await db.update(experiences).set(validated).where(eq(experiences.id, id))
   logTransaction({
     domain: "PORTFOLIO",
     actionType: "EXPERIENCE_UPDATED",
     status: "COMPLETED",
     entityType: "experiences",
     entityId: id,
-    payloadAfter: values,
+    payloadAfter: validated,
   })
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
@@ -147,7 +164,8 @@ export async function getEducation() {
 }
 
 export async function createEducation(values: typeof education.$inferInsert) {
-  const [created] = await db.insert(education).values(values).returning()
+  const validated = insertEducationSchema.parse(values)
+  const [created] = await db.insert(education).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "PORTFOLIO",
@@ -167,7 +185,8 @@ export async function updateEducation(
   id: string,
   values: Partial<typeof education.$inferInsert>
 ) {
-  await db.update(education).set(values).where(eq(education.id, id))
+  const validated = insertEducationSchema.partial().parse(values)
+  await db.update(education).set(validated).where(eq(education.id, id))
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
@@ -198,7 +217,8 @@ export async function getCertifications() {
 export async function createCertification(
   values: typeof certifications.$inferInsert
 ) {
-  const [created] = await db.insert(certifications).values(values).returning()
+  const validated = insertCertificationSchema.parse(values)
+  const [created] = await db.insert(certifications).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "PORTFOLIO",
@@ -219,7 +239,8 @@ export async function updateCertification(
   id: string,
   values: Partial<typeof certifications.$inferInsert>
 ) {
-  await db.update(certifications).set(values).where(eq(certifications.id, id))
+  const validated = insertCertificationSchema.partial().parse(values)
+  await db.update(certifications).set(validated).where(eq(certifications.id, id))
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
@@ -245,7 +266,8 @@ export async function getServices() {
 }
 
 export async function createService(values: typeof services.$inferInsert) {
-  const [created] = await db.insert(services).values(values).returning()
+  const validated = insertServiceSchema.parse(values)
+  const [created] = await db.insert(services).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "PORTFOLIO",
@@ -267,7 +289,8 @@ export async function updateService(
   id: string,
   values: Partial<typeof services.$inferInsert>
 ) {
-  await db.update(services).set(values).where(eq(services.id, id))
+  const validated = insertServiceSchema.partial().parse(values)
+  await db.update(services).set(validated).where(eq(services.id, id))
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
@@ -296,7 +319,8 @@ export async function getCaseStudies() {
 }
 
 export async function createCaseStudy(values: typeof caseStudies.$inferInsert) {
-  const [created] = await db.insert(caseStudies).values(values).returning()
+  const validated = insertCaseStudySchema.parse(values)
+  const [created] = await db.insert(caseStudies).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "PORTFOLIO",
@@ -320,7 +344,8 @@ export async function updateCaseStudy(
   id: string,
   values: Partial<typeof caseStudies.$inferInsert>
 ) {
-  await db.update(caseStudies).set(values).where(eq(caseStudies.id, id))
+  const validated = insertCaseStudySchema.partial().parse(values)
+  await db.update(caseStudies).set(validated).where(eq(caseStudies.id, id))
   logTransaction({
     domain: "PORTFOLIO",
     actionType: "CASE_STUDY_UPDATED",
@@ -328,7 +353,7 @@ export async function updateCaseStudy(
     entityType: "case_studies",
     entityId: id,
     caseStudyId: id,
-    payloadAfter: values,
+    payloadAfter: validated,
   })
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
@@ -368,7 +393,8 @@ export async function getTestimonials() {
 export async function createTestimonial(
   values: typeof testimonials.$inferInsert
 ) {
-  const [created] = await db.insert(testimonials).values(values).returning()
+  const validated = insertTestimonialSchema.parse(values)
+  const [created] = await db.insert(testimonials).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "PORTFOLIO",
@@ -388,7 +414,8 @@ export async function updateTestimonial(
   id: string,
   values: Partial<typeof testimonials.$inferInsert>
 ) {
-  await db.update(testimonials).set(values).where(eq(testimonials.id, id))
+  const validated = insertTestimonialSchema.partial().parse(values)
+  await db.update(testimonials).set(validated).where(eq(testimonials.id, id))
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")

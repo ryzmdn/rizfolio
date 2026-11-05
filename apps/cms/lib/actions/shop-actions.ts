@@ -8,6 +8,11 @@ import {
   orderItems,
   coupons,
 } from "@workspace/db/schema"
+import {
+  insertProductSchema,
+  insertProductFileSchema,
+  insertCouponSchema,
+} from "@workspace/db"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 import { dispatchBackgroundRevalidation } from "../revalidate"
@@ -65,7 +70,8 @@ export async function getProductById(id: string) {
 }
 
 export async function createProduct(values: CreateProductInput) {
-  const [created] = await db.insert(products).values(values).returning()
+  const validated = insertProductSchema.parse(values)
+  const [created] = await db.insert(products).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "COMMERCE",
@@ -86,9 +92,10 @@ export async function createProduct(values: CreateProductInput) {
 }
 
 export async function updateProduct(id: string, values: UpdateProductInput) {
+  const validated = insertProductSchema.partial().parse(values)
   const [updated] = await db
     .update(products)
-    .set({ ...values, updatedAt: new Date() })
+    .set({ ...validated, updatedAt: new Date() })
     .where(eq(products.id, id))
     .returning()
   if (updated) {
@@ -101,7 +108,7 @@ export async function updateProduct(id: string, values: UpdateProductInput) {
       productId: updated.id,
       amount: updated.price,
       currency: updated.currency,
-      payloadAfter: values,
+      payloadAfter: validated,
     })
     if (updated.slug) {
       dispatchBackgroundRevalidation([
@@ -175,7 +182,8 @@ export async function getProductFiles(productId: string) {
 }
 
 export async function createProductFile(values: CreateProductFileInput) {
-  const [created] = await db.insert(productFiles).values(values).returning()
+  const validated = insertProductFileSchema.parse(values)
+  const [created] = await db.insert(productFiles).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "COMMERCE",
@@ -324,7 +332,8 @@ export async function getCoupons() {
 }
 
 export async function createCoupon(values: CreateCouponInput) {
-  const [created] = await db.insert(coupons).values(values).returning()
+  const validated = insertCouponSchema.parse(values)
+  const [created] = await db.insert(coupons).values(validated).returning()
   if (created) {
     logTransaction({
       domain: "COMMERCE",
@@ -344,9 +353,10 @@ export async function createCoupon(values: CreateCouponInput) {
 }
 
 export async function updateCoupon(id: string, values: UpdateCouponInput) {
+  const validated = insertCouponSchema.partial().parse(values)
   const [updated] = await db
     .update(coupons)
-    .set({ ...values, updatedAt: new Date() })
+    .set({ ...validated, updatedAt: new Date() })
     .where(eq(coupons.id, id))
     .returning()
   if (updated) {
@@ -356,7 +366,7 @@ export async function updateCoupon(id: string, values: UpdateCouponInput) {
       status: "COMPLETED",
       entityType: "coupons",
       entityId: updated.id,
-      payloadAfter: values,
+      payloadAfter: validated,
     })
     dispatchBackgroundRevalidation({ app: "shop", path: "/" })
   }

@@ -1,6 +1,14 @@
 "use server"
 
-import { db, desc, eq, and, ilike, or } from "@workspace/db"
+import {
+  db,
+  desc,
+  eq,
+  and,
+  ilike,
+  or,
+  masterTransactions,
+} from "@workspace/db"
 import { inquiries, type Inquiry } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { recordTransaction } from "./transaction-actions"
@@ -74,23 +82,28 @@ export async function updateInquiryStatusAction(
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const isResponded = status === "RESPONDED"
-    await db
-      .update(inquiries)
-      .set({
-        status,
-        replyNotes: replyNotes !== undefined ? replyNotes : undefined,
-        respondedAt: isResponded ? new Date() : undefined,
-      })
-      .where(eq(inquiries.id, id))
 
-    await recordTransaction({
-      domain: "PORTFOLIO",
-      actionType: "INQUIRY_STATUS_UPDATED",
-      status: "COMPLETED",
-      actorType: "OWNER",
-      entityType: "INQUIRY",
-      entityId: id,
-      metadata: { newStatus: status, replyNotes },
+    await db.transaction(async (tx) => {
+      await tx
+        .update(inquiries)
+        .set({
+          status,
+          replyNotes: replyNotes !== undefined ? replyNotes : undefined,
+          respondedAt: isResponded ? new Date() : undefined,
+        })
+        .where(eq(inquiries.id, id))
+
+      const trxNumber = `TRX-POR-${Date.now().toString(36).toUpperCase()}`
+      await tx.insert(masterTransactions).values({
+        trxNumber,
+        domain: "PORTFOLIO",
+        actionType: "INQUIRY_STATUS_UPDATED",
+        status: "COMPLETED",
+        actorType: "OWNER",
+        entityType: "INQUIRY",
+        entityId: id,
+        metadata: { newStatus: status, replyNotes },
+      })
     })
 
     revalidatePath("/inbox")
@@ -192,28 +205,33 @@ export async function sendInquiryReplyAction(
     }
 
     const respondedAt = new Date()
-    await db
-      .update(inquiries)
-      .set({
-        status: "RESPONDED",
-        replyNotes: replyContent.trim(),
-        respondedAt,
-      })
-      .where(eq(inquiries.id, inquiryId))
 
-    await recordTransaction({
-      domain: "PORTFOLIO",
-      actionType: "INQUIRY_REPLIED",
-      status: "COMPLETED",
-      actorType: "OWNER",
-      entityType: "INQUIRY",
-      entityId: inquiryId,
-      metadata: {
-        toEmail: inquiry.email,
-        replySubject: replySubject.trim(),
-        resendMessageId: emailResult.id,
-        isMock: emailResult.mock || false,
-      },
+    await db.transaction(async (tx) => {
+      await tx
+        .update(inquiries)
+        .set({
+          status: "RESPONDED",
+          replyNotes: replyContent.trim(),
+          respondedAt,
+        })
+        .where(eq(inquiries.id, inquiryId))
+
+      const trxNumber = `TRX-POR-${Date.now().toString(36).toUpperCase()}`
+      await tx.insert(masterTransactions).values({
+        trxNumber,
+        domain: "PORTFOLIO",
+        actionType: "INQUIRY_REPLIED",
+        status: "COMPLETED",
+        actorType: "OWNER",
+        entityType: "INQUIRY",
+        entityId: inquiryId,
+        metadata: {
+          toEmail: inquiry.email,
+          replySubject: replySubject.trim(),
+          resendMessageId: emailResult.id,
+          isMock: emailResult.mock || false,
+        },
+      })
     })
 
     revalidatePath("/inbox")
