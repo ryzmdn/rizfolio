@@ -48,6 +48,7 @@ const nextConfig: NextConfig = {
         : false,
   },
   experimental: {
+    lockDistDir: false,
     optimizePackageImports: ["lucide-react", "@workspace/ui"],
   },
   async headers() {
