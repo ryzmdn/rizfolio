@@ -6,6 +6,9 @@ import {
   orderItems,
   masterTransactions,
   productReviews,
+  products,
+  eq,
+  inArray,
 } from "@workspace/db"
 import {
   fallbackOrders,
@@ -14,6 +17,7 @@ import {
   type DigitalOrder,
   type ProductReview,
 } from "./queries"
+import { fallbackProducts } from "@/data"
 import { randomBytes } from "crypto"
 
 export interface OrderItemInput {
@@ -64,8 +68,9 @@ export interface SubmitReviewResult {
 }
 
 function generateRandomNumber(): string {
-  const digits = Math.floor(100000 + Math.random() * 900000)
-  return `RZ-${digits}`
+  const timestamp = Date.now().toString(36).toUpperCase()
+  const randomSuffix = randomBytes(4).toString("hex").toUpperCase()
+  return `RZ-${timestamp}-${randomSuffix}`
 }
 
 function generateDownloadToken(): string {
@@ -103,6 +108,13 @@ export async function validatePromoCodeAction(
 export async function createOrderAction(
   input: CreateOrderInput
 ): Promise<CreateOrderResult> {
+  if (process.env.NODE_ENV === "production") {
+    return {
+      success: false,
+      error: "Simulated orders are disabled in production. Please use Stripe checkout.",
+    }
+  }
+
   const name = input.customerName?.trim()
   const email = input.customerEmail?.trim().toLowerCase()
 
@@ -128,6 +140,65 @@ export async function createOrderAction(
     }
   }
 
+  const itemProductIds = input.items.map((it) => it.productId)
+  const productPriceMap = new Map<
+    string,
+    { price: number; title: string; slug: string }
+  >()
+
+  try {
+    const dbProds = await db
+      .select({
+        id: products.id,
+        price: products.price,
+        title: products.title,
+        slug: products.slug,
+        isActive: products.isActive,
+      })
+      .from(products)
+      .where(inArray(products.id, itemProductIds))
+
+    for (const p of dbProds) {
+      if (p.isActive) {
+        productPriceMap.set(p.id, {
+          price: p.price,
+          title: p.title,
+          slug: p.slug,
+        })
+      }
+    }
+  } catch {}
+
+  for (const fallback of fallbackProducts) {
+    if (!productPriceMap.has(fallback.id)) {
+      productPriceMap.set(fallback.id, {
+        price: fallback.price,
+        title: fallback.title,
+        slug: fallback.slug,
+      })
+    }
+  }
+
+  for (const it of input.items) {
+    if (!productPriceMap.has(it.productId)) {
+      return {
+        success: false,
+        error: `Product '${it.productTitle || it.productId}' is currently unavailable.`,
+      }
+    }
+  }
+
+  function getCanonicalItemPriceIdr(
+    productId: string,
+    licenseType: string
+  ): number {
+    const ref = productPriceMap.get(productId)
+    if (!ref) return 0
+    return licenseType === "EXTENDED"
+      ? Math.round(ref.price * 1.75)
+      : ref.price
+  }
+
   let discountPercent = 0
   if (input.couponCode) {
     const couponValidation = await validatePromoCodeAction(input.couponCode)
@@ -136,7 +207,10 @@ export async function createOrderAction(
     }
   }
 
-  const rawSubtotal = input.items.reduce((acc, it) => acc + it.pricePaid, 0)
+  const rawSubtotal = input.items.reduce(
+    (acc, it) => acc + getCanonicalItemPriceIdr(it.productId, it.licenseType),
+    0
+  )
   const discountAmount = Math.round((rawSubtotal * discountPercent) / 100)
   const finalTotal = Math.max(0, rawSubtotal - discountAmount)
 
@@ -144,17 +218,28 @@ export async function createOrderAction(
   const now = new Date().toISOString()
   const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
 
-  const populatedItems = input.items.map((it) => ({
-    productId: it.productId,
-    productTitle: it.productTitle,
-    productSlug: it.productSlug,
-    licenseType: it.licenseType,
-    pricePaid: it.pricePaid,
-    downloadToken: generateDownloadToken(),
-    licenseKey: generateLicenseKey(it.productSlug, it.licenseType),
-    fileName: it.fileName || `${it.productSlug}-source.zip`,
-    fileSizeBytes: it.fileSizeBytes || 2048576,
-  }))
+  const populatedItems = input.items.map((it) => {
+    const canonicalPrice = getCanonicalItemPriceIdr(
+      it.productId,
+      it.licenseType
+    )
+    const ref = productPriceMap.get(it.productId)
+
+    return {
+      productId: it.productId,
+      productTitle: ref?.title || it.productTitle,
+      productSlug: ref?.slug || it.productSlug,
+      licenseType: it.licenseType,
+      pricePaid: canonicalPrice,
+      downloadToken: generateDownloadToken(),
+      licenseKey: generateLicenseKey(
+        ref?.slug || it.productSlug,
+        it.licenseType
+      ),
+      fileName: it.fileName || `${ref?.slug || it.productSlug}-source.zip`,
+      fileSizeBytes: it.fileSizeBytes || 2048576,
+    }
+  })
 
   const digitalOrder: DigitalOrder = {
     id: `ord-${randomBytes(8).toString("hex")}`,

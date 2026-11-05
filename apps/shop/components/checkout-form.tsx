@@ -31,6 +31,7 @@ export function CheckoutForm() {
   const [agreeTerms, setAgreeTerms] = useState(true)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  const isDev = process.env.NODE_ENV !== "production"
   const paymentOptions = [
     {
       id: "stripe",
@@ -40,14 +41,18 @@ export function CheckoutForm() {
       badges: ["Visa / MC", "Apple Pay", "Google Pay", "E-Money"],
       icon: CreditCard,
     },
-    {
-      id: "sandbox",
-      title: "Instant Sandbox Order (Developer Test Mode)",
-      description:
-        "Direct immediate order provisioning for testing without real card entry.",
-      badges: ["Instant Access", "Test Mode"],
-      icon: Terminal,
-    },
+    ...(isDev
+      ? [
+          {
+            id: "sandbox",
+            title: "Instant Sandbox Order (Developer Test Mode)",
+            description:
+              "Direct immediate order provisioning for testing without real card entry.",
+            badges: ["Instant Access", "Test Mode"],
+            icon: Terminal,
+          },
+        ]
+      : []),
   ]
 
   function handleSubmit(e: React.FormEvent) {

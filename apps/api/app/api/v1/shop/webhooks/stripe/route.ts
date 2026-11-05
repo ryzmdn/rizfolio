@@ -16,10 +16,14 @@ export async function POST(request: Request) {
   const signatureHeader = request.headers.get("stripe-signature")
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
-  if (
-    webhookSecret &&
-    !verifyStripeSignature(rawBody, signatureHeader, webhookSecret)
-  ) {
+  if (!webhookSecret || !signatureHeader) {
+    return NextResponse.json(
+      { error: "Missing Stripe webhook secret or signature" },
+      { status: 400 }
+    )
+  }
+
+  if (!verifyStripeSignature(rawBody, signatureHeader, webhookSecret)) {
     return NextResponse.json(
       { error: "Invalid Stripe signature or timestamp expired" },
       { status: 400 }
@@ -47,6 +51,10 @@ export async function POST(request: Request) {
           .limit(1)
 
         if (existing) {
+          if (existing.status === "COMPLETED") {
+            return NextResponse.json({ received: true, alreadyProcessed: true })
+          }
+
           const paymentRef =
             typeof dataObj.payment_intent === "string"
               ? dataObj.payment_intent
@@ -98,7 +106,7 @@ export async function POST(request: Request) {
               price: item.pricePaid,
               quantity: 1,
               downloadToken: assignedToken,
-              downloadUrl: `${shopBaseUrl}/order/${orderNumber}?token=${assignedToken}`,
+              downloadUrl: `${shopBaseUrl}/download/${assignedToken}`,
             })
           }
 
