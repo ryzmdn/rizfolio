@@ -74,9 +74,10 @@ export async function createProduct(values: CreateProductInput) {
       entityType: "products",
       entityId: created.id,
       productId: created.id,
-      amount: created.price,
+      amount: 0,
       currency: created.currency,
-      payloadAfter: { slug: created.slug, title: created.title },
+      metadata: { catalogPrice: created.price },
+      payloadAfter: { slug: created.slug, title: created.title, price: created.price },
     })
     dispatchBackgroundRevalidation({ app: "shop", path: "/" })
   }
@@ -99,8 +100,9 @@ export async function updateProduct(id: string, values: UpdateProductInput) {
       entityType: "products",
       entityId: updated.id,
       productId: updated.id,
-      amount: updated.price,
+      amount: 0,
       currency: updated.currency,
+      metadata: { catalogPrice: updated.price },
       payloadAfter: values,
     })
     if (updated.slug) {
@@ -232,6 +234,7 @@ export async function getAllOrderItems() {
         id: orderItems.id,
         orderId: orderItems.orderId,
         productId: orderItems.productId,
+        productTitle: orderItems.productTitle,
         pricePaid: orderItems.pricePaid,
         downloadToken: orderItems.downloadToken,
         tokenExpiresAt: orderItems.tokenExpiresAt,
@@ -253,6 +256,7 @@ export async function getOrderItems(orderId: string) {
         id: orderItems.id,
         orderId: orderItems.orderId,
         productId: orderItems.productId,
+        productTitle: orderItems.productTitle,
         pricePaid: orderItems.pricePaid,
         downloadToken: orderItems.downloadToken,
         tokenExpiresAt: orderItems.tokenExpiresAt,
@@ -278,14 +282,26 @@ export async function updateOrderStatus(
     .where(eq(orders.id, id))
     .returning()
   if (updated) {
+    const ledgerStatus =
+      status === "PAID"
+        ? "COMPLETED"
+        : status === "REFUNDED"
+          ? "REVERTED"
+          : status === "FAILED"
+            ? "FAILED"
+            : "PENDING"
+
+    const ledgerAmount =
+      status === "PAID" || status === "REFUNDED" ? updated.totalAmount : 0
+
     logTransaction({
       domain: "COMMERCE",
       actionType: `ORDER_STATUS_${status}`,
-      status: status === "PAID" ? "COMPLETED" : "PENDING",
+      status: ledgerStatus,
       entityType: "orders",
       entityId: updated.id,
       orderId: updated.id,
-      amount: updated.totalAmount,
+      amount: ledgerAmount,
       currency: updated.currency,
       payloadAfter: { status },
     })

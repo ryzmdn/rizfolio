@@ -36,32 +36,38 @@ export async function getProfile() {
 
 export async function upsertProfile(values: typeof profile.$inferInsert) {
   const existing = await getProfile()
-  if (existing) {
-    await db.update(profile).set(values).where(eq(profile.id, existing.id))
+  const targetId = existing?.id || values.id || "00000000-0000-0000-0000-000000000001"
+  const updateValues = {
+    ...values,
+    updatedAt: new Date(),
+  }
+
+  const [saved] = await db
+    .insert(profile)
+    .values({
+      ...updateValues,
+      id: targetId,
+    })
+    .onConflictDoUpdate({
+      target: profile.id,
+      set: updateValues,
+    })
+    .returning()
+
+  if (saved) {
     logTransaction({
       domain: "PORTFOLIO",
-      actionType: "PROFILE_UPDATED",
+      actionType: existing ? "PROFILE_UPDATED" : "PROFILE_CREATED",
       status: "COMPLETED",
       entityType: "profile",
-      entityId: existing.id,
+      entityId: saved.id,
       payloadAfter: values,
     })
-  } else {
-    const [inserted] = await db.insert(profile).values(values).returning()
-    if (inserted) {
-      logTransaction({
-        domain: "PORTFOLIO",
-        actionType: "PROFILE_CREATED",
-        status: "COMPLETED",
-        entityType: "profile",
-        entityId: inserted.id,
-        payloadAfter: values,
-      })
-    }
   }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
+  return saved
 }
 
 export async function getExperiences() {

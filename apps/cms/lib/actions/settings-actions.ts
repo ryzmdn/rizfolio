@@ -201,7 +201,9 @@ export async function updateProfileSettingsAction(
       }
     }
 
-    const [existing] = await db.select().from(profile).limit(1)
+    const [existing] = await db.select({ id: profile.id }).from(profile).limit(1)
+    const targetId = existing?.id || "00000000-0000-0000-0000-000000000001"
+
     const profileValues = {
       fullName: input.fullName.trim(),
       headline: input.headline.trim(),
@@ -212,14 +214,17 @@ export async function updateProfileSettingsAction(
       updatedAt: new Date(),
     }
 
-    if (existing) {
-      await db
-        .update(profile)
-        .set(profileValues)
-        .where(eq(profile.id, existing.id))
-    } else {
-      await db.insert(profile).values(profileValues)
-    }
+    const [savedProfile] = await db
+      .insert(profile)
+      .values({
+        id: targetId,
+        ...profileValues,
+      })
+      .onConflictDoUpdate({
+        target: profile.id,
+        set: profileValues,
+      })
+      .returning()
 
     if (input.avatarUrl !== undefined && session.userId) {
       await db
@@ -235,7 +240,7 @@ export async function updateProfileSettingsAction(
       actorId: session.userId,
       actorType: "OWNER",
       entityType: "profile",
-      entityId: existing?.id || "profile-singleton",
+      entityId: savedProfile?.id || targetId,
       payloadAfter: profileValues,
     })
 
