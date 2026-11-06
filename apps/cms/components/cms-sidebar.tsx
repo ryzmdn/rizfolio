@@ -118,7 +118,7 @@ export function CmsSidebar({
         <div className="flex h-16 items-center justify-between border-b border-border/80 px-5">
           <Link
             href="/"
-            onClick={() => isMobile && onClose?.()}
+            onClick={() => isMobile && setTimeout(() => onClose?.(), 50)}
             className="group flex items-center gap-3 transition-opacity hover:opacity-90"
           >
             <div className="flex size-8 items-center justify-center rounded-lg bg-foreground text-background shadow-xs transition-transform group-hover:scale-105">
@@ -169,7 +169,7 @@ export function CmsSidebar({
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={() => isMobile && onClose?.()}
+                      onClick={() => isMobile && setTimeout(() => onClose?.(), 50)}
                       className={cn(
                         "group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all focus:ring-2 focus:ring-primary/20 focus:outline-hidden",
                         isActive

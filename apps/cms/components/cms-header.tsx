@@ -48,10 +48,10 @@ export function CmsHeader({
           </Link>
 
           {pathSegments.length === 0 ? (
-            <>
+            <span className="flex items-center gap-1.5">
               <ChevronRight className="size-3 text-muted-foreground/50" />
               <span className="font-semibold text-foreground">overview</span>
-            </>
+            </span>
           ) : (
             pathSegments.map((segment, index) => {
               const isLast = index === pathSegments.length - 1
