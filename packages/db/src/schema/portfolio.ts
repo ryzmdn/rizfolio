@@ -7,7 +7,10 @@ import {
   boolean,
   timestamp,
   jsonb,
+  index,
+  check,
 } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm"
 
 export const profile = pgTable("profile", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -85,39 +88,50 @@ export const services = pgTable("services", {
     .notNull(),
 })
 
-export const caseStudies = pgTable("case_studies", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  slug: varchar("slug", { length: 255 }).notNull().unique(),
-  title: varchar("title", { length: 255 }).notNull(),
-  clientName: varchar("client_name", { length: 255 }),
-  summary: text("summary").notNull(),
-  contentMd: text("content_md").notNull(),
-  thumbnailUrl: text("thumbnail_url"),
-  liveUrl: text("live_url"),
-  repoUrl: text("repo_url"),
-  metrics: jsonb("metrics"),
-  isPublished: boolean("is_published").notNull().default(false),
-  displayOrder: integer("display_order").notNull().default(0),
-  viewsCount: integer("views_count").notNull().default(0),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-})
+export const caseStudies = pgTable(
+  "case_studies",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: varchar("slug", { length: 255 }).notNull().unique(),
+    title: varchar("title", { length: 255 }).notNull(),
+    clientName: varchar("client_name", { length: 255 }),
+    summary: text("summary").notNull(),
+    contentMd: text("content_md").notNull(),
+    thumbnailUrl: text("thumbnail_url"),
+    liveUrl: text("live_url"),
+    repoUrl: text("repo_url"),
+    metrics: jsonb("metrics"),
+    isPublished: boolean("is_published").notNull().default(false),
+    displayOrder: integer("display_order").notNull().default(0),
+    viewsCount: integer("views_count").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [
+    index("idx_case_studies_is_published").on(t.isPublished),
+    index("idx_case_studies_created_at").on(t.createdAt),
+  ]
+)
 
-export const caseStudyViews = pgTable("case_study_views", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  caseStudyId: uuid("case_study_id")
-    .notNull()
-    .references(() => caseStudies.id, { onDelete: "cascade" }),
-  ipHash: varchar("ip_hash", { length: 64 }),
-  userAgent: text("user_agent"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-})
+export const caseStudyViews = pgTable(
+  "case_study_views",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    caseStudyId: uuid("case_study_id")
+      .notNull()
+      .references(() => caseStudies.id, { onDelete: "cascade" }),
+    ipHash: varchar("ip_hash", { length: 64 }),
+    userAgent: text("user_agent"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [index("idx_case_study_views_case_study_id").on(t.caseStudyId)]
+)
 
 export const testimonials = pgTable("testimonials", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -134,23 +148,34 @@ export const testimonials = pgTable("testimonials", {
     .notNull(),
 })
 
-export const inquiries = pgTable("inquiries", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull(),
-  subject: varchar("subject", { length: 255 }),
-  message: text("message").notNull(),
-  projectScope: varchar("project_scope", { length: 100 }).default(
-    "PROJECT_INQUIRY"
-  ),
-  budgetRange: varchar("budget_range", { length: 100 }),
-  status: varchar("status", { length: 50 }).notNull().default("NEW"),
-  replyNotes: text("reply_notes"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  respondedAt: timestamp("responded_at", { withTimezone: true }),
-})
+export const inquiries = pgTable(
+  "inquiries",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: varchar("name", { length: 255 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    subject: varchar("subject", { length: 255 }),
+    message: text("message").notNull(),
+    projectScope: varchar("project_scope", { length: 100 }).default(
+      "PROJECT_INQUIRY"
+    ),
+    budgetRange: varchar("budget_range", { length: 100 }),
+    status: varchar("status", { length: 50 }).notNull().default("NEW"),
+    replyNotes: text("reply_notes"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    respondedAt: timestamp("responded_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("idx_inquiries_status").on(t.status),
+    index("idx_inquiries_created_at").on(t.createdAt),
+    check(
+      "chk_inquiries_status",
+      sql`status IN ('NEW', 'READ', 'RESPONDED', 'ARCHIVED')`
+    ),
+  ]
+)
 
 export type CaseStudy = typeof caseStudies.$inferSelect
 export type NewCaseStudy = typeof caseStudies.$inferInsert

@@ -6,74 +6,113 @@ import {
   integer,
   boolean,
   timestamp,
+  index,
+  check,
 } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm"
 
-export const products = pgTable("products", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  slug: varchar("slug", { length: 255 }).notNull().unique(),
-  title: varchar("title", { length: 255 }).notNull(),
-  description: text("description").notNull(),
-  price: integer("price").notNull(),
-  currency: varchar("currency", { length: 10 }).notNull().default("IDR"),
-  productType: varchar("product_type", { length: 50 })
-    .notNull()
-    .default("DIGITAL_DOWNLOAD"),
-  coverImageUrl: text("cover_image_url"),
-  galleryUrls: text("gallery_urls").array(),
-  stock: integer("stock").notNull().default(0),
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-})
+export const products = pgTable(
+  "products",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: varchar("slug", { length: 255 }).notNull().unique(),
+    title: varchar("title", { length: 255 }).notNull(),
+    description: text("description").notNull(),
+    price: integer("price").notNull(),
+    currency: varchar("currency", { length: 10 }).notNull().default("IDR"),
+    productType: varchar("product_type", { length: 50 })
+      .notNull()
+      .default("DIGITAL_DOWNLOAD"),
+    coverImageUrl: text("cover_image_url"),
+    galleryUrls: text("gallery_urls").array(),
+    stock: integer("stock").notNull().default(0),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [
+    index("idx_products_is_active").on(t.isActive),
+    index("idx_products_product_type").on(t.productType),
+    index("idx_products_created_at").on(t.createdAt),
+    check(
+      "chk_products_product_type",
+      sql`product_type IN ('DIGITAL_DOWNLOAD', 'SERVICE', 'PHYSICAL')`
+    ),
+  ]
+)
 
-export const productFiles = pgTable("product_files", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  productId: uuid("product_id")
-    .notNull()
-    .references(() => products.id, { onDelete: "cascade" }),
-  fileName: varchar("file_name", { length: 255 }).notNull(),
-  fileSizeBytes: integer("file_size_bytes").notNull(),
-  storagePath: text("storage_path").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-})
+export const productFiles = pgTable(
+  "product_files",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    productId: uuid("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+    fileName: varchar("file_name", { length: 255 }).notNull(),
+    fileSizeBytes: integer("file_size_bytes").notNull(),
+    storagePath: text("storage_path").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [index("idx_product_files_product_id").on(t.productId)]
+)
 
-export const orders = pgTable("orders", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  orderNumber: varchar("order_number", { length: 100 }).notNull().unique(),
-  customerName: varchar("customer_name", { length: 255 }).notNull(),
-  customerEmail: varchar("customer_email", { length: 255 }).notNull(),
-  totalAmount: integer("total_amount").notNull(),
-  currency: varchar("currency", { length: 10 }).notNull().default("IDR"),
-  status: varchar("status", { length: 50 }).notNull().default("PENDING"),
-  paymentProvider: varchar("payment_provider", { length: 50 }),
-  paymentRef: text("payment_ref"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-})
+export const orders = pgTable(
+  "orders",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orderNumber: varchar("order_number", { length: 100 }).notNull().unique(),
+    customerName: varchar("customer_name", { length: 255 }).notNull(),
+    customerEmail: varchar("customer_email", { length: 255 }).notNull(),
+    totalAmount: integer("total_amount").notNull(),
+    currency: varchar("currency", { length: 10 }).notNull().default("IDR"),
+    status: varchar("status", { length: 50 }).notNull().default("PENDING"),
+    paymentProvider: varchar("payment_provider", { length: 50 }),
+    paymentRef: text("payment_ref"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [
+    index("idx_orders_status").on(t.status),
+    index("idx_orders_customer_email").on(t.customerEmail),
+    index("idx_orders_created_at").on(t.createdAt),
+    check(
+      "chk_orders_status",
+      sql`status IN ('PENDING', 'COMPLETED', 'FAILED', 'REFUNDED')`
+    ),
+  ]
+)
 
-export const orderItems = pgTable("order_items", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  orderId: uuid("order_id")
-    .notNull()
-    .references(() => orders.id, { onDelete: "cascade" }),
-  productId: uuid("product_id")
-    .notNull()
-    .references(() => products.id),
-  productTitle: varchar("product_title", { length: 255 }),
-  pricePaid: integer("price_paid").notNull(),
-  downloadToken: varchar("download_token", { length: 255 }),
-  tokenExpiresAt: timestamp("token_expires_at", { withTimezone: true }),
-})
+export const orderItems = pgTable(
+  "order_items",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    productId: uuid("product_id")
+      .notNull()
+      .references(() => products.id),
+    productTitle: varchar("product_title", { length: 255 }),
+    pricePaid: integer("price_paid").notNull(),
+    downloadToken: varchar("download_token", { length: 255 }),
+    tokenExpiresAt: timestamp("token_expires_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("idx_order_items_order_id").on(t.orderId),
+    index("idx_order_items_product_id").on(t.productId),
+    index("idx_order_items_download_token").on(t.downloadToken),
+  ]
+)
 
 export const coupons = pgTable("coupons", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -93,21 +132,33 @@ export const coupons = pgTable("coupons", {
     .notNull(),
 })
 
-export const productReviews = pgTable("product_reviews", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  productId: uuid("product_id").references(() => products.id, {
-    onDelete: "cascade",
-  }),
-  productSlug: varchar("product_slug", { length: 255 }).notNull(),
-  authorName: varchar("author_name", { length: 255 }).notNull(),
-  authorRole: varchar("author_role", { length: 255 }).default(
-    "Verified Developer"
-  ),
-  rating: integer("rating").notNull().default(5),
-  content: text("content").notNull(),
-  verifiedPurchase: boolean("verified_purchase").notNull().default(true),
-  status: varchar("status", { length: 50 }).notNull().default("APPROVED"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-})
+export const productReviews = pgTable(
+  "product_reviews",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    productId: uuid("product_id").references(() => products.id, {
+      onDelete: "cascade",
+    }),
+    productSlug: varchar("product_slug", { length: 255 }).notNull(),
+    authorName: varchar("author_name", { length: 255 }).notNull(),
+    authorRole: varchar("author_role", { length: 255 }).default(
+      "Verified Developer"
+    ),
+    rating: integer("rating").notNull().default(5),
+    content: text("content").notNull(),
+    verifiedPurchase: boolean("verified_purchase").notNull().default(true),
+    status: varchar("status", { length: 50 }).notNull().default("APPROVED"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [
+    index("idx_product_reviews_product_id").on(t.productId),
+    index("idx_product_reviews_product_slug").on(t.productSlug),
+    index("idx_product_reviews_status").on(t.status),
+    check(
+      "chk_product_reviews_status",
+      sql`status IN ('PENDING', 'APPROVED', 'REJECTED')`
+    ),
+  ]
+)
