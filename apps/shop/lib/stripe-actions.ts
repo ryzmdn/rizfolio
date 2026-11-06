@@ -70,6 +70,16 @@ export async function createStripeCheckoutSessionAction(
     }
   }
 
+  if (
+    process.env.NODE_ENV === "production" &&
+    (!isStripeConfigured() || !stripe)
+  ) {
+    return {
+      success: false,
+      error: "Stripe payment gateway is required in production.",
+    }
+  }
+
   if (!input.items || input.items.length === 0) {
     return {
       success: false,

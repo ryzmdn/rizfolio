@@ -43,6 +43,15 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  if (
+    process.env.NODE_ENV === "production" &&
+    (!webhookSecret || !signature || !stripe)
+  ) {
+    return new NextResponse("Stripe signature is required in production", {
+      status: 400,
+    })
+  }
+
   let event: Stripe.Event
 
   if (webhookSecret && signature && stripe) {

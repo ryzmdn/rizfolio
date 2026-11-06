@@ -103,6 +103,14 @@ export async function validatePromoCodeAction(
 export async function createOrderAction(
   input: CreateOrderInput
 ): Promise<CreateOrderResult> {
+  if (process.env.NODE_ENV === "production") {
+    return {
+      success: false,
+      error:
+        "Direct order creation without payment processor is disabled in production.",
+    }
+  }
+
   const name = input.customerName?.trim()
   const email = input.customerEmail?.trim().toLowerCase()
 
