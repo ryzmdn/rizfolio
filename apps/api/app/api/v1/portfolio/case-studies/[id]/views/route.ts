@@ -1,4 +1,4 @@
-import { db, eq, sql } from "@workspace/db"
+import { db, eq, sql, or } from "@workspace/db"
 import { caseStudies, caseStudyViews } from "@workspace/db/schema"
 import { createApiHandler, apiSuccess, NotFoundError } from "@/lib/api"
 import { createHash } from "crypto"
@@ -10,16 +10,28 @@ export const POST = createApiHandler(
     rateLimitTier: "PUBLIC_MUTATION",
   },
   async (req, { params }) => {
-    const slug = String(params.slug)
+    const idOrSlug = String(params.id)
+    const isUuid =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        idOrSlug
+      )
 
     const [study] = await db
-      .select({ id: caseStudies.id, viewsCount: caseStudies.viewsCount })
+      .select({
+        id: caseStudies.id,
+        slug: caseStudies.slug,
+        viewsCount: caseStudies.viewsCount,
+      })
       .from(caseStudies)
-      .where(eq(caseStudies.slug, slug))
+      .where(
+        isUuid
+          ? or(eq(caseStudies.id, idOrSlug), eq(caseStudies.slug, idOrSlug))
+          : eq(caseStudies.slug, idOrSlug)
+      )
       .limit(1)
 
     if (!study) {
-      throw new NotFoundError(`Case study with slug '${slug}' not found.`)
+      throw new NotFoundError(`Case study '${idOrSlug}' not found.`)
     }
 
     const userAgent = req.headers.get("user-agent") || null
@@ -54,8 +66,9 @@ export const POST = createApiHandler(
     ])
 
     return apiSuccess({
-      slug,
+      slug: study.slug,
       viewsCount: updated[0]?.viewsCount ?? study.viewsCount + 1,
     })
   }
 )
+

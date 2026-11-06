@@ -5,6 +5,7 @@ import {
   text,
   timestamp,
   jsonb,
+  integer,
 } from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {
@@ -12,6 +13,7 @@ export const users = pgTable("users", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   role: varchar("role", { length: 50 }).notNull().default("OWNER"),
+  tokenVersion: integer("token_version").notNull().default(1),
   avatarUrl: text("avatar_url"),
   lastLoginAt: timestamp("last_login_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true })

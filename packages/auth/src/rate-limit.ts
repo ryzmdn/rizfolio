@@ -47,7 +47,11 @@ function getRedisClient(): Redis | null {
   try {
     redisClient = new Redis({ url, token })
     return redisClient
-  } catch {
+  } catch (error) {
+    console.warn(
+      "[Auth RateLimit] Failed to initialize Upstash Redis client. Falling back to in-memory store:",
+      error instanceof Error ? error.message : String(error)
+    )
     redisClient = null
     return null
   }
@@ -180,7 +184,11 @@ export async function consumeRateLimitAsync(
       retryAfterSeconds,
       totalAttempts: Math.max(0, maxAttempts - res.remaining),
     }
-  } catch {
+  } catch (error) {
+    console.warn(
+      "[Auth RateLimit] Upstash rate limiter failed. Falling back to in-memory store:",
+      error instanceof Error ? error.message : String(error)
+    )
     return consumeRateLimitMemory(identifier, options)
   }
 }
@@ -212,7 +220,11 @@ export async function getRateLimitStatusAsync(
       retryAfterSeconds,
       totalAttempts: Math.max(0, maxAttempts - res.remaining),
     }
-  } catch {
+  } catch (error) {
+    console.warn(
+      "[Auth RateLimit] Upstash rate limit status query failed. Falling back to in-memory store:",
+      error instanceof Error ? error.message : String(error)
+    )
     return getRateLimitStatusMemory(identifier, options)
   }
 }

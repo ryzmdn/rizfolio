@@ -168,6 +168,7 @@ export function BlogHeader() {
               <Link
                 key={item.label}
                 href={item.href}
+                onClick={() => setTimeout(() => setMobileOpen(false), 50)}
                 className="flex items-center justify-between py-3 text-sm font-medium text-foreground"
               >
                 <span>{item.label}</span>

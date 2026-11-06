@@ -68,15 +68,15 @@ export function ProductCard({ product, className }: ProductCardProps) {
           <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
             <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-background/95 px-2 py-0.5 text-[10px] font-medium text-foreground shadow-xs">
               {isDigital ? (
-                <>
+                <span className="inline-flex items-center gap-1">
                   <Download className="size-3 text-muted-foreground" />
                   <span>Digital</span>
-                </>
+                </span>
               ) : (
-                <>
+                <span className="inline-flex items-center gap-1">
                   <Users className="size-3 text-muted-foreground" />
                   <span>Consultation</span>
-                </>
+                </span>
               )}
             </span>
 

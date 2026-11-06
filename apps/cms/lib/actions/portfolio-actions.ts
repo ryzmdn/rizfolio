@@ -77,6 +77,7 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
+  return saved
 }
 
 export async function getExperiences() {

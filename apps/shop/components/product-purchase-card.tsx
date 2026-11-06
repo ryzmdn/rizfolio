@@ -58,15 +58,15 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
       <div className="flex items-center justify-between">
         <span className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/30 px-2.5 py-1 text-xs font-medium text-foreground">
           {isDigital ? (
-            <>
+            <span className="inline-flex items-center gap-1.5">
               <Download className="size-3.5 text-muted-foreground" />
               <span>Digital Package</span>
-            </>
+            </span>
           ) : (
-            <>
+            <span className="inline-flex items-center gap-1.5">
               <Users className="size-3.5 text-muted-foreground" />
               <span>1-on-1 Consultation</span>
-            </>
+            </span>
           )}
         </span>
 

@@ -114,91 +114,89 @@ export default async function CaseStudyDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <article className="space-y-12 py-10 sm:py-16">
-        <Container>
+      <article className="space-y-16 py-16 sm:py-24">
+        <Container className="space-y-8">
           <Link
             href="/work"
             prefetch={true}
-            className="group inline-flex items-center gap-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            className="group inline-flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-1" />
-            <span>Back to All Case Studies</span>
+            <span>Return to Works Archive</span>
           </Link>
-        </Container>
 
-        <Container className="space-y-6">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/20">
-              {study.category}
-            </span>
-            {study.year && (
-              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                <Calendar className="size-3" />
-                {study.year}
+          <div className="space-y-6 border-b border-foreground/6 pb-8">
+            <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-muted-foreground">
+              <span className="rounded-full border border-foreground/15 bg-foreground/[0.02] px-3 py-1 text-[10px] tracking-widest text-foreground uppercase">
+                {study.category}
               </span>
-            )}
-            {study.clientName && (
-              <span className="text-xs text-muted-foreground">
-                • {study.clientName}
-              </span>
-            )}
-            {study.viewsCount !== undefined && study.viewsCount > 0 && (
-              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                <Eye className="size-3" />
-                {study.viewsCount} {study.viewsCount === 1 ? "view" : "views"}
-              </span>
-            )}
-          </div>
+              {study.year && (
+                <span className="inline-flex items-center gap-1">
+                  <Calendar className="size-3 text-muted-foreground" />
+                  {study.year}
+                </span>
+              )}
+              {study.clientName && (
+                <span>• {study.clientName}</span>
+              )}
+              {study.viewsCount !== undefined && study.viewsCount > 0 && (
+                <span className="inline-flex items-center gap-1">
+                  <Eye className="size-3 text-muted-foreground" />
+                  {study.viewsCount} views
+                </span>
+              )}
+            </div>
 
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            {study.title}
-          </h1>
+            <h1 className="text-3xl font-light tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
+              {study.title}
+            </h1>
 
-          <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {study.summary}
-          </p>
+            <p className="max-w-3xl text-base font-light leading-relaxed text-muted-foreground sm:text-lg">
+              {study.summary}
+            </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            {study.liveUrl && (
-              <a
-                href={study.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground shadow-xs transition-opacity hover:opacity-90"
-              >
-                <span>Live Project Demo</span>
-                <ExternalLink className="size-3.5" />
-              </a>
-            )}
-            {study.repoUrl && (
-              <a
-                href={study.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted"
-              >
-                <GitHub className="size-3.5" />
-                <span>Source Code</span>
-              </a>
-            )}
-            {study.role && (
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground sm:ml-auto">
-                <Award className="size-3.5" />
-                <span>Role: {study.role}</span>
-              </div>
-            )}
+            <div className="flex flex-wrap items-center gap-4 pt-4">
+              {study.liveUrl && (
+                <a
+                  href={study.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 font-mono text-xs tracking-wider text-background uppercase shadow-md transition-all hover:scale-[1.02]"
+                >
+                  <span>Launch Live System</span>
+                  <ExternalLink className="size-3.5" />
+                </a>
+              )}
+              {study.repoUrl && (
+                <a
+                  href={study.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-background px-6 py-2.5 font-mono text-xs tracking-wider text-foreground uppercase transition-colors hover:border-foreground/40"
+                >
+                  <GitHub className="size-3.5" />
+                  <span>Source Archive</span>
+                </a>
+              )}
+              {study.role && (
+                <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground sm:ml-auto">
+                  <Award className="size-3.5" />
+                  <span>ROLE: {study.role}</span>
+                </div>
+              )}
+            </div>
           </div>
         </Container>
 
         <Container>
-          <div className="relative aspect-16/9 w-full overflow-hidden rounded-2xl bg-muted shadow-xl ring-1 ring-border">
+          <div className="relative aspect-16/9 w-full overflow-hidden rounded-3xl border border-foreground/15 bg-muted shadow-2xl sm:aspect-21/9">
             <Image
               src={study.image}
               alt={study.title}
               fill
               priority
-              quality={85}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 896px"
+              quality={90}
+              sizes="(max-width: 1280px) 100vw, 1200px"
               className="object-cover"
             />
           </div>
@@ -206,21 +204,21 @@ export default async function CaseStudyDetailPage({
 
         {study.metrics && Object.keys(study.metrics).length > 0 && (
           <Container>
-            <div className="rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur-xs sm:p-8">
-              <div className="mb-6 flex items-center gap-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                <BarChart3 className="size-4 text-primary" />
-                <span>Verifiable Architectural Benchmarks</span>
+            <div className="rounded-3xl border border-foreground/10 bg-foreground/[0.01] p-8 sm:p-12">
+              <div className="mb-6 flex items-center gap-2 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                <BarChart3 className="size-4 text-foreground" />
+                <span>ARCHITECTURAL BENCHMARKS & VERIFIABLE OUTCOMES</span>
               </div>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
                 {Object.entries(study.metrics).map(([key, val]) => (
                   <div
                     key={key}
-                    className="flex flex-col rounded-xl border border-border/60 bg-background/50 p-4 transition-colors hover:border-primary/40"
+                    className="flex flex-col space-y-1 border-t border-foreground/8 pt-4"
                   >
-                    <span className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                    <span className="font-mono text-3xl font-light tracking-tight text-foreground sm:text-4xl">
                       {String(val)}
                     </span>
-                    <span className="mt-1 text-xs font-medium text-muted-foreground">
+                    <span className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
                       {key}
                     </span>
                   </div>
@@ -232,16 +230,16 @@ export default async function CaseStudyDetailPage({
 
         {study.techStack && study.techStack.length > 0 && (
           <Container>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                <Layers className="size-3.5 text-primary" />
-                <span>Technologies & Framework Stack</span>
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                <Layers className="size-3.5 text-foreground" />
+                <span>SYSTEM & COMPONENT ARCHITECTURE STACK</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {study.techStack.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/30"
+                    className="rounded-full border border-foreground/10 bg-foreground/[0.02] px-3.5 py-1 font-mono text-xs text-foreground"
                   >
                     {tech}
                   </span>
@@ -253,14 +251,14 @@ export default async function CaseStudyDetailPage({
 
         {study.contentMd && (
           <Container>
-            <div className="prose prose-neutral dark:prose-invert max-w-none rounded-2xl border border-border/70 bg-card/40 p-6 sm:p-10">
-              <div className="space-y-6 leading-relaxed">
+            <div className="mx-auto max-w-[68ch] rounded-3xl border border-foreground/8 bg-foreground/[0.01] p-8 sm:p-14">
+              <div className="space-y-8 leading-relaxed font-light text-foreground/90">
                 {study.contentMd.split("\n\n").map((block, idx) => {
                   if (block.startsWith("## ")) {
                     return (
                       <h2
                         key={idx}
-                        className="text-2xl font-bold tracking-tight text-foreground"
+                        className="pt-4 text-2xl font-medium tracking-tight text-foreground sm:text-3xl"
                       >
                         {block.replace("## ", "")}
                       </h2>
@@ -270,7 +268,7 @@ export default async function CaseStudyDetailPage({
                     return (
                       <h3
                         key={idx}
-                        className="text-xl font-semibold tracking-tight text-foreground"
+                        className="pt-2 text-xl font-medium tracking-tight text-foreground"
                       >
                         {block.replace("### ", "")}
                       </h3>
@@ -281,13 +279,13 @@ export default async function CaseStudyDetailPage({
                       .split("\n")
                       .map((line) => line.replace(/^\* /, ""))
                     return (
-                      <ul key={idx} className="space-y-2 pl-4">
+                      <ul key={idx} className="space-y-2.5 pl-2 text-sm">
                         {items.map((item, itemIdx) => (
                           <li
                             key={itemIdx}
-                            className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"
+                            className="flex items-start gap-2.5 text-muted-foreground"
                           >
-                            <CheckCircle2 className="mt-1 size-3.5 shrink-0 text-emerald-500" />
+                            <CheckCircle2 className="mt-1 size-3.5 shrink-0 text-foreground/50" />
                             <span>{item}</span>
                           </li>
                         ))}
@@ -301,7 +299,7 @@ export default async function CaseStudyDetailPage({
                     return (
                       <ol
                         key={idx}
-                        className="list-decimal space-y-2 pl-4 text-sm text-muted-foreground"
+                        className="list-decimal space-y-2.5 pl-6 text-sm text-muted-foreground"
                       >
                         {items.map((item, itemIdx) => (
                           <li key={itemIdx} className="pl-1">
@@ -314,7 +312,7 @@ export default async function CaseStudyDetailPage({
                   return (
                     <p
                       key={idx}
-                      className="text-sm leading-relaxed text-muted-foreground sm:text-base"
+                      className="text-base leading-relaxed text-muted-foreground"
                     >
                       {block}
                     </p>
@@ -326,18 +324,18 @@ export default async function CaseStudyDetailPage({
         )}
 
         <Container>
-          <div className="grid grid-cols-1 gap-4 border-t border-border/80 pt-8 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 border-t border-foreground/8 pt-10 sm:grid-cols-2">
             {prevStudy ? (
               <Link
                 href={`/work/${prevStudy.slug}`}
                 prefetch={true}
-                className="group flex flex-col items-start rounded-xl border border-border/70 bg-card p-5 transition-colors hover:border-foreground/30 hover:bg-muted"
+                className="group flex flex-col items-start rounded-2xl border border-foreground/10 bg-foreground/[0.01] p-6 transition-all hover:border-foreground/30"
               >
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
                   <ArrowLeft className="size-3 transition-transform group-hover:-translate-x-1" />
-                  <span>Previous Case Study</span>
+                  <span>PREVIOUS SYSTEM</span>
                 </div>
-                <span className="mt-2 text-sm font-semibold text-foreground group-hover:text-primary">
+                <span className="mt-2 text-base font-medium text-foreground">
                   {prevStudy.title}
                 </span>
               </Link>
@@ -349,13 +347,13 @@ export default async function CaseStudyDetailPage({
               <Link
                 href={`/work/${nextStudy.slug}`}
                 prefetch={true}
-                className="group flex flex-col items-end rounded-xl border border-border/70 bg-card p-5 text-right transition-colors hover:border-foreground/30 hover:bg-muted"
+                className="group flex flex-col items-end rounded-2xl border border-foreground/10 bg-foreground/[0.01] p-6 text-right transition-all hover:border-foreground/30"
               >
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <span>Next Case Study</span>
+                <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+                  <span>NEXT SYSTEM</span>
                   <ArrowRight className="size-3 transition-transform group-hover:translate-x-1" />
                 </div>
-                <span className="mt-2 text-sm font-semibold text-foreground group-hover:text-primary">
+                <span className="mt-2 text-base font-medium text-foreground">
                   {nextStudy.title}
                 </span>
               </Link>

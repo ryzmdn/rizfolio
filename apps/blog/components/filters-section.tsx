@@ -78,7 +78,6 @@ export function FilterSection({
   }
 
   const handleSortChange = (newSort: "latest" | "popular") => {
-    setSortOpen(false)
     startTransition(() => {
       const queryString = createQueryString({
         sort: newSort === "latest" ? null : newSort,
@@ -87,6 +86,9 @@ export function FilterSection({
         scroll: false,
       })
     })
+    setTimeout(() => {
+      setSortOpen(false)
+    }, 50)
   }
 
   const handleSearchSubmit = (e: React.FormEvent) => {

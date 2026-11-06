@@ -68,7 +68,7 @@ export function ShopFooter() {
               return (
                 <div key={g.title} className="flex items-start gap-3.5">
                   <div className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-foreground">
-                    <Icon className="size-4" />
+                    <Icon className="size-4" aria-hidden="true" />
                   </div>
                   <div className="space-y-1">
                     <h3 className="text-xs font-semibold text-foreground">
@@ -90,7 +90,7 @@ export function ShopFooter() {
           <div className="space-y-3 md:col-span-6">
             <div className="flex items-center gap-2">
               <div className="flex size-7 items-center justify-center rounded-md border border-border/80 bg-muted/40 text-foreground">
-                <Layers className="size-3.5" />
+                <Layers className="size-3.5" aria-hidden="true" />
               </div>
               <span className="text-sm font-semibold text-foreground">
                 Rizfolio Store
@@ -149,10 +149,11 @@ export function ShopFooter() {
           <button
             type="button"
             onClick={scrollToTop}
+            aria-label="Scroll back to top of page"
             className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/20 px-3 py-1.5 transition-colors hover:border-foreground/30 hover:bg-muted hover:text-foreground"
           >
             <span>Back to top</span>
-            <ArrowUp className="size-3.5" />
+            <ArrowUp className="size-3.5" aria-hidden="true" />
           </button>
         </div>
       </Container>

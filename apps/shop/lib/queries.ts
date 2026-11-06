@@ -13,6 +13,8 @@ import {
   ilike,
   or,
   ne,
+  gte,
+  lte,
 } from "@workspace/db"
 import {
   fallbackProducts,
@@ -118,6 +120,14 @@ async function fetchActiveProducts(
       )
     }
 
+    if (params?.minPrice !== undefined) {
+      conditions.push(gte(products.price, params.minPrice))
+    }
+
+    if (params?.maxPrice !== undefined) {
+      conditions.push(lte(products.price, params.maxPrice))
+    }
+
     let orderByClause = desc(products.createdAt)
     if (params?.sortBy === "price-low") {
       orderByClause = asc(products.price)
@@ -197,7 +207,7 @@ async function fetchActiveProducts(
 export async function getActiveProducts(
   params?: ProductFilterParams
 ): Promise<ShopProduct[]> {
-  const cacheKey = `shop-products-${params?.productType || "all"}-${params?.category || "all"}-${params?.sortBy || "featured"}-${params?.query || ""}`
+  const cacheKey = `shop-products-${params?.productType || "all"}-${params?.category || "all"}-${params?.sortBy || "featured"}-${params?.minPrice ?? "none"}-${params?.maxPrice ?? "none"}-${params?.query || ""}`
   return unstable_cache(
     () => fetchActiveProducts(params),
     ["shop-products", cacheKey],
@@ -499,7 +509,7 @@ export async function getOrderByNumber(
         createdAt: ord.createdAt.toISOString(),
         items: items.map((it) => ({
           productId: it.productId,
-          productTitle: "Purchased Engineering Asset",
+          productTitle: it.productTitle || "Purchased Engineering Asset",
           productSlug: "product",
           licenseType: "STANDARD",
           pricePaid: it.pricePaid,

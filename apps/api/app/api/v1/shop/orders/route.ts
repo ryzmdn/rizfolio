@@ -149,6 +149,7 @@ export const POST = createApiHandler(
         await db.insert(orderItems).values({
           orderId: newOrder.id,
           productId: prod.id,
+          productTitle: prod.title,
           pricePaid: prod.price,
           downloadToken,
           tokenExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),

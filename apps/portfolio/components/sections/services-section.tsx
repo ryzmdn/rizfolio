@@ -1,125 +1,118 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { cn } from "@workspace/ui/lib/utils"
+import { services as fallbackServices, engineeringProcess } from "@/data"
+import { CheckCircle2, ArrowRight } from "lucide-react"
+import Link from "next/link"
 import type { ServiceItem } from "@/lib/queries"
-import { services as fallbackServices } from "@/data"
 
 interface ServicesSectionProps {
   services?: ServiceItem[]
 }
 
-const SERVICE_IMAGES: [string, string][] = [
-  [
-    "https://images.unsplash.com/photo-1547658719-da2b51169166?w=400&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=400&auto=format&fit=crop&q=80",
-  ],
-  [
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&auto=format&fit=crop&q=80",
-  ],
-  [
-    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&auto=format&fit=crop&q=80",
-  ],
-  [
-    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=400&auto=format&fit=crop&q=80",
-  ],
-]
-
-export function ServicesSection({
-  services: propServices,
-}: ServicesSectionProps) {
+export function ServicesSection({ services: propServices }: ServicesSectionProps) {
   const items =
     propServices && propServices.length > 0 ? propServices : fallbackServices
 
-  const container = "absolute -top-1 left-1/2 -translate-x-1/2 z-40 h-20 w-16"
-  const effect =
-    "relative duration-500 delay-100 shadow-none group-hover/reveal:shadow-xl scale-0 group-hover/reveal:scale-100 opacity-0 group-hover/reveal:opacity-100 group-hover/reveal:w-full group-hover/reveal:h-full w-16 h-16 overflow-hidden transition-all rounded-md"
-
   return (
-    <Container id="solutions" className="space-y-12 py-20">
-      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
-        <p className="text-sm/6 text-muted-foreground">Services & Solutions.</p>
-        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
-          Services & Technical Capabilities
-        </h2>
-        <p className="leading-7 text-muted-foreground">
-          Comprehensive full-stack engineering solutions tailored for scaling
-          startups, modern SaaS platforms, and enterprise digital
-          transformations.
-        </p>
-      </hgroup>
+    <Container id="capabilities" className="py-24 md:py-36">
+      <div id="solutions" className="space-y-16 lg:space-y-24">
+        <div className="flex flex-col gap-6 border-b border-foreground/6 pb-8 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-2">
+            <span className="font-mono text-xs tracking-[0.25em] text-muted-foreground uppercase">
+              [ 03 / ARCHITECTURAL CAPABILITIES ]
+            </span>
+            <h2 className="text-3xl font-light tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              Systems engineered for uncompromising scale.
+            </h2>
+          </div>
+          <p className="max-w-md font-mono text-xs leading-relaxed text-muted-foreground">
+            Strict engineering standards governing state atomicity, sub-second latency, and deterministic reliability.
+          </p>
+        </div>
 
-      <div className="space-y-6">
-        {items.map((item, index) => {
-          const imgPair = SERVICE_IMAGES[index % SERVICE_IMAGES.length]!
-
-          return (
+        <div className="divide-y divide-foreground/6">
+          {items.map((service, index) => (
             <div
-              key={item.title}
-              className="group/reveal relative grid w-full items-center gap-6 border-b border-border/40 py-8 lg:grid-cols-5"
+              key={service.title}
+              className="group py-10 transition-colors duration-300 hover:bg-foreground/[0.01] sm:py-12"
             >
-              <div className="font-mono text-4xl font-semibold text-foreground/40">
-                <p>0{index + 1}</p>
-              </div>
-
-              <div className="relative lg:col-span-2">
-                <h3 className="text-2xl font-semibold text-foreground transition-opacity duration-500 group-hover/reveal:opacity-40 sm:text-3xl">
-                  {item.title}
-                </h3>
-
-                <div className={container}>
-                  <div className={effect}>
-                    <img
-                      alt={item.title}
-                      src={imgPair[1]}
-                      width={64}
-                      height={80}
-                      loading="lazy"
-                      decoding="async"
-                      className="size-full object-cover"
-                    />
+              <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+                <div className="flex items-start justify-between lg:col-span-3">
+                  <div className="space-y-1">
+                    <span className="font-mono text-sm font-light text-foreground/40">
+                      0{index + 1}
+                    </span>
+                    <p className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+                      CAPABILITY SPEC
+                    </p>
                   </div>
                 </div>
 
-                <div
-                  className={cn(
-                    container,
-                    "translate-x-0 translate-y-0 rotate-0 transition-transform delay-150 duration-500 group-hover/reveal:translate-x-6 group-hover/reveal:translate-y-6 group-hover/reveal:rotate-12"
+                <div className="space-y-4 lg:col-span-5">
+                  <h3 className="text-2xl font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-3xl">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm font-light leading-relaxed text-muted-foreground">
+                    {service.description}
+                  </p>
+                </div>
+
+                <div className="lg:col-span-4">
+                  {service.features && service.features.length > 0 && (
+                    <div className="space-y-2.5">
+                      <p className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                        DELIVERABLES & ARTIFACTS
+                      </p>
+                      <ul className="space-y-2 text-xs font-light text-foreground/90">
+                        {service.features.map((feature, fIdx) => (
+                          <li key={fIdx} className="flex items-start gap-2">
+                            <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-foreground/40" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
-                >
-                  <div className={cn(effect, "duration-200")}>
-                    <img
-                      alt={item.title}
-                      src={imgPair[0]}
-                      width={64}
-                      height={80}
-                      loading="lazy"
-                      decoding="async"
-                      className="size-full object-cover"
-                    />
-                  </div>
                 </div>
-              </div>
-
-              <div className="space-y-3 text-sm/6 text-muted-foreground lg:col-span-2">
-                <p className="leading-relaxed">{item.description}</p>
-                {item.features && item.features.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {item.features.map((feat) => (
-                      <span
-                        key={feat}
-                        className="rounded-md border border-border/60 bg-muted/30 px-2 py-0.5 font-mono text-xs text-foreground/80"
-                      >
-                        {feat}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
-          )
-        })}
+          ))}
+        </div>
+
+        <div className="space-y-8 rounded-3xl border border-foreground/10 bg-foreground/[0.01] p-8 sm:p-12">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-1">
+              <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                ENGINEERING LIFECYCLE
+              </span>
+              <h4 className="text-xl font-medium text-foreground tracking-tight sm:text-2xl">
+                The Deterministic Execution Protocol
+              </h4>
+            </div>
+            <Link
+              href="/#call-to-action"
+              className="group inline-flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
+            >
+              <span>Consult On Project Scope</span>
+              <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+            {engineeringProcess.map((phase) => (
+              <div key={phase.dateTime} className="space-y-2 border-t border-foreground/8 pt-4">
+                <span className="font-mono text-xs font-semibold text-foreground/40">
+                  {phase.date}
+                </span>
+                <p className="text-sm font-medium text-foreground">
+                  {phase.name}
+                </p>
+                <p className="text-xs font-light leading-relaxed text-muted-foreground">
+                  {phase.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </Container>
   )

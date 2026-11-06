@@ -5,7 +5,8 @@ import {
   uploadFile,
   deleteFile,
   getPublicUrl,
-  StorageFileItem,
+  validateMediaUpload,
+  type StorageFileItem,
 } from "@workspace/storage"
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
@@ -120,12 +121,12 @@ export async function uploadMediaAsset(formData: FormData) {
       return { error: "Berkas tidak valid atau kosong." }
     }
 
-    const sanitizedName = file.name
-      .toLowerCase()
-      .replace(/[^a-z0-9.-]/g, "-")
-      .replace(/-+/g, "-")
+    const validation = validateMediaUpload(file)
+    if (!validation.valid) {
+      return { error: validation.error || "Berkas tidak valid." }
+    }
 
-    const uniquePath = `${folder}/${Date.now()}-${sanitizedName}`
+    const uniquePath = `${folder}/${Date.now()}-${validation.sanitizedName}`
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
@@ -133,7 +134,8 @@ export async function uploadMediaAsset(formData: FormData) {
       bucket: "media",
       path: uniquePath,
       file: buffer,
-      contentType: file.type || "application/octet-stream",
+      contentType:
+        validation.mimeType || file.type || "application/octet-stream",
       upsert: true,
     })
 
@@ -147,7 +149,7 @@ export async function uploadMediaAsset(formData: FormData) {
         path: uploadRes.path,
         url: uploadRes.url,
         size: file.size,
-        mimeType: file.type,
+        mimeType: validation.mimeType || file.type,
       },
     })
 

@@ -204,6 +204,39 @@ export async function sendInquiryReplyAction(
       }
     }
 
+    if (emailResult.mock) {
+      await db
+        .update(inquiries)
+        .set({
+          replyNotes: `[DRAFT / NOT SENT - EMAIL SERVICE IN MOCK MODE]\n${replyContent.trim()}`,
+        })
+        .where(eq(inquiries.id, inquiryId))
+
+      await recordTransaction({
+        domain: "PORTFOLIO",
+        actionType: "INQUIRY_REPLY_SIMULATED",
+        status: "FAILED",
+        actorType: "OWNER",
+        entityType: "INQUIRY",
+        entityId: inquiryId,
+        metadata: {
+          toEmail: inquiry.email,
+          replySubject: replySubject.trim(),
+          resendMessageId: emailResult.id,
+          isMock: true,
+          reason:
+            "Email service running in mock mode. RESEND_API_KEY is not configured.",
+        },
+      })
+
+      revalidatePath("/inbox")
+      return {
+        success: false,
+        error:
+          "Email service is currently in mock mode (RESEND_API_KEY is not configured). Reply draft was saved to notes, but status remains unchanged.",
+      }
+    }
+
     const respondedAt = new Date()
 
     await db.transaction(async (tx) => {

@@ -273,7 +273,9 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
     if (item.isExternal) {
       window.open(item.href, "_blank", "noopener,noreferrer")
     } else {
-      router.push(item.href)
+      setTimeout(() => {
+        router.push(item.href)
+      }, 50)
     }
   }
 

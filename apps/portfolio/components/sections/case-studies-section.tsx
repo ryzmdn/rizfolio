@@ -17,69 +17,139 @@ export function CaseStudiesSection({
       ? propCaseStudies
       : fallbackCaseStudies
 
-  return (
-    <Container id="case-studies" className="space-y-12 py-20">
-      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
-        <p className="text-sm/6 font-medium text-muted-foreground">
-          Case Studies
-        </p>
-        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
-          Featured Case Studies & Systems
-        </h2>
-        <p className="leading-7 text-muted-foreground">
-          A curated selection of engineering initiatives focused on high
-          throughput, architectural clarity, and verifiable business impact.
-        </p>
-      </hgroup>
+  const [featuredItem, ...secondaryItems] = items
 
-      <div className="grid w-full gap-y-10 py-6 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12">
-        {items.map((item) => (
+  return (
+    <Container id="case-studies" className="py-24 md:py-36">
+      <div className="space-y-16 lg:space-y-24">
+        <div className="flex flex-col gap-6 border-b border-foreground/6 pb-8 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-2">
+            <span className="font-mono text-xs tracking-[0.25em] text-muted-foreground uppercase">
+              [ 02 / SELECTED WORKS & SYSTEMS ]
+            </span>
+            <h2 className="text-3xl font-light tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              Architectural initiatives with verifiable impact.
+            </h2>
+          </div>
           <Link
-            key={item.id}
-            href={`/work/${item.slug}`}
+            href="/work"
             prefetch={true}
-            className="group relative flex flex-col overflow-hidden rounded-2xl transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden"
+            className="group inline-flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
           >
-            <div className="relative aspect-3/2 overflow-hidden rounded-xl bg-muted shadow-lg ring-1 ring-border">
+            <span>All Works ({items.length})</span>
+            <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </div>
+
+        {featuredItem && (
+          <Link
+            href={`/work/${featuredItem.slug}`}
+            prefetch={true}
+            className="group relative block overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/[0.02] transition-all duration-700 hover:border-foreground/30 hover:shadow-2xl"
+          >
+            <div className="relative aspect-16/9 w-full overflow-hidden sm:aspect-21/9">
               <Image
-                src={item.image}
-                alt={item.title}
+                src={featuredItem.image}
+                alt={featuredItem.title}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                priority
+                sizes="(max-width: 1280px) 100vw, 1200px"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               />
-              <div className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-background/80 text-foreground backdrop-blur-xs transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90" />
+              
+              <div className="absolute right-6 top-6 flex size-10 items-center justify-center rounded-full border border-foreground/20 bg-background/80 text-foreground backdrop-blur-md transition-all duration-300 group-hover:scale-110 group-hover:bg-foreground group-hover:text-background">
                 <ArrowUpRight className="size-4" />
               </div>
-            </div>
 
-            <div className="mt-4 w-full space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-medium tracking-wider text-muted-foreground">
-                <span>{item.category}</span>
-                {item.year && <span>{item.year}</span>}
+              <div className="absolute inset-x-6 bottom-6 flex flex-col justify-end gap-3 sm:inset-x-10 sm:bottom-10 sm:gap-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="rounded-full border border-foreground/20 bg-background/60 px-3 py-1 font-mono text-[10px] tracking-widest text-foreground uppercase backdrop-blur-md">
+                    FEATURED ARCHITECTURE
+                  </span>
+                  <span className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
+                    {featuredItem.category}
+                  </span>
+                  {featuredItem.year && (
+                    <>
+                      <span className="text-foreground/30">•</span>
+                      <span className="font-mono text-xs text-muted-foreground">{featuredItem.year}</span>
+                    </>
+                  )}
+                </div>
+
+                <h3 className="text-2xl font-medium tracking-tight text-foreground sm:text-4xl md:text-5xl">
+                  {featuredItem.title}
+                </h3>
+
+                {featuredItem.summary && (
+                  <p className="max-w-3xl line-clamp-2 text-sm font-light text-muted-foreground sm:text-base">
+                    {featuredItem.summary}
+                  </p>
+                )}
               </div>
-              <h3 className="text-lg font-medium text-primary transition-colors group-hover:text-accent-foreground">
-                {item.title}
-              </h3>
-              {item.summary && (
-                <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                  {item.summary}
-                </p>
-              )}
             </div>
           </Link>
-        ))}
-      </div>
+        )}
 
-      <div className="flex justify-center pt-2">
-        <Link
-          href="/work"
-          prefetch={true}
-          className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-xs font-semibold text-foreground shadow-xs transition-all hover:border-foreground/30 hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden"
-        >
-          <span>Explore All Engineering Systems & Case Studies</span>
-          <ArrowRight className="size-3.5" />
-        </Link>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
+          {secondaryItems.slice(0, 4).map((item, index) => (
+            <Link
+              key={item.id}
+              href={`/work/${item.slug}`}
+              prefetch={true}
+              className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/[0.01] p-6 transition-all duration-500 hover:border-foreground/25 hover:bg-foreground/[0.02] sm:p-8"
+            >
+              <div className="space-y-6">
+                <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl border border-foreground/8 bg-muted">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 550px"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  />
+                  <div className="absolute right-3.5 top-3.5 flex size-8 items-center justify-center rounded-full border border-foreground/15 bg-background/80 text-foreground backdrop-blur-xs transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                    <ArrowUpRight className="size-3.5" />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
+                    <span>{item.category}</span>
+                    <span>0{index + 2}</span>
+                  </div>
+
+                  <h3 className="text-xl font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-2xl">
+                    {item.title}
+                  </h3>
+
+                  {item.summary && (
+                    <p className="line-clamp-2 text-xs font-light leading-relaxed text-muted-foreground">
+                      {item.summary}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-6 flex items-center gap-2 pt-4 font-mono text-[11px] tracking-wider text-foreground/70 uppercase">
+                <span>View Architecture</span>
+                <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex justify-center border-t border-foreground/6 pt-12">
+          <Link
+            href="/work"
+            prefetch={true}
+            className="group inline-flex items-center gap-3 rounded-full border border-foreground/15 px-8 py-3.5 font-mono text-xs tracking-widest uppercase transition-all duration-300 hover:border-foreground/50 hover:bg-foreground hover:text-background"
+          >
+            <span>Explore All Systems Archive</span>
+            <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
     </Container>
   )

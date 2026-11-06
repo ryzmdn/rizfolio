@@ -16,46 +16,54 @@ export function TestimonialsSection({
       : fallbackTestimonials
 
   return (
-    <Container id="testimonials" className="py-20">
-      <hgroup className="mx-auto max-w-2xl space-y-3 text-center">
-        <p className="text-sm/6 text-muted-foreground">What they say</p>
-        <h2 className="text-2xl font-medium tracking-tight text-primary sm:text-3xl">
-          Peer & Client Endorsements
-        </h2>
-        <p className="leading-7 text-muted-foreground">
-          Perspectives from engineering leads, founders, and product managers on
-          technical rigor, execution speed, and collaboration.
-        </p>
-      </hgroup>
+    <Container id="testimonials" className="py-24 md:py-36">
+      <div className="space-y-16 lg:space-y-24">
+        <div className="flex flex-col gap-6 border-b border-foreground/6 pb-8 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-2">
+            <span className="font-mono text-xs tracking-[0.25em] text-muted-foreground uppercase">
+              [ 05 / ENDORSEMENTS & PEER PERSPECTIVES ]
+            </span>
+            <h2 className="text-3xl font-light tracking-tight text-foreground sm:text-4xl md:text-5xl">
+              Perspectives on technical rigor & execution speed.
+            </h2>
+          </div>
+          <p className="max-w-md font-mono text-xs leading-relaxed text-muted-foreground">
+            Direct feedback from engineering leads, product founders, and distributed collaborators.
+          </p>
+        </div>
 
-      <div className="grid gap-6 py-10 sm:grid-cols-2">
-        {items.map((item) => (
-          <div
-            key={item.name}
-            className="pt-6 sm:inline-block sm:w-full sm:px-4"
-          >
-            <figure className="rounded-2xl bg-secondary p-6 text-sm/6">
-              <blockquote className="text-accent-foreground">
-                {item.content}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
+          {items.map((item, idx) => (
+            <div
+              key={idx}
+              className="flex flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.01] p-8 sm:p-10 transition-colors duration-300 hover:border-foreground/20"
+            >
+              <blockquote className="font-serif text-lg font-light leading-relaxed text-foreground/90 sm:text-xl">
+                &ldquo;{item.content}&rdquo;
               </blockquote>
-              <figcaption className="mt-6 flex items-center gap-x-4">
-                <div className="relative size-11 overflow-hidden rounded-full bg-background">
+
+              <div className="mt-8 flex items-center gap-4 border-t border-foreground/6 pt-6">
+                <div className="relative size-11 shrink-0 overflow-hidden rounded-full border border-foreground/15 bg-muted">
                   <Image
                     src={item.avatar}
                     alt={item.name}
                     fill
                     sizes="44px"
-                    className="object-cover object-top"
+                    className="object-cover grayscale contrast-125"
                   />
                 </div>
-                <div className="-space-y-1">
-                  <h3 className="font-medium text-primary">{item.name}</h3>
-                  <p className="text-muted-foreground">&#64;{item.handle}</p>
+                <div className="space-y-0.5">
+                  <p className="text-sm font-medium text-foreground tracking-tight">
+                    {item.name}
+                  </p>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    &#64;{item.handle}
+                  </p>
                 </div>
-              </figcaption>
-            </figure>
-          </div>
-        ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </Container>
   )

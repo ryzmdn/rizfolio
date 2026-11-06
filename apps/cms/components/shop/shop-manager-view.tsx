@@ -70,6 +70,7 @@ interface OrderDetailItem {
   id: string
   orderId: string
   productId: string
+  productTitle?: string | null
   pricePaid: number
   downloadToken: string | null
   tokenExpiresAt: Date | null

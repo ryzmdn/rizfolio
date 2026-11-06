@@ -152,7 +152,7 @@ export function DocsHeader() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() => setTimeout(() => setMobileOpen(false), 50)}
                   className={cn(
                     "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors",
                     isActive
@@ -169,7 +169,7 @@ export function DocsHeader() {
             <button
               type="button"
               onClick={() => {
-                setMobileOpen(false)
+                setTimeout(() => setMobileOpen(false), 50)
                 openSearch()
               }}
               className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted/50 hover:text-foreground"
@@ -187,7 +187,7 @@ export function DocsHeader() {
               href="https://github.com/ryzmdn"
               target="_blank"
               rel="noreferrer"
-              onClick={() => setMobileOpen(false)}
+              onClick={() => setTimeout(() => setMobileOpen(false), 50)}
               className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted/50 hover:text-foreground"
             >
               <span className="flex items-center gap-2">
@@ -201,7 +201,7 @@ export function DocsHeader() {
               href={portfolioUrl}
               target="_blank"
               rel="noreferrer"
-              onClick={() => setMobileOpen(false)}
+              onClick={() => setTimeout(() => setMobileOpen(false), 50)}
               className="flex items-center justify-between rounded-lg bg-primary/10 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/20"
             >
               <span>Back to Main Portfolio</span>

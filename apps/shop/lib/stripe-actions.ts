@@ -80,6 +80,16 @@ export async function createStripeCheckoutSessionAction(
     }
   }
 
+  if (
+    process.env.NODE_ENV === "production" &&
+    (!isStripeConfigured() || !stripe)
+  ) {
+    return {
+      success: false,
+      error: "Stripe payment gateway is required in production.",
+    }
+  }
+
   if (!input.items || input.items.length === 0) {
     return {
       success: false,
@@ -213,6 +223,7 @@ export async function createStripeCheckoutSessionAction(
         await db.insert(orderItems).values({
           orderId: insertedOrder.id,
           productId: it.productId,
+          productTitle: it.productTitle,
           pricePaid: Math.round(it.pricePaid),
           downloadToken: it.downloadToken,
           tokenExpiresAt: expiryDate,

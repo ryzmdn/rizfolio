@@ -2,7 +2,7 @@
 
 import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
-import { db, eq } from "@workspace/db"
+import { db, eq, sql } from "@workspace/db"
 import { users } from "@workspace/db/schema"
 import {
   hashPassword,
@@ -83,6 +83,7 @@ export async function loginAdmin(
       .limit(1)
 
     let userId: string | undefined
+    let tokenVersion = 1
 
     if (existingUser) {
       if (
@@ -115,6 +116,7 @@ export async function loginAdmin(
       }
 
       userId = existingUser.id
+      tokenVersion = existingUser.tokenVersion ?? 1
 
       await db
         .update(users)
@@ -160,11 +162,13 @@ export async function loginAdmin(
           email: normalizedEmail,
           passwordHash: envPasswordHash,
           role: "OWNER",
+          tokenVersion: 1,
           lastLoginAt: new Date(),
         })
-        .returning({ id: users.id })
+        .returning({ id: users.id, tokenVersion: users.tokenVersion })
 
       userId = newUser?.id
+      tokenVersion = newUser?.tokenVersion ?? 1
     }
 
     if (!userId) {
@@ -177,6 +181,7 @@ export async function loginAdmin(
       userId,
       email: normalizedEmail,
       role: "OWNER",
+      tokenVersion,
     })
 
     const cookieStore = await cookies()
@@ -214,6 +219,13 @@ export async function logoutAdmin(): Promise<void> {
   const session = await validateOwnerSession(token)
 
   if (session) {
+    try {
+      await db
+        .update(users)
+        .set({ tokenVersion: sql`${users.tokenVersion} + 1` })
+        .where(eq(users.id, session.userId))
+    } catch {}
+
     logTransaction({
       domain: "AUTH_SECURITY",
       actionType: "ADMIN_LOGOUT",
@@ -233,7 +245,30 @@ export async function getCurrentUser() {
   try {
     const cookieStore = await cookies()
     const token = cookieStore.get(SESSION_COOKIE_NAME)?.value
-    return await validateOwnerSession(token)
+    const session = await validateOwnerSession(token)
+    if (!session || !session.userId) {
+      return null
+    }
+
+    const [user] = await db
+      .select({ id: users.id, tokenVersion: users.tokenVersion })
+      .from(users)
+      .where(eq(users.id, session.userId))
+      .limit(1)
+
+    if (!user) {
+      return null
+    }
+
+    if (
+      session.tokenVersion !== undefined &&
+      user.tokenVersion !== session.tokenVersion
+    ) {
+      cookieStore.delete(SESSION_COOKIE_NAME)
+      return null
+    }
+
+    return session
   } catch (error: unknown) {
     if (
       (error as { digest?: string })?.digest === "DYNAMIC_SERVER_USAGE" ||

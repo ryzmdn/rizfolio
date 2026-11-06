@@ -92,7 +92,7 @@ export default function RootLayout({
           <main
             id="main-content"
             tabIndex={-1}
-            className="mx-auto w-full max-w-4xl bg-transparent outline-none"
+            className="mx-auto w-full max-w-7xl bg-transparent px-4 sm:px-6 lg:px-8 outline-none"
           >
             {children}
           </main>

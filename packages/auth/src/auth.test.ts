@@ -115,6 +115,20 @@ describe("Cryptographic JWT Session Integrity", () => {
     expect(typeof verified?.jti).toBe("string")
   })
 
+  it("should embed and verify tokenVersion in JWT payload", async () => {
+    const token = await createSessionToken({ ...payload, tokenVersion: 3 }, "24h")
+    const verified = await verifySessionToken(token)
+    expect(verified).not.toBeNull()
+    expect(verified?.tokenVersion).toBe(3)
+  })
+
+  it("should default tokenVersion to 1 when omitted", async () => {
+    const token = await createSessionToken(payload, "24h")
+    const verified = await verifySessionToken(token)
+    expect(verified).not.toBeNull()
+    expect(verified?.tokenVersion).toBe(1)
+  })
+
   it("should reject tampered JWT signatures", async () => {
     const token = await createSessionToken(payload, "24h")
     const tampered = token.slice(0, -8) + "xxxxxxxx"

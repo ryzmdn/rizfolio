@@ -43,8 +43,10 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
         e.preventDefault()
         const selected = results[selectedIndex]
         if (selected) {
-          router.push(`/blog/${selected.slug}`)
           onClose()
+          setTimeout(() => {
+            router.push(`/blog/${selected.slug}`)
+          }, 50)
         }
       }
     }
@@ -82,8 +84,10 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
   }
 
   function handleSelectPost(slug: string) {
-    router.push(`/blog/${slug}`)
     onClose()
+    setTimeout(() => {
+      router.push(`/blog/${slug}`)
+    }, 50)
   }
 
   return (

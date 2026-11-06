@@ -1,5 +1,19 @@
 import { NextRequest, NextResponse } from "next/server"
 import { revalidatePath, revalidateTag } from "next/cache"
+import crypto from "crypto"
+
+function safeCompareTokens(provided: string, expected: string): boolean {
+  try {
+    const bufProvided = Buffer.from(provided, "utf8")
+    const bufExpected = Buffer.from(expected, "utf8")
+    if (bufProvided.length !== bufExpected.length) {
+      return false
+    }
+    return crypto.timingSafeEqual(bufProvided, bufExpected)
+  } catch {
+    return false
+  }
+}
 
 export async function POST(request: NextRequest) {
   const expectedSecret = process.env.REVALIDATION_SECRET_TOKEN
@@ -17,7 +31,6 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Extract secret solely from request headers (Never from URL query parameters)
   const authHeader = request.headers.get("authorization")
   const secret =
     request.headers.get("x-revalidate-secret") ||
@@ -25,7 +38,7 @@ export async function POST(request: NextRequest) {
       ? authHeader.substring(7).trim()
       : undefined)
 
-  if (!secret || secret !== expectedSecret) {
+  if (!secret || !safeCompareTokens(secret, expectedSecret)) {
     return NextResponse.json(
       {
         error: "Unauthorized",
