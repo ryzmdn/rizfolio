@@ -14,7 +14,6 @@ import {
 import { useCart } from "./cart-provider"
 import { useCurrency } from "./currency-context"
 import { LicenseSelector, type LicenseTier } from "./license-selector"
-import { formatPrice } from "../lib/utils"
 import type { ShopProduct } from "../lib/queries"
 
 interface ProductPurchaseCardProps {
@@ -54,43 +53,33 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
   }
 
   return (
-    <div className="sticky top-20 space-y-5 rounded-lg border border-border/70 bg-card p-5 sm:p-6">
-      <div className="flex items-center justify-between">
-        <span className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/30 px-2.5 py-1 text-xs font-medium text-foreground">
-          {isDigital ? (
-            <span className="inline-flex items-center gap-1.5">
-              <Download className="size-3.5 text-muted-foreground" />
-              <span>Digital Package</span>
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1.5">
-              <Users className="size-3.5 text-muted-foreground" />
-              <span>1-on-1 Consultation</span>
-            </span>
-          )}
+    <div className="sticky top-24 space-y-6 rounded-3xl border border-foreground/15 bg-background p-6 shadow-2xl sm:p-8">
+      <div className="flex items-center justify-between border-b border-foreground/6 pb-4">
+        <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+          {isDigital ? "DIGITAL ARCHITECTURE" : "EXECUTIVE ADVISORY"}
         </span>
 
-        <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-          <CheckCircle2 className="size-3.5" />
-          <span>Verified & Available</span>
+        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-emerald-400">
+          <span className="size-1.5 rounded-full bg-emerald-400" />
+          <span>VERIFIED ASSET</span>
         </span>
       </div>
 
-      <div className="space-y-1">
-        <div className="flex items-baseline gap-2">
-          <span className="font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+      <div className="space-y-2">
+        <div className="flex items-baseline gap-3">
+          <span className="font-mono text-3xl font-light tracking-tight text-foreground sm:text-4xl">
             {format(currentPrice)}
           </span>
-          <span className="text-xs text-muted-foreground">
-            {selectedLicense === "EXTENDED" ? "Extended Tier" : "Standard Tier"}
+          <span className="font-mono text-xs text-muted-foreground uppercase">
+            {selectedLicense === "EXTENDED" ? "Extended License" : "Standard License"}
           </span>
         </div>
-        <p className="text-xs text-muted-foreground">
-          Perpetual commercial license with instant access token delivery.
+        <p className="text-xs font-light text-muted-foreground">
+          Perpetual commercial rights with instant download cryptographic token.
         </p>
       </div>
 
-      <div className="border-t border-border/50 pt-4">
+      <div className="border-t border-foreground/6 pt-4">
         <LicenseSelector
           standardPrice={product.price}
           extendedPrice={product.extendedPrice}
@@ -100,63 +89,62 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
         />
       </div>
 
-      <div className="space-y-2 pt-1">
+      <div className="space-y-3 pt-2">
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-foreground py-2.5 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
+          className="group flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-foreground py-3.5 font-mono text-xs tracking-widest text-background uppercase shadow-lg transition-all hover:opacity-90 active:scale-[0.99]"
         >
           <ShoppingBag className="size-3.5" />
-          <span>Add to Shopping Cart</span>
+          <span>Add to Bag</span>
         </button>
 
         <button
           type="button"
           onClick={handleInstantCheckout}
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-border/70 bg-background py-2.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/60"
+          className="group flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full border border-foreground/15 bg-background py-3.5 font-mono text-xs tracking-widest text-foreground uppercase transition-all hover:border-foreground/40 hover:bg-foreground/[0.03] active:scale-[0.99]"
         >
           <span>Instant Checkout</span>
-          <ArrowRight className="size-3.5" />
+          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
         </button>
 
-        <div className="flex items-center justify-center gap-1.5 pt-1 text-[11px] text-muted-foreground">
+        <div className="flex items-center justify-center gap-1.5 pt-1 font-mono text-[10px] text-muted-foreground">
           <Lock className="size-3 text-muted-foreground" />
-          <span>Encrypted 256-bit checkout & direct fulfillment</span>
+          <span>Encrypted 256-bit checkout &amp; automated fulfillment</span>
         </div>
       </div>
 
-      <div className="space-y-2 border-t border-border/50 pt-4 text-xs text-muted-foreground">
+      <div className="space-y-2 border-t border-foreground/6 pt-5 text-xs font-light text-muted-foreground">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="size-3.5 shrink-0 text-muted-foreground" />
-          <span>Full source code with commercial usage rights</span>
+          <ShieldCheck className="size-3.5 shrink-0 text-foreground/50" />
+          <span>Full source code with unrestricted commercial deployment</span>
         </div>
         <div className="flex items-center gap-2">
-          <Download className="size-3.5 shrink-0 text-muted-foreground" />
-          <span>Lifetime access and free future revision downloads</span>
+          <Download className="size-3.5 shrink-0 text-foreground/50" />
+          <span>Lifetime access and free revision repository downloads</span>
         </div>
         <div className="flex items-center gap-2">
-          <CheckCircle2 className="size-3.5 shrink-0 text-muted-foreground" />
-          <span>14-day defect resolution and refund guarantee</span>
+          <CheckCircle2 className="size-3.5 shrink-0 text-foreground/50" />
+          <span>14-day technical defect resolution guarantee</span>
         </div>
       </div>
 
-      <div className="space-y-1.5 rounded-md border border-border/50 bg-muted/20 p-3.5 text-xs">
+      <div className="space-y-2 rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-4 font-mono text-xs">
         <div className="flex items-center justify-between text-muted-foreground">
-          <span>Architecture</span>
-          <span className="font-mono font-medium text-foreground">
-            {product.techStack?.[0] || "Next.js 16"} +{" "}
-            {product.techStack?.[1] || "React 19"}
+          <span>STACK</span>
+          <span className="text-foreground">
+            {product.techStack?.[0] || "Next.js 16"} + {product.techStack?.[1] || "React 19"}
           </span>
         </div>
         <div className="flex items-center justify-between text-muted-foreground">
-          <span>Delivery Format</span>
-          <span className="font-medium text-foreground">
-            {isDigital ? "Secure ZIP Archive" : "Google Meet Calendar"}
+          <span>FORMAT</span>
+          <span className="text-foreground">
+            {isDigital ? "Cryptographic ZIP" : "Google Meet Advisory"}
           </span>
         </div>
         <div className="flex items-center justify-between text-muted-foreground">
-          <span>License Term</span>
-          <span className="font-medium text-foreground">Perpetual</span>
+          <span>LICENSE</span>
+          <span className="text-foreground">Perpetual Commercial</span>
         </div>
       </div>
     </div>

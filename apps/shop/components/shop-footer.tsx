@@ -59,22 +59,22 @@ export function ShopFooter() {
   ]
 
   return (
-    <footer className="border-t border-border/60 bg-muted/10">
-      <div className="border-b border-border/50 py-10">
+    <footer className="border-t border-foreground/8 bg-background">
+      <div className="border-b border-foreground/6 py-12">
         <Container>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {guarantees.map((g) => {
               const Icon = g.icon
               return (
-                <div key={g.title} className="flex items-start gap-3.5">
-                  <div className="flex size-8 shrink-0 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-foreground">
+                <div key={g.title} className="flex items-start gap-4">
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-full border border-foreground/10 bg-foreground/5 text-foreground">
                     <Icon className="size-4" aria-hidden="true" />
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-xs font-semibold text-foreground">
+                    <h3 className="font-serif text-sm font-light tracking-tight text-foreground">
                       {g.title}
                     </h3>
-                    <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    <p className="text-xs leading-relaxed text-muted-foreground">
                       {g.description}
                     </p>
                   </div>
@@ -85,29 +85,31 @@ export function ShopFooter() {
         </Container>
       </div>
 
-      <Container className="py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-          <div className="space-y-3 md:col-span-6">
-            <div className="flex items-center gap-2">
-              <div className="flex size-7 items-center justify-center rounded-md border border-border/80 bg-muted/40 text-foreground">
+      <Container className="py-16">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+          <div className="space-y-4 md:col-span-6">
+            <div className="flex items-center gap-2.5">
+              <div className="flex size-7 items-center justify-center rounded-full border border-foreground/10 bg-foreground/5 text-foreground">
                 <Layers className="size-3.5" aria-hidden="true" />
               </div>
-              <span className="text-sm font-semibold text-foreground">
-                Rizfolio Store
+              <span className="font-serif text-base font-light tracking-tight text-foreground">
+                Rizfolio Architecture Store
               </span>
             </div>
             <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
-              Curated software architectures, production starter kits, and
-              senior engineering consultation sessions engineered by Rizky
-              Ramadhan to accelerate real-world digital builds.
+              Curated software architectures, production starter kits, and senior engineering consultation sessions engineered by Rizky Ramadhan to accelerate real-world digital builds.
             </p>
+            <div className="flex items-center gap-2 pt-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">
+              <span className="inline-block size-1.5 rounded-full bg-emerald-500" />
+              <span>Global Instant Asset Delivery Network</span>
+            </div>
           </div>
 
-          <div className="space-y-3 md:col-span-3">
-            <h4 className="text-xs font-semibold tracking-wider text-foreground uppercase">
+          <div className="space-y-4 md:col-span-3">
+            <h4 className="font-mono text-[11px] uppercase tracking-widest text-foreground">
               Ecosystem
             </h4>
-            <ul className="space-y-2 text-xs text-muted-foreground">
+            <ul className="space-y-2.5 text-xs text-muted-foreground">
               {ecosystemLinks.map((link) => (
                 <li key={link.label}>
                   <a
@@ -123,11 +125,11 @@ export function ShopFooter() {
             </ul>
           </div>
 
-          <div className="space-y-3 md:col-span-3">
-            <h4 className="text-xs font-semibold tracking-wider text-foreground uppercase">
-              Legal & Licenses
+          <div className="space-y-4 md:col-span-3">
+            <h4 className="font-mono text-[11px] uppercase tracking-widest text-foreground">
+              Legal & Terms
             </h4>
-            <ul className="space-y-2 text-xs text-muted-foreground">
+            <ul className="space-y-2.5 text-xs text-muted-foreground">
               {legalLinks.map((link) => (
                 <li key={link.label}>
                   <a
@@ -142,15 +144,15 @@ export function ShopFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-foreground/8 pt-8 font-mono text-[11px] text-muted-foreground sm:flex-row">
           <p>
-            © {new Date().getFullYear()} Rizky Ramadhan. All rights reserved.
+            © {new Date().getFullYear()} Rizky Ramadhan. All architectural assets protected.
           </p>
           <button
             type="button"
             onClick={scrollToTop}
             aria-label="Scroll back to top of page"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/20 px-3 py-1.5 transition-colors hover:border-foreground/30 hover:bg-muted hover:text-foreground"
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 uppercase tracking-wider transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background"
           >
             <span>Back to top</span>
             <ArrowUp className="size-3.5" aria-hidden="true" />

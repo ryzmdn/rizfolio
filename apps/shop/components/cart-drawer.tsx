@@ -122,7 +122,7 @@ export function CartDrawer() {
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div
-        className="fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-background/80 backdrop-blur-md transition-opacity duration-300"
         onClick={closeCart}
         aria-hidden="true"
       />
@@ -132,21 +132,26 @@ export function CartDrawer() {
         role="dialog"
         aria-modal="true"
         aria-labelledby="cart-drawer-title"
-        className="relative z-10 flex h-full w-full max-w-md flex-col border-l border-border bg-card shadow-2xl transition-transform"
+        className="relative z-10 flex h-full w-full max-w-md flex-col border-l border-foreground/10 bg-card/95 shadow-2xl backdrop-blur-2xl transition-transform"
       >
-        <header className="flex items-center justify-between border-b border-border/60 px-5 py-3.5">
-          <div className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-foreground">
+        <header className="flex items-center justify-between border-b border-foreground/8 px-6 py-5">
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-full border border-foreground/10 bg-foreground/5 text-foreground">
               <ShoppingBag className="size-4" aria-hidden="true" />
             </div>
             <div>
-              <h2 id="cart-drawer-title" className="text-xs font-semibold text-foreground">
-                Shopping Cart
-              </h2>
-              <p className="text-[11px] text-muted-foreground">
-                {items.length === 0
-                  ? "0 items"
-                  : `${items.reduce((acc, it) => acc + it.quantity, 0)} item(s) selected`}
+              <div className="flex items-center gap-2">
+                <h2 id="cart-drawer-title" className="font-serif text-base font-light tracking-tight text-foreground">
+                  Shopping Bag
+                </h2>
+                <span className="rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 font-mono text-[10px] uppercase text-muted-foreground">
+                  {items.length === 0
+                    ? "0 UNITS"
+                    : `${items.reduce((acc, it) => acc + it.quantity, 0)} UNITS`}
+                </span>
+              </div>
+              <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">
+                Curated Architecture Artifacts
               </p>
             </div>
           </div>
@@ -154,7 +159,7 @@ export function CartDrawer() {
             type="button"
             onClick={closeCart}
             aria-label="Close cart"
-            className="flex size-7 items-center justify-center rounded-md border border-border/70 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="flex size-8 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
           >
             <X className="size-3.5" />
           </button>
@@ -162,90 +167,87 @@ export function CartDrawer() {
 
         {items.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-            <div className="flex size-14 items-center justify-center rounded-lg border border-dashed border-border/80 bg-muted/20 text-muted-foreground">
-              <ShoppingBag className="size-6 text-muted-foreground/60" />
+            <div className="flex size-16 items-center justify-center rounded-full border border-dashed border-foreground/15 bg-foreground/5 text-muted-foreground">
+              <ShoppingBag className="size-6 text-foreground/40" />
             </div>
-            <h3 className="mt-4 text-sm font-semibold text-foreground">
-              Your cart is empty
+            <h3 className="mt-5 font-serif text-lg font-light tracking-tight text-foreground">
+              Your bag is empty
             </h3>
-            <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">
-              Explore our curated software architectures, design systems, and
-              consultation packages.
+            <p className="mt-2 max-w-xs text-xs leading-relaxed text-muted-foreground">
+              Explore our curated software architectures, production design systems, and advisory services.
             </p>
             <button
               type="button"
               onClick={closeCart}
-              className="mt-5 inline-flex items-center gap-1.5 rounded-md bg-foreground px-4 py-2 text-xs font-medium text-background transition-colors hover:bg-foreground/90"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 font-mono text-xs font-medium uppercase tracking-wider text-background transition-all duration-200 hover:opacity-90"
             >
-              <span>Explore Store Catalog</span>
+              <span>Explore Collection</span>
               <ArrowRight className="size-3.5" />
             </button>
           </div>
         ) : (
           <>
-            <div className="flex-1 divide-y divide-border/40 overflow-y-auto px-5 py-2">
+            <div className="flex-1 divide-y divide-foreground/6 overflow-y-auto px-6 py-3">
               {items.map((item) => {
                 const isExtended = item.licenseType === "EXTENDED"
 
                 return (
-                  <div key={item.id} className="space-y-2.5 py-3.5">
-                    <div className="flex gap-3">
+                  <div key={item.id} className="space-y-3 py-4">
+                    <div className="flex gap-4">
                       {item.coverImageUrl ? (
-                        <div className="relative size-14 shrink-0 overflow-hidden rounded-md border border-border/60 bg-muted/30">
+                        <div className="relative size-16 shrink-0 overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/5">
                           <Image
                             src={item.coverImageUrl}
                             alt={item.title}
                             fill
-                            sizes="56px"
+                            sizes="64px"
                             className="object-cover"
                           />
                         </div>
                       ) : (
-                        <div className="flex size-14 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted/30">
-                          <ShoppingBag className="size-5 text-muted-foreground/60" />
+                        <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl border border-foreground/10 bg-foreground/5">
+                          <ShoppingBag className="size-5 text-foreground/40" />
                         </div>
                       )}
 
                       <div className="flex flex-1 flex-col justify-between">
-                        <div className="space-y-0.5">
+                        <div className="space-y-1">
                           <Link
                             href={`/product/${item.slug}`}
                             onClick={closeCart}
-                            className="text-xs leading-snug font-medium text-foreground transition-colors hover:underline"
+                            className="font-serif text-sm font-light leading-snug text-foreground transition-colors hover:text-muted-foreground"
                           >
                             {item.title}
                           </Link>
-                          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                            <span className="font-mono font-medium text-foreground">
+                          <div className="flex items-center gap-2 text-[11px]">
+                            <span className="font-mono text-xs font-medium text-foreground">
                               {format(item.price)}
                             </span>
-                            <span>•</span>
-                            <span className="py-0.2 rounded-sm bg-muted/60 px-1.5 text-[10px] font-medium text-muted-foreground">
-                              {isExtended
-                                ? "Extended License"
-                                : "Standard License"}
+                            <span className="text-muted-foreground/40">•</span>
+                            <span className="font-mono text-[10px] uppercase text-muted-foreground">
+                              {isExtended ? "Extended" : "Standard"}
                             </span>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between pt-1.5">
-                          <div className="flex items-center rounded-md border border-border/70 bg-muted/20">
+                        <div className="flex items-center justify-between pt-2">
+                          <div className="flex items-center rounded-full border border-foreground/10 bg-foreground/5 p-0.5">
                             <button
                               type="button"
                               onClick={() => updateQuantity(item.id, -1)}
                               aria-label="Decrease quantity"
-                              className="flex size-5.5 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                              className="flex size-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
                             >
                               <Minus className="size-2.5" />
                             </button>
-                            <span className="min-w-5 text-center font-mono text-xs font-medium text-foreground">
+                            <span className="min-w-6 text-center font-mono text-xs font-medium text-foreground">
                               {item.quantity}
                             </span>
                             <button
                               type="button"
                               onClick={() => updateQuantity(item.id, 1)}
                               aria-label="Increase quantity"
-                              className="flex size-5.5 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                              className="flex size-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
                             >
                               <Plus className="size-2.5" />
                             </button>
@@ -255,17 +257,17 @@ export function CartDrawer() {
                             type="button"
                             onClick={() => removeItem(item.id)}
                             aria-label={`Remove ${item.title}`}
-                            className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-rose-500"
+                            className="flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
                           >
-                            <Trash2 className="size-3" />
+                            <Trash2 className="size-3.5" />
                           </button>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-md border border-border/50 bg-muted/20 px-2.5 py-1 text-[11px]">
-                      <span className="text-muted-foreground">Tier:</span>
-                      <div className="flex items-center gap-1">
+                    <div className="flex items-center justify-between rounded-xl border border-foreground/6 bg-foreground/3 px-3 py-1.5 text-xs">
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">License</span>
+                      <div className="flex items-center rounded-full border border-foreground/8 bg-foreground/5 p-0.5">
                         <button
                           type="button"
                           onClick={() => {
@@ -275,9 +277,9 @@ export function CartDrawer() {
                             updateLicense(item.id, "STANDARD", standardPrice)
                           }}
                           className={cn(
-                            "rounded-sm px-2 py-0.5 text-[10px] font-medium transition-colors",
+                            "rounded-full px-2.5 py-0.5 font-mono text-[10px] uppercase transition-all",
                             !isExtended
-                              ? "bg-foreground font-semibold text-background"
+                              ? "bg-foreground font-semibold text-background shadow-xs"
                               : "text-muted-foreground hover:text-foreground"
                           )}
                         >
@@ -292,9 +294,9 @@ export function CartDrawer() {
                             updateLicense(item.id, "EXTENDED", extendedPrice)
                           }}
                           className={cn(
-                            "rounded-sm px-2 py-0.5 text-[10px] font-medium transition-colors",
+                            "rounded-full px-2.5 py-0.5 font-mono text-[10px] uppercase transition-all",
                             isExtended
-                              ? "bg-foreground font-semibold text-background"
+                              ? "bg-foreground font-semibold text-background shadow-xs"
                               : "text-muted-foreground hover:text-foreground"
                           )}
                         >
@@ -307,27 +309,27 @@ export function CartDrawer() {
               })}
             </div>
 
-            <div className="space-y-3.5 border-t border-border/60 bg-card p-5">
+            <div className="space-y-4 border-t border-foreground/8 bg-card/90 p-6 backdrop-blur-xl">
               {coupon ? (
-                <div className="flex items-center justify-between rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs">
-                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                <div className="flex items-center justify-between rounded-full border border-foreground/20 bg-foreground/5 px-4 py-2 text-xs">
+                  <div className="flex items-center gap-2 text-foreground">
                     <Tag className="size-3.5" />
                     <span className="font-mono font-semibold">
                       {coupon.code}
                     </span>
-                    <span>({coupon.discountPercent}% off applied)</span>
+                    <span className="font-mono text-[11px] text-muted-foreground">({coupon.discountPercent}% OFF)</span>
                   </div>
                   <button
                     type="button"
                     onClick={removeCoupon}
                     aria-label="Remove coupon"
-                    className="flex size-5 items-center justify-center rounded-md text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400"
+                    className="flex size-5 items-center justify-center rounded-full text-muted-foreground hover:text-foreground"
                   >
                     <X className="size-3" />
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleApplyCoupon} className="space-y-1">
+                <form onSubmit={handleApplyCoupon} className="space-y-1.5">
                   <div className="flex gap-2">
                     <input
                       id="cart-coupon-input"
@@ -335,71 +337,71 @@ export function CartDrawer() {
                       aria-label="Promo or discount coupon code"
                       value={couponInput}
                       onChange={(e) => setCouponInput(e.target.value)}
-                      placeholder="Promo code (e.g. DEV20)"
-                      className="flex-1 rounded-md border border-border/70 bg-background px-3 py-1.5 text-xs uppercase placeholder:text-muted-foreground placeholder:normal-case focus:border-foreground/40 focus:outline-hidden"
+                      placeholder="PROMO CODE"
+                      className="flex-1 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 font-mono text-xs uppercase placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:outline-hidden"
                     />
                     <button
                       type="submit"
                       disabled={isPending || !couponInput.trim()}
-                      className="rounded-md border border-border/70 bg-muted/30 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
+                      className="rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 font-mono text-xs uppercase text-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background disabled:opacity-40"
                     >
                       {isPending ? "Validating..." : "Apply"}
                     </button>
                   </div>
                   {couponError && (
-                    <p className="text-[11px] text-rose-500">{couponError}</p>
+                    <p className="px-3 font-mono text-[11px] text-rose-500">{couponError}</p>
                   )}
                 </form>
               )}
 
-              <div className="space-y-1.5 border-t border-border/50 pt-2.5 text-xs">
+              <div className="space-y-2 border-t border-foreground/8 pt-3 text-xs">
                 <div className="flex items-center justify-between text-muted-foreground">
-                  <span>Subtotal</span>
+                  <span className="font-mono text-[11px] uppercase tracking-wider">Subtotal</span>
                   <span className="font-mono text-foreground">
                     {format(subtotal)}
                   </span>
                 </div>
                 {discountAmount > 0 && (
-                  <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
-                    <span>Discount</span>
-                    <span className="font-mono">-{format(discountAmount)}</span>
+                  <div className="flex items-center justify-between font-mono text-emerald-600 dark:text-emerald-400">
+                    <span className="text-[11px] uppercase tracking-wider">Discount</span>
+                    <span>-{format(discountAmount)}</span>
                   </div>
                 )}
-                <div className="flex items-center justify-between border-t border-border/50 pt-2 text-sm font-semibold text-foreground">
-                  <span>Grand Total</span>
-                  <span className="font-mono text-base">
+                <div className="flex items-center justify-between border-t border-foreground/8 pt-2.5">
+                  <span className="font-serif text-sm font-light text-foreground">Total Amount</span>
+                  <span className="font-mono text-lg font-light tracking-tight text-foreground">
                     {format(grandTotal)}
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-2 pt-0.5">
+              <div className="space-y-2 pt-1">
                 <Link
                   href="/checkout"
                   onClick={() => setTimeout(() => closeCart(), 50)}
-                  className="flex w-full items-center justify-center gap-2 rounded-md bg-foreground py-2.5 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
+                  className="group flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-3.5 font-mono text-xs uppercase tracking-widest text-background transition-all duration-300 hover:opacity-90"
                 >
                   <span>Proceed to Checkout</span>
-                  <ArrowRight className="size-3.5" />
+                  <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
 
                 <button
                   type="button"
                   onClick={closeCart}
-                  className="w-full text-center text-xs text-muted-foreground transition-colors hover:text-foreground"
+                  className="w-full text-center font-mono text-[11px] uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  Continue Shopping
+                  Continue Browsing
                 </button>
               </div>
 
-              <div className="flex items-center justify-center gap-3 pt-0.5 text-[11px] text-muted-foreground">
-                <span className="inline-flex items-center gap-1">
-                  <ShieldCheck className="size-3 text-muted-foreground" />
-                  <span>Encrypted Checkout</span>
+              <div className="flex items-center justify-center gap-4 pt-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground/60">
+                <span className="inline-flex items-center gap-1.5">
+                  <ShieldCheck className="size-3 text-foreground/40" />
+                  <span>256-Bit Encrypted</span>
                 </span>
                 <span>•</span>
-                <span className="inline-flex items-center gap-1">
-                  <Download className="size-3 text-muted-foreground" />
+                <span className="inline-flex items-center gap-1.5">
+                  <Download className="size-3 text-foreground/40" />
                   <span>Instant Delivery</span>
                 </span>
               </div>

@@ -11,7 +11,6 @@ import {
   Cpu,
   LayoutGrid,
 } from "lucide-react"
-import { formatPrice } from "../lib/utils"
 import { AddToCartButton } from "./add-to-cart-button"
 import { PriceDisplay } from "./price-display"
 import type { ShopProduct } from "../lib/queries"
@@ -45,43 +44,43 @@ export function ProductCard({ product, className }: ProductCardProps) {
   return (
     <article
       className={cn(
-        "group relative flex flex-col justify-between overflow-hidden rounded-lg border border-border/70 bg-card transition-colors hover:border-foreground/30",
+        "group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-6 transition-all duration-500 hover:border-foreground/30 hover:bg-foreground/[0.025] sm:p-8",
         className
       )}
     >
-      <div className="space-y-3.5 p-4 sm:p-5">
-        <div className="relative aspect-video w-full overflow-hidden rounded-md border border-border/60 bg-muted/40">
+      <div className="space-y-6">
+        <div className="relative aspect-16/10 w-full overflow-hidden rounded-2xl border border-foreground/8 bg-muted">
           {product.coverImageUrl ? (
             <Image
               src={product.coverImageUrl}
               alt={product.title}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-102"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-muted/40 text-muted-foreground">
-              <Layers className="size-8" />
+            <div className="flex size-full items-center justify-center bg-muted/40 text-muted-foreground">
+              <Layers className="size-8 stroke-[1.25]" />
             </div>
           )}
 
-          <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-            <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-background/95 px-2 py-0.5 text-[10px] font-medium text-foreground shadow-xs">
+          <div className="absolute top-3 left-3 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 rounded-full border border-foreground/15 bg-background/85 px-2.5 py-0.5 font-mono text-[10px] tracking-wider text-foreground uppercase backdrop-blur-md">
               {isDigital ? (
-                <span className="inline-flex items-center gap-1">
+                <>
                   <Download className="size-3 text-muted-foreground" />
                   <span>Digital</span>
-                </span>
+                </>
               ) : (
-                <span className="inline-flex items-center gap-1">
+                <>
                   <Users className="size-3 text-muted-foreground" />
-                  <span>Consultation</span>
-                </span>
+                  <span>Advisory</span>
+                </>
               )}
             </span>
 
-            <span className="inline-flex items-center gap-1 rounded-md border border-border/70 bg-background/95 px-2 py-0.5 text-[10px] font-medium text-muted-foreground shadow-xs">
-              <CategoryIcon className="size-3 text-muted-foreground" />
+            <span className="inline-flex items-center gap-1 rounded-full border border-foreground/15 bg-background/85 px-2.5 py-0.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase backdrop-blur-md">
+              <CategoryIcon className="size-3" />
               <span>{categoryMeta.label}</span>
             </span>
           </div>
@@ -92,36 +91,34 @@ export function ProductCard({ product, className }: ProductCardProps) {
               target="_blank"
               rel="noreferrer"
               aria-label={`Preview live demo for ${product.title}`}
-              className="absolute top-2.5 right-2.5 flex size-7 items-center justify-center rounded-md border border-border/70 bg-background/95 text-muted-foreground shadow-xs transition-colors hover:text-foreground"
+              className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full border border-foreground/15 bg-background/85 text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
             >
               <ExternalLink className="size-3.5" />
             </a>
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-1">
-            <div className="flex items-center text-amber-500 dark:text-amber-400">
-              <Star className="size-3.5 fill-current" />
+        <div className="space-y-3">
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+              <Star className="size-3 text-foreground fill-foreground" />
+              <span className="font-medium text-foreground">
+                {product.rating.toFixed(1)}
+              </span>
+              <span className="text-foreground/40">
+                ({product.reviewCount})
+              </span>
             </div>
-            <span className="font-mono text-xs font-semibold text-foreground">
-              {product.rating.toFixed(1)}
-            </span>
-            <span className="text-[11px] text-muted-foreground">
-              ({product.reviewCount})
-            </span>
+
+            <div className="text-right">
+              <PriceDisplay
+                amount={product.price}
+                className="font-mono text-base font-light tracking-tight text-foreground sm:text-lg"
+              />
+            </div>
           </div>
 
-          <div className="text-right">
-            <PriceDisplay
-              amount={product.price}
-              className="font-mono text-sm font-bold text-foreground sm:text-base"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-1">
-          <h2 className="text-sm font-semibold tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-base">
+          <h2 className="text-xl font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-2xl">
             <Link
               href={`/product/${product.slug}`}
               className="focus:outline-hidden"
@@ -129,31 +126,32 @@ export function ProductCard({ product, className }: ProductCardProps) {
               {product.title}
             </Link>
           </h2>
-          <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+
+          <p className="line-clamp-2 text-xs font-light leading-relaxed text-muted-foreground">
             {product.description}
           </p>
-        </div>
 
-        {product.techStack && product.techStack.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 pt-0.5">
-            {product.techStack.slice(0, 4).map((tech) => (
-              <span
-                key={tech}
-                className="rounded-md border border-border/60 bg-muted/30 px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
-              >
-                {tech}
-              </span>
-            ))}
-            {product.techStack.length > 4 && (
-              <span className="rounded-md border border-border/60 bg-muted/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
-                +{product.techStack.length - 4}
-              </span>
-            )}
-          </div>
-        )}
+          {product.techStack && product.techStack.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {product.techStack.slice(0, 4).map((tech) => (
+                <span
+                  key={tech}
+                  className="rounded-md border border-foreground/8 bg-foreground/[0.02] px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
+                >
+                  {tech}
+                </span>
+              ))}
+              {product.techStack.length > 4 && (
+                <span className="rounded-md border border-foreground/8 bg-foreground/[0.02] px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                  +{product.techStack.length - 4}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-border/60 bg-muted/15 px-4 py-2.5">
+      <div className="mt-8 flex items-center justify-between border-t border-foreground/6 pt-4">
         <AddToCartButton
           product={{
             id: product.id,
@@ -166,15 +164,15 @@ export function ProductCard({ product, className }: ProductCardProps) {
           }}
           size="sm"
           variant="outline"
-          label="Add to Cart"
+          label="Add to Bag"
         />
 
         <Link
           href={`/product/${product.slug}`}
-          className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="group/link inline-flex items-center gap-1.5 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
         >
-          <span>View Details</span>
-          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+          <span>Inspect Architecture</span>
+          <ArrowRight className="size-3.5 transition-transform group-hover/link:translate-x-1" />
         </Link>
       </div>
     </article>

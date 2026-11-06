@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ShoppingBag, Menu, X, Layers } from "lucide-react"
+import { Menu, X, ArrowUpRight } from "lucide-react"
 import { useCart } from "./cart-provider"
 import { CurrencySelector } from "./currency-selector"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
@@ -16,33 +16,28 @@ export function ShopHeader() {
   const { totalCount, openCart } = useCart()
 
   const navLinks = [
-    { label: "All Products", href: "/" },
-    { label: "Starter Kits", href: "/?category=STARTER_KIT" },
-    { label: "UI Kits", href: "/?category=UI_SYSTEM" },
-    { label: "Backend", href: "/?category=BACKEND" },
-    { label: "Consultations", href: "/?type=SERVICE" },
+    { label: "ALL ASSETS", href: "/" },
+    { label: "STARTER KITS", href: "/?category=STARTER_KIT" },
+    { label: "UI SYSTEMS", href: "/?category=UI_SYSTEM" },
+    { label: "BACKEND", href: "/?category=BACKEND" },
+    { label: "ADVISORY", href: "/?type=SERVICE" },
   ]
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur-xl">
-      <Container className="flex h-15 items-center justify-between gap-4">
-        <div className="flex items-center gap-6">
+    <header className="sticky top-0 z-40 border-b border-foreground/6 bg-background/80 backdrop-blur-xl">
+      <Container className="flex h-16 items-center justify-between gap-4">
+        <div className="flex items-center gap-8">
           <Link
             href="/"
-            className="group flex items-center gap-2.5 transition-opacity hover:opacity-85"
-            aria-label="Rizfolio Store Home"
+            className="group flex items-center gap-3 transition-opacity hover:opacity-80"
+            aria-label="Rizfolio Boutique Home"
           >
-            <div className="flex size-8 items-center justify-center rounded-md border border-border/80 bg-muted/40 text-foreground transition-colors group-hover:border-foreground/30">
-              <Layers className="size-4" aria-hidden="true" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-semibold tracking-tight text-foreground sm:text-sm">
-                RizShop
-              </span>
-              <span className="text-[10px] tracking-widest text-muted-foreground uppercase">
-                Software & Assets
-              </span>
-            </div>
+            <span className="font-mono text-sm font-semibold tracking-wider text-foreground">
+              RIZFOLIO.
+            </span>
+            <span className="hidden font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase sm:inline">
+              ARCHIVE & BOUTIQUE
+            </span>
           </Link>
 
           <nav
@@ -57,10 +52,10 @@ export function ShopHeader() {
                   key={link.label}
                   href={link.href}
                   className={cn(
-                    "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+                    "rounded-full px-3 py-1 font-mono text-[11px] tracking-wider transition-colors uppercase",
                     isActive
-                      ? "bg-muted text-foreground"
-                      : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                      ? "bg-foreground text-background"
+                      : "text-muted-foreground hover:text-foreground"
                   )}
                 >
                   {link.label}
@@ -70,22 +65,19 @@ export function ShopHeader() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <CurrencySelector />
 
           <button
             type="button"
             onClick={openCart}
             aria-label={`View cart with ${totalCount} items`}
-            className="relative inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/20 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/60"
+            className="group relative inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-foreground/[0.02] px-4 py-1.5 font-mono text-[11px] tracking-wider text-foreground uppercase transition-all duration-300 hover:border-foreground/40 hover:bg-foreground/[0.05]"
           >
-            <ShoppingBag className="size-3.5 text-muted-foreground" aria-hidden="true" />
-            <span className="hidden sm:inline">Cart</span>
-            {totalCount > 0 && (
-              <span className="flex size-4.5 items-center justify-center rounded-full bg-foreground font-mono text-[10px] font-bold text-background">
-                {totalCount}
-              </span>
-            )}
+            <span>BAG</span>
+            <span className="text-foreground/40">[</span>
+            <span className="font-semibold text-foreground">{totalCount}</span>
+            <span className="text-foreground/40">]</span>
           </button>
 
           <ThemeToggle />
@@ -95,7 +87,7 @@ export function ShopHeader() {
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
-            className="flex size-8 items-center justify-center rounded-md border border-border/70 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+            className="flex size-8 items-center justify-center rounded-full border border-foreground/15 text-muted-foreground transition-colors hover:text-foreground md:hidden"
           >
             {mobileMenuOpen ? (
               <X className="size-4" aria-hidden="true" />
@@ -107,9 +99,9 @@ export function ShopHeader() {
       </Container>
 
       {mobileMenuOpen && (
-        <div className="border-t border-border/60 bg-background/98 px-5 py-4 backdrop-blur-xl md:hidden">
+        <div className="border-t border-foreground/6 bg-background/95 px-6 py-5 backdrop-blur-2xl md:hidden">
           <nav
-            className="flex flex-col gap-1.5"
+            className="flex flex-col gap-2"
             aria-label="Mobile store navigation"
           >
             {navLinks.map((link) => (
@@ -117,9 +109,10 @@ export function ShopHeader() {
                 key={link.label}
                 href={link.href}
                 onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
-                className="rounded-md px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex items-center justify-between rounded-lg px-2 py-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
               >
-                {link.label}
+                <span>{link.label}</span>
+                <ArrowUpRight className="size-3 text-muted-foreground/60" />
               </Link>
             ))}
           </nav>

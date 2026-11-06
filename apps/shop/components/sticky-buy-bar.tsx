@@ -5,7 +5,6 @@ import Image from "next/image"
 import { Layers } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
 import { useCurrency } from "./currency-context"
-import { formatPrice } from "../lib/utils"
 import { AddToCartButton } from "./add-to-cart-button"
 import type { ShopProduct } from "../lib/queries"
 import { cn } from "@workspace/ui/lib/utils"
@@ -47,37 +46,37 @@ export function StickyBuyBar({ product }: StickyBuyBarProps) {
       role="region"
       aria-label="Quick purchase bar"
       className={cn(
-        "fixed right-0 bottom-0 left-0 z-40 border-t border-border/70 bg-background/98 p-2.5 shadow-lg backdrop-blur-xl transition-all sm:py-3"
+        "fixed right-0 bottom-0 left-0 z-40 border-t border-foreground/8 bg-background/90 p-3 shadow-2xl backdrop-blur-2xl transition-all"
       )}
     >
       <Container className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 overflow-hidden">
+        <div className="flex items-center gap-3.5 overflow-hidden">
           {product.coverImageUrl ? (
-            <div className="relative size-9 shrink-0 overflow-hidden rounded-md border border-border/60 bg-muted/40">
+            <div className="relative size-10 shrink-0 overflow-hidden rounded-xl border border-foreground/10 bg-muted">
               <Image
                 src={product.coverImageUrl}
                 alt={product.title}
                 fill
-                sizes="36px"
+                sizes="40px"
                 className="object-cover"
               />
             </div>
           ) : (
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted/40">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-muted">
               <Layers className="size-4 text-muted-foreground" />
             </div>
           )}
 
           <div className="truncate">
-            <h3 className="truncate text-xs font-semibold text-foreground sm:text-sm">
+            <h3 className="truncate text-xs font-medium text-foreground sm:text-sm">
               {product.title}
             </h3>
-            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-              <span className="font-mono font-bold text-foreground">
+            <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
+              <span className="font-semibold text-foreground">
                 {format(product.price)}
               </span>
               <span>•</span>
-              <span>Standard Tier</span>
+              <span className="uppercase">PERPETUAL COMMERCIAL</span>
             </div>
           </div>
         </div>
@@ -94,7 +93,7 @@ export function StickyBuyBar({ product }: StickyBuyBarProps) {
               currency: product.currency,
             }}
             size="sm"
-            label="Add to Cart"
+            label="Add to Bag"
           />
         </div>
       </Container>
