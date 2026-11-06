@@ -224,7 +224,9 @@ export function CommandSearch() {
   const handleSelect = useCallback(
     (href: string) => {
       closeSearch()
-      router.push(href)
+      setTimeout(() => {
+        router.push(href)
+      }, 50)
     },
     [router, closeSearch]
   )
