@@ -1,5 +1,7 @@
 import type { NextRequest } from "next/server"
 import { verifySessionToken, SESSION_COOKIE_NAME } from "@workspace/auth"
+import { db, eq } from "@workspace/db"
+import { users } from "@workspace/db/schema"
 import { verifyApiKey } from "./api-key"
 import { extractClientIp } from "./rate-limit"
 import { UnauthorizedError, ForbiddenError } from "../api/errors"
@@ -61,6 +63,25 @@ export async function extractSecurityContext(
   if (sessionToken) {
     const session = await verifySessionToken(sessionToken)
     if (session && session.userId && session.email) {
+      if (session.tokenVersion !== undefined) {
+        try {
+          const [dbUser] = await db
+            .select({ tokenVersion: users.tokenVersion })
+            .from(users)
+            .where(eq(users.id, session.userId))
+            .limit(1)
+
+          if (dbUser && dbUser.tokenVersion !== session.tokenVersion) {
+            return {
+              traceId,
+              clientIp,
+              userAgent,
+              authMethod: "ANONYMOUS",
+            }
+          }
+        } catch {}
+      }
+
       const role: UserRole = session.role === "OWNER" ? "OWNER" : "CUSTOMER"
 
       return {

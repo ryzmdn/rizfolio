@@ -1,4 +1,4 @@
-import { db, eq } from "@workspace/db"
+import { db, eq, sql } from "@workspace/db"
 import { users } from "@workspace/db/schema"
 import { verifyPassword, hashPassword } from "@workspace/auth"
 import {
@@ -51,7 +51,10 @@ export const POST = createApiHandler(
 
     await db
       .update(users)
-      .set({ passwordHash: newHash })
+      .set({
+        passwordHash: newHash,
+        tokenVersion: sql`${users.tokenVersion} + 1`,
+      })
       .where(eq(users.id, user.id))
 
     return apiSuccess({
