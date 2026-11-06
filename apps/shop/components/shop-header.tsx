@@ -116,7 +116,7 @@ export function ShopHeader() {
               <Link
                 key={link.label}
                 href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
                 className="rounded-md px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 {link.label}

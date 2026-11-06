@@ -376,7 +376,7 @@ export function CartDrawer() {
               <div className="space-y-2 pt-0.5">
                 <Link
                   href="/checkout"
-                  onClick={closeCart}
+                  onClick={() => setTimeout(() => closeCart(), 50)}
                   className="flex w-full items-center justify-center gap-2 rounded-md bg-foreground py-2.5 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
                 >
                   <span>Proceed to Checkout</span>
