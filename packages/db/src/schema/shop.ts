@@ -69,6 +69,7 @@ export const orderItems = pgTable("order_items", {
   productId: uuid("product_id")
     .notNull()
     .references(() => products.id),
+  productTitle: varchar("product_title", { length: 255 }),
   pricePaid: integer("price_paid").notNull(),
   downloadToken: varchar("download_token", { length: 255 }),
   tokenExpiresAt: timestamp("token_expires_at", { withTimezone: true }),

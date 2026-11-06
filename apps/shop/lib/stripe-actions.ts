@@ -135,6 +135,7 @@ export async function createStripeCheckoutSessionAction(
         await db.insert(orderItems).values({
           orderId: insertedOrder.id,
           productId: it.productId,
+          productTitle: it.productTitle,
           pricePaid: Math.round(it.pricePaid),
           downloadToken: it.downloadToken,
           tokenExpiresAt: expiryDate,

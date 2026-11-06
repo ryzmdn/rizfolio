@@ -191,6 +191,7 @@ export async function createOrderAction(
         await db.insert(orderItems).values({
           orderId: insertedOrder.id,
           productId: it.productId,
+          productTitle: it.productTitle,
           pricePaid: it.pricePaid,
           downloadToken: it.downloadToken,
           tokenExpiresAt: expiryDate,
