@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (tag) {
-      revalidateTag(tag, "max-age=0")
+      ;(revalidateTag as (t: string, ...args: unknown[]) => void)(tag)
     }
 
     if (!path && !tag) {
