@@ -20,6 +20,7 @@ export interface SessionPayload {
   userId: string
   email: string
   role: string
+  tokenVersion?: number
   jti?: string
   iss?: string
   aud?: string
@@ -32,8 +33,9 @@ export async function createSessionToken(
 ): Promise<string> {
   const secretKey = getSessionSecret()
   const jti = crypto.randomUUID()
+  const tokenVersion = payload.tokenVersion ?? 1
 
-  return new SignJWT({ ...payload, jti })
+  return new SignJWT({ ...payload, tokenVersion, jti })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setIssuer(JWT_ISSUER)
@@ -73,5 +75,5 @@ export const SESSION_COOKIE_OPTIONS = {
   secure: process.env.NODE_ENV === "production",
   sameSite: "lax" as const,
   path: "/",
-  maxAge: 24 * 60 * 60, // 24 hours (1 day)
+  maxAge: 24 * 60 * 60,
 }
