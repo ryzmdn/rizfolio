@@ -12,11 +12,12 @@ import { NavLink } from "./nav-link"
 
 const navigation = {
   main: [
-    { name: "Overview", href: "/" },
-    { name: "Journey", href: "/#journey" },
+    { name: "Works", href: "/#case-studies" },
+    { name: "Manifesto", href: "/#manifesto" },
     { name: "Capabilities", href: "/#capabilities" },
-    { name: "Case Studies", href: "/work" },
-    { name: "Solutions", href: "/#solutions" },
+    { name: "Archive", href: "/#archive" },
+    { name: "All Studies", href: "/work" },
+    { name: "Inquiry", href: "/#call-to-action" },
     { name: "License", href: "/license" },
   ],
   social: [

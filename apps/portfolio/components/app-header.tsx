@@ -16,11 +16,12 @@ import {
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 
 const navItems = [
-  { href: "/", label: "Overview" },
-  { href: "/#journey", label: "Journey" },
-  { href: "/#case-studies", label: "Case Studies" },
+  { href: "/#case-studies", label: "Works" },
+  { href: "/#manifesto", label: "Manifesto" },
   { href: "/#capabilities", label: "Capabilities" },
-  { href: "/#solutions", label: "Solutions" },
+  { href: "/#archive", label: "Archive" },
+  { href: "/#testimonials", label: "Endorsements" },
+  { href: "/#call-to-action", label: "Inquiry" },
 ]
 
 export function AppHeader() {
@@ -65,7 +66,7 @@ export function AppHeader() {
   return (
     <Header
       id="header"
-      className="absolute top-0 left-1/2 z-50 w-full max-w-4xl -translate-x-1/2 px-4 sm:px-6"
+      className="absolute top-0 left-1/2 z-50 w-full max-w-6xl -translate-x-1/2 px-4 sm:px-6 lg:px-8"
     >
       <div className="flex h-20 w-full items-center justify-between">
         <div className="flex items-center gap-x-2.5 text-sm">
