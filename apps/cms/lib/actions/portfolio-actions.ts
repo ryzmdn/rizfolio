@@ -45,10 +45,14 @@ export async function getProfile() {
 
 export async function upsertProfile(values: typeof profile.$inferInsert) {
   const validated = insertProfileSchema.partial().parse(values)
-  await db.transaction(async (tx) => {
+  const saved = await db.transaction(async (tx) => {
     const [existing] = await tx.select().from(profile).limit(1)
     if (existing) {
-      await tx.update(profile).set(validated).where(eq(profile.id, existing.id))
+      const [updated] = await tx
+        .update(profile)
+        .set(validated)
+        .where(eq(profile.id, existing.id))
+        .returning()
       logTransaction({
         domain: "PORTFOLIO",
         actionType: "PROFILE_UPDATED",
@@ -57,6 +61,7 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
         entityId: existing.id,
         payloadAfter: validated,
       })
+      return updated
     } else {
       const [inserted] = await tx
         .insert(profile)
@@ -72,6 +77,7 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
           payloadAfter: validated,
         })
       }
+      return inserted
     }
   })
   dispatchPortfolioRevalidation()
