@@ -1,5 +1,19 @@
 import { NextRequest, NextResponse } from "next/server"
 import { revalidatePath, revalidateTag } from "next/cache"
+import crypto from "crypto"
+
+function safeCompareTokens(provided: string, expected: string): boolean {
+  try {
+    const bufProvided = Buffer.from(provided, "utf8")
+    const bufExpected = Buffer.from(expected, "utf8")
+    if (bufProvided.length !== bufExpected.length) {
+      return false
+    }
+    return crypto.timingSafeEqual(bufProvided, bufExpected)
+  } catch {
+    return false
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +27,7 @@ export async function POST(request: NextRequest) {
       !expectedSecret ||
       expectedSecret.trim().length < 16 ||
       !headerSecret ||
-      headerSecret !== expectedSecret
+      !safeCompareTokens(headerSecret, expectedSecret)
     ) {
       return NextResponse.json(
         { success: false, message: "Unauthorized revalidation request" },
