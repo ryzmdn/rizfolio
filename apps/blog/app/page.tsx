@@ -245,7 +245,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 query.
               </p>
               <Link
-                href="/"
+                href="/blog"
                 className="mt-5 text-sm font-medium text-foreground underline underline-offset-2 hover:text-muted-foreground"
               >
                 Clear filters
@@ -292,7 +292,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                           {primaryCategory && (
                             <>
                               <Link
-                                href={`/?category=${primaryCategory.slug}`}
+                                href={`/blog?category=${primaryCategory.slug}`}
                                 className="font-medium text-foreground transition-colors hover:text-muted-foreground"
                               >
                                 {primaryCategory.name}
@@ -338,7 +338,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                           {post.tags.slice(0, 2).map((t) => (
                             <Link
                               key={t.id}
-                              href={`/?tag=${t.slug}`}
+                              href={`/blog?tag=${t.slug}`}
                               className="text-xs text-muted-foreground/70 transition-colors hover:text-foreground"
                               aria-label={`Filter by tag: ${t.name}`}
                             >
@@ -377,7 +377,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
               <div className="flex items-center gap-2">
                 {currentPage > 1 && (
                   <Link
-                    href={`/?page=${currentPage - 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
+                    href={`/blog?page=${currentPage - 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
                     className="inline-flex items-center gap-1.5 rounded-md border border-border/60 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/50"
                   >
                     <ArrowLeft className="size-3" />
@@ -386,7 +386,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 )}
                 {currentPage < totalPages && (
                   <Link
-                    href={`/?page=${currentPage + 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
+                    href={`/blog?page=${currentPage + 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
                     className="inline-flex items-center gap-1.5 rounded-md border border-border/60 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/50"
                   >
                     <span>Next</span>

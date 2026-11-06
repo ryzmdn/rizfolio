@@ -36,6 +36,7 @@ interface OrderDetailItem {
   id: string
   orderId: string
   productId: string
+  productTitle?: string | null
   pricePaid: number
   downloadToken: string | null
   tokenExpiresAt: Date | null
@@ -275,7 +276,7 @@ export function OrderDetailDialog({
                     >
                       <div className="space-y-1">
                         <span className="font-medium text-foreground">
-                          {productMap.get(item.productId) || item.productId}
+                          {item.productTitle || productMap.get(item.productId) || item.productId}
                         </span>
                         {item.downloadToken && (
                           <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
