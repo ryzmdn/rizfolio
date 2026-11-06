@@ -149,7 +149,7 @@ export function AppHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => setTimeout(() => setIsMobileMenuOpen(false), 50)}
                 className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
               >
                 <span>{item.label}</span>
