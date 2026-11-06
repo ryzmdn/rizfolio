@@ -98,9 +98,11 @@ export function CommandSearch() {
   const handleSelect = useCallback(
     (url: string) => {
       handleClose()
-      startTransition(() => {
-        router.push(url)
-      })
+      setTimeout(() => {
+        startTransition(() => {
+          router.push(url)
+        })
+      }, 50)
     },
     [handleClose, router]
   )

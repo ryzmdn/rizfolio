@@ -151,7 +151,7 @@ export function ChangelogHeader() {
                   href={link.href}
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noreferrer" : undefined}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
                   className={cn(
                     "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-colors",
                     link.active
@@ -173,7 +173,7 @@ export function ChangelogHeader() {
               href="https://github.com/ryzmdn/rizfolio"
               target="_blank"
               rel="noreferrer"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
               className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
             >
               <div className="flex items-center gap-2.5">
