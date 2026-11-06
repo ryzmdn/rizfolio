@@ -73,65 +73,71 @@ export async function submitInquiryAction(
       })
       .returning()
 
-    if (inquiry) {
-      try {
-        await db.insert(masterTransactions).values({
-          trxNumber: `INQ-${Date.now().toString(36).toUpperCase()}`,
-          domain: "PORTFOLIO",
-          actionType: "CLIENT_INQUIRY_SUBMITTED",
-          status: "COMPLETED",
-          actorType: "CUSTOMER",
-          entityType: "INQUIRY",
-          entityId: inquiry.id,
-          metadata: {
-            name,
-            email,
-            subject,
-            projectScope,
-            budgetRange,
-          },
-        })
-      } catch (auditError) {
-        void auditError
+    if (!inquiry) {
+      return {
+        success: false,
+        error:
+          "Unable to submit your inquiry at this moment. Please try again or reach out directly via email.",
       }
+    }
 
-      try {
-        await sendInquiryAlertEmail({
-          inquiryId: inquiry.id,
+    try {
+      await db.insert(masterTransactions).values({
+        trxNumber: `INQ-${Date.now().toString(36).toUpperCase()}`,
+        domain: "PORTFOLIO",
+        actionType: "CLIENT_INQUIRY_SUBMITTED",
+        status: "COMPLETED",
+        actorType: "CUSTOMER",
+        entityType: "INQUIRY",
+        entityId: inquiry.id,
+        metadata: {
           name,
           email,
           subject,
           projectScope,
           budgetRange,
-          message,
-          receivedAt: inquiry.createdAt,
-          cmsInboxUrl: process.env.NEXT_PUBLIC_CMS_URL
-            ? `${process.env.NEXT_PUBLIC_CMS_URL}/inbox`
-            : undefined,
-        })
-      } catch (emailError) {
-        console.warn(
-          "[Portfolio Actions] Email alert dispatch skipped:",
-          emailError instanceof Error ? emailError.message : "Email error"
-        )
-      }
+        },
+      })
+    } catch (auditError) {
+      void auditError
+    }
+
+    try {
+      await sendInquiryAlertEmail({
+        inquiryId: inquiry.id,
+        name,
+        email,
+        subject,
+        projectScope,
+        budgetRange,
+        message,
+        receivedAt: inquiry.createdAt,
+        cmsInboxUrl: process.env.NEXT_PUBLIC_CMS_URL
+          ? `${process.env.NEXT_PUBLIC_CMS_URL}/inbox`
+          : undefined,
+      })
+    } catch (emailError) {
+      console.warn(
+        "[Portfolio Actions] Email alert dispatch skipped:",
+        emailError instanceof Error ? emailError.message : "Email error"
+      )
     }
 
     return {
       success: true,
       message:
         "Thank you! Your project inquiry has been securely delivered. I will review your requirements and respond within 24 hours.",
-      inquiryId: inquiry?.id,
+      inquiryId: inquiry.id,
     }
   } catch (error) {
-    console.warn(
-      "[Portfolio Actions] Database unreachable, inquiry recorded in resilient state:",
+    console.error(
+      "[Portfolio Actions] Database insertion failed for inquiry:",
       error instanceof Error ? error.message : "Unknown error"
     )
     return {
-      success: true,
-      message:
-        "Inquiry received! I have noted your contact details and will reach out promptly.",
+      success: false,
+      error:
+        "Unable to submit your inquiry at this moment. Please try again or reach out directly via email.",
     }
   }
 }

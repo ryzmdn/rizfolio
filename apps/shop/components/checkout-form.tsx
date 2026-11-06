@@ -28,7 +28,7 @@ export function CheckoutForm() {
   const [customerName, setCustomerName] = useState("")
   const [customerEmail, setCustomerEmail] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("stripe")
-  const [agreeTerms, setAgreeTerms] = useState(true)
+  const [agreeTerms, setAgreeTerms] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const paymentOptions = [

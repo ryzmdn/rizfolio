@@ -47,20 +47,17 @@ export type ServiceItem = (typeof fallbackServices)[number]
 export type CaseStudyItem = (typeof fallbackCaseStudies)[number]
 export type TestimonialItem = (typeof fallbackTestimonials)[number]
 
-/**
- * SLA-guaranteed execution with fast fallback timeout.
- * Prevents cold-start or remote database latencies from hanging page loads.
- */
 async function withTimeout<T>(
   promise: Promise<T>,
   ms = 1200,
   fallback: T
 ): Promise<T> {
   let timer: NodeJS.Timeout
+  const safePromise = promise.catch(() => fallback)
   const timeoutPromise = new Promise<T>((resolve) => {
     timer = setTimeout(() => resolve(fallback), ms)
   })
-  return Promise.race([promise, timeoutPromise]).finally(() => {
+  return Promise.race([safePromise, timeoutPromise]).finally(() => {
     clearTimeout(timer)
   })
 }
