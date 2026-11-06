@@ -12,23 +12,22 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <Container className="max-w-2xl py-20 text-center">
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border/70 bg-card/40 p-8 py-16">
-          <div className="flex size-14 items-center justify-center rounded-md border border-border bg-muted/40 text-muted-foreground">
-            <ShoppingBag className="size-6" />
+      <Container className="max-w-2xl py-24 text-center">
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-10 sm:p-16">
+          <div className="flex size-14 items-center justify-center rounded-2xl border border-foreground/15 bg-foreground/[0.02] text-muted-foreground">
+            <ShoppingBag className="size-6 stroke-[1.25]" />
           </div>
-          <h1 className="mt-4 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-            Your Cart is Empty
+          <h1 className="mt-5 text-2xl font-light tracking-tight text-foreground sm:text-3xl">
+            Your Bag is Empty
           </h1>
-          <p className="mt-2 max-w-sm text-xs leading-relaxed text-muted-foreground sm:text-sm">
-            You need to select at least one software architecture package or
-            consultation session before proceeding to checkout.
+          <p className="mt-2 max-w-sm text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
+            Select an architectural software package or advisory contract from the catalog to initiate provisioning.
           </p>
           <Link
             href="/"
-            className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+            className="mt-8 inline-flex items-center gap-2.5 rounded-full bg-foreground px-7 py-3 font-mono text-xs tracking-widest text-background uppercase shadow-md transition-all hover:scale-[1.02]"
           >
-            <span>Explore Store Catalog</span>
+            <span>Explore Catalog</span>
             <ArrowRight className="size-3.5" />
           </Link>
         </div>
@@ -37,26 +36,28 @@ export default function CheckoutPage() {
   }
 
   return (
-    <Container className="max-w-6xl py-10 md:py-16">
+    <Container className="max-w-6xl py-12 md:py-20">
       <Link
         href="/"
-        className="mb-8 inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        className="mb-8 inline-flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-3.5" />
-        <span>Continue Shopping</span>
+        <span>Return to Catalog</span>
       </Link>
 
-      <div className="mb-8 space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          Checkout & License Provisioning
+      <div className="mb-10 space-y-2 border-b border-foreground/6 pb-6">
+        <span className="font-mono text-xs tracking-[0.25em] text-muted-foreground uppercase">
+          [ 01 / ENCRYPTED CHECKOUT ]
+        </span>
+        <h1 className="text-3xl font-light tracking-tight text-foreground sm:text-4xl md:text-5xl">
+          Checkout & License Provisioning.
         </h1>
-        <p className="text-xs text-muted-foreground sm:text-sm">
-          Complete your purchase to receive instant access to your source code
-          repository archives and perpetual commercial license keys.
+        <p className="max-w-2xl text-sm font-light text-muted-foreground">
+          Complete your acquisition to receive immediate cryptographic download tokens and verified commercial license keys.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
           <CheckoutForm />
         </div>

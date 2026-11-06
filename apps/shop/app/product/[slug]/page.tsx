@@ -9,7 +9,6 @@ import {
   ShieldCheck,
   Download,
   ArrowRight,
-  Layers,
   ChevronRight,
 } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
@@ -165,21 +164,21 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      <Container className="max-w-6xl py-10 md:py-16">
+      <Container className="max-w-6xl py-12 md:py-20">
         <nav
           aria-label="Breadcrumb"
-          className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground"
+          className="mb-8 flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase"
         >
           <Link
             href="/"
-            className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
           >
-            <ArrowLeft className="size-3.5" />
-            <span>Store Catalog</span>
+            <ArrowLeft className="size-3" />
+            <span>Archive Catalog</span>
           </Link>
           {product.category && (
             <>
-              <ChevronRight className="size-3 text-muted-foreground/40" />
+              <ChevronRight className="size-3 opacity-40" />
               <Link
                 href={`/?category=${product.category}`}
                 className="transition-colors hover:text-foreground"
@@ -188,35 +187,38 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               </Link>
             </>
           )}
-          <ChevronRight className="size-3 text-muted-foreground/40" />
-          <span className="max-w-[200px] truncate font-medium text-foreground sm:max-w-xs">
+          <ChevronRight className="size-3 opacity-40" />
+          <span className="truncate text-foreground font-medium">
             {product.title}
           </span>
         </nav>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-          <div className="space-y-10 lg:col-span-7">
+          <div className="space-y-12 lg:col-span-7">
             <ImageGallery images={gallery} title={product.title} />
 
-            <div className="space-y-4">
-              <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-                Architecture & System Overview
-              </h2>
-              <p className="text-xs leading-relaxed whitespace-pre-line text-muted-foreground sm:text-sm">
+            <div className="space-y-4 border-b border-foreground/6 pb-8">
+              <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                SYSTEM SPECIFICATION
+              </span>
+              <h1 className="text-3xl font-light tracking-tight text-foreground sm:text-4xl">
+                {product.title}
+              </h1>
+              <p className="text-sm font-light leading-relaxed whitespace-pre-line text-muted-foreground">
                 {product.description}
               </p>
             </div>
 
             {product.features && product.features.length > 0 && (
-              <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
-                <h3 className="text-sm font-semibold text-foreground">
-                  Key Features & Technical Capabilities
-                </h3>
-                <ul className="grid grid-cols-1 gap-2.5 pt-1 text-xs text-muted-foreground sm:grid-cols-2">
+              <div className="space-y-4 rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-6 sm:p-8">
+                <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                  DELIVERABLES & ARCHITECTURAL CAPABILITIES
+                </span>
+                <ul className="grid grid-cols-1 gap-3 pt-1 text-xs font-light text-foreground/90 sm:grid-cols-2">
                   {product.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-foreground" />
-                      <span className="leading-snug">{feature}</span>
+                    <li key={feature} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-foreground/40" />
+                      <span className="leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -224,21 +226,21 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             )}
 
             {product.files && product.files.length > 0 && (
-              <div className="space-y-3 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
-                <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              <div className="space-y-3 rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-6 sm:p-8">
+                <div className="flex items-center gap-2 font-mono text-xs text-foreground uppercase">
                   <FileCode className="size-4 text-muted-foreground" />
-                  <span>Included Digital Packages</span>
+                  <span>INCLUDED SOURCE PACKAGES</span>
                 </div>
-                <ul className="divide-y divide-border/60 text-xs">
+                <ul className="divide-y divide-foreground/6 text-xs font-mono">
                   {product.files.map((file) => (
                     <li
                       key={file.id}
-                      className="flex items-center justify-between py-2.5"
+                      className="flex items-center justify-between py-3"
                     >
-                      <span className="font-mono text-foreground">
+                      <span className="text-foreground/90">
                         {file.fileName}
                       </span>
-                      <span className="rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-mono text-[11px] font-medium text-muted-foreground">
+                      <span className="rounded-full border border-foreground/10 bg-foreground/[0.02] px-2.5 py-0.5 text-[10px] text-muted-foreground">
                         {formatBytes(file.fileSizeBytes)}
                       </span>
                     </li>
@@ -247,29 +249,27 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               </div>
             )}
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/20 p-4 sm:p-5">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="flex items-start gap-3 rounded-2xl border border-foreground/8 bg-foreground/[0.01] p-5">
                 <Download className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                 <div className="space-y-1">
-                  <h4 className="text-xs font-semibold text-foreground">
-                    Instant Digital Delivery
+                  <h4 className="font-mono text-xs font-medium text-foreground uppercase">
+                    Instant Fulfillment
                   </h4>
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
-                    Automated download token and license key generated
-                    immediately upon transaction completion.
+                  <p className="text-[11px] font-light leading-relaxed text-muted-foreground">
+                    Deterministic cryptographic download token generated immediately upon verified payment.
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/20 p-4 sm:p-5">
+              <div className="flex items-start gap-3 rounded-2xl border border-foreground/8 bg-foreground/[0.01] p-5">
                 <ShieldCheck className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                 <div className="space-y-1">
-                  <h4 className="text-xs font-semibold text-foreground">
-                    Verified TypeScript Codebase
+                  <h4 className="font-mono text-xs font-medium text-foreground uppercase">
+                    Production Verified
                   </h4>
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
-                    Tested with Next.js 16 and React 19 compiler with zero
-                    runtime type discrepancies.
+                  <p className="text-[11px] font-light leading-relaxed text-muted-foreground">
+                    Strict TypeScript compilation, Next.js 16 compiler tested, zero runtime type errors.
                   </p>
                 </div>
               </div>
@@ -293,55 +293,60 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         </div>
 
         {relatedProducts.length > 0 && (
-          <div className="mt-20 space-y-8 border-t border-border/60 pt-12 sm:pt-16">
-            <div className="flex items-center gap-2">
-              <Layers className="size-4 text-muted-foreground" />
-              <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
-                Related Software Architectures
-              </h2>
+          <div className="mt-24 space-y-8 border-t border-foreground/6 pt-16">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                [ COMPLEMENTARY ARCHITECTURES ]
+              </span>
+              <Link
+                href="/"
+                className="font-mono text-xs text-muted-foreground uppercase hover:text-foreground"
+              >
+                View Full Catalog &rarr;
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedProducts.map((rel) => (
                 <div
                   key={rel.id}
-                  className="group flex flex-col justify-between rounded-lg border border-border/70 bg-card/40 p-5 transition-colors hover:border-border hover:bg-card"
+                  className="group flex flex-col justify-between rounded-3xl border border-foreground/10 bg-foreground/[0.01] p-6 transition-all hover:border-foreground/30 hover:bg-foreground/[0.02]"
                 >
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {rel.coverImageUrl && (
-                      <div className="relative aspect-video w-full overflow-hidden rounded-md border border-border/60 bg-muted">
+                      <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl border border-foreground/8 bg-muted">
                         <Image
                           src={rel.coverImageUrl}
                           alt={rel.title}
                           fill
                           sizes="300px"
-                          className="object-cover transition-transform duration-300 group-hover:scale-102"
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </div>
                     )}
 
                     <div className="flex items-center justify-between text-xs">
-                      <span className="rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                      <span className="font-mono text-[10px] uppercase text-muted-foreground">
                         {rel.productType === "DIGITAL_DOWNLOAD"
                           ? "Digital Download"
-                          : "1-on-1 Service"}
+                          : "Advisory"}
                       </span>
-                      <span className="font-mono font-bold text-foreground">
+                      <span className="font-mono font-medium text-foreground">
                         {formatPrice(rel.price, rel.currency)}
                       </span>
                     </div>
 
-                    <h3 className="text-sm font-semibold tracking-tight text-foreground transition-colors group-hover:text-foreground">
+                    <h3 className="text-base font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground/80">
                       <Link href={`/product/${rel.slug}`}>{rel.title}</Link>
                     </h3>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-end border-t border-border/50 pt-3">
+                  <div className="mt-6 flex items-center justify-end border-t border-foreground/6 pt-3">
                     <Link
                       href={`/product/${rel.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                      className="inline-flex items-center gap-1 font-mono text-[11px] tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
                     >
-                      <span>Explore</span>
+                      <span>Inspect</span>
                       <ArrowRight className="size-3" />
                     </Link>
                   </div>
