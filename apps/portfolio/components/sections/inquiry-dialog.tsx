@@ -140,17 +140,18 @@ export function InquiryDialog() {
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
-        className="mt-8 inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-background px-6 py-3.5 text-sm font-semibold text-foreground shadow-md transition-all hover:scale-[1.02] hover:bg-background/90 active:scale-[0.98]"
+        className="group inline-flex cursor-pointer items-center justify-center gap-3 rounded-full bg-foreground px-8 py-4 font-mono text-xs tracking-widest text-background uppercase shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
       >
-        <MessageSquareCode className="size-4" aria-hidden="true" />
-        <span>Submit Project Inquiry</span>
+        <MessageSquareCode className="size-3.5" aria-hidden="true" />
+        <span>Initiate Proposal Submission</span>
+        <span className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
       </button>
 
       {isOpen && (
         <div
           role="presentation"
           onClick={handleClose}
-          className="fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs duration-200 fade-in"
+          className="fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/75 p-4 backdrop-blur-md duration-200 fade-in"
         >
           <div
             ref={dialogRef}
@@ -158,27 +159,26 @@ export function InquiryDialog() {
             aria-modal="true"
             aria-labelledby="inquiry-dialog-title"
             aria-describedby="inquiry-dialog-desc"
-            className="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-border/80 bg-card p-6 text-left shadow-2xl"
+            className="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-foreground/15 bg-background p-6 text-left shadow-2xl sm:p-8"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between border-b border-border/60 pb-4">
-              <div className="flex items-center gap-2.5">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <div className="flex items-center justify-between border-b border-foreground/8 pb-5">
+              <div className="flex items-center gap-3">
+                <div className="flex size-9 items-center justify-center rounded-lg border border-foreground/15 bg-foreground/5 text-foreground">
                   <Sparkles className="size-4" aria-hidden="true" />
                 </div>
                 <div>
                   <h3
                     id="inquiry-dialog-title"
-                    className="text-base font-bold text-foreground"
+                    className="text-base font-medium tracking-tight text-foreground"
                   >
-                    Project Collaboration Inquiry
+                    Direct Architectural Proposal
                   </h3>
                   <p
                     id="inquiry-dialog-desc"
-                    className="text-xs text-muted-foreground"
+                    className="font-mono text-[11px] text-muted-foreground"
                   >
-                    Direct proposal channel to architect and build your next
-                    system.
+                    Direct inquiry channel for enterprise advisory & system contracts.
                   </p>
                 </div>
               </div>
@@ -186,42 +186,42 @@ export function InquiryDialog() {
                 type="button"
                 onClick={handleClose}
                 aria-label="Close inquiry dialog"
-                className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="rounded-full border border-foreground/10 p-1.5 text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
               >
                 <X className="size-4" aria-hidden="true" />
               </button>
             </div>
 
             {successMessage ? (
-              <div className="space-y-4 py-8 text-center">
-                <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+              <div className="space-y-4 py-10 text-center">
+                <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
                   <CheckCircle2 className="size-6" aria-hidden="true" />
                 </div>
-                <h4 className="text-base font-bold text-foreground">
+                <h4 className="text-base font-medium text-foreground">
                   Inquiry Dispatched Successfully
                 </h4>
-                <p className="mx-auto max-w-md text-xs leading-relaxed text-muted-foreground">
+                <p className="mx-auto max-w-md text-xs font-light leading-relaxed text-muted-foreground">
                   {successMessage}
                 </p>
                 <div className="pt-4">
                   <button
                     type="button"
                     onClick={handleClose}
-                    className="rounded-lg bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                    className="rounded-full bg-foreground px-6 py-2.5 font-mono text-xs tracking-wider text-background uppercase hover:opacity-90"
                   >
-                    Done
+                    Close Window
                   </button>
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+              <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
                     <label
                       htmlFor="inquiry-name"
-                      className="text-xs font-medium text-foreground"
+                      className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
                     >
-                      Full Name <span className="text-rose-500">*</span>
+                      Full Name <span className="text-foreground/40">*</span>
                     </label>
                     <input
                       id="inquiry-name"
@@ -230,16 +230,16 @@ export function InquiryDialog() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Alex Morgan"
-                      className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-hidden"
+                      className="w-full rounded-xl border border-foreground/15 bg-foreground/[0.02] px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground/40 focus:border-foreground/40 focus:outline-hidden"
                     />
                   </div>
 
                   <div className="space-y-1.5">
                     <label
                       htmlFor="inquiry-email"
-                      className="text-xs font-medium text-foreground"
+                      className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
                     >
-                      Email Address <span className="text-rose-500">*</span>
+                      Email Address <span className="text-foreground/40">*</span>
                     </label>
                     <input
                       id="inquiry-email"
@@ -248,7 +248,7 @@ export function InquiryDialog() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="alex@company.com"
-                      className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-hidden"
+                      className="w-full rounded-xl border border-foreground/15 bg-foreground/[0.02] px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground/40 focus:border-foreground/40 focus:outline-hidden"
                     />
                   </div>
                 </div>
@@ -257,15 +257,15 @@ export function InquiryDialog() {
                   <div className="space-y-1.5">
                     <label
                       htmlFor="inquiry-scope"
-                      className="text-xs font-medium text-foreground"
+                      className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
                     >
-                      Collaboration Scope
+                      Engagement Scope
                     </label>
                     <select
                       id="inquiry-scope"
                       value={projectScope}
                       onChange={(e) => setProjectScope(e.target.value)}
-                      className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:border-primary/50 focus:outline-hidden"
+                      className="w-full rounded-xl border border-foreground/15 bg-background px-3.5 py-2.5 text-xs text-foreground focus:border-foreground/40 focus:outline-hidden"
                     >
                       <option value="Full-Time Architecture">
                         Full-Time Architecture
@@ -288,15 +288,15 @@ export function InquiryDialog() {
                   <div className="space-y-1.5">
                     <label
                       htmlFor="inquiry-budget"
-                      className="text-xs font-medium text-foreground"
+                      className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
                     >
-                      Budget Range
+                      Budget Allocation
                     </label>
                     <select
                       id="inquiry-budget"
                       value={budgetRange}
                       onChange={(e) => setBudgetRange(e.target.value)}
-                      className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:border-primary/50 focus:outline-hidden"
+                      className="w-full rounded-xl border border-foreground/15 bg-background px-3.5 py-2.5 text-xs text-foreground focus:border-foreground/40 focus:outline-hidden"
                     >
                       <option value="< $5K">&lt; $5,000</option>
                       <option value="$5K - $15K">$5,000 - $15,000</option>
@@ -312,9 +312,9 @@ export function InquiryDialog() {
                 <div className="space-y-1.5">
                   <label
                     htmlFor="inquiry-subject"
-                    className="text-xs font-medium text-foreground"
+                    className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
                   >
-                    Subject / Project Headline
+                    System Subject
                   </label>
                   <input
                     id="inquiry-subject"
@@ -322,17 +322,17 @@ export function InquiryDialog() {
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     placeholder="e.g. Next.js Monorepo Migration & Cloud Architecture"
-                    className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-hidden"
+                    className="w-full rounded-xl border border-foreground/15 bg-foreground/[0.02] px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground/40 focus:border-foreground/40 focus:outline-hidden"
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <label
                     htmlFor="inquiry-message"
-                    className="text-xs font-medium text-foreground"
+                    className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
                   >
-                    Project Details & Goals{" "}
-                    <span className="text-rose-500">*</span>
+                    Architectural Requirements & Goals{" "}
+                    <span className="text-foreground/40">*</span>
                   </label>
                   <textarea
                     id="inquiry-message"
@@ -341,29 +341,29 @@ export function InquiryDialog() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Outline your timeline, current stack, core technical challenges, and what you aim to achieve..."
-                    className="w-full rounded-lg border border-border bg-background p-3 text-xs text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-hidden"
+                    className="w-full rounded-xl border border-foreground/15 bg-foreground/[0.02] p-3.5 text-xs text-foreground placeholder:text-muted-foreground/40 focus:border-foreground/40 focus:outline-hidden"
                   />
                 </div>
 
                 {error && (
-                  <div className="flex items-center gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 p-3 text-xs font-medium text-rose-500">
+                  <div className="flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs font-medium text-rose-400">
                     <AlertCircle className="size-4 shrink-0" aria-hidden="true" />
                     <span>{error}</span>
                   </div>
                 )}
 
-                <div className="flex items-center justify-end gap-3 border-t border-border/60 pt-3">
+                <div className="flex items-center justify-end gap-3 border-t border-foreground/8 pt-4">
                   <button
                     type="button"
                     onClick={handleClose}
-                    className="rounded-lg px-4 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                    className="rounded-full px-5 py-2 font-mono text-xs tracking-wider text-muted-foreground uppercase hover:text-foreground"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isPending}
-                    className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-opacity hover:opacity-90 disabled:opacity-50"
+                    className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-foreground px-6 py-2.5 font-mono text-xs tracking-wider text-background uppercase shadow-md transition-opacity hover:opacity-90 disabled:opacity-50"
                   >
                     {isPending ? (
                       <span>Transmitting...</span>

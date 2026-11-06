@@ -1,52 +1,63 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { BriefcaseBusiness, Mail } from "lucide-react"
+import { Mail, ArrowUpRight, ShieldCheck, MapPin } from "lucide-react"
 import { personalInfo } from "@/data"
 import { InquiryDialog } from "./inquiry-dialog"
 
 export function CtaSection() {
   return (
-    <Container
-      id="call-to-action"
-      className="my-20 w-full bg-foreground shadow-xl md:rounded-4xl"
-    >
-      <div className="px-6 py-24 text-center shadow-2xl sm:px-16">
-        <div className="mb-6 inline-flex items-center justify-center gap-x-2 rounded-full text-sm text-secondary">
-          <BriefcaseBusiness className="size-4" />
-          <span>Available for High-Impact Projects</span>
-        </div>
+    <Container id="call-to-action" className="py-24 md:py-36">
+      <div className="relative overflow-hidden rounded-3xl border border-foreground/15 bg-foreground/[0.02] p-8 sm:p-14 lg:p-20">
+        <div className="relative z-10 space-y-12">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-foreground/8 pb-6">
+            <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-muted-foreground uppercase">
+              <ShieldCheck className="size-3.5 text-foreground" />
+              <span>DIRECT EXECUTIVE CHANNEL</span>
+            </div>
+            <div className="flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground">
+              <MapPin className="size-3 text-muted-foreground" />
+              <span>JAKARTA / GLOBAL EDGE</span>
+            </div>
+          </div>
 
-        <h2 className="text-3xl font-semibold tracking-tight text-balance text-secondary sm:text-5xl lg:text-6xl">
-          Ready to Build Something Exceptional?
-        </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-base/relaxed text-pretty text-muted sm:text-lg/8">
-          Whether you&apos;re launching a new digital venture, scaling existing
-          cloud systems, or seeking high-caliber engineering leadership.
-          Let&apos;s turn ambitious visions into deterministic reality.
-        </p>
+          <div className="space-y-6">
+            <h2 className="text-3xl font-light tracking-[-0.03em] text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
+              Initiate an architectural engagement.
+            </h2>
+            <p className="max-w-2xl text-base font-light leading-relaxed text-muted-foreground sm:text-lg">
+              Available for strategic system design, high-concurrency architecture advisory, and dedicated enterprise engineering contracts.
+            </p>
+          </div>
 
-        <div className="flex justify-center">
-          <InquiryDialog />
-        </div>
+          <div className="flex flex-wrap items-center gap-6 pt-2">
+            <InquiryDialog />
+          </div>
 
-        <ul className="mt-14 grid gap-6 text-secondary sm:mt-16 sm:grid-cols-2">
-          {personalInfo.contactEmails.map((item, idx) => (
-            <li
-              key={idx}
-              className="flex flex-col items-start gap-y-1.5 rounded-xl border border-secondary/10 bg-secondary/5 p-6 text-start backdrop-blur-xs transition-colors hover:bg-secondary/10"
-            >
-              <div className="flex items-center gap-x-2 text-xs tracking-wider text-muted uppercase">
-                <Mail className="size-3.5" />
-                <span>{item.label}</span>
+          <div className="grid grid-cols-1 gap-6 border-t border-foreground/8 pt-10 sm:grid-cols-2 lg:grid-cols-3">
+            {personalInfo.contactEmails.map((item, idx) => (
+              <div key={idx} className="space-y-1.5">
+                <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                  {item.label}
+                </span>
+                <a
+                  href={`mailto:${item.email}`}
+                  className="group flex items-center gap-2 text-sm font-mono text-foreground hover:underline"
+                >
+                  <span>{item.email}</span>
+                  <ArrowUpRight className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
               </div>
-              <a
-                href={`mailto:${item.email}`}
-                className="text-lg font-medium tracking-tight text-secondary hover:underline sm:text-xl"
-              >
-                {item.email}
-              </a>
-            </li>
-          ))}
-        </ul>
+            ))}
+
+            <div className="space-y-1.5">
+              <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                CONTRACT AVAILABILITY
+              </span>
+              <p className="font-mono text-sm text-foreground">
+                Q2 / Q3 2026 Commitments
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </Container>
   )
