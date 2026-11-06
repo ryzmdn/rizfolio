@@ -160,9 +160,10 @@ export default async function LinkBioPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={soc.name}
+                aria-label={`Visit ${soc.name} profile (opens in new tab)`}
                 className="flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                <Icon className="size-4" />
+                <Icon className="size-4" aria-hidden="true" />
               </a>
             )
           })}

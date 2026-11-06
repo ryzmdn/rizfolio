@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useState, useTransition, useEffect, useRef } from "react"
 import {
   Send,
   CheckCircle2,
@@ -14,6 +14,8 @@ import { submitInquiryAction } from "@/lib/actions"
 export function InquiryDialog() {
   const [isOpen, setIsOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -24,6 +26,61 @@ export function InquiryDialog() {
 
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const previousActiveElement = document.activeElement as HTMLElement | null
+    document.body.style.overflow = "hidden"
+
+    const dialogEl = dialogRef.current
+    if (dialogEl) {
+      const focusable = dialogEl.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+      if (focusable.length > 0) {
+        focusable[0]?.focus()
+      }
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault()
+        handleClose()
+        return
+      }
+
+      if (e.key === "Tab") {
+        if (!dialogEl) return
+        const focusable = dialogEl.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+        if (focusable.length === 0) return
+
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault()
+            last?.focus()
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault()
+            first?.focus()
+          }
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+      document.body.style.overflow = ""
+      previousActiveElement?.focus()
+    }
+  }, [isOpen])
 
   function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault()
@@ -80,34 +137,46 @@ export function InquiryDialog() {
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
         className="mt-8 inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-background px-6 py-3.5 text-sm font-semibold text-foreground shadow-md transition-all hover:scale-[1.02] hover:bg-background/90 active:scale-[0.98]"
       >
-        <MessageSquareCode className="size-4" />
+        <MessageSquareCode className="size-4" aria-hidden="true" />
         <span>Submit Project Inquiry</span>
       </button>
 
       {isOpen && (
         <div
-          role="dialog"
-          aria-modal="true"
+          role="presentation"
+          onClick={handleClose}
           className="fixed inset-0 z-50 flex animate-in items-center justify-center bg-black/60 p-4 backdrop-blur-xs duration-200 fade-in"
         >
           <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="inquiry-dialog-title"
+            aria-describedby="inquiry-dialog-desc"
             className="relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-border/80 bg-card p-6 text-left shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-border/60 pb-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Sparkles className="size-4" />
+                  <Sparkles className="size-4" aria-hidden="true" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-foreground">
+                  <h3
+                    id="inquiry-dialog-title"
+                    className="text-base font-bold text-foreground"
+                  >
                     Project Collaboration Inquiry
                   </h3>
-                  <p className="text-xs text-muted-foreground">
+                  <p
+                    id="inquiry-dialog-desc"
+                    className="text-xs text-muted-foreground"
+                  >
                     Direct proposal channel to architect and build your next
                     system.
                   </p>
@@ -116,16 +185,17 @@ export function InquiryDialog() {
               <button
                 type="button"
                 onClick={handleClose}
+                aria-label="Close inquiry dialog"
                 className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                <X className="size-4" />
+                <X className="size-4" aria-hidden="true" />
               </button>
             </div>
 
             {successMessage ? (
               <div className="space-y-4 py-8 text-center">
                 <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
-                  <CheckCircle2 className="size-6" />
+                  <CheckCircle2 className="size-6" aria-hidden="true" />
                 </div>
                 <h4 className="text-base font-bold text-foreground">
                   Inquiry Dispatched Successfully
@@ -147,10 +217,14 @@ export function InquiryDialog() {
               <form onSubmit={handleSubmit} className="mt-5 space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-foreground">
+                    <label
+                      htmlFor="inquiry-name"
+                      className="text-xs font-medium text-foreground"
+                    >
                       Full Name <span className="text-rose-500">*</span>
                     </label>
                     <input
+                      id="inquiry-name"
                       type="text"
                       required
                       value={name}
@@ -161,10 +235,14 @@ export function InquiryDialog() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-foreground">
+                    <label
+                      htmlFor="inquiry-email"
+                      className="text-xs font-medium text-foreground"
+                    >
                       Email Address <span className="text-rose-500">*</span>
                     </label>
                     <input
+                      id="inquiry-email"
                       type="email"
                       required
                       value={email}
@@ -177,10 +255,14 @@ export function InquiryDialog() {
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-foreground">
+                    <label
+                      htmlFor="inquiry-scope"
+                      className="text-xs font-medium text-foreground"
+                    >
                       Collaboration Scope
                     </label>
                     <select
+                      id="inquiry-scope"
                       value={projectScope}
                       onChange={(e) => setProjectScope(e.target.value)}
                       className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:border-primary/50 focus:outline-hidden"
@@ -204,10 +286,14 @@ export function InquiryDialog() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-foreground">
+                    <label
+                      htmlFor="inquiry-budget"
+                      className="text-xs font-medium text-foreground"
+                    >
                       Budget Range
                     </label>
                     <select
+                      id="inquiry-budget"
                       value={budgetRange}
                       onChange={(e) => setBudgetRange(e.target.value)}
                       className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs text-foreground focus:border-primary/50 focus:outline-hidden"
@@ -224,10 +310,14 @@ export function InquiryDialog() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">
+                  <label
+                    htmlFor="inquiry-subject"
+                    className="text-xs font-medium text-foreground"
+                  >
                     Subject / Project Headline
                   </label>
                   <input
+                    id="inquiry-subject"
                     type="text"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
@@ -237,11 +327,15 @@ export function InquiryDialog() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">
+                  <label
+                    htmlFor="inquiry-message"
+                    className="text-xs font-medium text-foreground"
+                  >
                     Project Details & Goals{" "}
                     <span className="text-rose-500">*</span>
                   </label>
                   <textarea
+                    id="inquiry-message"
                     rows={4}
                     required
                     value={message}
@@ -253,7 +347,7 @@ export function InquiryDialog() {
 
                 {error && (
                   <div className="flex items-center gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 p-3 text-xs font-medium text-rose-500">
-                    <AlertCircle className="size-4 shrink-0" />
+                    <AlertCircle className="size-4 shrink-0" aria-hidden="true" />
                     <span>{error}</span>
                   </div>
                 )}
@@ -275,7 +369,7 @@ export function InquiryDialog() {
                       <span>Transmitting...</span>
                     ) : (
                       <>
-                        <Send className="size-3.5" />
+                        <Send className="size-3.5" aria-hidden="true" />
                         <span>Send Proposal</span>
                       </>
                     )}

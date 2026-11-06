@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition, useEffect } from "react"
+import { useState, useTransition, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import {
@@ -40,27 +40,62 @@ export function CartDrawer() {
   const [couponInput, setCouponInput] = useState("")
   const [couponError, setCouponError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
+  const drawerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape" && isOpen) {
-        closeCart()
+    if (!isOpen) return
+
+    const previousActiveElement = document.activeElement as HTMLElement | null
+    document.body.style.overflow = "hidden"
+
+    const drawerEl = drawerRef.current
+    if (drawerEl) {
+      const focusable = drawerEl.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+      if (focusable.length > 0) {
+        focusable[0]?.focus()
       }
     }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isOpen, closeCart])
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault()
+        closeCart()
+        return
+      }
+
+      if (e.key === "Tab") {
+        if (!drawerEl) return
+        const focusable = drawerEl.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+        if (focusable.length === 0) return
+
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault()
+            last?.focus()
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault()
+            first?.focus()
+          }
+        }
+      }
     }
+
+    window.addEventListener("keydown", handleKeyDown)
     return () => {
+      window.removeEventListener("keydown", handleKeyDown)
       document.body.style.overflow = ""
+      previousActiveElement?.focus()
     }
-  }, [isOpen])
+  }, [isOpen, closeCart])
 
   function handleApplyCoupon(e: React.FormEvent) {
     e.preventDefault()
@@ -93,16 +128,19 @@ export function CartDrawer() {
       />
 
       <aside
-        aria-label="Shopping Cart Drawer"
+        ref={drawerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-drawer-title"
         className="relative z-10 flex h-full w-full max-w-md flex-col border-l border-border bg-card shadow-2xl transition-transform"
       >
         <header className="flex items-center justify-between border-b border-border/60 px-5 py-3.5">
           <div className="flex items-center gap-2.5">
             <div className="flex size-8 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-foreground">
-              <ShoppingBag className="size-4" />
+              <ShoppingBag className="size-4" aria-hidden="true" />
             </div>
             <div>
-              <h2 className="text-xs font-semibold text-foreground">
+              <h2 id="cart-drawer-title" className="text-xs font-semibold text-foreground">
                 Shopping Cart
               </h2>
               <p className="text-[11px] text-muted-foreground">
@@ -292,7 +330,9 @@ export function CartDrawer() {
                 <form onSubmit={handleApplyCoupon} className="space-y-1">
                   <div className="flex gap-2">
                     <input
+                      id="cart-coupon-input"
                       type="text"
+                      aria-label="Promo or discount coupon code"
                       value={couponInput}
                       onChange={(e) => setCouponInput(e.target.value)}
                       placeholder="Promo code (e.g. DEV20)"

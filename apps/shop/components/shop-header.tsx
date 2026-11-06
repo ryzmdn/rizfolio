@@ -33,7 +33,7 @@ export function ShopHeader() {
             aria-label="Rizfolio Store Home"
           >
             <div className="flex size-8 items-center justify-center rounded-md border border-border/80 bg-muted/40 text-foreground transition-colors group-hover:border-foreground/30">
-              <Layers className="size-4" />
+              <Layers className="size-4" aria-hidden="true" />
             </div>
             <div className="flex flex-col">
               <span className="text-xs font-semibold tracking-tight text-foreground sm:text-sm">
@@ -79,7 +79,7 @@ export function ShopHeader() {
             aria-label={`View cart with ${totalCount} items`}
             className="relative inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/20 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/60"
           >
-            <ShoppingBag className="size-3.5 text-muted-foreground" />
+            <ShoppingBag className="size-3.5 text-muted-foreground" aria-hidden="true" />
             <span className="hidden sm:inline">Cart</span>
             {totalCount > 0 && (
               <span className="flex size-4.5 items-center justify-center rounded-full bg-foreground font-mono text-[10px] font-bold text-background">
@@ -98,9 +98,9 @@ export function ShopHeader() {
             className="flex size-8 items-center justify-center rounded-md border border-border/70 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
           >
             {mobileMenuOpen ? (
-              <X className="size-4" />
+              <X className="size-4" aria-hidden="true" />
             ) : (
-              <Menu className="size-4" />
+              <Menu className="size-4" aria-hidden="true" />
             )}
           </button>
         </div>

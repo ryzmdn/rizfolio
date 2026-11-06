@@ -95,7 +95,8 @@ export default function RootLayout({
               <ShopHeader />
               <main
                 id="main-content"
-                className="mx-auto min-h-[calc(100vh-16rem)] w-full max-w-7xl bg-transparent"
+                tabIndex={-1}
+                className="mx-auto min-h-[calc(100vh-16rem)] w-full max-w-7xl bg-transparent focus:outline-hidden"
               >
                 {children}
               </main>

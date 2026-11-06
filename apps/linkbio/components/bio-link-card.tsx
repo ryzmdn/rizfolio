@@ -56,12 +56,13 @@ export function BioLinkCard({ link }: BioLinkCardProps) {
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={`${link.title}${link.description ? `: ${link.description}` : ""} (opens in new tab)`}
       onClick={handleClick}
       className="group flex items-center justify-between rounded-2xl border border-border/80 bg-card/60 p-4 transition-all hover:border-foreground/30 hover:bg-card/90 hover:shadow-md"
     >
       <div className="flex items-center gap-3.5">
         <div className="flex size-10 items-center justify-center rounded-xl border border-border bg-muted/30 text-foreground transition-colors group-hover:border-foreground/30">
-          <IconComponent className="size-5" />
+          <IconComponent className="size-5" aria-hidden="true" />
         </div>
         <div className="space-y-0.5 text-left">
           <div className="flex items-center gap-2">
@@ -87,7 +88,7 @@ export function BioLinkCard({ link }: BioLinkCardProps) {
         </div>
       </div>
 
-      <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
+      <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" aria-hidden="true" />
     </a>
   )
 }
