@@ -54,7 +54,7 @@ export function RepoCard({
   }
 
   return (
-    <div className="group relative flex flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.015] p-6 transition-all duration-300 hover:border-foreground/25 hover:bg-foreground/[0.03] hover:shadow-xl">
+    <div className="group relative flex flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.015] p-6 transition-hover-lift hover:border-foreground/30 hover:bg-foreground/[0.03] hover:shadow-2xl">
       <div className="space-y-3.5">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
@@ -62,10 +62,10 @@ export function RepoCard({
               [ ARCHIVE // {slug} ]
             </span>
             <div className="flex items-center gap-2">
-              <FolderGit2 className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
+              <FolderGit2 className="size-4 shrink-0 text-muted-foreground transition-colors-luxury group-hover:text-foreground" />
               <Link
                 href={`/repo/${slug}`}
-                className="font-serif text-lg font-light tracking-tight text-foreground transition-colors group-hover:text-muted-foreground"
+                className="font-serif text-lg font-light tracking-tight text-foreground transition-colors-luxury group-hover:text-muted-foreground"
               >
                 {name}
               </Link>
@@ -133,7 +133,7 @@ export function RepoCard({
             <Link
               href={`/repo/${slug}`}
               aria-label={`Browse code in ${name}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1 text-[11px] uppercase tracking-wider text-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1 text-[11px] uppercase tracking-wider text-foreground transition-hover-lift hover:border-foreground/30 hover:bg-foreground hover:text-background"
             >
               <Code2 className="size-3" />
               <span>Blueprint</span>
@@ -145,7 +145,7 @@ export function RepoCard({
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`GitHub repository for ${name}`}
-                className="flex size-7 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
+                className="flex size-7 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-hover-lift hover:scale-110 hover:border-foreground/30 hover:text-foreground"
               >
                 <GitHub className="size-3" />
               </a>
@@ -157,7 +157,7 @@ export function RepoCard({
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`Live demo for ${name}`}
-                className="flex size-7 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
+                className="flex size-7 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-hover-lift hover:scale-110 hover:border-foreground/30 hover:text-foreground"
               >
                 <ExternalLink className="size-3" />
               </a>

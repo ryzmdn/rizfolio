@@ -13,7 +13,7 @@ export function RoadmapCard({ item }: RoadmapCardProps) {
   const isInProgress = item.stage === "IN_PROGRESS"
 
   return (
-    <article className="group relative flex flex-col justify-between rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-5 shadow-xs backdrop-blur-md transition-all hover:border-foreground/25 hover:bg-foreground/[0.03]">
+    <article className="group relative flex flex-col justify-between rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-5 shadow-xs backdrop-blur-md transition-hover-lift hover:border-foreground/30 hover:bg-foreground/[0.03] hover:shadow-xl">
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">

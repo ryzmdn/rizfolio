@@ -17,6 +17,7 @@ import {
 import { CmsPageShell } from "@/components/cms-page-shell"
 import { RevalidationButton } from "@/components/revalidation-button"
 import { getCachedCmsDashboardSummary } from "@/lib/actions/overview-actions"
+import { CountUp } from "@workspace/ui/components/animations"
 
 export const dynamic = "force-dynamic"
 
@@ -122,20 +123,20 @@ export default async function OverviewDashboard() {
                 <Link
                   key={item.title}
                   href={item.href}
-                  className="group flex flex-col justify-between rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/25 hover:shadow-xl"
+                  className="group flex flex-col justify-between rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl transition-hover-lift hover:border-foreground/30 hover:shadow-2xl"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
                       {item.title}
                     </span>
-                    <div className="flex size-8 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/[0.03] text-muted-foreground transition-colors group-hover:text-foreground">
+                    <div className="flex size-8 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/[0.03] text-muted-foreground transition-colors-luxury group-hover:text-foreground">
                       <Icon className="size-4" />
                     </div>
                   </div>
 
                   <div className="mt-8 space-y-2">
                     <div className="font-serif text-3xl sm:text-4xl font-light tracking-tight text-foreground tabular-nums">
-                      {item.value}
+                      <CountUp value={item.value} />
                     </div>
                     <div className="font-mono text-xs text-muted-foreground">
                       {item.detail}

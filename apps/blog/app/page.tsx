@@ -139,7 +139,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 </div>
               </div>
 
-              <article className="group overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/2 transition-all duration-300 hover:border-foreground/25 hover:shadow-2xl">
+              <article className="group overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/2 transition-hover-lift hover:border-foreground/30 hover:shadow-2xl">
                 <Link
                   href={`/blog/${featuredPost.slug}`}
                   className="grid grid-cols-1 gap-0 lg:grid-cols-12"
@@ -153,7 +153,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                         fill
                         priority
                         sizes="(max-width: 1024px) 100vw, 60vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                        className="object-cover transition-transform duration-700 ease-luxury group-hover:scale-105"
                       />
                     ) : (
                       <div className="flex size-full items-center justify-center bg-foreground/5">
@@ -258,7 +258,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 return (
                   <article
                     key={post.id}
-                    className="group flex flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.015] p-6 transition-all duration-300 hover:border-foreground/25 hover:bg-foreground/[0.03] hover:shadow-xl"
+                    className="group flex flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.015] p-6 transition-hover-lift hover:border-foreground/30 hover:bg-foreground/[0.03] hover:shadow-2xl sm:p-7"
                   >
                     <div>
                       {post.coverImageUrl ? (
@@ -275,7 +275,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                               fill
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               loading={index < 3 ? "eager" : "lazy"}
-                              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                              className="object-cover transition-transform duration-700 ease-luxury group-hover:scale-105"
                             />
                           </div>
                         </Link>

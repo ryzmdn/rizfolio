@@ -88,7 +88,7 @@ export function ReleaseCard({ release, isLatest }: ReleaseCardProps) {
     <article
       id={release.version}
       className={cn(
-        "group relative scroll-mt-24 rounded-3xl border bg-card/40 p-7 sm:p-8 backdrop-blur-xl transition-all duration-300 hover:border-foreground/25 hover:shadow-xl",
+        "group relative scroll-mt-24 rounded-3xl border bg-card/40 p-7 sm:p-8 backdrop-blur-xl transition-hover-lift hover:border-foreground/30 hover:shadow-2xl",
         isLatest ? "border-foreground/20 shadow-xs" : "border-foreground/8 shadow-xs"
       )}
     >
