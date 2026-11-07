@@ -25,7 +25,7 @@ export interface AppProviderProps {
 export function AppProvider({
   children,
   disableSmoothScroll = false,
-  disableAnimations = true,
+  disableAnimations = false,
   disableCookieConsent = false,
 }: AppProviderProps) {
   const animatedContent = disableAnimations ? (
