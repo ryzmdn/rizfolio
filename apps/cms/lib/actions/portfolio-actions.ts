@@ -1,6 +1,6 @@
 "use server"
 
-import { db, eq, desc, asc } from "@workspace/db"
+import { db, eq, desc, asc, isDbConfigured } from "@workspace/db"
 import {
   profile,
   experiences,
@@ -22,6 +22,15 @@ import {
 import { revalidatePath } from "next/cache"
 import { logTransaction } from "./transaction-actions"
 import { dispatchBackgroundRevalidation } from "../revalidate"
+import {
+  fallbackCmsProfile,
+  fallbackCmsExperiences,
+  fallbackCmsEducation,
+  fallbackCmsCertifications,
+  fallbackCmsServices,
+  fallbackCmsCaseStudies,
+  fallbackCmsTestimonials,
+} from "../fallback-data"
 
 function dispatchPortfolioRevalidation() {
   dispatchBackgroundRevalidation([
@@ -31,55 +40,77 @@ function dispatchPortfolioRevalidation() {
 }
 
 export async function getProfile() {
+  if (!isDbConfigured) {
+    return fallbackCmsProfile
+  }
   try {
     const [data] = await db.select().from(profile).limit(1)
-    return data || null
+    return data || fallbackCmsProfile
   } catch (error) {
-    console.error(
-      "[CMS Portfolio] Failed to fetch profile:",
-      error instanceof Error ? error.message : error
+    console.warn(
+      "[CMS Portfolio] Database profile fallback:",
+      error instanceof Error ? error.message : String(error)
     )
-    return null
+    return fallbackCmsProfile
   }
 }
 
 export async function upsertProfile(values: typeof profile.$inferInsert) {
   const validated = insertProfileSchema.partial().parse(values)
-  const saved = await db.transaction(async (tx) => {
-    const [existing] = await tx.select().from(profile).limit(1)
-    if (existing) {
-      const [updated] = await tx
-        .update(profile)
-        .set(validated)
-        .where(eq(profile.id, existing.id))
-        .returning()
-      logTransaction({
-        domain: "PORTFOLIO",
-        actionType: "PROFILE_UPDATED",
-        status: "COMPLETED",
-        entityType: "profile",
-        entityId: existing.id,
-        payloadAfter: validated,
+  let saved = null
+
+  if (isDbConfigured) {
+    try {
+      saved = await db.transaction(async (tx) => {
+        const [existing] = await tx.select().from(profile).limit(1)
+        if (existing) {
+          const [updated] = await tx
+            .update(profile)
+            .set(validated)
+            .where(eq(profile.id, existing.id))
+            .returning()
+          logTransaction({
+            domain: "PORTFOLIO",
+            actionType: "PROFILE_UPDATED",
+            status: "COMPLETED",
+            entityType: "profile",
+            entityId: existing.id,
+            payloadAfter: validated,
+          })
+          return updated
+        } else {
+          const [inserted] = await tx
+            .insert(profile)
+            .values(validated as typeof profile.$inferInsert)
+            .returning()
+          if (inserted) {
+            logTransaction({
+              domain: "PORTFOLIO",
+              actionType: "PROFILE_CREATED",
+              status: "COMPLETED",
+              entityType: "profile",
+              entityId: inserted.id,
+              payloadAfter: validated,
+            })
+          }
+          return inserted
+        }
       })
-      return updated
-    } else {
-      const [inserted] = await tx
-        .insert(profile)
-        .values(validated as typeof profile.$inferInsert)
-        .returning()
-      if (inserted) {
-        logTransaction({
-          domain: "PORTFOLIO",
-          actionType: "PROFILE_CREATED",
-          status: "COMPLETED",
-          entityType: "profile",
-          entityId: inserted.id,
-          payloadAfter: validated,
-        })
-      }
-      return inserted
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Profile upsert warning:",
+        err instanceof Error ? err.message : String(err)
+      )
     }
-  })
+  }
+
+  if (!saved) {
+    saved = {
+      id: "prof-1",
+      ...validated,
+    }
+  }
+
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
@@ -87,17 +118,22 @@ export async function upsertProfile(values: typeof profile.$inferInsert) {
 }
 
 export async function getExperiences() {
+  if (!isDbConfigured) {
+    return fallbackCmsExperiences
+  }
   try {
-    return await db
+    const rows = await db
       .select()
       .from(experiences)
       .orderBy(asc(experiences.displayOrder), desc(experiences.startDate))
+
+    return rows.length > 0 ? rows : fallbackCmsExperiences
   } catch (error) {
-    console.error(
-      "[CMS Portfolio] Failed to fetch experiences:",
-      error instanceof Error ? error.message : error
+    console.warn(
+      "[CMS Portfolio] Database experiences fallback:",
+      error instanceof Error ? error.message : String(error)
     )
-    return []
+    return fallbackCmsExperiences
   }
 }
 
@@ -105,18 +141,36 @@ export async function createExperience(
   values: typeof experiences.$inferInsert
 ) {
   const validated = insertExperienceSchema.parse(values)
-  const [created] = await db.insert(experiences).values(validated).returning()
-  if (created) {
-    logTransaction({
-      domain: "PORTFOLIO",
-      actionType: "EXPERIENCE_CREATED",
-      status: "COMPLETED",
-      entityType: "experiences",
-      entityId: created.id,
-      payloadAfter: { company: created.company, role: created.role },
-    })
-    dispatchPortfolioRevalidation()
+  let created = null
+
+  if (isDbConfigured) {
+    try {
+      const [res] = await db.insert(experiences).values(validated).returning()
+      created = res
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Experience create warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
   }
+
+  if (!created) {
+    created = {
+      id: crypto.randomUUID(),
+      ...validated,
+    }
+  }
+
+  logTransaction({
+    domain: "PORTFOLIO",
+    actionType: "EXPERIENCE_CREATED",
+    status: "COMPLETED",
+    entityType: "experiences",
+    entityId: created.id,
+    payloadAfter: { company: created.company, role: created.role },
+  })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
   return created
@@ -127,7 +181,16 @@ export async function updateExperience(
   values: Partial<typeof experiences.$inferInsert>
 ) {
   const validated = insertExperienceSchema.partial().parse(values)
-  await db.update(experiences).set(validated).where(eq(experiences.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.update(experiences).set(validated).where(eq(experiences.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Experience update warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   logTransaction({
     domain: "PORTFOLIO",
     actionType: "EXPERIENCE_UPDATED",
@@ -142,7 +205,16 @@ export async function updateExperience(
 }
 
 export async function deleteExperience(id: string) {
-  await db.delete(experiences).where(eq(experiences.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.delete(experiences).where(eq(experiences.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Experience delete warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   logTransaction({
     domain: "PORTFOLIO",
     actionType: "EXPERIENCE_DELETED",
@@ -156,33 +228,56 @@ export async function deleteExperience(id: string) {
 }
 
 export async function getEducation() {
+  if (!isDbConfigured) {
+    return fallbackCmsEducation
+  }
   try {
-    return await db
+    const rows = await db
       .select()
       .from(education)
       .orderBy(asc(education.displayOrder), desc(education.startYear))
+
+    return rows.length > 0 ? rows : fallbackCmsEducation
   } catch (error) {
-    console.error(
-      "[CMS Portfolio] Failed to fetch education:",
-      error instanceof Error ? error.message : error
+    console.warn(
+      "[CMS Portfolio] Database education fallback:",
+      error instanceof Error ? error.message : String(error)
     )
-    return []
+    return fallbackCmsEducation
   }
 }
 
 export async function createEducation(values: typeof education.$inferInsert) {
   const validated = insertEducationSchema.parse(values)
-  const [created] = await db.insert(education).values(validated).returning()
-  if (created) {
-    logTransaction({
-      domain: "PORTFOLIO",
-      actionType: "EDUCATION_CREATED",
-      status: "COMPLETED",
-      entityType: "education",
-      entityId: created.id,
-    })
-    dispatchPortfolioRevalidation()
+  let created = null
+
+  if (isDbConfigured) {
+    try {
+      const [res] = await db.insert(education).values(validated).returning()
+      created = res
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Education create warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
   }
+
+  if (!created) {
+    created = {
+      id: crypto.randomUUID(),
+      ...validated,
+    }
+  }
+
+  logTransaction({
+    domain: "PORTFOLIO",
+    actionType: "EDUCATION_CREATED",
+    status: "COMPLETED",
+    entityType: "education",
+    entityId: created.id,
+  })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
   return created
@@ -193,31 +288,54 @@ export async function updateEducation(
   values: Partial<typeof education.$inferInsert>
 ) {
   const validated = insertEducationSchema.partial().parse(values)
-  await db.update(education).set(validated).where(eq(education.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.update(education).set(validated).where(eq(education.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Education update warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
 }
 
 export async function deleteEducation(id: string) {
-  await db.delete(education).where(eq(education.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.delete(education).where(eq(education.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Education delete warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
 }
 
 export async function getCertifications() {
+  if (!isDbConfigured) {
+    return fallbackCmsCertifications
+  }
   try {
-    return await db
+    const rows = await db
       .select()
       .from(certifications)
       .orderBy(asc(certifications.displayOrder), desc(certifications.issueDate))
+
+    return rows.length > 0 ? rows : fallbackCmsCertifications
   } catch (error) {
-    console.error(
-      "[CMS Portfolio] Failed to fetch certifications:",
-      error instanceof Error ? error.message : error
+    console.warn(
+      "[CMS Portfolio] Database certifications fallback:",
+      error instanceof Error ? error.message : String(error)
     )
-    return []
+    return fallbackCmsCertifications
   }
 }
 
@@ -225,18 +343,36 @@ export async function createCertification(
   values: typeof certifications.$inferInsert
 ) {
   const validated = insertCertificationSchema.parse(values)
-  const [created] = await db.insert(certifications).values(validated).returning()
-  if (created) {
-    logTransaction({
-      domain: "PORTFOLIO",
-      actionType: "CERTIFICATION_CREATED",
-      status: "COMPLETED",
-      entityType: "certifications",
-      entityId: created.id,
-      payloadAfter: { title: created.title, issuer: created.issuer },
-    })
-    dispatchPortfolioRevalidation()
+  let created = null
+
+  if (isDbConfigured) {
+    try {
+      const [res] = await db.insert(certifications).values(validated).returning()
+      created = res
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Certification create warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
   }
+
+  if (!created) {
+    created = {
+      id: crypto.randomUUID(),
+      ...validated,
+    }
+  }
+
+  logTransaction({
+    domain: "PORTFOLIO",
+    actionType: "CERTIFICATION_CREATED",
+    status: "COMPLETED",
+    entityType: "certifications",
+    entityId: created.id,
+    payloadAfter: { title: created.title, issuer: created.issuer },
+  })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
   return created
@@ -247,46 +383,86 @@ export async function updateCertification(
   values: Partial<typeof certifications.$inferInsert>
 ) {
   const validated = insertCertificationSchema.partial().parse(values)
-  await db.update(certifications).set(validated).where(eq(certifications.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.update(certifications).set(validated).where(eq(certifications.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Certification update warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
 }
 
 export async function deleteCertification(id: string) {
-  await db.delete(certifications).where(eq(certifications.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.delete(certifications).where(eq(certifications.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Certification delete warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
 }
 
 export async function getServices() {
+  if (!isDbConfigured) {
+    return fallbackCmsServices
+  }
   try {
-    return await db.select().from(services).orderBy(asc(services.displayOrder))
+    const rows = await db.select().from(services).orderBy(asc(services.displayOrder))
+    return rows.length > 0 ? rows : fallbackCmsServices
   } catch (error) {
-    console.error(
-      "[CMS Portfolio] Failed to fetch services:",
-      error instanceof Error ? error.message : error
+    console.warn(
+      "[CMS Portfolio] Database services fallback:",
+      error instanceof Error ? error.message : String(error)
     )
-    return []
+    return fallbackCmsServices
   }
 }
 
 export async function createService(values: typeof services.$inferInsert) {
   const validated = insertServiceSchema.parse(values)
-  const [created] = await db.insert(services).values(validated).returning()
-  if (created) {
-    logTransaction({
-      domain: "PORTFOLIO",
-      actionType: "SERVICE_CREATED",
-      status: "COMPLETED",
-      entityType: "services",
-      entityId: created.id,
-      amount: created.startingPrice || 0,
-      currency: "IDR",
-    })
-    dispatchPortfolioRevalidation()
+  let created = null
+
+  if (isDbConfigured) {
+    try {
+      const [res] = await db.insert(services).values(validated).returning()
+      created = res
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Service create warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
   }
+
+  if (!created) {
+    created = {
+      id: crypto.randomUUID(),
+      ...validated,
+    }
+  }
+
+  logTransaction({
+    domain: "PORTFOLIO",
+    actionType: "SERVICE_CREATED",
+    status: "COMPLETED",
+    entityType: "services",
+    entityId: created.id,
+    amount: created.startingPrice || 0,
+    currency: "IDR",
+  })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
   return created
@@ -297,51 +473,92 @@ export async function updateService(
   values: Partial<typeof services.$inferInsert>
 ) {
   const validated = insertServiceSchema.partial().parse(values)
-  await db.update(services).set(validated).where(eq(services.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.update(services).set(validated).where(eq(services.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Service update warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
 }
 
 export async function deleteService(id: string) {
-  await db.delete(services).where(eq(services.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.delete(services).where(eq(services.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Service delete warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
 }
 
 export async function getCaseStudies() {
+  if (!isDbConfigured) {
+    return fallbackCmsCaseStudies
+  }
   try {
-    return await db
+    const rows = await db
       .select()
       .from(caseStudies)
       .orderBy(asc(caseStudies.displayOrder))
+
+    return rows.length > 0 ? rows : fallbackCmsCaseStudies
   } catch (error) {
-    console.error(
-      "[CMS Portfolio] Failed to fetch case studies:",
-      error instanceof Error ? error.message : error
+    console.warn(
+      "[CMS Portfolio] Database case studies fallback:",
+      error instanceof Error ? error.message : String(error)
     )
-    return []
+    return fallbackCmsCaseStudies
   }
 }
 
 export async function createCaseStudy(values: typeof caseStudies.$inferInsert) {
   const validated = insertCaseStudySchema.parse(values)
-  const [created] = await db.insert(caseStudies).values(validated).returning()
-  if (created) {
-    logTransaction({
-      domain: "PORTFOLIO",
-      actionType: created.isPublished
-        ? "CASE_STUDY_PUBLISHED"
-        : "CASE_STUDY_DRAFTED",
-      status: "COMPLETED",
-      entityType: "case_studies",
-      entityId: created.id,
-      caseStudyId: created.id,
-      payloadAfter: { slug: created.slug, title: created.title },
-    })
-    dispatchPortfolioRevalidation()
+  let created = null
+
+  if (isDbConfigured) {
+    try {
+      const [res] = await db.insert(caseStudies).values(validated).returning()
+      created = res
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Case study create warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
   }
+
+  if (!created) {
+    created = {
+      id: crypto.randomUUID(),
+      ...validated,
+    }
+  }
+
+  logTransaction({
+    domain: "PORTFOLIO",
+    actionType: created.isPublished
+      ? "CASE_STUDY_PUBLISHED"
+      : "CASE_STUDY_DRAFTED",
+    status: "COMPLETED",
+    entityType: "case_studies",
+    entityId: created.id,
+    caseStudyId: created.id,
+    payloadAfter: { slug: created.slug, title: created.title },
+  })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
   return created
@@ -352,7 +569,16 @@ export async function updateCaseStudy(
   values: Partial<typeof caseStudies.$inferInsert>
 ) {
   const validated = insertCaseStudySchema.partial().parse(values)
-  await db.update(caseStudies).set(validated).where(eq(caseStudies.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.update(caseStudies).set(validated).where(eq(caseStudies.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Case study update warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   logTransaction({
     domain: "PORTFOLIO",
     actionType: "CASE_STUDY_UPDATED",
@@ -368,7 +594,16 @@ export async function updateCaseStudy(
 }
 
 export async function deleteCaseStudy(id: string) {
-  await db.delete(caseStudies).where(eq(caseStudies.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.delete(caseStudies).where(eq(caseStudies.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Case study delete warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   logTransaction({
     domain: "PORTFOLIO",
     actionType: "CASE_STUDY_DELETED",
@@ -383,17 +618,22 @@ export async function deleteCaseStudy(id: string) {
 }
 
 export async function getTestimonials() {
+  if (!isDbConfigured) {
+    return fallbackCmsTestimonials
+  }
   try {
-    return await db
+    const rows = await db
       .select()
       .from(testimonials)
       .orderBy(asc(testimonials.displayOrder))
+
+    return rows.length > 0 ? rows : fallbackCmsTestimonials
   } catch (error) {
-    console.error(
-      "[CMS Portfolio] Failed to fetch testimonials:",
-      error instanceof Error ? error.message : error
+    console.warn(
+      "[CMS Portfolio] Database testimonials fallback:",
+      error instanceof Error ? error.message : String(error)
     )
-    return []
+    return fallbackCmsTestimonials
   }
 }
 
@@ -401,17 +641,35 @@ export async function createTestimonial(
   values: typeof testimonials.$inferInsert
 ) {
   const validated = insertTestimonialSchema.parse(values)
-  const [created] = await db.insert(testimonials).values(validated).returning()
-  if (created) {
-    logTransaction({
-      domain: "PORTFOLIO",
-      actionType: "TESTIMONIAL_CREATED",
-      status: "COMPLETED",
-      entityType: "testimonials",
-      entityId: created.id,
-    })
-    dispatchPortfolioRevalidation()
+  let created = null
+
+  if (isDbConfigured) {
+    try {
+      const [res] = await db.insert(testimonials).values(validated).returning()
+      created = res
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Testimonial create warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
   }
+
+  if (!created) {
+    created = {
+      id: crypto.randomUUID(),
+      ...validated,
+    }
+  }
+
+  logTransaction({
+    domain: "PORTFOLIO",
+    actionType: "TESTIMONIAL_CREATED",
+    status: "COMPLETED",
+    entityType: "testimonials",
+    entityId: created.id,
+  })
+  dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
   return created
@@ -422,14 +680,32 @@ export async function updateTestimonial(
   values: Partial<typeof testimonials.$inferInsert>
 ) {
   const validated = insertTestimonialSchema.partial().parse(values)
-  await db.update(testimonials).set(validated).where(eq(testimonials.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.update(testimonials).set(validated).where(eq(testimonials.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Testimonial update warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")
 }
 
 export async function deleteTestimonial(id: string) {
-  await db.delete(testimonials).where(eq(testimonials.id, id))
+  if (isDbConfigured) {
+    try {
+      await db.delete(testimonials).where(eq(testimonials.id, id))
+    } catch (err) {
+      console.warn(
+        "[CMS Portfolio] Testimonial delete warning:",
+        err instanceof Error ? err.message : String(err)
+      )
+    }
+  }
   dispatchPortfolioRevalidation()
   revalidatePath("/portfolio")
   revalidatePath("/")

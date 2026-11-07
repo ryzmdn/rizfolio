@@ -1,6 +1,6 @@
 "use server"
 
-import { db, eq } from "@workspace/db"
+import { db, eq, isDbConfigured } from "@workspace/db"
 import { siteSettings, users, profile } from "@workspace/db/schema"
 import { insertProfileSchema, insertSiteSettingSchema } from "@workspace/db"
 import { revalidatePath } from "next/cache"
@@ -37,23 +37,30 @@ export async function getCmsUserProfile(): Promise<CmsUserProfile | null> {
     let avatarUrl: string | undefined
     let fullName = "Rizky Ramadhan"
 
-    const [userRecord] = await db
-      .select({ avatarUrl: users.avatarUrl })
-      .from(users)
-      .where(eq(users.id, session.userId))
-      .limit(1)
+    try {
+      const [userRecord] = await db
+        .select({ avatarUrl: users.avatarUrl })
+        .from(users)
+        .where(eq(users.id, session.userId))
+        .limit(1)
 
-    if (userRecord?.avatarUrl) {
-      avatarUrl = userRecord.avatarUrl
-    }
+      if (userRecord?.avatarUrl) {
+        avatarUrl = userRecord.avatarUrl
+      }
 
-    const [profileRecord] = await db
-      .select({ fullName: profile.fullName })
-      .from(profile)
-      .limit(1)
+      const [profileRecord] = await db
+        .select({ fullName: profile.fullName })
+        .from(profile)
+        .limit(1)
 
-    if (profileRecord?.fullName) {
-      fullName = profileRecord.fullName
+      if (profileRecord?.fullName) {
+        fullName = profileRecord.fullName
+      }
+    } catch (dbError) {
+      console.warn(
+        "[CMS Settings] Profile database query skipped:",
+        dbError instanceof Error ? dbError.message : String(dbError)
+      )
     }
 
     return {
@@ -73,6 +80,9 @@ export async function getCmsUserProfile(): Promise<CmsUserProfile | null> {
 }
 
 export async function getSiteSettings(key = "general") {
+  if (!isDbConfigured) {
+    return null
+  }
   try {
     const [settings] = await db
       .select()
@@ -81,7 +91,7 @@ export async function getSiteSettings(key = "general") {
       .limit(1)
     return settings || null
   } catch (error) {
-    console.error(
+    console.warn(
       "[CMS Settings] Failed to fetch settings:",
       error instanceof Error ? error.message : error
     )
