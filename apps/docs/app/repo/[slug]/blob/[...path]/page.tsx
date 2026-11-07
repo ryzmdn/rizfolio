@@ -142,7 +142,7 @@ export default async function FileViewPage({
   ])
 
   return (
-    <Container className="space-y-6 py-10">
+    <Container className="space-y-8 py-16 sm:py-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -151,15 +151,15 @@ export default async function FileViewPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="flex flex-col gap-4 border-b border-border/70 pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+      <div className="flex flex-col gap-4 border-b border-foreground/8 pb-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted-foreground">
           <Link
             href={
               path.length > 1
                 ? `/repo/${slug}?path=${encodeURIComponent(parentPath)}`
                 : `/repo/${slug}`
             }
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted/60"
+            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 text-xs font-mono text-foreground transition-all hover:bg-foreground hover:text-background"
             title={`Back to ${parentName}`}
           >
             <ArrowLeft className="size-3.5" />
@@ -167,16 +167,16 @@ export default async function FileViewPage({
             <span className="sm:hidden">Back</span>
           </Link>
 
-          <span className="text-border">|</span>
+          <span className="text-foreground/20">|</span>
 
           <Link
             href="/"
-            className="text-xs tracking-wider uppercase transition-colors hover:text-foreground"
+            className="text-xs uppercase tracking-wider transition-colors hover:text-foreground"
           >
             Repositories
           </Link>
 
-          <span>/</span>
+          <span className="text-foreground/20">/</span>
 
           <Link
             href={`/repo/${slug}`}
@@ -191,9 +191,9 @@ export default async function FileViewPage({
 
             return (
               <span key={segmentPath} className="flex items-center gap-2">
-                <span>/</span>
+                <span className="text-foreground/20">/</span>
                 {isLast ? (
-                  <span className="font-mono font-medium text-foreground">
+                  <span className="font-mono font-semibold text-foreground">
                     {segment}
                   </span>
                 ) : (
@@ -214,7 +214,7 @@ export default async function FileViewPage({
 
           <Link
             href={`/repo/${slug}`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 font-mono text-xs text-muted-foreground transition-all hover:bg-foreground hover:text-background"
             title="Browse all repository files and documentation"
           >
             <FolderGit2 className="size-3.5" />

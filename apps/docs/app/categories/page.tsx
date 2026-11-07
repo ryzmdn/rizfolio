@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Container } from "@workspace/ui/components/layouts/container"
-import { Badge } from "@workspace/ui/components/badge"
 import {
   GraduationCap,
   FolderGit2,
@@ -45,7 +44,6 @@ export default async function CategoriesIndexPage() {
     getRepositories(),
   ])
 
-  // Extract and aggregate unique tech stacks with occurrence counts
   const techMap = new Map<string, number>()
   for (const repo of allRepos) {
     if (repo.techStack) {
@@ -59,7 +57,6 @@ export default async function CategoriesIndexPage() {
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
 
-  // Group courses by semester
   const semesterMap = new Map<
     string,
     { name: string; semester?: string; count: number }[]
@@ -85,7 +82,6 @@ export default async function CategoriesIndexPage() {
       count: stats.assignments,
       href: "/?category=ASSIGNMENT",
       icon: GraduationCap,
-      badgeVariant: "secondary" as const,
     },
     {
       title: "Eksperimen",
@@ -95,7 +91,6 @@ export default async function CategoriesIndexPage() {
       count: stats.experiments,
       href: "/?category=EXPERIMENT",
       icon: Layers,
-      badgeVariant: "outline" as const,
     },
     {
       title: "Open Source",
@@ -105,7 +100,6 @@ export default async function CategoriesIndexPage() {
       count: stats.openSource,
       href: "/?category=OPEN_SOURCE",
       icon: FolderGit2,
-      badgeVariant: "default" as const,
     },
   ]
 
@@ -131,7 +125,7 @@ export default async function CategoriesIndexPage() {
   ])
 
   return (
-    <Container className="space-y-14 py-12">
+    <Container className="space-y-16 py-16 sm:py-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -140,81 +134,76 @@ export default async function CategoriesIndexPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
         <Link href="/" className="transition-colors hover:text-foreground">
           docs
         </Link>
-        <span>/</span>
-        <span className="font-medium text-foreground">categories</span>
+        <span className="text-foreground/20">/</span>
+        <span className="font-semibold text-foreground">categories</span>
       </div>
 
-      <div className="max-w-2xl space-y-3 border-b border-border/70 pb-8">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1 text-xs text-muted-foreground">
-          <BookOpen className="size-3.5" />
-          <span>Curriculum & Taxonomy Index</span>
+      <div className="max-w-3xl space-y-4 border-b border-foreground/8 pb-10">
+        <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 text-[11px] font-mono tracking-widest text-muted-foreground uppercase backdrop-blur-md">
+          <BookOpen className="size-3 text-foreground" />
+          <span>TAXONOMY // CURRICULUM ARCHIVE</span>
         </div>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          Mata Kuliah & Taksonomi
+        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-foreground">
+          Mata Kuliah <span className="font-sans italic text-muted-foreground/80">&</span> Taksonomi
         </h1>
-        <p className="text-sm leading-relaxed text-muted-foreground">
+        <p className="text-base sm:text-lg font-light leading-relaxed text-muted-foreground">
           Struktur klasifikasi komprehensif memetakan repositori kode sumber ke
           dalam domain utama, kurikulum akademik berdasarkan semester, serta
           indeks teknologi yang digunakan.
         </p>
       </div>
 
-      <section className="space-y-5">
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <h2 className="text-lg font-semibold tracking-tight text-foreground">
-              Kategori Domain Utama
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              Tiga pilar klasifikasi arsip proyek dan dokumentasi teknis.
-            </p>
-          </div>
+      <section className="space-y-6">
+        <div className="space-y-1">
+          <h2 className="font-serif text-2xl font-light tracking-tight text-foreground">
+            Kategori Domain Utama
+          </h2>
+          <p className="font-sans text-xs font-light text-muted-foreground">
+            Tiga pilar klasifikasi arsip proyek dan dokumentasi teknis.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {DOMAIN_CARDS.map((domain) => {
             const Icon = domain.icon
             return (
               <Link
                 key={domain.title}
                 href={domain.href}
-                className="group relative flex flex-col justify-between rounded-2xl border border-border/70 bg-card p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-sm"
+                className="group relative flex flex-col justify-between rounded-3xl border border-foreground/8 bg-card/40 p-7 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-foreground/30 hover:shadow-xl"
               >
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="flex size-9 items-center justify-center rounded-xl border border-border/70 bg-muted/50 text-foreground transition-colors group-hover:bg-foreground group-hover:text-background">
-                      <Icon className="size-4" />
+                    <div className="flex size-10 items-center justify-center rounded-2xl border border-foreground/10 bg-foreground/[0.03] text-foreground transition-colors group-hover:bg-foreground group-hover:text-background">
+                      <Icon className="size-5" />
                     </div>
-                    <Badge
-                      variant={domain.badgeVariant}
-                      className="text-[11px] font-normal"
-                    >
-                      <span className="font-mono tabular-nums">
+                    <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 py-1 font-mono text-[11px] text-muted-foreground">
+                      <span className="font-medium text-foreground tabular-nums">
                         {domain.count}
                       </span>{" "}
                       repos
-                    </Badge>
+                    </span>
                   </div>
 
                   <div>
-                    <h3 className="text-base font-semibold text-foreground group-hover:underline">
+                    <h3 className="font-serif text-xl font-normal text-foreground group-hover:underline">
                       {domain.title}
                     </h3>
-                    <p className="font-mono text-[11px] text-muted-foreground">
+                    <p className="font-mono text-xs text-muted-foreground">
                       {domain.subtitle}
                     </p>
                   </div>
 
-                  <p className="text-xs leading-relaxed text-muted-foreground">
+                  <p className="text-xs font-light leading-relaxed text-muted-foreground">
                     {domain.description}
                   </p>
                 </div>
 
-                <div className="mt-6 flex items-center gap-1 text-xs font-medium text-foreground">
+                <div className="mt-8 flex items-center gap-1.5 font-mono text-xs font-medium text-foreground">
                   <span>Lihat Repositori</span>
                   <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
                 </div>
@@ -224,50 +213,50 @@ export default async function CategoriesIndexPage() {
         </div>
       </section>
 
-      <section className="space-y-6">
-        <div className="space-y-1 border-b border-border/70 pb-4">
+      <section className="space-y-8">
+        <div className="space-y-1 border-b border-foreground/8 pb-4">
           <div className="flex items-center gap-2">
             <GraduationCap className="size-4 text-muted-foreground" />
-            <h2 className="text-lg font-semibold tracking-tight text-foreground">
+            <h2 className="font-serif text-2xl font-light tracking-tight text-foreground">
               Kurikulum Akademik per Semester
             </h2>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="font-sans text-xs font-light text-muted-foreground">
             Daftar mata kuliah dan topik perkuliahan ilmu komputer yang memiliki
             arsip kode dan tugas terkait.
           </p>
         </div>
 
         {semesterGroups.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border py-12 text-center text-xs text-muted-foreground">
+          <div className="rounded-3xl border border-dashed border-foreground/15 p-12 text-center font-mono text-xs text-muted-foreground">
             Belum ada mata kuliah yang terdata.
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-10">
             {semesterGroups.map(([semesterName, courseList]) => (
-              <div key={semesterName} className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <span className="rounded-md border border-border/80 bg-muted/50 px-2 py-0.5 font-mono text-[11px] font-medium text-foreground">
+              <div key={semesterName} className="space-y-4">
+                <div className="flex items-center gap-2.5">
+                  <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 py-1 font-mono text-xs font-medium text-foreground">
                     {semesterName}
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="font-mono text-xs text-muted-foreground">
                     ({courseList.length} mata kuliah)
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {courseList.map((course) => (
                     <Link
                       key={course.name}
                       href={`/?course=${encodeURIComponent(course.name)}`}
-                      className="group flex items-center justify-between rounded-xl border border-border/70 bg-card p-4 transition-all duration-150 hover:border-foreground/30 hover:shadow-xs"
+                      className="group flex items-center justify-between rounded-2xl border border-foreground/8 bg-card/40 p-5 backdrop-blur-md transition-all duration-200 hover:border-foreground/30 hover:shadow-xs"
                     >
-                      <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-muted/30 text-muted-foreground group-hover:text-foreground">
-                          <Code2 className="size-3.5" />
+                      <div className="flex min-w-0 items-center gap-3.5">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/[0.02] text-muted-foreground group-hover:text-foreground">
+                          <Code2 className="size-4" />
                         </div>
                         <div className="min-w-0">
-                          <p className="truncate text-xs font-medium text-foreground group-hover:underline">
+                          <p className="truncate font-serif text-sm font-normal text-foreground group-hover:underline">
                             {course.name}
                           </p>
                           <p className="font-mono text-[10px] text-muted-foreground">
@@ -287,15 +276,15 @@ export default async function CategoriesIndexPage() {
       </section>
 
       {sortedTechs.length > 0 && (
-        <section className="space-y-4 border-t border-border/70 pt-8">
+        <section className="space-y-6 border-t border-foreground/8 pt-10">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <Cpu className="size-4 text-muted-foreground" />
-              <h2 className="text-lg font-semibold tracking-tight text-foreground">
+              <h2 className="font-serif text-2xl font-light tracking-tight text-foreground">
                 Indeks Teknologi
               </h2>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="font-sans text-xs font-light text-muted-foreground">
               Pilih bahasa pemrograman atau framework untuk menyaring repositori
               secara instan.
             </p>
@@ -306,10 +295,10 @@ export default async function CategoriesIndexPage() {
               <Link
                 key={tech.name}
                 href={`/?search=${encodeURIComponent(tech.name)}`}
-                className="group inline-flex items-center gap-1.5 rounded-xl border border-border/70 bg-card px-3 py-1.5 text-xs text-foreground transition-all hover:border-foreground/40 hover:bg-muted"
+                className="group inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.02] px-4 py-2 font-mono text-xs text-foreground transition-all hover:border-foreground hover:bg-foreground hover:text-background"
               >
-                <span className="font-mono">{tech.name}</span>
-                <span className="py-0.2 rounded-full bg-muted/80 px-1.5 font-mono text-[10px] text-muted-foreground tabular-nums group-hover:bg-foreground/10 group-hover:text-foreground">
+                <span>{tech.name}</span>
+                <span className="rounded-full bg-foreground/10 px-1.5 py-0.2 font-mono text-[10px] text-muted-foreground tabular-nums group-hover:bg-background/20 group-hover:text-background">
                   {tech.count}
                 </span>
               </Link>
