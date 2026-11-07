@@ -115,9 +115,9 @@ export function FilterSection({
 
   return (
     <div className="w-full space-y-3">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div
-          className="scrollbar-none flex flex-1 items-center gap-1.5 overflow-x-auto pb-0.5"
+          className="scrollbar-none flex flex-1 items-center gap-1.5 overflow-x-auto pb-1"
           role="group"
           aria-label="Filter by category"
         >
@@ -125,20 +125,20 @@ export function FilterSection({
             type="button"
             onClick={() => handleCategorySelect("all")}
             className={cn(
-              "inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
+              "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200",
               activeCategory === "all" || !activeCategory
-                ? "bg-foreground text-background"
-                : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                ? "bg-foreground font-semibold text-background shadow-xs"
+                : "border border-foreground/10 bg-foreground/3 text-muted-foreground hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
             )}
             aria-pressed={activeCategory === "all" || !activeCategory}
           >
             <span>All</span>
             <span
               className={cn(
-                "text-[10px] tabular-nums",
+                "font-mono text-[10px]",
                 activeCategory === "all" || !activeCategory
                   ? "opacity-60"
-                  : "opacity-50"
+                  : "opacity-40"
               )}
             >
               {totalPosts}
@@ -153,18 +153,18 @@ export function FilterSection({
                 type="button"
                 onClick={() => handleCategorySelect(cat.slug)}
                 className={cn(
-                  "inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all",
+                  "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200",
                   isActive
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                    ? "bg-foreground font-semibold text-background shadow-xs"
+                    : "border border-foreground/10 bg-foreground/3 text-muted-foreground hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
                 )}
                 aria-pressed={isActive}
               >
                 <span>{cat.name}</span>
                 <span
                   className={cn(
-                    "text-[10px] tabular-nums",
-                    isActive ? "opacity-60" : "opacity-50"
+                    "font-mono text-[10px]",
+                    isActive ? "opacity-60" : "opacity-40"
                   )}
                 >
                   {cat.count}
@@ -182,7 +182,7 @@ export function FilterSection({
               aria-haspopup="true"
               aria-expanded={sortOpen}
               onClick={() => setSortOpen((prev) => !prev)}
-              className="inline-flex items-center gap-x-1.5 rounded-md border border-border/60 px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+              className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:text-foreground"
             >
               <SlidersHorizontal className="size-3.5" />
               <span>{sortLabel}</span>
@@ -192,7 +192,7 @@ export function FilterSection({
               <div
                 role="menu"
                 aria-labelledby="sort-button"
-                className="absolute top-full right-0 z-10 mt-1.5 w-32 overflow-hidden rounded-md border border-border/70 bg-card shadow-sm"
+                className="absolute top-full right-0 z-20 mt-2 w-36 overflow-hidden rounded-2xl border border-foreground/10 bg-card/95 p-1 shadow-xl backdrop-blur-xl"
               >
                 {(["latest", "popular"] as const).map((option) => (
                   <button
@@ -201,14 +201,14 @@ export function FilterSection({
                     role="menuitem"
                     onClick={() => handleSortChange(option)}
                     className={cn(
-                      "w-full px-3 py-2 text-left text-xs transition-colors",
+                      "w-full rounded-xl px-3 py-2 text-left font-mono text-xs uppercase tracking-wider transition-colors",
                       currentSort === option ||
                         (!currentSort && option === "latest")
-                        ? "bg-muted font-medium text-foreground"
-                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                        ? "bg-foreground font-semibold text-background"
+                        : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                     )}
                   >
-                    {option === "latest" ? "Latest first" : "Most viewed"}
+                    {option === "latest" ? "Latest" : "Most Viewed"}
                   </button>
                 ))}
               </div>
@@ -219,27 +219,27 @@ export function FilterSection({
             onSubmit={handleSearchSubmit}
             className="relative flex items-center"
           >
-            <Search className="pointer-events-none absolute left-2.5 size-3.5 text-muted-foreground" />
+            <Search className="pointer-events-none absolute left-3 size-3.5 text-muted-foreground/60" />
             <input
               ref={searchInputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search..."
+              placeholder="SEARCH ESSAYS..."
               aria-label="Search articles"
-              className="h-8 w-40 rounded-md border border-border/60 bg-background py-1.5 pr-7 pl-8 text-xs placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:outline-none sm:w-52"
+              className="h-8.5 w-36 rounded-full border border-foreground/10 bg-foreground/3 py-1.5 pr-8 pl-8.5 font-mono text-xs uppercase placeholder:text-muted-foreground/50 focus:border-foreground/30 focus:outline-hidden sm:w-48"
             />
             {query ? (
               <button
                 type="button"
                 onClick={handleClearSearch}
                 aria-label="Clear search"
-                className="absolute right-2 text-muted-foreground hover:text-foreground"
+                className="absolute right-2.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3.5" />
               </button>
             ) : (
-              <kbd className="pointer-events-none absolute right-2 hidden rounded border border-border/40 bg-muted px-1 font-mono text-[9px] text-muted-foreground select-none sm:inline">
+              <kbd className="pointer-events-none absolute right-2.5 hidden rounded-full border border-foreground/10 bg-background/80 px-1.5 py-0.2 font-mono text-[9px] text-muted-foreground select-none sm:inline">
                 /
               </kbd>
             )}
@@ -248,30 +248,30 @@ export function FilterSection({
       </div>
 
       {(activeTag || searchQuery) && (
-        <div className="flex flex-wrap items-center gap-1.5 pt-0.5 text-xs">
-          <span className="text-muted-foreground/70">Filtered by:</span>
+        <div className="flex flex-wrap items-center gap-2 pt-1 font-mono text-xs">
+          <span className="text-[11px] uppercase tracking-wider text-muted-foreground/60">Filtered by:</span>
           {activeTag && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-border/50 bg-muted/60 px-2 py-0.5 text-muted-foreground">
-              <Tag className="size-3" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-3 py-0.5 text-foreground">
+              <Tag className="size-3 text-muted-foreground" />
               <span>#{activeTag}</span>
               <button
                 type="button"
                 onClick={handleClearTag}
                 aria-label="Remove tag filter"
-                className="hover:text-foreground"
+                className="ml-0.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3" />
               </button>
             </span>
           )}
           {searchQuery && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-border/50 bg-muted/60 px-2 py-0.5 text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-3 py-0.5 text-foreground">
               <span>&ldquo;{searchQuery}&rdquo;</span>
               <button
                 type="button"
                 onClick={handleClearSearch}
                 aria-label="Remove search filter"
-                className="hover:text-foreground"
+                className="ml-0.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3" />
               </button>
@@ -283,9 +283,9 @@ export function FilterSection({
       {isPending && (
         <div
           aria-hidden="true"
-          className="h-px w-full overflow-hidden rounded-full bg-border/30"
+          className="h-0.5 w-full overflow-hidden rounded-full bg-foreground/5"
         >
-          <div className="h-full w-2/5 animate-pulse rounded-full bg-foreground/30" />
+          <div className="h-full w-2/5 animate-pulse rounded-full bg-foreground/40" />
         </div>
       )}
     </div>
