@@ -14,7 +14,6 @@ import {
   Server,
   Zap,
 } from "lucide-react"
-import { Badge } from "@workspace/ui/components/badge"
 import { CmsPageShell } from "@/components/cms-page-shell"
 import { RevalidationButton } from "@/components/revalidation-button"
 import { getCachedCmsDashboardSummary } from "@/lib/actions/overview-actions"
@@ -31,7 +30,6 @@ export default async function OverviewDashboard() {
       detail: `${s.trxSuccessRate}% success rate`,
       href: "/transactions",
       icon: Activity,
-      accent: "text-foreground",
     },
     {
       title: "Blog Articles",
@@ -39,7 +37,6 @@ export default async function OverviewDashboard() {
       detail: `${s.postsPublished} published articles`,
       href: "/blog",
       icon: FileText,
-      accent: "text-blue-500",
     },
     {
       title: "Digital Products",
@@ -47,7 +44,6 @@ export default async function OverviewDashboard() {
       detail: `${s.productsActive} active in store`,
       href: "/shop",
       icon: ShoppingBag,
-      accent: "text-emerald-500",
     },
     {
       title: "Orders Received",
@@ -55,7 +51,6 @@ export default async function OverviewDashboard() {
       detail: `${s.ordersPaid} settled orders`,
       href: "/shop",
       icon: Zap,
-      accent: "text-amber-500",
     },
     {
       title: "Docs & Repos",
@@ -63,7 +58,6 @@ export default async function OverviewDashboard() {
       detail: `${s.reposPublic} public repositories`,
       href: "/docs",
       icon: BookOpen,
-      accent: "text-purple-500",
     },
     {
       title: "Changelog Releases",
@@ -71,7 +65,6 @@ export default async function OverviewDashboard() {
       detail: `${s.changelogsPublished} published releases`,
       href: "/changelog",
       icon: History,
-      accent: "text-rose-500",
     },
   ]
 
@@ -120,32 +113,31 @@ export default async function OverviewDashboard() {
       description="Pusat pemantauan status konten, transaksi terpadu, dan operasional ekosistem monorepo."
       actions={<RevalidationButton />}
     >
-      <div className="space-y-10">
-        {/* Metric Cards Grid */}
+      <div className="space-y-12">
         <section aria-label="Ecosystem Metrics">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {stats.map((item) => {
               const Icon = item.icon
               return (
                 <Link
                   key={item.title}
                   href={item.href}
-                  className="group flex flex-col justify-between rounded-2xl border border-border/80 bg-card/60 p-6 shadow-xs backdrop-blur-xs transition-all hover:border-foreground/30 hover:bg-card hover:shadow-md"
+                  className="group flex flex-col justify-between rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/25 hover:shadow-xl"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-muted-foreground">
+                    <span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
                       {item.title}
                     </span>
-                    <div className="flex size-7 items-center justify-center rounded-lg border border-border/60 bg-muted/40 transition-colors group-hover:bg-muted">
-                      <Icon className={`size-3.5 ${item.accent}`} />
+                    <div className="flex size-8 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/[0.03] text-muted-foreground transition-colors group-hover:text-foreground">
+                      <Icon className="size-4" />
                     </div>
                   </div>
 
-                  <div className="mt-6 space-y-1">
-                    <div className="font-mono text-3xl font-extrabold tracking-tight text-foreground tabular-nums">
+                  <div className="mt-8 space-y-2">
+                    <div className="font-serif text-3xl sm:text-4xl font-light tracking-tight text-foreground tabular-nums">
                       {item.value}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="font-mono text-xs text-muted-foreground">
                       {item.detail}
                     </div>
                   </div>
@@ -155,12 +147,10 @@ export default async function OverviewDashboard() {
           </div>
         </section>
 
-        {/* Quick Links & Infrastructure Status */}
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-          {/* Quick Actions */}
-          <div className="space-y-4 rounded-2xl border border-border/80 bg-card/60 p-6 shadow-xs backdrop-blur-xs lg:col-span-7">
-            <div className="flex items-center justify-between border-b border-border/60 pb-3">
-              <h2 className="text-sm font-bold tracking-tight text-foreground text-muted-foreground/80 uppercase">
+        <section className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl lg:col-span-7">
+            <div className="flex items-center justify-between border-b border-foreground/8 pb-4">
+              <h2 className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                 Aksi Cepat & Navigasi Modul
               </h2>
               <span className="font-mono text-[11px] text-muted-foreground">
@@ -168,27 +158,27 @@ export default async function OverviewDashboard() {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
               {quickLinks.map((link) => {
                 const Icon = link.icon
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="group flex flex-col justify-between rounded-xl border border-border/60 bg-muted/20 p-3.5 transition-all hover:border-foreground/30 hover:bg-muted/60"
+                    className="group flex flex-col justify-between rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-4 transition-all hover:border-foreground/25 hover:bg-foreground/[0.04]"
                   >
                     <div className="flex items-start justify-between">
-                      <div className="flex size-7 items-center justify-center rounded-lg border border-border/60 bg-background text-foreground shadow-xs">
-                        <Icon className="size-3.5" />
+                      <div className="flex size-8 items-center justify-center rounded-xl border border-foreground/10 bg-background/60 text-foreground shadow-xs">
+                        <Icon className="size-4" />
                       </div>
                       <ArrowUpRight className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
                     </div>
 
-                    <div className="mt-3 space-y-0.5">
-                      <div className="text-xs font-bold text-foreground">
+                    <div className="mt-4 space-y-1">
+                      <div className="font-serif text-sm font-normal text-foreground group-hover:underline">
                         {link.title}
                       </div>
-                      <div className="line-clamp-1 text-[11px] text-muted-foreground">
+                      <div className="line-clamp-1 font-sans text-xs font-light text-muted-foreground">
                         {link.description}
                       </div>
                     </div>
@@ -198,27 +188,26 @@ export default async function OverviewDashboard() {
             </div>
           </div>
 
-          {/* Infrastructure Health */}
-          <div className="space-y-4 rounded-2xl border border-border/80 bg-card/60 p-6 shadow-xs backdrop-blur-xs lg:col-span-5">
-            <div className="flex items-center justify-between border-b border-border/60 pb-3">
+          <div className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl lg:col-span-5">
+            <div className="flex items-center justify-between border-b border-foreground/8 pb-4">
               <div className="flex items-center gap-2">
                 <Server className="size-4 text-foreground" />
-                <h2 className="text-sm font-bold tracking-tight text-foreground text-muted-foreground/80 uppercase">
+                <h2 className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                   Status Infrastruktur
                 </h2>
               </div>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-0.5 font-mono text-[10px] text-foreground">
                 <span className="size-1.5 rounded-full bg-emerald-500" />
-                Semua Operasional
+                Operational
               </span>
             </div>
 
             <div className="space-y-3">
-              <div className="flex items-center justify-between rounded-xl border border-border/60 bg-background/50 p-3.5">
-                <div className="flex items-center gap-2.5">
-                  <Database className="size-4 text-foreground" />
+              <div className="flex items-center justify-between rounded-2xl border border-foreground/8 bg-background/40 p-4">
+                <div className="flex items-center gap-3">
+                  <Database className="size-4 text-muted-foreground" />
                   <div>
-                    <p className="text-xs font-semibold text-foreground">
+                    <p className="font-serif text-xs font-medium text-foreground">
                       PostgreSQL & Drizzle ORM
                     </p>
                     <p className="font-mono text-[10px] text-muted-foreground">
@@ -226,16 +215,16 @@ export default async function OverviewDashboard() {
                     </p>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                   Connected
                 </span>
               </div>
 
-              <div className="flex items-center justify-between rounded-xl border border-border/60 bg-background/50 p-3.5">
-                <div className="flex items-center gap-2.5">
-                  <Activity className="size-4 text-foreground" />
+              <div className="flex items-center justify-between rounded-2xl border border-foreground/8 bg-background/40 p-4">
+                <div className="flex items-center gap-3">
+                  <Activity className="size-4 text-muted-foreground" />
                   <div>
-                    <p className="text-xs font-semibold text-foreground">
+                    <p className="font-serif text-xs font-medium text-foreground">
                       Transactions Audit Ledger
                     </p>
                     <p className="font-mono text-[10px] text-muted-foreground">
@@ -243,16 +232,16 @@ export default async function OverviewDashboard() {
                     </p>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                   Tracking
                 </span>
               </div>
 
-              <div className="flex items-center justify-between rounded-xl border border-border/60 bg-background/50 p-3.5">
-                <div className="flex items-center gap-2.5">
-                  <Image className="size-4 text-foreground" />
+              <div className="flex items-center justify-between rounded-2xl border border-foreground/8 bg-background/40 p-4">
+                <div className="flex items-center gap-3">
+                  <Image className="size-4 text-muted-foreground" />
                   <div>
-                    <p className="text-xs font-semibold text-foreground">
+                    <p className="font-serif text-xs font-medium text-foreground">
                       Storage CDN (3 Buckets)
                     </p>
                     <p className="font-mono text-[10px] text-muted-foreground">
@@ -260,24 +249,24 @@ export default async function OverviewDashboard() {
                     </p>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                   Ready
                 </span>
               </div>
 
-              <div className="flex items-center justify-between rounded-xl border border-border/60 bg-background/50 p-3.5">
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="size-4 text-foreground" />
+              <div className="flex items-center justify-between rounded-2xl border border-foreground/8 bg-background/40 p-4">
+                <div className="flex items-center gap-3">
+                  <ShieldCheck className="size-4 text-muted-foreground" />
                   <div>
-                    <p className="text-xs font-semibold text-foreground">
+                    <p className="font-serif text-xs font-medium text-foreground">
                       Owner Session Security
                     </p>
                     <p className="font-mono text-[10px] text-muted-foreground">
-                      HttpOnly Cookie & Defense Guard
+                      HttpOnly Cookie & Guard
                     </p>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                   Active
                 </span>
               </div>
@@ -285,44 +274,43 @@ export default async function OverviewDashboard() {
           </div>
         </section>
 
-        {/* Recent Master Transactions & Audit Feed */}
-        <section className="space-y-4 rounded-2xl border border-border/80 bg-card/60 p-6 shadow-xs backdrop-blur-xs">
-          <div className="flex flex-col gap-2 border-b border-border/60 pb-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-base font-bold tracking-tight text-foreground">
+        <section className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-8 backdrop-blur-xl">
+          <div className="flex flex-col gap-3 border-b border-foreground/8 pb-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-1">
+              <h2 className="font-serif text-xl sm:text-2xl font-light tracking-tight text-foreground">
                 Recent Master Transactions
               </h2>
-              <p className="text-xs text-muted-foreground">
+              <p className="font-sans text-xs font-light text-muted-foreground">
                 Audit trail aktivitas dan mutasi data sistem terbaru di seluruh
                 ekosistem.
               </p>
             </div>
             <Link
               href="/transactions"
-              className="group inline-flex items-center gap-1.5 text-xs font-semibold text-foreground transition-colors hover:text-primary"
+              className="group inline-flex items-center gap-1.5 font-mono text-xs text-foreground transition-colors hover:underline"
             >
               <span>Buka Audit Ledger Lengkap</span>
-              <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
-          <div className="divide-y divide-border/50">
+          <div className="divide-y divide-foreground/5">
             {recentTransactions.length === 0 ? (
-              <div className="py-12 text-center text-xs text-muted-foreground">
+              <div className="py-12 text-center font-mono text-xs text-muted-foreground">
                 Belum ada transaksi tercatat pada master ledger.
               </div>
             ) : (
               recentTransactions.map((trx) => (
                 <div
                   key={trx.id}
-                  className="group flex flex-col gap-3 rounded-xl py-3.5 transition-colors hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:px-2"
+                  className="group flex flex-col gap-3 py-4 transition-colors hover:bg-foreground/[0.02] sm:flex-row sm:items-center sm:justify-between sm:px-3 rounded-2xl"
                 >
-                  <div className="flex items-start gap-3">
-                    <span className="rounded-md border border-border/70 bg-muted/50 px-2 py-0.5 font-mono text-[11px] font-semibold text-foreground">
+                  <div className="flex items-start gap-3.5">
+                    <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[11px] font-medium text-foreground">
                       {trx.trxNumber}
                     </span>
                     <div>
-                      <p className="text-xs font-bold text-foreground">
+                      <p className="font-serif text-sm font-normal text-foreground">
                         {trx.actionType}
                       </p>
                       <p className="font-mono text-[11px] text-muted-foreground">
@@ -333,17 +321,14 @@ export default async function OverviewDashboard() {
 
                   <div className="flex flex-wrap items-center gap-3 self-end sm:self-auto">
                     {trx.amount && trx.amount > 0 ? (
-                      <span className="font-mono text-xs font-bold text-foreground">
+                      <span className="font-mono text-xs font-medium text-foreground">
                         Rp {trx.amount.toLocaleString("id-ID")}
                       </span>
                     ) : null}
 
-                    <Badge
-                      variant="outline"
-                      className="rounded-md border-border/70 px-2 py-0.5 font-mono text-[10px] font-semibold"
-                    >
+                    <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                       {trx.status}
-                    </Badge>
+                    </span>
 
                     <span className="font-mono text-[11px] text-muted-foreground">
                       {new Date(trx.createdAt).toLocaleTimeString("id-ID", {
