@@ -117,37 +117,35 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
-      <section className="w-full border-b border-border/40 pt-10 pb-0 sm:pt-16">
+      <section className="w-full border-b border-foreground/8 pt-12 pb-10 sm:pt-20 sm:pb-16">
         <Container>
           {isDefaultView && featuredPost ? (
-            <div className="grid grid-cols-1 gap-0 lg:grid-cols-12">
-              <div className="flex flex-col justify-between py-6 pr-0 lg:col-span-5 lg:py-8 lg:pr-12">
-                <div>
-                  <p className="mb-4 text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
-                    Engineering Notes & Architectural Invariants
-                  </p>
-                  <h1 className="text-4xl leading-[1.1] font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-                    Articles on systems, design & full-stack craft.
+            <div className="space-y-12">
+              <div className="flex flex-col justify-between gap-6 border-b border-foreground/8 pb-8 md:flex-row md:items-end">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+                      [ THE ARCHITECTURAL MONOGRAPH // VOL. 04 ]
+                    </span>
+                  </div>
+                  <h1 className="font-serif text-3xl font-light tracking-tight text-foreground sm:text-5xl md:text-6xl">
+                    Essays on systems, invariants & craft.
                   </h1>
-                  <p className="mt-4 text-sm/relaxed text-muted-foreground sm:text-base/relaxed">
-                    Architectural essays on deterministic state, monorepo
-                    package isolation, database resilience, and sub-second web
-                    performance.
-                  </p>
                 </div>
-
-                <div className="mt-8 hidden text-xs text-muted-foreground lg:flex">
-                  <span>{totalAllPosts} articles published</span>
+                <div className="flex items-center gap-4 font-mono text-xs uppercase text-muted-foreground/70">
+                  <span>{totalAllPosts} Published Monographs</span>
+                  <span>•</span>
+                  <span>Peer-Reviewed</span>
                 </div>
               </div>
 
-              <article className="group relative lg:col-span-7 lg:border-l lg:border-border/50">
+              <article className="group overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/2 transition-all duration-300 hover:border-foreground/25 hover:shadow-2xl">
                 <Link
                   href={`/blog/${featuredPost.slug}`}
-                  className="block"
+                  className="grid grid-cols-1 gap-0 lg:grid-cols-12"
                   aria-label={`Read: ${featuredPost.title}`}
                 >
-                  <div className="relative aspect-video w-full overflow-hidden bg-muted lg:aspect-[4/3]">
+                  <div className="relative aspect-video w-full overflow-hidden bg-muted lg:col-span-7 lg:aspect-[16/10]">
                     {featuredPost.coverImageUrl ? (
                       <Image
                         src={featuredPost.coverImageUrl}
@@ -155,71 +153,73 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                         fill
                         priority
                         sizes="(max-width: 1024px) 100vw, 60vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                        className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                       />
                     ) : (
-                      <div className="flex size-full items-center justify-center bg-muted">
-                        <BookOpen className="size-12 text-muted-foreground/20" />
+                      <div className="flex size-full items-center justify-center bg-foreground/5">
+                        <BookOpen className="size-12 text-foreground/20" />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                  </div>
 
-                    <div className="absolute right-0 bottom-0 left-0 p-6">
-                      <div className="mb-3 flex flex-wrap items-center gap-2 text-[11px] text-white/70">
-                        <span className="rounded bg-white/15 px-2 py-0.5 font-semibold tracking-widest text-white uppercase backdrop-blur-sm">
-                          Featured
+                  <div className="flex flex-col justify-between p-8 sm:p-10 lg:col-span-5 lg:p-12">
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs uppercase">
+                        <span className="rounded-full bg-foreground px-3 py-0.5 text-[10px] font-semibold tracking-wider text-background">
+                          Featured Essay
                         </span>
                         {featuredPost.categories[0] && (
-                          <span className="text-white/60">
+                          <span className="rounded-full border border-foreground/10 bg-foreground/5 px-2.5 py-0.5 text-[10px] text-muted-foreground">
                             {featuredPost.categories[0].name}
                           </span>
                         )}
-                        <span className="text-white/40">&bull;</span>
-                        <span className="flex items-center gap-1 text-white/60">
+                        <span className="text-muted-foreground/40">•</span>
+                        <span className="flex items-center gap-1 text-muted-foreground">
                           <Clock className="size-3" />
-                          {featuredPost.readingTime} min read
+                          {featuredPost.readingTime} min
                         </span>
                       </div>
 
-                      <h2 className="text-xl leading-tight font-semibold tracking-tight text-white sm:text-2xl">
+                      <h2 className="font-serif text-2xl font-light leading-snug tracking-tight text-foreground transition-colors group-hover:text-muted-foreground sm:text-3xl lg:text-4xl">
                         {featuredPost.title}
                       </h2>
 
-                      <p className="mt-2 line-clamp-2 text-sm/relaxed text-white/70">
+                      <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground sm:text-sm">
                         {featuredPost.excerpt}
                       </p>
+                    </div>
 
-                      <div className="mt-4 flex items-center gap-x-2 text-xs text-white/60">
-                        <Calendar className="size-3" />
-                        <span>{formatDate(featuredPost.publishedAt)}</span>
-                        <span className="ml-auto inline-flex items-center gap-1 font-medium text-white transition-opacity group-hover:opacity-70">
-                          <span>Read article</span>
-                          <ArrowUpRight className="size-3" />
-                        </span>
+                    <div className="mt-8 flex items-center justify-between border-t border-foreground/8 pt-6 font-mono text-xs">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Calendar className="size-3.5" />
+                        <span>{formatDate(featuredPost.publishedAt, "long")}</span>
                       </div>
+                      <span className="inline-flex items-center gap-2 font-medium uppercase tracking-wider text-foreground">
+                        <span>Read monograph</span>
+                        <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </span>
                     </div>
                   </div>
                 </Link>
               </article>
             </div>
           ) : (
-            <div className="max-w-3xl py-8 sm:py-12">
-              <p className="mb-3 text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
-                Engineering Notes & Architectural Invariants
-              </p>
-              <h1 className="text-4xl leading-tight font-semibold tracking-tight text-foreground sm:text-5xl">
-                Articles on systems, design & full-stack craft.
+            <div className="max-w-3xl space-y-3 py-6 sm:py-10">
+              <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+                [ ARCHIVE DISPATCH // ALL ESSAYS ]
+              </span>
+              <h1 className="font-serif text-3xl font-light tracking-tight text-foreground sm:text-5xl">
+                Essays on systems, design & full-stack craft.
               </h1>
-              <p className="mt-4 text-sm/relaxed text-muted-foreground sm:text-base/relaxed">
-                Architectural essays on deterministic state, monorepo package
-                isolation, database resilience, and sub-second web performance.
+              <p className="text-sm font-light leading-relaxed text-muted-foreground sm:text-base">
+                Architectural essays on deterministic state, monorepo package isolation, database resilience, and sub-second web performance.
               </p>
             </div>
           )}
         </Container>
       </section>
 
-      <div className="sticky top-14 z-30 border-b border-border/50 bg-background/95 py-3 backdrop-blur-md">
+      <div className="sticky top-16 z-30 border-b border-foreground/8 bg-background/90 py-3.5 backdrop-blur-2xl">
         <Container>
           <FilterSection
             categories={categories}
@@ -232,49 +232,43 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
         </Container>
       </div>
 
-      <section className="w-full py-12 sm:py-16">
+      <section className="w-full py-16 sm:py-24">
         <Container>
           {gridPosts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center border border-dashed border-border/50 py-24 text-center">
-              <BookOpen className="mb-4 size-8 text-muted-foreground/30" />
-              <h2 className="text-sm font-semibold text-foreground">
-                No articles found
+            <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-foreground/15 bg-foreground/2 p-12 text-center sm:p-20">
+              <BookOpen className="mb-4 size-10 text-muted-foreground/30 stroke-[1.25]" />
+              <h2 className="font-serif text-lg font-light text-foreground">
+                No monographs located
               </h2>
-              <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-                No published articles match your current filters or search
-                query.
+              <p className="mt-2 max-w-xs text-xs font-light text-muted-foreground">
+                No published essays match the current query parameters or filters.
               </p>
               <Link
                 href="/blog"
-                className="mt-5 text-sm font-medium text-foreground underline underline-offset-2 hover:text-muted-foreground"
+                className="mt-6 rounded-full bg-foreground px-6 py-2.5 font-mono text-xs uppercase tracking-wider text-background transition-opacity hover:opacity-80"
               >
-                Clear filters
+                Reset Catalog Filters
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-px border border-border/40 bg-border/40 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
               {gridPosts.map((post, index) => {
                 const primaryCategory = post.categories[0]
-                const isLarge = index === 0 && gridPosts.length >= 3
 
                 return (
                   <article
                     key={post.id}
-                    className={
-                      isLarge
-                        ? "group flex flex-col justify-between bg-background md:col-span-2"
-                        : "group flex flex-col justify-between bg-background"
-                    }
+                    className="group flex flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.015] p-6 transition-all duration-300 hover:border-foreground/25 hover:bg-foreground/[0.03] hover:shadow-xl"
                   >
                     <div>
                       {post.coverImageUrl ? (
                         <Link
                           href={`/blog/${post.slug}`}
-                          className="block overflow-hidden bg-muted"
+                          className="block overflow-hidden rounded-2xl border border-foreground/8 bg-muted"
                           aria-label={`Read: ${post.title}`}
                           tabIndex={-1}
                         >
-                          <div className="relative aspect-video w-full overflow-hidden">
+                          <div className="relative aspect-[16/10] w-full overflow-hidden">
                             <Image
                               src={post.coverImageUrl}
                               alt={post.title}
@@ -287,59 +281,44 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                         </Link>
                       ) : null}
 
-                      <div className="p-5 pb-0 sm:p-6">
-                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+                      <div className="pt-5">
+                        <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase text-muted-foreground">
                           {primaryCategory && (
-                            <>
-                              <Link
-                                href={`/blog?category=${primaryCategory.slug}`}
-                                className="font-medium text-foreground transition-colors hover:text-muted-foreground"
-                              >
-                                {primaryCategory.name}
-                              </Link>
-                              <span className="text-border">·</span>
-                            </>
+                            <Link
+                              href={`/blog?category=${primaryCategory.slug}`}
+                              className="rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 text-foreground transition-colors hover:border-foreground/30"
+                            >
+                              {primaryCategory.name}
+                            </Link>
                           )}
                           <span className="flex items-center gap-1">
                             <Clock className="size-3" />
                             {post.readingTime} min
                           </span>
-                          <span className="text-border">·</span>
-                          <span className="flex items-center gap-1">
-                            <Calendar className="size-3" />
-                            {formatDate(post.publishedAt)}
-                          </span>
+                          <span>•</span>
+                          <span>{formatDate(post.publishedAt)}</span>
                         </div>
 
-                        <h2
-                          className={
-                            isLarge
-                              ? "mt-3 text-xl leading-snug font-semibold tracking-tight text-foreground sm:text-2xl"
-                              : "mt-3 text-base leading-snug font-semibold tracking-tight text-foreground"
-                          }
-                        >
-                          <Link
-                            href={`/blog/${post.slug}`}
-                            className="transition-colors hover:text-muted-foreground"
-                          >
+                        <h2 className="mt-3 font-serif text-lg font-light leading-snug tracking-tight text-foreground transition-colors group-hover:text-muted-foreground sm:text-xl">
+                          <Link href={`/blog/${post.slug}`}>
                             {post.title}
                           </Link>
                         </h2>
 
-                        <p className="mt-3 line-clamp-3 text-sm/relaxed text-muted-foreground">
+                        <p className="mt-2.5 line-clamp-3 text-xs font-light leading-relaxed text-muted-foreground">
                           {post.excerpt}
                         </p>
                       </div>
                     </div>
 
-                    <div className="p-5 pt-5 sm:p-6">
-                      <div className="flex items-center justify-between border-t border-border/40 pt-4">
-                        <div className="flex flex-wrap gap-x-2">
+                    <div className="mt-6 border-t border-foreground/8 pt-4">
+                      <div className="flex items-center justify-between font-mono text-[11px]">
+                        <div className="flex flex-wrap gap-1.5">
                           {post.tags.slice(0, 2).map((t) => (
                             <Link
                               key={t.id}
                               href={`/blog?tag=${t.slug}`}
-                              className="text-xs text-muted-foreground/70 transition-colors hover:text-foreground"
+                              className="text-muted-foreground/60 transition-colors hover:text-foreground"
                               aria-label={`Filter by tag: ${t.name}`}
                             >
                               #{t.name}
@@ -347,13 +326,12 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                           ))}
                         </div>
 
-                        {post.viewsCount !== undefined &&
-                          post.viewsCount > 0 && (
-                            <div className="flex items-center gap-1 text-[11px] text-muted-foreground/60">
-                              <Eye className="size-3" />
-                              <span>{post.viewsCount}</span>
-                            </div>
-                          )}
+                        {post.viewsCount !== undefined && post.viewsCount > 0 && (
+                          <div className="flex items-center gap-1 text-muted-foreground/60">
+                            <Eye className="size-3" />
+                            <span>{post.viewsCount}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </article>
@@ -363,14 +341,14 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
           )}
 
           {totalPages > 1 && (
-            <div className="mt-12 flex items-center justify-between border-t border-border/40 pt-6">
-              <p className="text-xs text-muted-foreground">
-                Page{" "}
-                <span className="font-medium text-foreground">
+            <div className="mt-16 flex items-center justify-between border-t border-foreground/8 pt-8 font-mono text-xs">
+              <p className="text-muted-foreground">
+                INDEX{" "}
+                <span className="font-semibold text-foreground">
                   {currentPage}
                 </span>{" "}
-                of{" "}
-                <span className="font-medium text-foreground">
+                OF{" "}
+                <span className="font-semibold text-foreground">
                   {totalPages}
                 </span>
               </p>
@@ -378,7 +356,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 {currentPage > 1 && (
                   <Link
                     href={`/blog?page=${currentPage - 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
-                    className="inline-flex items-center gap-1.5 rounded-md border border-border/60 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/50"
+                    className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 uppercase tracking-wider text-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
                   >
                     <ArrowLeft className="size-3" />
                     <span>Previous</span>
@@ -387,7 +365,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 {currentPage < totalPages && (
                   <Link
                     href={`/blog?page=${currentPage + 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
-                    className="inline-flex items-center gap-1.5 rounded-md border border-border/60 px-3 py-2 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/50"
+                    className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 uppercase tracking-wider text-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
                   >
                     <span>Next</span>
                     <ArrowRight className="size-3" />
