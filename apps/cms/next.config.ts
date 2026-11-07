@@ -55,6 +55,120 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/admin",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/admin/:path*",
+        destination: "/:path*",
+        permanent: false,
+      },
+      {
+        source: "/dashboard",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/dashboard/:path*",
+        destination: "/:path*",
+        permanent: false,
+      },
+      {
+        source: "/overview",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/changelogs",
+        destination: "/changelog",
+        permanent: false,
+      },
+      {
+        source: "/blogs",
+        destination: "/blog",
+        permanent: false,
+      },
+      {
+        source: "/posts",
+        destination: "/blog",
+        permanent: false,
+      },
+      {
+        source: "/articles",
+        destination: "/blog",
+        permanent: false,
+      },
+      {
+        source: "/products",
+        destination: "/shop",
+        permanent: false,
+      },
+      {
+        source: "/orders",
+        destination: "/shop",
+        permanent: false,
+      },
+      {
+        source: "/store",
+        destination: "/shop",
+        permanent: false,
+      },
+      {
+        source: "/repos",
+        destination: "/docs",
+        permanent: false,
+      },
+      {
+        source: "/repositories",
+        destination: "/docs",
+        permanent: false,
+      },
+      {
+        source: "/documentation",
+        destination: "/docs",
+        permanent: false,
+      },
+      {
+        source: "/inquiries",
+        destination: "/inbox",
+        permanent: false,
+      },
+      {
+        source: "/messages",
+        destination: "/inbox",
+        permanent: false,
+      },
+      {
+        source: "/links",
+        destination: "/linkbio",
+        permanent: false,
+      },
+      {
+        source: "/bio",
+        destination: "/linkbio",
+        permanent: false,
+      },
+      {
+        source: "/ledger",
+        destination: "/transactions",
+        permanent: false,
+      },
+      {
+        source: "/system",
+        destination: "/settings",
+        permanent: false,
+      },
+      {
+        source: "/health",
+        destination: "/settings",
+        permanent: false,
+      },
+    ]
+  },
   async headers() {
     return [
       {
