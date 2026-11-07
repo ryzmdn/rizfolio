@@ -3,7 +3,6 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Footer } from "@workspace/ui/components/layouts/footer"
-import { buttonVariants } from "@workspace/ui/components/button"
 import {
   GitHub,
   LinkedIn,
@@ -11,7 +10,6 @@ import {
   Dribbble,
 } from "@workspace/ui/constants/icons"
 import { ArrowUp, ArrowUpRight } from "lucide-react"
-import { cn } from "@workspace/ui/lib/utils"
 
 const DOMAIN_LINKS = [
   { name: "All Repositories", href: "/" },
@@ -34,95 +32,83 @@ export function DocsFooter() {
   return (
     <Footer
       id="docs-footer"
-      className="w-full border-t border-border/50 bg-card/30 px-4 py-16 sm:px-6 lg:px-8"
+      className="w-full border-t border-foreground/8 bg-card/20 px-6 py-20 sm:px-8 lg:px-12 backdrop-blur-sm"
     >
-      <div className="mx-auto max-w-7xl space-y-12">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 lg:gap-12">
-          <div className="space-y-4 md:col-span-6">
-            <div className="flex items-center gap-x-3.5">
-              <div className="relative size-11 overflow-hidden rounded-full ring-1 ring-border">
+      <div className="mx-auto max-w-7xl space-y-16">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-12 lg:gap-16">
+          <div className="space-y-5 md:col-span-6">
+            <div className="flex items-center gap-x-4">
+              <div className="relative size-12 overflow-hidden rounded-full ring-1 ring-foreground/15">
                 <Image
                   src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
                   alt="Rizky Ramadhan"
                   fill
-                  sizes="44px"
+                  sizes="48px"
                   className="size-full object-cover"
                 />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p className="font-serif text-lg font-light tracking-tight text-foreground">
                   Rizky Ramadhan
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  Multidisciplinary Digital Builder
+                <p className="font-mono text-xs text-muted-foreground">
+                  Architectural Blueprint & Archive Lead
                 </p>
               </div>
             </div>
 
-            <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
+            <p className="max-w-md text-sm font-light leading-relaxed text-muted-foreground">
               Documenting technical repositories, university coursework, and
               algorithmic experiments. Exploring distributed systems in Go,
               low-level memory allocators in C, and design token ergonomics in
               TypeScript.
             </p>
 
-            <div className="flex items-center gap-x-2 pt-1">
+            <div className="flex items-center gap-2 pt-2">
               <a
                 href="https://github.com/ryzmdn"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="GitHub Profile"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-9 items-center justify-center rounded-full border border-foreground/10 bg-background/60 text-muted-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
               >
-                <GitHub className="size-3.5" />
+                <GitHub className="size-4" />
               </a>
               <a
                 href="https://linkedin.com/in/ryzmdn"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="LinkedIn Profile"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-9 items-center justify-center rounded-full border border-foreground/10 bg-background/60 text-muted-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
               >
-                <LinkedIn className="size-3.5" />
+                <LinkedIn className="size-4" />
               </a>
               <a
                 href="https://behance.net/ryzmdn"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Behance Profile"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-9 items-center justify-center rounded-full border border-foreground/10 bg-background/60 text-muted-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
               >
-                <Behance className="size-3.5" />
+                <Behance className="size-4" />
               </a>
               <a
                 href="https://dribbble.com/ryzmdn"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Dribbble Profile"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-9 items-center justify-center rounded-full border border-foreground/10 bg-background/60 text-muted-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
               >
-                <Dribbble className="size-3.5" />
+                <Dribbble className="size-4" />
               </a>
             </div>
           </div>
 
-          <div className="space-y-3 md:col-span-3">
-            <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+          <div className="space-y-4 md:col-span-3">
+            <p className="font-mono text-[11px] font-medium tracking-widest text-muted-foreground uppercase">
               Documentation
             </p>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2.5 font-mono text-xs">
               {DOMAIN_LINKS.map((item) => (
                 <li key={item.name}>
                   <Link
@@ -136,17 +122,17 @@ export function DocsFooter() {
             </ul>
           </div>
 
-          <div className="space-y-3 md:col-span-3">
-            <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+          <div className="space-y-4 md:col-span-3">
+            <p className="font-mono text-[11px] font-medium tracking-widest text-muted-foreground uppercase">
               Ecosystem
             </p>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2.5 font-mono text-xs">
               <li>
                 <a
                   href={portfolioUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+                  className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <span>Main Portfolio</span>
                   <ArrowUpRight className="size-3" />
@@ -157,7 +143,7 @@ export function DocsFooter() {
                   href={blogUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+                  className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <span>Engineering Blog</span>
                   <ArrowUpRight className="size-3" />
@@ -168,7 +154,7 @@ export function DocsFooter() {
                   href="https://github.com/ryzmdn"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+                  className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <span>GitHub Repositories</span>
                   <ArrowUpRight className="size-3" />
@@ -178,16 +164,15 @@ export function DocsFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col items-start justify-between gap-y-4 border-t border-border/40 pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start justify-between gap-y-4 border-t border-foreground/8 pt-8 font-mono text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>
-            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js
-            16, React 19, Shiki & Tailwind CSS.
+            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js 16, React 19, Shiki & Tailwind CSS.
           </p>
 
           <button
             type="button"
             onClick={scrollToTop}
-            className="inline-flex items-center gap-x-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 px-3.5 py-1 text-xs text-muted-foreground transition-all hover:bg-foreground hover:text-background"
           >
             <span>Back to top</span>
             <ArrowUp className="size-3" />
