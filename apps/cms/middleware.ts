@@ -3,13 +3,14 @@ import type { NextRequest } from "next/server"
 import { validateOwnerSession, SESSION_COOKIE_NAME } from "@workspace/auth"
 
 function buildCmsCsp(nonce: string): string {
+  const isDev = process.env.NODE_ENV !== "production"
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ${isDev ? "'unsafe-eval'" : ""}`.trim(),
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: res.cloudinary.com images.unsplash.com *.supabase.co",
     "font-src 'self' data:",
-    "connect-src 'self' *.supabase.co",
+    `connect-src 'self' *.supabase.co ${isDev ? "ws: http: https:" : ""}`.trim(),
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
