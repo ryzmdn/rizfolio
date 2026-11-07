@@ -42,7 +42,7 @@ export function RevalidationButton() {
       type="button"
       onClick={handleRevalidate}
       disabled={status === "loading"}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-all hover:bg-muted disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-background/60 px-3.5 py-1.5 font-mono text-xs text-foreground transition-all hover:bg-foreground hover:text-background disabled:opacity-50"
       title="Dispatches cache purge to all 6 consumer applications"
     >
       {status === "loading" && (
@@ -57,12 +57,12 @@ export function RevalidationButton() {
       )}
       <span>
         {status === "loading"
-          ? "Revalidating All Apps..."
+          ? "Purging Cache..."
           : status === "success"
-            ? `Cache Purged (${report ? `${report.successfulCount}/${report.totalCount}` : "Active"} Apps)!`
+            ? `Purged (${report ? `${report.successfulCount}/${report.totalCount}` : "Active"})`
             : status === "error"
-              ? "Revalidation Encountered Issues"
-              : "Revalidate Public Cache"}
+              ? "Purge Failed"
+              : "Purge Cache"}
       </span>
     </button>
   )

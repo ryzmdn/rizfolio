@@ -113,24 +113,21 @@ export function CmsSidebar({
   }, [isMobile, isOpen, onClose])
 
   const content = (
-    <div className="flex h-full flex-col justify-between bg-card">
+    <div className="flex h-full flex-col justify-between bg-card/40 backdrop-blur-xl">
       <div className="flex flex-col">
-        <div className="flex h-16 items-center justify-between border-b border-border/80 px-5">
+        <div className="flex h-16 items-center justify-between border-b border-foreground/8 px-6">
           <Link
             href="/"
             onClick={() => isMobile && setTimeout(() => onClose?.(), 50)}
             className="group flex items-center gap-3 transition-opacity hover:opacity-90"
           >
-            <div className="flex size-8 items-center justify-center rounded-lg bg-foreground text-background shadow-xs transition-transform group-hover:scale-105">
+            <div className="flex size-8 items-center justify-center rounded-xl border border-foreground/10 bg-foreground text-background shadow-xs transition-transform group-hover:scale-105">
               <ShieldCheck className="size-4" />
             </div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-bold tracking-tight text-foreground">
-                  Rizfolio CMS
-                </span>
-                <span className="size-1.5 rounded-full bg-emerald-500" />
-              </div>
+              <span className="font-mono text-xs font-semibold tracking-tight text-foreground">
+                [ CMS // EXECUTIVE ]
+              </span>
               <span className="font-mono text-[10px] text-muted-foreground">
                 Mission Control
               </span>
@@ -142,7 +139,7 @@ export function CmsSidebar({
               type="button"
               onClick={onClose}
               aria-label="Close navigation drawer"
-              className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-foreground/[0.05] hover:text-foreground"
             >
               <X className="size-4" />
             </button>
@@ -150,12 +147,12 @@ export function CmsSidebar({
         </div>
 
         <nav
-          className="flex-1 space-y-6 overflow-y-auto px-3 py-5"
+          className="flex-1 space-y-6 overflow-y-auto px-4 py-6"
           aria-label="CMS Main Navigation"
         >
           {NAV_SECTIONS.map((section) => (
             <div key={section.title} className="space-y-1">
-              <div className="px-3 pb-1 text-[10px] font-bold tracking-wider text-muted-foreground/70 uppercase">
+              <div className="px-3 pb-1.5 font-mono text-[10px] font-medium tracking-widest text-muted-foreground/70 uppercase">
                 {section.title}
               </div>
               <div className="space-y-0.5">
@@ -171,10 +168,10 @@ export function CmsSidebar({
                       href={item.href}
                       onClick={() => isMobile && setTimeout(() => onClose?.(), 50)}
                       className={cn(
-                        "group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all focus:ring-2 focus:ring-primary/20 focus:outline-hidden",
+                        "group flex items-center justify-between rounded-xl px-3.5 py-2 font-mono text-xs font-medium transition-all focus:outline-hidden",
                         isActive
                           ? "bg-foreground text-background shadow-xs"
-                          : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                          : "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground"
                       )}
                     >
                       <div className="flex items-center gap-2.5">
@@ -191,10 +188,10 @@ export function CmsSidebar({
                       {item.badge && (
                         <span
                           className={cn(
-                            "rounded px-1.5 py-0.5 font-mono text-[10px]",
+                            "rounded-full px-2 py-0.2 font-mono text-[10px]",
                             isActive
                               ? "bg-background/20 text-background"
-                              : "bg-muted text-muted-foreground"
+                              : "bg-foreground/5 text-muted-foreground"
                           )}
                         >
                           {item.badge}
@@ -209,29 +206,29 @@ export function CmsSidebar({
         </nav>
       </div>
 
-      <div className="space-y-2 border-t border-border/80 p-3">
-        <div className="flex items-center gap-2.5 rounded-lg bg-muted/40 p-2">
+      <div className="space-y-3 border-t border-foreground/8 p-4">
+        <div className="flex items-center gap-3 rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-2.5">
           {userAvatar ? (
             <NextImage
               src={userAvatar}
               alt={userName || "Owner Avatar"}
-              width={28}
-              height={28}
+              width={32}
+              height={32}
               unoptimized
-              className="size-7 shrink-0 rounded-md border border-border/80 object-cover"
+              className="size-8 shrink-0 rounded-xl border border-foreground/10 object-cover"
             />
           ) : (
-            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-foreground text-[11px] font-bold text-background shadow-xs">
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-foreground font-mono text-[11px] font-medium text-background shadow-xs">
               {getInitials(userName || "Rizky Ramadhan")}
             </div>
           )}
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-1">
-              <p className="truncate text-xs font-semibold text-foreground">
+              <p className="truncate font-serif text-xs font-medium text-foreground">
                 {userName || "Rizky Ramadhan"}
               </p>
               {userRole && (
-                <span className="py-0.2 shrink-0 rounded bg-primary/10 px-1 font-mono text-[9px] font-bold text-primary">
+                <span className="shrink-0 rounded-full border border-foreground/10 bg-foreground/[0.04] px-1.5 py-0.2 font-mono text-[9px] text-muted-foreground">
                   {userRole}
                 </span>
               )}
@@ -245,7 +242,7 @@ export function CmsSidebar({
         <form action={logoutAdmin}>
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-border/70 bg-card py-2 text-xs font-medium text-destructive transition-all hover:border-destructive/30 hover:bg-destructive/10 focus:ring-2 focus:ring-destructive/20 focus:outline-hidden"
+            className="flex w-full items-center justify-center gap-2 rounded-full border border-foreground/10 bg-background/60 py-2 font-mono text-xs text-muted-foreground transition-all hover:border-destructive/30 hover:bg-destructive hover:text-destructive-foreground focus:outline-hidden"
           >
             <LogOut className="size-3.5" />
             <span>Keluar (Logout)</span>
@@ -266,10 +263,10 @@ export function CmsSidebar({
         className="fixed inset-0 z-50 md:hidden"
       >
         <div
-          className="fixed inset-0 animate-in bg-background/80 backdrop-blur-xs transition-opacity duration-200 fade-in"
+          className="fixed inset-0 animate-in bg-background/80 backdrop-blur-md transition-opacity duration-200 fade-in"
           onClick={onClose}
         />
-        <div className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] animate-in border-r border-border/80 shadow-2xl duration-200 slide-in-from-left">
+        <div className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] animate-in border-r border-foreground/8 shadow-2xl duration-200 slide-in-from-left">
           {content}
         </div>
       </div>
@@ -277,7 +274,7 @@ export function CmsSidebar({
   }
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-border/80 bg-card md:flex md:flex-col">
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-foreground/8 bg-card/30 md:flex md:flex-col">
       {content}
     </aside>
   )
