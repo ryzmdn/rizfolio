@@ -55,27 +55,24 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
   const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
 
   return (
-    <div className="flex flex-wrap items-center gap-2 text-xs">
-      <span className="mr-1 text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+    <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
+      <span className="mr-1 text-[10px] uppercase tracking-widest text-muted-foreground/60">
         Share:
       </span>
 
       <button
         type="button"
         onClick={handleCopyLink}
-        className={cn(
-          buttonVariants({ variant: "outline", size: "sm" }),
-          "h-8 gap-x-1.5 px-2.5 text-xs"
-        )}
+        className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
       >
         {copied ? (
           <>
-            <Check className="size-3.5 text-emerald-500" />
-            <span className="text-emerald-500">Copied</span>
+            <Check className="size-3 text-emerald-500" />
+            <span className="text-foreground">Copied</span>
           </>
         ) : (
           <>
-            <Copy className="size-3.5 text-muted-foreground" />
+            <Copy className="size-3 text-muted-foreground/60" />
             <span>Copy Link</span>
           </>
         )}
@@ -85,22 +82,16 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
         href={twitterShareUrl}
         target="_blank"
         rel="noreferrer"
-        className={cn(
-          buttonVariants({ variant: "outline", size: "sm" }),
-          "h-8 px-2.5 text-xs"
-        )}
+        className="rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
       >
-        X (Twitter)
+        X / Twitter
       </a>
 
       <a
         href={linkedInShareUrl}
         target="_blank"
         rel="noreferrer"
-        className={cn(
-          buttonVariants({ variant: "outline", size: "sm" }),
-          "h-8 px-2.5 text-xs"
-        )}
+        className="rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
       >
         LinkedIn
       </a>
@@ -109,10 +100,7 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
         type="button"
         onClick={handleNativeShare}
         aria-label="Share article via device dialog"
-        className={cn(
-          buttonVariants({ variant: "ghost", size: "icon-sm" }),
-          "h-8 w-8 text-muted-foreground hover:text-foreground sm:hidden"
-        )}
+        className="flex size-7 items-center justify-center rounded-full border border-foreground/10 bg-foreground/3 text-muted-foreground hover:text-foreground sm:hidden"
       >
         <Share2 className="size-3.5" />
       </button>
