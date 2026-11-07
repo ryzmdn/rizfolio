@@ -60,22 +60,22 @@ export function BioLinkCard({ link, index }: BioLinkCardProps) {
       rel="noopener noreferrer"
       aria-label={`${link.title}${link.description ? `: ${link.description}` : ""} (opens in new tab)`}
       onClick={handleClick}
-      className="group flex items-center justify-between rounded-2xl border border-foreground/10 bg-foreground/[0.015] p-4 transition-all duration-300 hover:border-foreground/30 hover:bg-foreground/[0.035] sm:p-5"
+      className="group flex items-center justify-between rounded-2xl border border-foreground/10 bg-foreground/[0.015] p-4 transition-hover-lift hover:border-foreground/30 hover:bg-foreground/[0.035] hover:shadow-xl sm:p-5"
     >
       <div className="flex items-center gap-4">
         {indexStr && (
-          <span className="font-mono text-xs text-foreground/30 transition-colors group-hover:text-foreground/70">
+          <span className="font-mono text-xs text-foreground/30 transition-colors-luxury group-hover:text-foreground/70">
             {indexStr}
           </span>
         )}
 
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/[0.02] text-foreground transition-colors group-hover:border-foreground/25">
+        <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/[0.02] text-foreground transition-colors-luxury group-hover:border-foreground/30">
           <IconComponent className="size-4 stroke-[1.5]" aria-hidden="true" />
         </div>
 
         <div className="space-y-1 text-left">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground">
+            <span className="text-sm font-medium tracking-tight text-foreground transition-colors-luxury group-hover:text-foreground">
               {link.title}
             </span>
             {link.badge && (
@@ -92,8 +92,8 @@ export function BioLinkCard({ link, index }: BioLinkCardProps) {
         </div>
       </div>
 
-      <div className="ml-3 flex size-7 shrink-0 items-center justify-center rounded-full border border-transparent text-muted-foreground transition-all duration-300 group-hover:border-foreground/20 group-hover:text-foreground">
-        <ArrowUpRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+      <div className="ml-3 flex size-7 shrink-0 items-center justify-center rounded-full border border-transparent text-muted-foreground transition-all duration-300 ease-luxury group-hover:border-foreground/20 group-hover:text-foreground">
+        <ArrowUpRight className="size-3.5 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
       </div>
     </a>
   )

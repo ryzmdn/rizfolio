@@ -6,6 +6,7 @@ import { profile } from "@workspace/db/schema"
 import { unstable_cache } from "next/cache"
 import { getDynamicBioLinks } from "@/lib/queries"
 import { BioLinkCard } from "@/components/bio-link-card"
+import { StaggerContainer, StaggerItem, ScrollReveal } from "@workspace/ui/components/animations"
 
 export const revalidate = 60
 
@@ -70,54 +71,58 @@ export default async function LinkBioPage() {
       className="flex min-h-screen flex-col justify-between bg-background px-5 py-12 outline-none sm:px-6 sm:py-20"
     >
       <div className="mx-auto w-full max-w-lg space-y-12">
-        <div className="flex items-center justify-between border-b border-foreground/6 pb-5">
-          <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
-            <Sparkles className="size-3 text-foreground" />
-            <span>DIGITAL MONOLITH v2.4</span>
+        <ScrollReveal variant="fade">
+          <div className="flex items-center justify-between border-b border-foreground/6 pb-5">
+            <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+              <Sparkles className="size-3 text-foreground" />
+              <span>DIGITAL MONOLITH v2.4</span>
+            </div>
+            <ThemeToggle />
           </div>
-          <ThemeToggle />
-        </div>
+        </ScrollReveal>
 
-        <div className="space-y-6 text-center sm:text-left">
-          <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center">
-            <div className="relative size-24 shrink-0 overflow-hidden rounded-2xl border border-foreground/15 bg-foreground/5 shadow-2xl transition-transform duration-500 hover:scale-[1.03] sm:size-28">
-              <Image
-                src={avatarUrl}
-                alt={name}
-                fill
-                priority
-                sizes="112px"
-                className="size-full object-cover grayscale contrast-125 transition-all duration-700 hover:grayscale-0"
-              />
+        <ScrollReveal variant="slide-up" delay={0.05}>
+          <div className="space-y-6 text-center sm:text-left">
+            <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center">
+              <div className="group relative size-24 shrink-0 overflow-hidden rounded-2xl border border-foreground/15 bg-foreground/5 shadow-2xl transition-hover-lift sm:size-28">
+                <Image
+                  src={avatarUrl}
+                  alt={name}
+                  fill
+                  priority
+                  sizes="112px"
+                  className="size-full object-cover grayscale contrast-125 transition-all duration-700 ease-luxury group-hover:grayscale-0 group-hover:scale-105"
+                />
+              </div>
+
+              <div className="space-y-1.5 text-center sm:text-left">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-muted-foreground uppercase">
+                  EXECUTIVE IDENTITY
+                </span>
+                <h1 className="text-2xl font-light tracking-tight text-foreground sm:text-3xl">
+                  {name}
+                </h1>
+                <p className="font-mono text-xs text-muted-foreground">
+                  {headline}
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-1.5 text-center sm:text-left">
-              <span className="font-mono text-[10px] tracking-[0.25em] text-muted-foreground uppercase">
-                EXECUTIVE IDENTITY
+            <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.02] px-3.5 py-1 text-xs transition-hover-lift">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
               </span>
-              <h1 className="text-2xl font-light tracking-tight text-foreground sm:text-3xl">
-                {name}
-              </h1>
-              <p className="font-mono text-xs text-muted-foreground">
-                {headline}
-              </p>
+              <span className="font-mono text-[10px] tracking-wider text-foreground/80 uppercase">
+                Available for Advisory &amp; High-Impact Contracts
+              </span>
             </div>
-          </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.02] px-3.5 py-1 text-xs">
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
-            </span>
-            <span className="font-mono text-[10px] tracking-wider text-foreground/80 uppercase">
-              Available for Advisory &amp; High-Impact Contracts
-            </span>
+            <p className="text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
+              {bio}
+            </p>
           </div>
-
-          <p className="text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
-            {bio}
-          </p>
-        </div>
+        </ScrollReveal>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-foreground/6 pb-3">
@@ -129,49 +134,53 @@ export default async function LinkBioPage() {
             </span>
           </div>
 
-          <div className="space-y-3">
+          <StaggerContainer className="space-y-3">
             {dynamicLinks.map((link, idx) => (
-              <BioLinkCard key={link.id} link={link} index={idx} />
+              <StaggerItem key={link.id}>
+                <BioLinkCard link={link} index={idx} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
 
-        <div className="space-y-4 border-t border-foreground/6 pt-8">
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
-              [ 02 / DIRECT CHANNELS ]
-            </span>
-            <span className="font-mono text-[10px] text-muted-foreground/60 uppercase">
-              GLOBAL REACH
-            </span>
-          </div>
+        <ScrollReveal variant="slide-up" delay={0.1}>
+          <div className="space-y-4 border-t border-foreground/6 pt-8">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+                [ 02 / DIRECT CHANNELS ]
+              </span>
+              <span className="font-mono text-[10px] text-muted-foreground/60 uppercase">
+                GLOBAL REACH
+              </span>
+            </div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 font-mono text-[11px] tracking-wider text-muted-foreground">
-            {SOCIAL_CHANNELS.map((channel) => (
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 font-mono text-[11px] tracking-wider text-muted-foreground">
+              {SOCIAL_CHANNELS.map((channel) => (
+                <a
+                  key={channel.name}
+                  href={channel.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-1 transition-colors-luxury hover:text-foreground"
+                >
+                  <span>{channel.name}</span>
+                  <ArrowUpRight className="size-2.5 opacity-40 transition-transform duration-300 ease-luxury group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                </a>
+              ))}
+            </div>
+
+            <div className="pt-2">
               <a
-                key={channel.name}
-                href={channel.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1 transition-colors hover:text-foreground"
+                href={`mailto:${contactEmail}`}
+                className="group flex w-full items-center justify-center gap-2 rounded-full border border-foreground/15 bg-foreground/[0.02] py-3.5 font-mono text-xs tracking-widest text-foreground uppercase transition-hover-lift hover:border-foreground/40 hover:bg-foreground hover:text-background"
               >
-                <span>{channel.name}</span>
-                <ArrowUpRight className="size-2.5 opacity-40 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                <Mail className="size-3.5" />
+                <span>Inquire via Encrypted Email</span>
+                <ArrowUpRight className="size-3 transition-transform duration-300 ease-luxury group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
-            ))}
+            </div>
           </div>
-
-          <div className="pt-2">
-            <a
-              href={`mailto:${contactEmail}`}
-              className="group flex w-full items-center justify-center gap-2 rounded-full border border-foreground/15 bg-foreground/[0.02] py-3.5 font-mono text-xs tracking-widest text-foreground uppercase transition-all duration-300 hover:border-foreground/40 hover:bg-foreground hover:text-background"
-            >
-              <Mail className="size-3.5" />
-              <span>Inquire via Encrypted Email</span>
-              <ArrowUpRight className="size-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </a>
-          </div>
-        </div>
+        </ScrollReveal>
 
         <footer className="border-t border-foreground/6 pt-6 text-center font-mono text-[10px] tracking-widest text-muted-foreground/60 uppercase">
           <p>

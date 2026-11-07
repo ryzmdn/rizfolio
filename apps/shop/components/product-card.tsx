@@ -44,7 +44,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
   return (
     <article
       className={cn(
-        "group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-6 transition-all duration-500 hover:border-foreground/30 hover:bg-foreground/[0.025] sm:p-8",
+        "group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-6 transition-hover-lift hover:border-foreground/30 hover:bg-foreground/[0.025] hover:shadow-2xl sm:p-8",
         className
       )}
     >
@@ -56,7 +56,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
               alt={product.title}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              className="object-cover transition-transform duration-700 ease-luxury group-hover:scale-105"
             />
           ) : (
             <div className="flex size-full items-center justify-center bg-muted/40 text-muted-foreground">
@@ -91,7 +91,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
               target="_blank"
               rel="noreferrer"
               aria-label={`Preview live demo for ${product.title}`}
-              className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full border border-foreground/15 bg-background/85 text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
+              className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full border border-foreground/15 bg-background/85 text-muted-foreground backdrop-blur-md transition-hover-lift hover:scale-110 hover:bg-foreground hover:text-background"
             >
               <ExternalLink className="size-3.5" />
             </a>
@@ -118,7 +118,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             </div>
           </div>
 
-          <h2 className="text-xl font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground/80 sm:text-2xl">
+          <h2 className="text-xl font-medium tracking-tight text-foreground transition-colors-luxury group-hover:text-foreground/80 sm:text-2xl">
             <Link
               href={`/product/${product.slug}`}
               className="focus:outline-hidden"
@@ -169,10 +169,10 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
         <Link
           href={`/product/${product.slug}`}
-          className="group/link inline-flex items-center gap-1.5 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
+          className="group/link inline-flex items-center gap-1.5 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors-luxury hover:text-foreground"
         >
           <span>Inspect Architecture</span>
-          <ArrowRight className="size-3.5 transition-transform group-hover/link:translate-x-1" />
+          <ArrowRight className="size-3.5 transition-transform duration-300 ease-luxury group-hover/link:translate-x-1" />
         </Link>
       </div>
     </article>
