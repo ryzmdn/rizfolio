@@ -25,14 +25,14 @@ export function CopyPathButton({ path, className }: CopyPathButtonProps) {
       aria-label={copied ? "File path copied" : "Copy file path"}
       title="Copy file path to clipboard"
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+        "inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground transition-all hover:bg-foreground hover:text-background",
         className
       )}
     >
       {copied ? (
         <>
           <Check className="size-3.5 text-emerald-500" />
-          <span className="font-medium text-emerald-600 dark:text-emerald-400">
+          <span className="font-medium text-foreground">
             Copied
           </span>
         </>
