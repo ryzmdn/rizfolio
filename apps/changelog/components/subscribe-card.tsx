@@ -35,37 +35,37 @@ export function SubscribeCard() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card/60 p-5 shadow-xs backdrop-blur-xs sm:p-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
+    <div className="relative overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl shadow-xs">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <div className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Bell className="size-3.5" />
+            <div className="flex size-8 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/[0.03] text-foreground">
+              <Bell className="size-4" />
             </div>
-            <h3 className="text-sm font-semibold text-foreground">
+            <h3 className="font-serif text-base font-light tracking-tight text-foreground">
               Subscribe to Release Notes
             </h3>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Get notified immediately when new features, architectural fixes, and
-            versions are deployed.
+          <p className="font-sans text-xs font-light text-muted-foreground">
+            Dapatkan notifikasi instan saat fitur baru, optimasi arsitektur, dan
+            versi rilis diterbitkan ke production.
           </p>
         </div>
 
         {status === "success" ? (
-          <div className="flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-2 text-xs font-medium text-emerald-500">
-            <Check className="size-4 shrink-0" />
+          <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 font-mono text-xs font-medium text-emerald-600 dark:text-emerald-400">
+            <Check className="size-4 shrink-0 text-emerald-500" />
             <span>
-              Subscribed successfully! You will receive future release alerts.
+              Berlangganan sukses! Anda akan menerima update rilis berikutnya.
             </span>
           </div>
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[340px] sm:flex-row"
+            className="flex w-full flex-col gap-2.5 sm:w-auto sm:min-w-[360px] sm:flex-row"
           >
             <div className="relative flex-1">
-              <Mail className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Mail className="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="email"
                 required
@@ -73,13 +73,13 @@ export function SubscribeCard() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="developer@example.com"
                 disabled={isPending}
-                className="h-9 w-full rounded-xl border border-border bg-background/80 pr-3 pl-9 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary focus:outline-hidden disabled:opacity-50"
+                className="h-10 w-full rounded-full border border-foreground/10 bg-background/60 pr-4 pl-10 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-foreground/30 focus:outline-hidden disabled:opacity-50"
               />
             </div>
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-foreground px-4 text-xs font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full border border-foreground bg-foreground px-5 font-mono text-xs font-medium text-background transition-all hover:bg-foreground/90 disabled:opacity-50"
             >
               {isPending ? (
                 <>
@@ -95,7 +95,7 @@ export function SubscribeCard() {
       </div>
 
       {status === "error" && errorMessage && (
-        <p className="mt-2 text-xs text-destructive">{errorMessage}</p>
+        <p className="mt-3 font-mono text-xs text-destructive">{errorMessage}</p>
       )}
     </div>
   )

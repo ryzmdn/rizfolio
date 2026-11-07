@@ -50,15 +50,15 @@ export function TimelineNav({ releases }: TimelineNavProps) {
 
   return (
     <aside
-      className="sticky top-24 hidden h-fit w-64 shrink-0 rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs lg:block"
+      className="sticky top-24 hidden h-fit w-64 shrink-0 rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl lg:block"
       aria-label="Release navigation"
     >
-      <div className="flex items-center justify-between border-b border-border/60 pb-3">
-        <div className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+      <div className="flex items-center justify-between border-b border-foreground/8 pb-3.5">
+        <div className="flex items-center gap-1.5 font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
           <History className="size-3.5 text-foreground" />
           <span>Timeline Index</span>
         </div>
-        <span className="font-mono text-[11px] text-muted-foreground">
+        <span className="font-mono text-[10px] text-muted-foreground">
           {releases.length} releases
         </span>
       </div>
@@ -73,10 +73,10 @@ export function TimelineNav({ releases }: TimelineNavProps) {
               type="button"
               onClick={() => scrollToVersion(rel.version)}
               className={cn(
-                "group flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs transition-all",
+                "group flex w-full items-center justify-between rounded-xl px-3 py-2 text-left font-mono text-xs transition-all",
                 isActive
-                  ? "bg-foreground/10 font-bold text-foreground"
-                  : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                  ? "bg-foreground/[0.06] font-medium text-foreground"
+                  : "text-muted-foreground hover:bg-foreground/[0.03] hover:text-foreground"
               )}
             >
               <div className="flex items-center gap-2">
@@ -88,9 +88,9 @@ export function TimelineNav({ releases }: TimelineNavProps) {
                       : "bg-muted-foreground/40 group-hover:bg-foreground"
                   )}
                 />
-                <span className="font-mono font-medium">{rel.version}</span>
+                <span className="font-medium">{rel.version}</span>
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground">
+              <span className="text-[10px] text-muted-foreground">
                 {rel.releaseDate.split(" ")[0]}
               </span>
             </button>
@@ -98,16 +98,16 @@ export function TimelineNav({ releases }: TimelineNavProps) {
         })}
       </nav>
 
-      <div className="space-y-1 border-t border-border/60 pt-3">
+      <div className="space-y-1.5 border-t border-foreground/8 pt-3.5">
         <Link
           href="/roadmap"
-          className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground"
+          className="flex items-center justify-between rounded-xl px-3 py-2 font-mono text-xs text-muted-foreground transition-all hover:bg-foreground/[0.03] hover:text-foreground"
         >
           <div className="flex items-center gap-2">
             <Milestone className="size-3.5" />
             <span>Product Roadmap</span>
           </div>
-          <span className="py-0.2 rounded border border-border/60 bg-muted/40 px-1 font-mono text-[10px] text-muted-foreground">
+          <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-1.5 py-0.2 text-[9px] text-muted-foreground">
             Upcoming
           </span>
         </Link>
@@ -115,7 +115,7 @@ export function TimelineNav({ releases }: TimelineNavProps) {
         <button
           type="button"
           onClick={scrollToTop}
-          className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground"
+          className="flex w-full items-center justify-between rounded-xl px-3 py-2 font-mono text-xs text-muted-foreground transition-all hover:bg-foreground/[0.03] hover:text-foreground"
         >
           <div className="flex items-center gap-2">
             <ArrowUp className="size-3.5" />
