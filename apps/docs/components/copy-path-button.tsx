@@ -32,9 +32,7 @@ export function CopyPathButton({ path, className }: CopyPathButtonProps) {
       {copied ? (
         <>
           <Check className="size-3.5 text-emerald-500" />
-          <span className="font-medium text-foreground">
-            Copied
-          </span>
+          <span className="font-medium text-foreground">Copied</span>
         </>
       ) : (
         <>

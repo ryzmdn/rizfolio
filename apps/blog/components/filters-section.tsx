@@ -125,7 +125,7 @@ export function FilterSection({
             type="button"
             onClick={() => handleCategorySelect("all")}
             className={cn(
-              "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200",
+              "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs tracking-wider uppercase transition-all duration-200",
               activeCategory === "all" || !activeCategory
                 ? "bg-foreground font-semibold text-background shadow-xs"
                 : "border border-foreground/10 bg-foreground/3 text-muted-foreground hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
@@ -153,7 +153,7 @@ export function FilterSection({
                 type="button"
                 onClick={() => handleCategorySelect(cat.slug)}
                 className={cn(
-                  "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200",
+                  "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs tracking-wider uppercase transition-all duration-200",
                   isActive
                     ? "bg-foreground font-semibold text-background shadow-xs"
                     : "border border-foreground/10 bg-foreground/3 text-muted-foreground hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
@@ -182,7 +182,7 @@ export function FilterSection({
               aria-haspopup="true"
               aria-expanded={sortOpen}
               onClick={() => setSortOpen((prev) => !prev)}
-              className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:text-foreground"
+              className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-3.5 py-1.5 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:text-foreground"
             >
               <SlidersHorizontal className="size-3.5" />
               <span>{sortLabel}</span>
@@ -201,7 +201,7 @@ export function FilterSection({
                     role="menuitem"
                     onClick={() => handleSortChange(option)}
                     className={cn(
-                      "w-full rounded-xl px-3 py-2 text-left font-mono text-xs uppercase tracking-wider transition-colors",
+                      "w-full rounded-xl px-3 py-2 text-left font-mono text-xs tracking-wider uppercase transition-colors",
                       currentSort === option ||
                         (!currentSort && option === "latest")
                         ? "bg-foreground font-semibold text-background"
@@ -239,7 +239,7 @@ export function FilterSection({
                 <X className="size-3.5" />
               </button>
             ) : (
-              <kbd className="pointer-events-none absolute right-2.5 hidden rounded-full border border-foreground/10 bg-background/80 px-1.5 py-0.2 font-mono text-[9px] text-muted-foreground select-none sm:inline">
+              <kbd className="py-0.2 pointer-events-none absolute right-2.5 hidden rounded-full border border-foreground/10 bg-background/80 px-1.5 font-mono text-[9px] text-muted-foreground select-none sm:inline">
                 /
               </kbd>
             )}
@@ -249,7 +249,9 @@ export function FilterSection({
 
       {(activeTag || searchQuery) && (
         <div className="flex flex-wrap items-center gap-2 pt-1 font-mono text-xs">
-          <span className="text-[11px] uppercase tracking-wider text-muted-foreground/60">Filtered by:</span>
+          <span className="text-[11px] tracking-wider text-muted-foreground/60 uppercase">
+            Filtered by:
+          </span>
           {activeTag && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-3 py-0.5 text-foreground">
               <Tag className="size-3 text-muted-foreground" />

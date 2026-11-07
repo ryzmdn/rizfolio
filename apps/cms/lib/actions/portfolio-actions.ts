@@ -347,7 +347,10 @@ export async function createCertification(
 
   if (isDbConfigured) {
     try {
-      const [res] = await db.insert(certifications).values(validated).returning()
+      const [res] = await db
+        .insert(certifications)
+        .values(validated)
+        .returning()
       created = res
     } catch (err) {
       console.warn(
@@ -385,7 +388,10 @@ export async function updateCertification(
   const validated = insertCertificationSchema.partial().parse(values)
   if (isDbConfigured) {
     try {
-      await db.update(certifications).set(validated).where(eq(certifications.id, id))
+      await db
+        .update(certifications)
+        .set(validated)
+        .where(eq(certifications.id, id))
     } catch (err) {
       console.warn(
         "[CMS Portfolio] Certification update warning:",
@@ -419,7 +425,10 @@ export async function getServices() {
     return fallbackCmsServices
   }
   try {
-    const rows = await db.select().from(services).orderBy(asc(services.displayOrder))
+    const rows = await db
+      .select()
+      .from(services)
+      .orderBy(asc(services.displayOrder))
     return rows.length > 0 ? rows : fallbackCmsServices
   } catch (error) {
     console.warn(
@@ -682,7 +691,10 @@ export async function updateTestimonial(
   const validated = insertTestimonialSchema.partial().parse(values)
   if (isDbConfigured) {
     try {
-      await db.update(testimonials).set(validated).where(eq(testimonials.id, id))
+      await db
+        .update(testimonials)
+        .set(validated)
+        .where(eq(testimonials.id, id))
     } catch (err) {
       console.warn(
         "[CMS Portfolio] Testimonial update warning:",

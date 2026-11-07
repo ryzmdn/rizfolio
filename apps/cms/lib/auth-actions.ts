@@ -153,7 +153,9 @@ export async function loginAdmin(
       } catch (dbSyncError) {
         console.warn(
           "[CMS Auth] Database synchronization warning:",
-          dbSyncError instanceof Error ? dbSyncError.message : String(dbSyncError)
+          dbSyncError instanceof Error
+            ? dbSyncError.message
+            : String(dbSyncError)
         )
       }
     }

@@ -388,7 +388,9 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
                         <Icon className="size-3.5" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-serif text-sm font-normal text-foreground">{item.title}</span>
+                        <span className="font-serif text-sm font-normal text-foreground">
+                          {item.title}
+                        </span>
                         <span className="font-sans text-[11px] font-light text-muted-foreground">
                           {item.description}
                         </span>
@@ -396,7 +398,7 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
+                      <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2 py-0.5 font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                         {item.category}
                       </span>
                       {isSelected && (

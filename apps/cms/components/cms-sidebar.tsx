@@ -166,7 +166,9 @@ export function CmsSidebar({
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={() => isMobile && setTimeout(() => onClose?.(), 50)}
+                      onClick={() =>
+                        isMobile && setTimeout(() => onClose?.(), 50)
+                      }
                       className={cn(
                         "group flex items-center justify-between rounded-xl px-3.5 py-2 font-mono text-xs font-medium transition-all focus:outline-hidden",
                         isActive
@@ -188,7 +190,7 @@ export function CmsSidebar({
                       {item.badge && (
                         <span
                           className={cn(
-                            "rounded-full px-2 py-0.2 font-mono text-[10px]",
+                            "py-0.2 rounded-full px-2 font-mono text-[10px]",
                             isActive
                               ? "bg-background/20 text-background"
                               : "bg-foreground/5 text-muted-foreground"
@@ -228,7 +230,7 @@ export function CmsSidebar({
                 {userName || "Rizky Ramadhan"}
               </p>
               {userRole && (
-                <span className="shrink-0 rounded-full border border-foreground/10 bg-foreground/[0.04] px-1.5 py-0.2 font-mono text-[9px] text-muted-foreground">
+                <span className="py-0.2 shrink-0 rounded-full border border-foreground/10 bg-foreground/[0.04] px-1.5 font-mono text-[9px] text-muted-foreground">
                   {userRole}
                 </span>
               )}
@@ -242,7 +244,7 @@ export function CmsSidebar({
         <form action={logoutAdmin}>
           <button
             type="submit"
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-foreground/10 bg-background/60 py-2 font-mono text-xs text-muted-foreground transition-all hover:border-destructive/30 hover:bg-destructive hover:text-destructive-foreground focus:outline-hidden"
+            className="hover:text-destructive-foreground flex w-full items-center justify-center gap-2 rounded-full border border-foreground/10 bg-background/60 py-2 font-mono text-xs text-muted-foreground transition-all hover:border-destructive/30 hover:bg-destructive focus:outline-hidden"
           >
             <LogOut className="size-3.5" />
             <span>Keluar (Logout)</span>

@@ -1,6 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ShieldCheck, FileCode, Users, Package, ArrowDownRight } from "lucide-react"
+import {
+  ShieldCheck,
+  FileCode,
+  Users,
+  Package,
+  ArrowDownRight,
+} from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
 import { getActiveProducts } from "@/lib/queries"
 import { FilterBar } from "@/components/filter-bar"
@@ -155,21 +161,26 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
                 </span>
                 <h1 className="text-4xl font-light tracking-tight text-foreground sm:text-6xl md:text-7xl">
                   Software systems engineered with{" "}
-                  <span className="font-serif italic text-foreground/80">timeless precision</span>.
+                  <span className="font-serif text-foreground/80 italic">
+                    timeless precision
+                  </span>
+                  .
                 </h1>
               </div>
 
               <a
                 href="#catalog"
-                className="group inline-flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground shrink-0"
+                className="group inline-flex shrink-0 items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
               >
                 <span>Explore Catalog</span>
                 <ArrowDownRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
               </a>
             </div>
 
-            <p className="max-w-3xl text-base font-light leading-relaxed text-muted-foreground sm:text-lg">
-              Production-hardened monorepo infrastructures, Tailwind CSS v4 design systems, and specialized senior engineering advisory designed to accelerate high-stakes digital ventures.
+            <p className="max-w-3xl text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
+              Production-hardened monorepo infrastructures, Tailwind CSS v4
+              design systems, and specialized senior engineering advisory
+              designed to accelerate high-stakes digital ventures.
             </p>
           </Container>
 
@@ -180,10 +191,10 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
                   <span className="font-mono text-3xl font-light tracking-tight text-foreground sm:text-4xl">
                     {stat.value}
                   </span>
-                  <p className="font-mono text-xs font-medium text-foreground tracking-tight">
+                  <p className="font-mono text-xs font-medium tracking-tight text-foreground">
                     {stat.label}
                   </p>
-                  <p className="text-[11px] font-light leading-snug text-muted-foreground">
+                  <p className="text-[11px] leading-snug font-light text-muted-foreground">
                     {stat.description}
                   </p>
                 </div>
@@ -206,10 +217,10 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
                       <div className="flex size-9 items-center justify-center rounded-xl border border-foreground/15 bg-foreground/[0.02] text-foreground">
                         <Icon className="size-4 stroke-[1.5]" />
                       </div>
-                      <h2 className="text-lg font-medium text-foreground tracking-tight">
+                      <h2 className="text-lg font-medium tracking-tight text-foreground">
                         {pillar.title}
                       </h2>
-                      <p className="text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
+                      <p className="text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
                         {pillar.description}
                       </p>
                     </div>
@@ -247,7 +258,8 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
                   No architectures matched your parameters
                 </h3>
                 <p className="mt-1 max-w-sm text-xs font-light text-muted-foreground">
-                  No software architectures or consultation packages matched your current filter criteria.
+                  No software architectures or consultation packages matched
+                  your current filter criteria.
                 </p>
                 <Link
                   href="/"
@@ -266,7 +278,10 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
           </Container>
         </section>
 
-        <section id="faq" className="scroll-mt-24 border-t border-foreground/6 pt-16">
+        <section
+          id="faq"
+          className="scroll-mt-24 border-t border-foreground/6 pt-16"
+        >
           <Container>
             <StoreFaq />
           </Container>

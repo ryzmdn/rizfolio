@@ -124,7 +124,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
               <div className="flex flex-col justify-between gap-6 border-b border-foreground/8 pb-8 md:flex-row md:items-end">
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+                    <span className="font-mono text-[11px] tracking-[0.25em] text-muted-foreground uppercase">
                       [ THE ARCHITECTURAL MONOGRAPH // VOL. 04 ]
                     </span>
                   </div>
@@ -132,7 +132,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                     Essays on systems, invariants & craft.
                   </h1>
                 </div>
-                <div className="flex items-center gap-4 font-mono text-xs uppercase text-muted-foreground/70">
+                <div className="flex items-center gap-4 font-mono text-xs text-muted-foreground/70 uppercase">
                   <span>{totalAllPosts} Published Monographs</span>
                   <span>•</span>
                   <span>Peer-Reviewed</span>
@@ -180,7 +180,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                         </span>
                       </div>
 
-                      <h2 className="font-serif text-2xl font-light leading-snug tracking-tight text-foreground transition-colors group-hover:text-muted-foreground sm:text-3xl lg:text-4xl">
+                      <h2 className="font-serif text-2xl leading-snug font-light tracking-tight text-foreground transition-colors group-hover:text-muted-foreground sm:text-3xl lg:text-4xl">
                         {featuredPost.title}
                       </h2>
 
@@ -192,9 +192,11 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                     <div className="mt-8 flex items-center justify-between border-t border-foreground/8 pt-6 font-mono text-xs">
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Calendar className="size-3.5" />
-                        <span>{formatDate(featuredPost.publishedAt, "long")}</span>
+                        <span>
+                          {formatDate(featuredPost.publishedAt, "long")}
+                        </span>
                       </div>
-                      <span className="inline-flex items-center gap-2 font-medium uppercase tracking-wider text-foreground">
+                      <span className="inline-flex items-center gap-2 font-medium tracking-wider text-foreground uppercase">
                         <span>Read monograph</span>
                         <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                       </span>
@@ -205,14 +207,15 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
             </div>
           ) : (
             <div className="max-w-3xl space-y-3 py-6 sm:py-10">
-              <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+              <span className="font-mono text-[11px] tracking-[0.25em] text-muted-foreground uppercase">
                 [ ARCHIVE DISPATCH // ALL ESSAYS ]
               </span>
               <h1 className="font-serif text-3xl font-light tracking-tight text-foreground sm:text-5xl">
                 Essays on systems, design & full-stack craft.
               </h1>
-              <p className="text-sm font-light leading-relaxed text-muted-foreground sm:text-base">
-                Architectural essays on deterministic state, monorepo package isolation, database resilience, and sub-second web performance.
+              <p className="text-sm leading-relaxed font-light text-muted-foreground sm:text-base">
+                Architectural essays on deterministic state, monorepo package
+                isolation, database resilience, and sub-second web performance.
               </p>
             </div>
           )}
@@ -236,16 +239,17 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
         <Container>
           {gridPosts.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-foreground/15 bg-foreground/2 p-12 text-center sm:p-20">
-              <BookOpen className="mb-4 size-10 text-muted-foreground/30 stroke-[1.25]" />
+              <BookOpen className="mb-4 size-10 stroke-[1.25] text-muted-foreground/30" />
               <h2 className="font-serif text-lg font-light text-foreground">
                 No monographs located
               </h2>
               <p className="mt-2 max-w-xs text-xs font-light text-muted-foreground">
-                No published essays match the current query parameters or filters.
+                No published essays match the current query parameters or
+                filters.
               </p>
               <Link
                 href="/blog"
-                className="mt-6 rounded-full bg-foreground px-6 py-2.5 font-mono text-xs uppercase tracking-wider text-background transition-opacity hover:opacity-80"
+                className="mt-6 rounded-full bg-foreground px-6 py-2.5 font-mono text-xs tracking-wider text-background uppercase transition-opacity hover:opacity-80"
               >
                 Reset Catalog Filters
               </Link>
@@ -282,7 +286,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                       ) : null}
 
                       <div className="pt-5">
-                        <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase text-muted-foreground">
+                        <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-muted-foreground uppercase">
                           {primaryCategory && (
                             <Link
                               href={`/blog?category=${primaryCategory.slug}`}
@@ -299,13 +303,11 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                           <span>{formatDate(post.publishedAt)}</span>
                         </div>
 
-                        <h2 className="mt-3 font-serif text-lg font-light leading-snug tracking-tight text-foreground transition-colors group-hover:text-muted-foreground sm:text-xl">
-                          <Link href={`/blog/${post.slug}`}>
-                            {post.title}
-                          </Link>
+                        <h2 className="mt-3 font-serif text-lg leading-snug font-light tracking-tight text-foreground transition-colors group-hover:text-muted-foreground sm:text-xl">
+                          <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                         </h2>
 
-                        <p className="mt-2.5 line-clamp-3 text-xs font-light leading-relaxed text-muted-foreground">
+                        <p className="mt-2.5 line-clamp-3 text-xs leading-relaxed font-light text-muted-foreground">
                           {post.excerpt}
                         </p>
                       </div>
@@ -326,12 +328,13 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                           ))}
                         </div>
 
-                        {post.viewsCount !== undefined && post.viewsCount > 0 && (
-                          <div className="flex items-center gap-1 text-muted-foreground/60">
-                            <Eye className="size-3" />
-                            <span>{post.viewsCount}</span>
-                          </div>
-                        )}
+                        {post.viewsCount !== undefined &&
+                          post.viewsCount > 0 && (
+                            <div className="flex items-center gap-1 text-muted-foreground/60">
+                              <Eye className="size-3" />
+                              <span>{post.viewsCount}</span>
+                            </div>
+                          )}
                       </div>
                     </div>
                   </article>
@@ -356,7 +359,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 {currentPage > 1 && (
                   <Link
                     href={`/blog?page=${currentPage - 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 uppercase tracking-wider text-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
+                    className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 tracking-wider text-foreground uppercase transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
                   >
                     <ArrowLeft className="size-3" />
                     <span>Previous</span>
@@ -365,7 +368,7 @@ export default async function BlogHomePage({ searchParams }: BlogPageProps) {
                 {currentPage < totalPages && (
                   <Link
                     href={`/blog?page=${currentPage + 1}${category ? `&category=${category}` : ""}${tag ? `&tag=${tag}` : ""}${q ? `&q=${q}` : ""}${sort !== "latest" ? `&sort=${sort}` : ""}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 uppercase tracking-wider text-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
+                    className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 tracking-wider text-foreground uppercase transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
                   >
                     <span>Next</span>
                     <ArrowRight className="size-3" />

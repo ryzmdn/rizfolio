@@ -41,9 +41,15 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
   ]
 
   return (
-    <Container id="hero-section" className="flow-root pt-28 pb-20 md:pt-36 md:pb-32">
+    <Container
+      id="hero-section"
+      className="flow-root pt-28 pb-20 md:pt-36 md:pb-32"
+    >
       <HeroEntrance className="flex flex-col gap-y-12 lg:gap-y-16">
-        <div data-hero-element className="flex flex-wrap items-center justify-between gap-4 border-b border-foreground/6 pb-6 text-xs">
+        <div
+          data-hero-element
+          className="flex flex-wrap items-center justify-between gap-4 border-b border-foreground/6 pb-6 text-xs"
+        >
           <div className="flex items-center gap-x-3">
             <span className="relative flex size-2">
               <span
@@ -59,7 +65,7 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
                 )}
               />
             </span>
-            <span className="font-mono tracking-[0.2em] uppercase text-foreground/80">
+            <span className="font-mono tracking-[0.2em] text-foreground/80 uppercase">
               {statusConfig.label}
             </span>
           </div>
@@ -73,26 +79,41 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start lg:gap-8">
           <div className="space-y-8 lg:col-span-9">
-            <div data-hero-element className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.02] px-3.5 py-1 text-xs font-mono text-muted-foreground transition-hover-lift">
+            <div
+              data-hero-element
+              className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.02] px-3.5 py-1 font-mono text-xs text-muted-foreground transition-hover-lift"
+            >
               <Sparkles className="size-3 text-foreground" />
               <span>{data.role || "Lead Software Architect"}</span>
             </div>
 
-            <h1 data-hero-element className="text-4xl font-light tracking-[-0.04em] text-foreground sm:text-6xl md:text-7xl lg:text-[5.25rem] lg:leading-[0.98]">
+            <h1
+              data-hero-element
+              className="text-4xl font-light tracking-[-0.04em] text-foreground sm:text-6xl md:text-7xl lg:text-[5.25rem] lg:leading-[0.98]"
+            >
               Architecting resilient systems with{" "}
-              <span className="font-serif italic text-foreground/80">timeless restraint</span>.
+              <span className="font-serif text-foreground/80 italic">
+                timeless restraint
+              </span>
+              .
             </h1>
 
-            <p data-hero-element className="max-w-2xl text-base font-light leading-relaxed text-muted-foreground sm:text-lg">
+            <p
+              data-hero-element
+              className="max-w-2xl text-base leading-relaxed font-light text-muted-foreground sm:text-lg"
+            >
               {data.headline}. {data.subheadline}
             </p>
 
-            <div data-hero-element className="flex flex-wrap items-center gap-4 pt-4">
+            <div
+              data-hero-element
+              className="flex flex-wrap items-center gap-4 pt-4"
+            >
               <Link
                 href="/#case-studies"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "group h-12 rounded-full px-7 text-xs font-mono tracking-widest uppercase transition-hover-lift"
+                  "group h-12 rounded-full px-7 font-mono text-xs tracking-widest uppercase transition-hover-lift"
                 )}
               >
                 <span>Explore Works</span>
@@ -102,7 +123,7 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
                 href="/#call-to-action"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "group h-12 rounded-full border-foreground/15 px-7 text-xs font-mono tracking-widest uppercase transition-hover-lift hover:border-foreground/40 hover:bg-foreground/[0.03]"
+                  "group h-12 rounded-full border-foreground/15 px-7 font-mono text-xs tracking-widest uppercase transition-hover-lift hover:border-foreground/40 hover:bg-foreground/[0.03]"
                 )}
               >
                 <span>Initiate Inquiry</span>
@@ -111,7 +132,10 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
             </div>
           </div>
 
-          <div data-hero-element className="flex flex-col items-start gap-6 lg:col-span-3 lg:items-end">
+          <div
+            data-hero-element
+            className="flex flex-col items-start gap-6 lg:col-span-3 lg:items-end"
+          >
             <div className="group relative size-28 overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/5 shadow-2xl transition-hover-lift sm:size-32">
               <Image
                 src={data.avatar}
@@ -119,17 +143,24 @@ export function HeroSection({ data = personalInfo }: HeroSectionProps) {
                 fill
                 priority
                 sizes="128px"
-                className="size-full object-cover grayscale contrast-125 transition-all duration-700 ease-luxury group-hover:grayscale-0 group-hover:scale-105"
+                className="size-full object-cover contrast-125 grayscale transition-all duration-700 ease-luxury group-hover:scale-105 group-hover:grayscale-0"
               />
             </div>
             <div className="space-y-1 lg:text-right">
-              <p className="text-sm font-medium tracking-wide text-foreground uppercase">{data.name}</p>
-              <p className="font-mono text-xs text-muted-foreground">Software Engineering & Architecture</p>
+              <p className="text-sm font-medium tracking-wide text-foreground uppercase">
+                {data.name}
+              </p>
+              <p className="font-mono text-xs text-muted-foreground">
+                Software Engineering & Architecture
+              </p>
             </div>
           </div>
         </div>
 
-        <div data-hero-element className="grid grid-cols-2 gap-6 border-t border-foreground/6 pt-10 sm:grid-cols-4 lg:gap-8">
+        <div
+          data-hero-element
+          className="grid grid-cols-2 gap-6 border-t border-foreground/6 pt-10 sm:grid-cols-4 lg:gap-8"
+        >
           {stats.map((stat, idx) => (
             <div key={idx} className="space-y-1 transition-hover-lift">
               <p className="font-mono text-2xl font-light tracking-tight text-foreground sm:text-3xl">

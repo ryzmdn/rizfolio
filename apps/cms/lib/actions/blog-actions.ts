@@ -321,7 +321,10 @@ export async function getBlogCategories() {
     return fallbackCmsCategories
   }
   try {
-    const rows = await db.select().from(categories).orderBy(asc(categories.name))
+    const rows = await db
+      .select()
+      .from(categories)
+      .orderBy(asc(categories.name))
     return rows.length > 0 ? rows : fallbackCmsCategories
   } catch (error) {
     console.warn(

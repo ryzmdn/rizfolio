@@ -175,7 +175,9 @@ export default async function RepoDetailPage({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-foreground">
             <Code2 className="size-4 text-muted-foreground" />
-            <h2 className="font-serif text-xl sm:text-2xl font-light tracking-tight">Source Code & File Hierarchy</h2>
+            <h2 className="font-serif text-xl font-light tracking-tight sm:text-2xl">
+              Source Code & File Hierarchy
+            </h2>
           </div>
           <span className="rounded-full border border-foreground/10 bg-foreground/[0.02] px-3 py-1 font-mono text-[11px] text-muted-foreground">
             Branch: main
@@ -188,7 +190,9 @@ export default async function RepoDetailPage({
         <section id="readme" className="scroll-mt-24 space-y-4 pt-8">
           <div className="flex items-center gap-2 text-foreground">
             <BookOpen className="size-4 text-muted-foreground" />
-            <h2 className="font-serif text-xl sm:text-2xl font-light tracking-tight">Repository Overview & Architecture</h2>
+            <h2 className="font-serif text-xl font-light tracking-tight sm:text-2xl">
+              Repository Overview & Architecture
+            </h2>
           </div>
           <ReadmeViewer content={repo.readmeContent} />
         </section>

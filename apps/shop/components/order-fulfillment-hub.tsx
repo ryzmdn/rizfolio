@@ -46,8 +46,9 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
         <h1 className="mt-2 text-2xl font-light tracking-tight text-foreground sm:text-4xl">
           Order Fulfillment &amp; License Provisioning
         </h1>
-        <p className="mt-3 max-w-md text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
-          Thank you for your acquisition, {order.customerName}. Your permanent access tokens and commercial software licenses are provisioned below.
+        <p className="mt-3 max-w-md text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
+          Thank you for your acquisition, {order.customerName}. Your permanent
+          access tokens and commercial software licenses are provisioned below.
         </p>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -118,7 +119,8 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                         <span>Book Your 1-on-1 Advisory Session</span>
                       </div>
                       <p className="text-xs font-light text-muted-foreground">
-                        Select an available calendar slot on Google Meet for your dedicated systems review.
+                        Select an available calendar slot on Google Meet for
+                        your dedicated systems review.
                       </p>
                     </div>
 
@@ -139,7 +141,8 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                         {item.fileName || "digital-source-archive.zip"}
                       </span>
                       <p className="text-[11px] text-muted-foreground">
-                        Full unminified repository source archive with lifetime revision access.
+                        Full unminified repository source archive with lifetime
+                        revision access.
                       </p>
                     </div>
 
@@ -157,7 +160,9 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
                       <span>PERPETUAL LICENSE CERTIFICATE KEY</span>
-                      <span className="text-[10px] uppercase">COMMERCIAL USE AUTHORIZED</span>
+                      <span className="text-[10px] uppercase">
+                        COMMERCIAL USE AUTHORIZED
+                      </span>
                     </div>
 
                     <div className="flex items-center justify-between gap-3 rounded-2xl border border-foreground/15 bg-background p-3 sm:p-4">
@@ -189,12 +194,15 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
 
                 {!isService && (
                   <div className="space-y-2 rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-4 font-mono text-xs">
-                    <div className="flex items-center gap-2 text-foreground uppercase tracking-wider">
+                    <div className="flex items-center gap-2 tracking-wider text-foreground uppercase">
                       <Terminal className="size-3.5 text-muted-foreground" />
                       <span>Quick Extraction Instructions</span>
                     </div>
                     <div className="space-y-1 text-[11px] text-muted-foreground">
-                      <p>1. Extract archive: unzip {item.fileName || "archive.zip"} -d ./project</p>
+                      <p>
+                        1. Extract archive: unzip{" "}
+                        {item.fileName || "archive.zip"} -d ./project
+                      </p>
                       <p>2. Install dependencies: pnpm install</p>
                       <p>3. Start development: pnpm dev</p>
                     </div>

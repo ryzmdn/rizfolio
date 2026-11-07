@@ -47,21 +47,21 @@ export function DotsLoader({
     >
       <span
         className={cn(
-          "rounded-full bg-foreground/60 animate-pulse",
+          "animate-pulse rounded-full bg-foreground/60",
           sizeClasses[size]
         )}
       />
       <span
         style={{ animationDelay: "150ms" }}
         className={cn(
-          "rounded-full bg-foreground/60 animate-pulse",
+          "animate-pulse rounded-full bg-foreground/60",
           sizeClasses[size]
         )}
       />
       <span
         style={{ animationDelay: "300ms" }}
         className={cn(
-          "rounded-full bg-foreground/60 animate-pulse",
+          "animate-pulse rounded-full bg-foreground/60",
           sizeClasses[size]
         )}
       />
@@ -107,7 +107,7 @@ export function SkeletonCard({ className }: { className?: string }) {
     <div
       aria-hidden="true"
       className={cn(
-        "rounded-3xl border border-foreground/8 bg-card/40 p-6 space-y-4 backdrop-blur-xl",
+        "space-y-4 rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl",
         className
       )}
     >
@@ -118,11 +118,10 @@ export function SkeletonCard({ className }: { className?: string }) {
       <Skeleton className="h-6 w-3/4 rounded-xl" />
       <Skeleton className="h-4 w-full rounded-lg" />
       <Skeleton className="h-4 w-5/6 rounded-lg" />
-      <div className="pt-2 flex items-center gap-2">
+      <div className="flex items-center gap-2 pt-2">
         <Skeleton className="h-8 w-20 rounded-full" />
         <Skeleton className="h-8 w-20 rounded-full" />
       </div>
     </div>
   )
 }
-

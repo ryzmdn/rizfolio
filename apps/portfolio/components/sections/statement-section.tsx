@@ -9,7 +9,9 @@ interface StatementSectionProps {
   data?: ProfileData
 }
 
-export function StatementSection({ data = personalInfo }: StatementSectionProps) {
+export function StatementSection({
+  data = personalInfo,
+}: StatementSectionProps) {
   const bio = data.bio || personalInfo.bio
   const resumeUrl = data.resumeUrl
 
@@ -48,7 +50,7 @@ export function StatementSection({ data = personalInfo }: StatementSectionProps)
             <span className="font-mono text-xs tracking-[0.25em] text-muted-foreground uppercase">
               [ 01 / PHILOSOPHY & MANIFESTO ]
             </span>
-            <h2 className="text-sm font-mono tracking-wider text-foreground/80 uppercase">
+            <h2 className="font-mono text-sm tracking-wider text-foreground/80 uppercase">
               The Architecture of Restraint
             </h2>
           </div>
@@ -72,8 +74,11 @@ export function StatementSection({ data = personalInfo }: StatementSectionProps)
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-8">
-            <blockquote className="font-serif text-2xl font-normal leading-[1.35] text-foreground sm:text-3xl md:text-4xl lg:text-[2.75rem]">
-              &ldquo;True architectural elegance is the complete absence of unnecessary complexity. We do not build software by adding until nothing more can be added, but by refining until nothing more can be removed.&rdquo;
+            <blockquote className="font-serif text-2xl leading-[1.35] font-normal text-foreground sm:text-3xl md:text-4xl lg:text-[2.75rem]">
+              &ldquo;True architectural elegance is the complete absence of
+              unnecessary complexity. We do not build software by adding until
+              nothing more can be added, but by refining until nothing more can
+              be removed.&rdquo;
             </blockquote>
           </div>
 
@@ -101,15 +106,15 @@ export function StatementSection({ data = personalInfo }: StatementSectionProps)
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="text-base font-medium text-foreground tracking-tight">
+                  <h3 className="text-base font-medium tracking-tight text-foreground">
                     {item.title}
                   </h3>
-                  <p className="font-mono text-[11px] text-muted-foreground uppercase tracking-wider">
+                  <p className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
                     {item.subtitle}
                   </p>
                 </div>
 
-                <p className="text-xs font-light leading-relaxed text-muted-foreground">
+                <p className="text-xs leading-relaxed font-light text-muted-foreground">
                   {item.description}
                 </p>
               </div>

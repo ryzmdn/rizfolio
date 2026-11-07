@@ -41,7 +41,8 @@ function getItemBadge(category: string) {
     case "FIX":
       return {
         label: "Fix",
-        className: "border-foreground/10 bg-foreground/[0.03] text-muted-foreground",
+        className:
+          "border-foreground/10 bg-foreground/[0.03] text-muted-foreground",
         icon: <Wrench className="size-3 shrink-0" />,
       }
     case "BREAKING":
@@ -53,7 +54,8 @@ function getItemBadge(category: string) {
     default:
       return {
         label: category,
-        className: "border-foreground/10 bg-foreground/[0.02] text-muted-foreground",
+        className:
+          "border-foreground/10 bg-foreground/[0.02] text-muted-foreground",
         icon: <Tag className="size-3 shrink-0" />,
       }
   }
@@ -88,8 +90,10 @@ export function ReleaseCard({ release, isLatest }: ReleaseCardProps) {
     <article
       id={release.version}
       className={cn(
-        "group relative scroll-mt-24 rounded-3xl border bg-card/40 p-7 sm:p-8 backdrop-blur-xl transition-hover-lift hover:border-foreground/30 hover:shadow-2xl",
-        isLatest ? "border-foreground/20 shadow-xs" : "border-foreground/8 shadow-xs"
+        "group relative scroll-mt-24 rounded-3xl border bg-card/40 p-7 backdrop-blur-xl transition-hover-lift hover:border-foreground/30 hover:shadow-2xl sm:p-8",
+        isLatest
+          ? "border-foreground/20 shadow-xs"
+          : "border-foreground/8 shadow-xs"
       )}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -162,12 +166,12 @@ export function ReleaseCard({ release, isLatest }: ReleaseCardProps) {
       </div>
 
       <div className="mt-6 space-y-2">
-        <h2 className="font-serif text-2xl sm:text-3xl font-light tracking-tight text-foreground transition-colors group-hover:text-foreground">
+        <h2 className="font-serif text-2xl font-light tracking-tight text-foreground transition-colors group-hover:text-foreground sm:text-3xl">
           <Link href={`/release/${release.version}`}>{release.title}</Link>
         </h2>
 
         {release.summary && (
-          <p className="font-sans text-sm font-light leading-relaxed text-muted-foreground">
+          <p className="font-sans text-sm leading-relaxed font-light text-muted-foreground">
             {release.summary}
           </p>
         )}
@@ -233,11 +237,11 @@ export function ReleaseCard({ release, isLatest }: ReleaseCardProps) {
                     <span>{badge.label}</span>
                   </span>
                   <div className="min-w-0 flex-1">
-                    <span className="font-sans font-light leading-relaxed text-foreground">
+                    <span className="font-sans leading-relaxed font-light text-foreground">
                       {item.description}
                     </span>
                     {item.scope && (
-                      <span className="ml-2 inline-block rounded-full border border-foreground/10 bg-foreground/[0.03] px-2 py-0.2 font-mono text-[10px] text-muted-foreground">
+                      <span className="py-0.2 ml-2 inline-block rounded-full border border-foreground/10 bg-foreground/[0.03] px-2 font-mono text-[10px] text-muted-foreground">
                         {item.scope}
                       </span>
                     )}

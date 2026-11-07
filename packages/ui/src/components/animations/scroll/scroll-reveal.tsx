@@ -44,31 +44,33 @@ export function ScrollReveal({
       if (variant === "slide-up") initialVars.y = distance
       if (variant === "scale") initialVars.scale = 0.96
 
-      gsap.fromTo(
-        el,
-        initialVars,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration,
-          delay,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 88%",
-            once,
-          },
-        }
-      )
+      gsap.fromTo(el, initialVars, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration,
+        delay,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 88%",
+          once,
+        },
+      })
     },
-    { scope: containerRef, dependencies: [variant, duration, delay, distance, once] }
+    {
+      scope: containerRef,
+      dependencies: [variant, duration, delay, distance, once],
+    }
   )
 
   return (
-    <div ref={containerRef} className={cn("will-change-transform", className)} {...props}>
+    <div
+      ref={containerRef}
+      className={cn("will-change-transform", className)}
+      {...props}
+    >
       {children}
     </div>
   )
 }
-

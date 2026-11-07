@@ -32,9 +32,7 @@ export function CopyMarkdownButton({
       {copied ? (
         <>
           <Check className="size-3 text-emerald-500" />
-          <span className="font-medium text-foreground">
-            Copied
-          </span>
+          <span className="font-medium text-foreground">Copied</span>
         </>
       ) : (
         <>

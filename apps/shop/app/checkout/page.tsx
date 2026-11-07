@@ -20,8 +20,9 @@ export default function CheckoutPage() {
           <h1 className="mt-5 text-2xl font-light tracking-tight text-foreground sm:text-3xl">
             Your Bag is Empty
           </h1>
-          <p className="mt-2 max-w-sm text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
-            Select an architectural software package or advisory contract from the catalog to initiate provisioning.
+          <p className="mt-2 max-w-sm text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
+            Select an architectural software package or advisory contract from
+            the catalog to initiate provisioning.
           </p>
           <Link
             href="/"
@@ -53,7 +54,8 @@ export default function CheckoutPage() {
           Checkout & License Provisioning.
         </h1>
         <p className="max-w-2xl text-sm font-light text-muted-foreground">
-          Complete your acquisition to receive immediate cryptographic download tokens and verified commercial license keys.
+          Complete your acquisition to receive immediate cryptographic download
+          tokens and verified commercial license keys.
         </p>
       </div>
 

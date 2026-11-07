@@ -188,7 +188,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </>
           )}
           <ChevronRight className="size-3 opacity-40" />
-          <span className="truncate text-foreground font-medium">
+          <span className="truncate font-medium text-foreground">
             {product.title}
           </span>
         </nav>
@@ -204,7 +204,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               <h1 className="text-3xl font-light tracking-tight text-foreground sm:text-4xl">
                 {product.title}
               </h1>
-              <p className="text-sm font-light leading-relaxed whitespace-pre-line text-muted-foreground">
+              <p className="text-sm leading-relaxed font-light whitespace-pre-line text-muted-foreground">
                 {product.description}
               </p>
             </div>
@@ -231,7 +231,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   <FileCode className="size-4 text-muted-foreground" />
                   <span>INCLUDED SOURCE PACKAGES</span>
                 </div>
-                <ul className="divide-y divide-foreground/6 text-xs font-mono">
+                <ul className="divide-y divide-foreground/6 font-mono text-xs">
                   {product.files.map((file) => (
                     <li
                       key={file.id}
@@ -256,8 +256,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   <h4 className="font-mono text-xs font-medium text-foreground uppercase">
                     Instant Fulfillment
                   </h4>
-                  <p className="text-[11px] font-light leading-relaxed text-muted-foreground">
-                    Deterministic cryptographic download token generated immediately upon verified payment.
+                  <p className="text-[11px] leading-relaxed font-light text-muted-foreground">
+                    Deterministic cryptographic download token generated
+                    immediately upon verified payment.
                   </p>
                 </div>
               </div>
@@ -268,8 +269,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   <h4 className="font-mono text-xs font-medium text-foreground uppercase">
                     Production Verified
                   </h4>
-                  <p className="text-[11px] font-light leading-relaxed text-muted-foreground">
-                    Strict TypeScript compilation, Next.js 16 compiler tested, zero runtime type errors.
+                  <p className="text-[11px] leading-relaxed font-light text-muted-foreground">
+                    Strict TypeScript compilation, Next.js 16 compiler tested,
+                    zero runtime type errors.
                   </p>
                 </div>
               </div>
@@ -326,7 +328,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                     )}
 
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-mono text-[10px] uppercase text-muted-foreground">
+                      <span className="font-mono text-[10px] text-muted-foreground uppercase">
                         {rel.productType === "DIGITAL_DOWNLOAD"
                           ? "Digital Download"
                           : "Advisory"}

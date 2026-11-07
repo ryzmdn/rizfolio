@@ -111,7 +111,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
             value={query}
             onChange={(e) => handleQueryChange(e.target.value)}
             placeholder="SEARCH MONOGRAPHS, ARCHITECTURES, TOPICS..."
-            className="flex-1 bg-transparent px-3 font-mono text-xs uppercase text-foreground placeholder:text-muted-foreground/40 focus:outline-hidden"
+            className="flex-1 bg-transparent px-3 font-mono text-xs text-foreground uppercase placeholder:text-muted-foreground/40 focus:outline-hidden"
           />
           {isSearching ? (
             <Loader2 className="size-4 shrink-0 animate-spin text-muted-foreground" />
@@ -124,7 +124,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
               <X className="size-4" />
             </button>
           ) : (
-            <kbd className="hidden rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 font-mono text-[9px] uppercase text-muted-foreground sm:inline-block">
+            <kbd className="hidden rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 font-mono text-[9px] text-muted-foreground uppercase sm:inline-block">
               ESC
             </kbd>
           )}
@@ -133,10 +133,12 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
         <div className="max-h-[60vh] overflow-y-auto p-3">
           {!query.trim() ? (
             <div className="p-8 text-center text-xs text-muted-foreground">
-              <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground/60">
+              <span className="font-mono text-[11px] tracking-wider text-muted-foreground/60 uppercase">
                 [ DISPATCH CATALOG SEARCH ]
               </span>
-              <p className="mt-1 font-light">Enter terms to explore the architectural archives.</p>
+              <p className="mt-1 font-light">
+                Enter terms to explore the architectural archives.
+              </p>
               <div className="mt-4 flex flex-wrap justify-center gap-1.5 font-mono text-[10px] uppercase">
                 {["architecture", "nextjs", "performance", "turborepo"].map(
                   (tag) => (
@@ -188,7 +190,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                         <div className="flex flex-wrap items-center gap-2">
                           <h4
                             className={cn(
-                              "line-clamp-1 font-serif text-sm font-light leading-snug",
+                              "line-clamp-1 font-serif text-sm leading-snug font-light",
                               isSelected ? "text-background" : "text-foreground"
                             )}
                           >
@@ -197,7 +199,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
                           {post.featured && (
                             <span
                               className={cn(
-                                "rounded-full px-2 py-0.2 font-mono text-[9px] uppercase",
+                                "py-0.2 rounded-full px-2 font-mono text-[9px] uppercase",
                                 isSelected
                                   ? "bg-background/20 text-background"
                                   : "bg-foreground/10 text-foreground"
@@ -261,16 +263,16 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-foreground/8 bg-foreground/2 px-5 py-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+        <div className="flex items-center justify-between border-t border-foreground/8 bg-foreground/2 px-5 py-3 font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
-              <kbd className="rounded border border-foreground/10 bg-background px-1 py-0.2">
+              <kbd className="py-0.2 rounded border border-foreground/10 bg-background px-1">
                 ↑↓
               </kbd>
               <span>Navigate</span>
             </span>
             <span className="flex items-center gap-1.5">
-              <kbd className="rounded border border-foreground/10 bg-background px-1 py-0.2">
+              <kbd className="py-0.2 rounded border border-foreground/10 bg-background px-1">
                 ↵
               </kbd>
               <span>Select</span>
@@ -278,7 +280,7 @@ function SearchModalContent({ onClose }: { onClose: () => void }) {
           </div>
 
           <span className="flex items-center gap-1.5">
-            <kbd className="rounded border border-foreground/10 bg-background px-1 py-0.2">
+            <kbd className="py-0.2 rounded border border-foreground/10 bg-background px-1">
               esc
             </kbd>
             <span>Dismiss</span>

@@ -35,7 +35,7 @@ export function SubscribeCard() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl shadow-xs">
+    <div className="relative overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 p-6 shadow-xs backdrop-blur-xl sm:p-7">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
@@ -95,7 +95,9 @@ export function SubscribeCard() {
       </div>
 
       {status === "error" && errorMessage && (
-        <p className="mt-3 font-mono text-xs text-destructive">{errorMessage}</p>
+        <p className="mt-3 font-mono text-xs text-destructive">
+          {errorMessage}
+        </p>
       )}
     </div>
   )

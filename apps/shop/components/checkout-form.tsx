@@ -194,7 +194,10 @@ export function CheckoutForm() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <label htmlFor="customer-name" className="text-xs font-medium text-foreground">
+            <label
+              htmlFor="customer-name"
+              className="text-xs font-medium text-foreground"
+            >
               Full Name
             </label>
             <input
@@ -209,7 +212,10 @@ export function CheckoutForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="customer-email" className="text-xs font-medium text-foreground">
+            <label
+              htmlFor="customer-email"
+              className="text-xs font-medium text-foreground"
+            >
               Delivery Email Address
             </label>
             <input
@@ -227,11 +233,17 @@ export function CheckoutForm() {
 
       <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
         <div className="flex items-center justify-between">
-          <h2 id="payment-methods-heading" className="text-base font-semibold text-foreground">
+          <h2
+            id="payment-methods-heading"
+            className="text-base font-semibold text-foreground"
+          >
             2. Payment Method
           </h2>
           <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-            <ShieldCheck className="size-3.5 text-muted-foreground" aria-hidden="true" />
+            <ShieldCheck
+              className="size-3.5 text-muted-foreground"
+              aria-hidden="true"
+            />
             <span>Stripe Encrypted</span>
           </span>
         </div>
@@ -239,7 +251,7 @@ export function CheckoutForm() {
         <fieldset
           role="radiogroup"
           aria-labelledby="payment-methods-heading"
-          className="space-y-2.5 border-0 p-0 m-0"
+          className="m-0 space-y-2.5 border-0 p-0"
         >
           <legend className="sr-only">Select Payment Method</legend>
           {paymentOptions.map((opt) => {
@@ -308,7 +320,10 @@ export function CheckoutForm() {
       </div>
 
       <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
-        <label htmlFor="terms-agreement" className="flex cursor-pointer items-start gap-3 select-none">
+        <label
+          htmlFor="terms-agreement"
+          className="flex cursor-pointer items-start gap-3 select-none"
+        >
           <input
             id="terms-agreement"
             type="checkbox"

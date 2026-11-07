@@ -168,7 +168,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <Container className="max-w-6xl">
           <nav
             aria-label="Breadcrumb"
-            className="mb-8 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground"
+            className="mb-8 flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase"
           >
             <Link
               href="/"
@@ -195,7 +195,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </nav>
 
           <header className="mb-12 space-y-6 border-b border-foreground/8 pb-12">
-            <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs uppercase text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs text-muted-foreground uppercase">
               {primaryCategory && (
                 <Link
                   href={`/?category=${primaryCategory.slug}`}
@@ -224,11 +224,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               )}
             </div>
 
-            <h1 className="font-serif text-3xl font-light leading-[1.12] tracking-tight text-foreground sm:text-5xl md:text-6xl">
+            <h1 className="font-serif text-3xl leading-[1.12] font-light tracking-tight text-foreground sm:text-5xl md:text-6xl">
               {post.title}
             </h1>
 
-            <p className="max-w-3xl text-base font-light leading-relaxed text-muted-foreground sm:text-lg md:text-xl">
+            <p className="max-w-3xl text-base leading-relaxed font-light text-muted-foreground sm:text-lg md:text-xl">
               {post.excerpt}
             </p>
 
@@ -247,7 +247,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   <p className="font-serif text-sm font-light text-foreground">
                     Rizky Ramadhan
                   </p>
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">
+                  <p className="font-mono text-[10px] tracking-wider text-muted-foreground/70 uppercase">
                     Multidisciplinary Digital Builder
                   </p>
                 </div>
@@ -278,21 +278,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
             <div className="space-y-12 lg:col-span-8 lg:max-w-[700px]">
-              <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-serif prose-headings:font-light prose-p:text-[1.125rem] prose-p:leading-[1.8] prose-p:font-light prose-p:text-foreground/90">
+              <div className="prose prose-zinc dark:prose-invert prose-headings:font-serif prose-headings:font-light prose-p:text-[1.125rem] prose-p:leading-[1.8] prose-p:font-light prose-p:text-foreground/90 max-w-none">
                 <MarkdownRenderer content={post.contentMd} />
               </div>
 
               {post.tags.length > 0 && (
                 <div className="border-t border-foreground/8 pt-8">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                    <span className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
                       Index Tags:
                     </span>
                     {post.tags.map((t) => (
                       <Link
                         key={t.id}
                         href={`/?tag=${t.slug}`}
-                        className="rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 font-mono text-xs uppercase text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:text-foreground"
+                        className="rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 font-mono text-xs text-muted-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:text-foreground"
                       >
                         #{t.name}
                       </Link>
@@ -324,7 +324,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="mt-24 border-t border-foreground/8 pt-16">
               <div className="mb-8 flex items-center justify-between">
                 <div>
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+                  <span className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
                     [ COMPLEMENTARY ARCHIVES ]
                   </span>
                   <h2 className="font-serif text-2xl font-light tracking-tight text-foreground sm:text-3xl">
@@ -333,7 +333,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
                 <Link
                   href="/"
-                  className="font-mono text-xs uppercase tracking-wider text-muted-foreground hover:text-foreground"
+                  className="font-mono text-xs tracking-wider text-muted-foreground uppercase hover:text-foreground"
                 >
                   View All Archives [ -&gt; ]
                 </Link>
@@ -347,19 +347,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     className="group flex flex-col justify-between rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-6 transition-all duration-300 hover:border-foreground/25 hover:bg-foreground/[0.03]"
                   >
                     <div>
-                      <div className="mb-3 flex items-center gap-2 font-mono text-[11px] uppercase text-muted-foreground">
+                      <div className="mb-3 flex items-center gap-2 font-mono text-[11px] text-muted-foreground uppercase">
                         <span>{rel.readingTime} min</span>
                         {rel.categories[0] && (
                           <>
                             <span>•</span>
-                            <span className="text-foreground">{rel.categories[0].name}</span>
+                            <span className="text-foreground">
+                              {rel.categories[0].name}
+                            </span>
                           </>
                         )}
                       </div>
-                      <h3 className="font-serif text-base font-light leading-snug tracking-tight text-foreground transition-colors group-hover:text-muted-foreground">
+                      <h3 className="font-serif text-base leading-snug font-light tracking-tight text-foreground transition-colors group-hover:text-muted-foreground">
                         {rel.title}
                       </h3>
-                      <p className="mt-2 line-clamp-2 text-xs font-light leading-relaxed text-muted-foreground">
+                      <p className="mt-2 line-clamp-2 text-xs leading-relaxed font-light text-muted-foreground">
                         {rel.excerpt}
                       </p>
                     </div>

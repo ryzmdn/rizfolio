@@ -20,13 +20,13 @@ export function AuthorBio() {
             />
           </div>
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+            <span className="font-mono text-[10px] tracking-widest text-muted-foreground/60 uppercase">
               [ AUTHOR // COLOPHON ]
             </span>
             <h3 className="font-serif text-lg font-light tracking-tight text-foreground sm:text-xl">
               Rizky Ramadhan
             </h3>
-            <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+            <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
               Multidisciplinary Digital Builder
             </p>
           </div>
@@ -63,8 +63,10 @@ export function AuthorBio() {
         </div>
       </div>
 
-      <p className="mt-6 text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
-        Architecting resilient digital systems at the intersection of robust full-stack engineering, accessible interface design, and observable cloud infrastructure.
+      <p className="mt-6 text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
+        Architecting resilient digital systems at the intersection of robust
+        full-stack engineering, accessible interface design, and observable
+        cloud infrastructure.
       </p>
     </div>
   )

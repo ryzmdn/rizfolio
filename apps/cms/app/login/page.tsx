@@ -46,7 +46,7 @@ export default function LoginPage() {
         <div className="rounded-3xl border border-foreground/10 bg-card/60 p-8 shadow-2xl backdrop-blur-xl sm:p-9">
           {isSuccess ? (
             <div className="flex flex-col items-center justify-center gap-3 py-6 text-center">
-              <CheckCircle2 className="size-10 text-emerald-500 animate-pulse" />
+              <CheckCircle2 className="size-10 animate-pulse text-emerald-500" />
               <div className="space-y-1">
                 <p className="font-serif text-base font-medium text-foreground">
                   Autentikasi Berhasil

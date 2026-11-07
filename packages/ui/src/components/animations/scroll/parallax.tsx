@@ -50,9 +50,12 @@ export function SubtleParallax({
   )
 
   return (
-    <div ref={targetRef} className={cn("will-change-transform", className)} {...props}>
+    <div
+      ref={targetRef}
+      className={cn("will-change-transform", className)}
+      {...props}
+    >
       {children}
     </div>
   )
 }
-

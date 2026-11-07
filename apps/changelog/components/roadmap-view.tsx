@@ -83,10 +83,12 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
         </div>
 
         <div className="max-w-3xl space-y-4">
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-foreground">
-            Product Roadmap <span className="font-sans italic text-muted-foreground/80">&</span> Milestones
+          <h1 className="font-serif text-4xl font-light tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            Product Roadmap{" "}
+            <span className="font-sans text-muted-foreground/80 italic">&</span>{" "}
+            Milestones
           </h1>
-          <p className="font-sans text-base sm:text-lg font-light leading-relaxed text-muted-foreground">
+          <p className="font-sans text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
             Ikhtisar transparan kapabilitas yang telah diluncurkan, prioritas
             rekayasa sistem saat ini, serta inisiatif arsitektur masa depan di
             seluruh monorepo Rizfolio.
@@ -94,7 +96,7 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 shadow-xs backdrop-blur-xl">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 shadow-xs backdrop-blur-xl sm:p-7">
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Delivered Milestones
@@ -109,7 +111,7 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 shadow-xs backdrop-blur-xl">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 shadow-xs backdrop-blur-xl sm:p-7">
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 In Active Development
@@ -124,7 +126,7 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 shadow-xs backdrop-blur-xl">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 shadow-xs backdrop-blur-xl sm:p-7">
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs font-medium tracking-wider text-muted-foreground uppercase">
                 Research & Horizons
@@ -141,7 +143,7 @@ export function RoadmapView({ initialItems }: RoadmapViewProps) {
         </div>
       </header>
 
-      <div className="space-y-5 rounded-3xl border border-foreground/8 bg-card/40 p-5 sm:p-6 shadow-xs backdrop-blur-xl">
+      <div className="space-y-5 rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
         <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="mr-1.5 font-mono text-[10px] font-medium tracking-wider text-muted-foreground uppercase">

@@ -32,7 +32,7 @@ export function RoadmapColumn({ stage, items }: RoadmapColumnProps) {
   const Icon = config.icon
 
   return (
-    <section className="flex flex-col rounded-3xl border border-foreground/8 bg-card/40 p-5 sm:p-6 shadow-xs backdrop-blur-xl">
+    <section className="flex flex-col rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
       <div className="mb-5 border-b border-foreground/8 pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">

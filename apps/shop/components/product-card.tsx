@@ -101,7 +101,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
         <div className="space-y-3">
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
-              <Star className="size-3 text-foreground fill-foreground" />
+              <Star className="size-3 fill-foreground text-foreground" />
               <span className="font-medium text-foreground">
                 {product.rating.toFixed(1)}
               </span>
@@ -127,7 +127,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             </Link>
           </h2>
 
-          <p className="line-clamp-2 text-xs font-light leading-relaxed text-muted-foreground">
+          <p className="line-clamp-2 text-xs leading-relaxed font-light text-muted-foreground">
             {product.description}
           </p>
 

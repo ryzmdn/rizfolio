@@ -34,12 +34,14 @@ export function ChangelogFooter() {
               <div className="flex size-7 items-center justify-center rounded-xl bg-foreground text-background shadow-xs">
                 <GitBranch className="size-3.5" />
               </div>
-              <span className="font-mono text-xs uppercase tracking-widest text-foreground">
+              <span className="font-mono text-xs tracking-widest text-foreground uppercase">
                 [ CHANGELOG // SYSTEM JOURNAL ]
               </span>
             </div>
             <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
-              A public architectural journal and release ledger tracking engineering milestones, performance optimizations, and infrastructure evolutions across the Rizfolio monorepo.
+              A public architectural journal and release ledger tracking
+              engineering milestones, performance optimizations, and
+              infrastructure evolutions across the Rizfolio monorepo.
             </p>
             <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-card/60 px-3 py-1 font-mono text-[11px] text-muted-foreground">
               <CheckCircle2 className="size-3 text-emerald-500" />
@@ -48,7 +50,7 @@ export function ChangelogFooter() {
           </div>
 
           <div className="space-y-4 md:col-span-3">
-            <h3 className="font-mono text-[11px] uppercase tracking-wider text-foreground">
+            <h3 className="font-mono text-[11px] tracking-wider text-foreground uppercase">
               Ecosystem
             </h3>
             <ul className="space-y-2.5 text-xs">
@@ -69,7 +71,7 @@ export function ChangelogFooter() {
           </div>
 
           <div className="space-y-4 md:col-span-3">
-            <h3 className="font-mono text-[11px] uppercase tracking-wider text-foreground">
+            <h3 className="font-mono text-[11px] tracking-wider text-foreground uppercase">
               Syndication & Source
             </h3>
             <ul className="space-y-2.5 text-xs">
@@ -110,13 +112,14 @@ export function ChangelogFooter() {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-foreground/8 pt-8 text-xs text-muted-foreground sm:flex-row">
           <p className="font-mono text-[11px]">
-            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js 15, React 19, and Tailwind CSS v4.
+            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js
+            15, React 19, and Tailwind CSS v4.
           </p>
 
           <button
             type="button"
             onClick={scrollToTop}
-            className="group inline-flex cursor-pointer items-center gap-2 rounded-full border border-foreground/10 bg-card/60 px-4 py-1.5 font-mono text-[11px] uppercase tracking-wider text-muted-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background focus:ring-2 focus:ring-foreground/20 focus:outline-hidden"
+            className="group inline-flex cursor-pointer items-center gap-2 rounded-full border border-foreground/10 bg-card/60 px-4 py-1.5 font-mono text-[11px] tracking-wider text-muted-foreground uppercase transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background focus:ring-2 focus:ring-foreground/20 focus:outline-hidden"
           >
             <span>Top</span>
             <ArrowUp className="size-3 transition-transform group-hover:-translate-y-0.5" />

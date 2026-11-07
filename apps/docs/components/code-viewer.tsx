@@ -176,7 +176,7 @@ export function CodeViewer({
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 backdrop-blur-xl shadow-xs">
+    <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 shadow-xs backdrop-blur-xl">
       <div className="flex flex-col gap-3 border-b border-foreground/8 bg-foreground/[0.02] px-5 py-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2.5">
           <FileCode className="size-4 text-foreground/80" />
@@ -187,7 +187,9 @@ export function CodeViewer({
             {language}
           </span>
           <span className="text-foreground/20">•</span>
-          <span className="font-mono text-[11px] tabular-nums">{lineCount} lines</span>
+          <span className="font-mono text-[11px] tabular-nums">
+            {lineCount} lines
+          </span>
           {sizeBytes ? (
             <>
               <span className="text-foreground/20">•</span>

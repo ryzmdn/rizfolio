@@ -63,7 +63,7 @@ export function PostReactions({
         aria-label={hasLiked ? "Unlike this article" : "Like this article"}
         aria-pressed={hasLiked}
         className={cn(
-          "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200",
+          "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-xs tracking-wider uppercase transition-all duration-200",
           hasLiked
             ? "border-foreground/30 bg-foreground/10 text-foreground"
             : "border-foreground/10 bg-foreground/3 text-muted-foreground hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
@@ -77,7 +77,7 @@ export function PostReactions({
         />
         <span>{likes}</span>
       </button>
-      <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground/60">
+      <span className="font-mono text-[11px] tracking-wider text-muted-foreground/60 uppercase">
         Peer Endorsements
       </span>
     </div>

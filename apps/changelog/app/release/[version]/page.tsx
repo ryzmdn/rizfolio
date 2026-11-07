@@ -216,7 +216,7 @@ export default async function ReleaseDetailPage({
           </nav>
         </div>
 
-        <header className="space-y-8 rounded-3xl border border-foreground/8 bg-card/40 p-6 md:p-10 backdrop-blur-xl shadow-xs">
+        <header className="space-y-8 rounded-3xl border border-foreground/8 bg-card/40 p-6 shadow-xs backdrop-blur-xl md:p-10">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="rounded-full bg-foreground px-4 py-1 font-mono text-xs font-semibold text-background shadow-xs">
@@ -225,7 +225,7 @@ export default async function ReleaseDetailPage({
 
               {!adjacent.newer && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
                   Latest Production
                 </span>
               )}
@@ -248,7 +248,7 @@ export default async function ReleaseDetailPage({
               {release.title}
             </h1>
             {release.summary && (
-              <p className="text-sm md:text-base leading-relaxed text-muted-foreground">
+              <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
                 {release.summary}
               </p>
             )}
@@ -304,7 +304,7 @@ export default async function ReleaseDetailPage({
             return (
               <section
                 key={categoryKey}
-                className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 md:p-8 backdrop-blur-xl"
+                className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl md:p-8"
               >
                 <div className="flex items-center justify-between border-b border-foreground/8 pb-4">
                   <div className="flex items-center gap-3">
@@ -334,7 +334,7 @@ export default async function ReleaseDetailPage({
                     >
                       <div className="mt-2 size-1.5 shrink-0 rounded-full bg-foreground" />
                       <div className="min-w-0 flex-1 space-y-1">
-                        <p className="text-xs md:text-sm leading-relaxed text-foreground">
+                        <p className="text-xs leading-relaxed text-foreground md:text-sm">
                           {item.description}
                         </p>
                         {item.scope && (

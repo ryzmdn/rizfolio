@@ -2,7 +2,11 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts"
-import { ScrollReveal, StaggerContainer, StaggerItem } from "@workspace/ui/components/animations"
+import {
+  ScrollReveal,
+  StaggerContainer,
+  StaggerItem,
+} from "@workspace/ui/components/animations"
 import { caseStudies as fallbackCaseStudies } from "@/data"
 import type { CaseStudyItem } from "@/lib/queries"
 
@@ -61,8 +65,8 @@ export function CaseStudiesSection({
                   className="object-cover transition-transform duration-700 ease-luxury group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90" />
-                
-                <div className="absolute right-6 top-6 flex size-10 items-center justify-center rounded-full border border-foreground/20 bg-background/80 text-foreground backdrop-blur-md transition-hover-lift group-hover:scale-110 group-hover:bg-foreground group-hover:text-background">
+
+                <div className="absolute top-6 right-6 flex size-10 items-center justify-center rounded-full border border-foreground/20 bg-background/80 text-foreground backdrop-blur-md transition-hover-lift group-hover:scale-110 group-hover:bg-foreground group-hover:text-background">
                   <ArrowUpRight className="size-4" />
                 </div>
 
@@ -77,7 +81,9 @@ export function CaseStudiesSection({
                     {featuredItem.year && (
                       <>
                         <span className="text-foreground/30">•</span>
-                        <span className="font-mono text-xs text-muted-foreground">{featuredItem.year}</span>
+                        <span className="font-mono text-xs text-muted-foreground">
+                          {featuredItem.year}
+                        </span>
                       </>
                     )}
                   </div>
@@ -87,7 +93,7 @@ export function CaseStudiesSection({
                   </h3>
 
                   {featuredItem.summary && (
-                    <p className="max-w-3xl line-clamp-2 text-sm font-light text-muted-foreground sm:text-base">
+                    <p className="line-clamp-2 max-w-3xl text-sm font-light text-muted-foreground sm:text-base">
                       {featuredItem.summary}
                     </p>
                   )}
@@ -114,7 +120,7 @@ export function CaseStudiesSection({
                       sizes="(max-width: 768px) 100vw, 550px"
                       className="object-cover transition-transform duration-700 ease-luxury group-hover:scale-105"
                     />
-                    <div className="absolute right-3.5 top-3.5 flex size-8 items-center justify-center rounded-full border border-foreground/15 bg-background/80 text-foreground backdrop-blur-xs transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                    <div className="absolute top-3.5 right-3.5 flex size-8 items-center justify-center rounded-full border border-foreground/15 bg-background/80 text-foreground backdrop-blur-xs transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                       <ArrowUpRight className="size-3.5" />
                     </div>
                   </div>
@@ -130,7 +136,7 @@ export function CaseStudiesSection({
                     </h3>
 
                     {item.summary && (
-                      <p className="line-clamp-2 text-xs font-light leading-relaxed text-muted-foreground">
+                      <p className="line-clamp-2 text-xs leading-relaxed font-light text-muted-foreground">
                         {item.summary}
                       </p>
                     )}
@@ -139,7 +145,9 @@ export function CaseStudiesSection({
 
                 <div className="mt-6 flex items-center gap-2 pt-4 font-mono text-[11px] tracking-wider text-foreground/70 uppercase">
                   <span>View Architecture</span>
-                  <span className="transition-transform duration-300 ease-luxury group-hover:translate-x-1">&rarr;</span>
+                  <span className="transition-transform duration-300 ease-luxury group-hover:translate-x-1">
+                    &rarr;
+                  </span>
                 </div>
               </Link>
             </StaggerItem>

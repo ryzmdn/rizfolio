@@ -88,7 +88,7 @@ export function CmsHeader({
         >
           <Search className="size-3.5 transition-colors" />
           <span className="hidden lg:inline">Search actions...</span>
-          <kbd className="hidden rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.2 font-mono text-[10px] text-muted-foreground group-hover:text-background sm:inline-block">
+          <kbd className="py-0.2 hidden rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 font-mono text-[10px] text-muted-foreground group-hover:text-background sm:inline-block">
             ⌘K
           </kbd>
         </button>

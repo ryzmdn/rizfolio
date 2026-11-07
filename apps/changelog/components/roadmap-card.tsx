@@ -17,7 +17,7 @@ export function RoadmapCard({ item }: RoadmapCardProps) {
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[9px] tracking-wider uppercase text-muted-foreground">
+            <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
               {item.priority}
             </span>
 
@@ -48,7 +48,7 @@ export function RoadmapCard({ item }: RoadmapCardProps) {
           <h3 className="font-serif text-base font-normal tracking-tight text-foreground transition-colors group-hover:text-foreground">
             {item.title}
           </h3>
-          <p className="mt-1.5 font-sans text-xs font-light leading-relaxed text-muted-foreground">
+          <p className="mt-1.5 font-sans text-xs leading-relaxed font-light text-muted-foreground">
             {item.description}
           </p>
         </div>
@@ -59,7 +59,7 @@ export function RoadmapCard({ item }: RoadmapCardProps) {
           {item.scope.map((sc) => (
             <span
               key={sc}
-              className="rounded-full border border-foreground/8 bg-foreground/[0.02] px-2 py-0.2 font-mono text-[9px] text-muted-foreground"
+              className="py-0.2 rounded-full border border-foreground/8 bg-foreground/[0.02] px-2 font-mono text-[9px] text-muted-foreground"
             >
               {sc.replace("apps/", "").replace("packages/", "")}
             </span>

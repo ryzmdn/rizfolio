@@ -44,7 +44,7 @@ export function TransactionLedgerTable({
 
   return (
     <>
-      <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 backdrop-blur-xl shadow-xs">
+      <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 shadow-xs backdrop-blur-xl">
         <div className="flex flex-col gap-3 border-b border-foreground/8 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-0.5">
             <h2 className="font-serif text-lg font-light tracking-tight text-foreground">
@@ -80,7 +80,8 @@ export function TransactionLedgerTable({
                     colSpan={8}
                     className="px-6 py-16 text-center font-mono text-xs text-muted-foreground"
                   >
-                    Belum ada catatan transaksi master yang sesuai dengan filter.
+                    Belum ada catatan transaksi master yang sesuai dengan
+                    filter.
                   </td>
                 </tr>
               ) : (

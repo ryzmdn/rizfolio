@@ -114,7 +114,8 @@ export async function createOrderAction(
   if (process.env.NODE_ENV === "production") {
     return {
       success: false,
-      error: "Simulated orders are disabled in production. Please use Stripe checkout.",
+      error:
+        "Simulated orders are disabled in production. Please use Stripe checkout.",
     }
   }
 
@@ -197,9 +198,7 @@ export async function createOrderAction(
   ): number {
     const ref = productPriceMap.get(productId)
     if (!ref) return 0
-    return licenseType === "EXTENDED"
-      ? Math.round(ref.price * 1.75)
-      : ref.price
+    return licenseType === "EXTENDED" ? Math.round(ref.price * 1.75) : ref.price
   }
 
   let discountPercent = 0

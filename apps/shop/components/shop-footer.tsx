@@ -97,16 +97,18 @@ export function ShopFooter() {
               </span>
             </div>
             <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
-              Curated software architectures, production starter kits, and senior engineering consultation sessions engineered by Rizky Ramadhan to accelerate real-world digital builds.
+              Curated software architectures, production starter kits, and
+              senior engineering consultation sessions engineered by Rizky
+              Ramadhan to accelerate real-world digital builds.
             </p>
-            <div className="flex items-center gap-2 pt-1 font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">
+            <div className="flex items-center gap-2 pt-1 font-mono text-[10px] tracking-wider text-muted-foreground/70 uppercase">
               <span className="inline-block size-1.5 rounded-full bg-emerald-500" />
               <span>Global Instant Asset Delivery Network</span>
             </div>
           </div>
 
           <div className="space-y-4 md:col-span-3">
-            <h4 className="font-mono text-[11px] uppercase tracking-widest text-foreground">
+            <h4 className="font-mono text-[11px] tracking-widest text-foreground uppercase">
               Ecosystem
             </h4>
             <ul className="space-y-2.5 text-xs text-muted-foreground">
@@ -126,7 +128,7 @@ export function ShopFooter() {
           </div>
 
           <div className="space-y-4 md:col-span-3">
-            <h4 className="font-mono text-[11px] uppercase tracking-widest text-foreground">
+            <h4 className="font-mono text-[11px] tracking-widest text-foreground uppercase">
               Legal & Terms
             </h4>
             <ul className="space-y-2.5 text-xs text-muted-foreground">
@@ -146,13 +148,14 @@ export function ShopFooter() {
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-foreground/8 pt-8 font-mono text-[11px] text-muted-foreground sm:flex-row">
           <p>
-            © {new Date().getFullYear()} Rizky Ramadhan. All architectural assets protected.
+            © {new Date().getFullYear()} Rizky Ramadhan. All architectural
+            assets protected.
           </p>
           <button
             type="button"
             onClick={scrollToTop}
             aria-label="Scroll back to top of page"
-            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 uppercase tracking-wider transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background"
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 tracking-wider uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background"
           >
             <span>Back to top</span>
             <ArrowUp className="size-3.5" aria-hidden="true" />

@@ -20,11 +20,11 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
           href={`/blog/${prev.slug}`}
           className="group flex flex-col justify-between rounded-2xl border border-foreground/10 bg-foreground/[0.015] p-6 transition-all duration-300 hover:border-foreground/25 hover:bg-foreground/[0.03]"
         >
-          <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-foreground">
+          <span className="flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors group-hover:text-foreground">
             <ArrowLeft className="size-3 transition-transform duration-200 group-hover:-translate-x-1" />
             <span>Previous Monograph</span>
           </span>
-          <span className="mt-3 line-clamp-2 font-serif text-base font-light leading-snug text-foreground transition-colors group-hover:text-muted-foreground">
+          <span className="mt-3 line-clamp-2 font-serif text-base leading-snug font-light text-foreground transition-colors group-hover:text-muted-foreground">
             {prev.title}
           </span>
         </Link>
@@ -37,11 +37,11 @@ export function PostNavigation({ prev, next }: PostNavigationProps) {
           href={`/blog/${next.slug}`}
           className="group flex flex-col justify-between rounded-2xl border border-foreground/10 bg-foreground/[0.015] p-6 text-right transition-all duration-300 hover:border-foreground/25 hover:bg-foreground/[0.03]"
         >
-          <span className="flex items-center justify-end gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-foreground">
+          <span className="flex items-center justify-end gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors group-hover:text-foreground">
             <span>Next Monograph</span>
             <ArrowRight className="size-3 transition-transform duration-200 group-hover:translate-x-1" />
           </span>
-          <span className="mt-3 line-clamp-2 font-serif text-base font-light leading-snug text-foreground transition-colors group-hover:text-muted-foreground">
+          <span className="mt-3 line-clamp-2 font-serif text-base leading-snug font-light text-foreground transition-colors group-hover:text-muted-foreground">
             {next.title}
           </span>
         </Link>

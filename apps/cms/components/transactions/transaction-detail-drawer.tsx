@@ -147,13 +147,15 @@ export function TransactionDetailDrawer({
         <div className="flex-1 space-y-6 overflow-y-auto p-6">
           <div className="grid grid-cols-2 gap-3.5 rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5 sm:grid-cols-4">
             <div className="space-y-1">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Domain</span>
+              <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                Domain
+              </span>
               <p className="font-mono text-xs font-semibold text-foreground">
                 {transaction.domain}
               </p>
             </div>
             <div className="space-y-1">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+              <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                 Aksi Sistem
               </span>
               <p className="font-serif text-xs font-medium text-foreground">
@@ -161,7 +163,9 @@ export function TransactionDetailDrawer({
               </p>
             </div>
             <div className="space-y-1">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Status</span>
+              <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                Status
+              </span>
               <div>
                 <span className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 font-mono text-[10px] text-foreground">
                   {transaction.status}
@@ -169,7 +173,7 @@ export function TransactionDetailDrawer({
               </div>
             </div>
             <div className="space-y-1">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+              <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                 Nilai Transaksi
               </span>
               <p className="font-mono text-xs font-semibold text-foreground">
@@ -188,7 +192,7 @@ export function TransactionDetailDrawer({
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Shield className="size-3.5 shrink-0 text-foreground" />
                 <span>Aktor:</span>
-                <strong className="font-mono text-foreground font-normal">
+                <strong className="font-mono font-normal text-foreground">
                   {transaction.actorType}{" "}
                   {transaction.actorId
                     ? `(${transaction.actorId.substring(0, 10)}...)`
@@ -198,14 +202,14 @@ export function TransactionDetailDrawer({
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Layers className="size-3.5 shrink-0 text-foreground" />
                 <span>Entitas:</span>
-                <strong className="font-mono text-foreground font-normal">
+                <strong className="font-mono font-normal text-foreground">
                   {transaction.entityType}: {transaction.entityId}
                 </strong>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Clock className="size-3.5 shrink-0 text-foreground" />
                 <span>Waktu Catat:</span>
-                <strong className="font-mono text-foreground font-normal">
+                <strong className="font-mono font-normal text-foreground">
                   {new Date(transaction.createdAt).toLocaleString("id-ID", {
                     dateStyle: "medium",
                     timeStyle: "medium",
@@ -215,7 +219,7 @@ export function TransactionDetailDrawer({
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Network className="size-3.5 shrink-0 text-foreground" />
                 <span>Client IP:</span>
-                <strong className="font-mono text-foreground font-normal">
+                <strong className="font-mono font-normal text-foreground">
                   {transaction.clientIp || "Internal Cluster / Localhost"}
                 </strong>
               </div>
@@ -348,11 +352,15 @@ export function TransactionDetailDrawer({
                           </span>
                           <span
                             className={cn(
-                              "rounded-full px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider",
-                              entry.status === "added" && "border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-                              entry.status === "removed" && "border border-destructive/20 bg-destructive/10 text-destructive",
-                              entry.status === "modified" && "border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
-                              entry.status === "unchanged" && "border border-foreground/10 bg-foreground/[0.02] text-muted-foreground"
+                              "rounded-full px-2 py-0.5 font-mono text-[9px] tracking-wider uppercase",
+                              entry.status === "added" &&
+                                "border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+                              entry.status === "removed" &&
+                                "border border-destructive/20 bg-destructive/10 text-destructive",
+                              entry.status === "modified" &&
+                                "border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
+                              entry.status === "unchanged" &&
+                                "border border-foreground/10 bg-foreground/[0.02] text-muted-foreground"
                             )}
                           >
                             {entry.status}

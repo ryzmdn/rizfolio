@@ -51,25 +51,26 @@ export function RoadmapFeedback() {
   }
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 p-6 md:p-10 backdrop-blur-xl shadow-xs transition-colors">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-foreground/8 pb-6">
+    <section className="relative overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 p-6 shadow-xs backdrop-blur-xl transition-colors md:p-10">
+      <div className="flex flex-col gap-4 border-b border-foreground/8 pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3.5">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-foreground text-background shadow-xs">
             <MessageSquarePlus className="size-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
                 [ RFC // OPEN MILESTONES ]
               </span>
             </div>
-            <h2 className="font-serif text-lg md:text-xl font-medium tracking-tight text-foreground">
+            <h2 className="font-serif text-lg font-medium tracking-tight text-foreground md:text-xl">
               Propose an Architectural Milestone
             </h2>
           </div>
         </div>
         <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
-          Suggest a system architecture optimization, core package capability, or cross-cutting engineering enhancement for upcoming quarters.
+          Suggest a system architecture optimization, core package capability,
+          or cross-cutting engineering enhancement for upcoming quarters.
         </p>
       </div>
 
@@ -82,7 +83,8 @@ export function RoadmapFeedback() {
             Proposal Successfully Logged
           </h3>
           <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
-            Thank you for your submission. Your proposal has been indexed in the engineering review register for upcoming evaluation cycles.
+            Thank you for your submission. Your proposal has been indexed in the
+            engineering review register for upcoming evaluation cycles.
           </p>
           <button
             type="button"
@@ -98,7 +100,7 @@ export function RoadmapFeedback() {
             <div className="space-y-2 sm:col-span-2">
               <label
                 htmlFor="feature-title"
-                className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground"
+                className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
               >
                 Milestone Title
               </label>
@@ -109,14 +111,14 @@ export function RoadmapFeedback() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Distributed WebSocket state synchronization"
-                className="w-full rounded-2xl border border-foreground/10 bg-background/50 px-4 py-3 text-xs md:text-sm text-foreground transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden"
+                className="w-full rounded-2xl border border-foreground/10 bg-background/50 px-4 py-3 text-xs text-foreground transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden md:text-sm"
               />
             </div>
 
             <div className="space-y-2">
               <label
                 htmlFor="feature-scope"
-                className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground"
+                className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
               >
                 Target Scope
               </label>
@@ -124,7 +126,7 @@ export function RoadmapFeedback() {
                 id="feature-scope"
                 value={scope}
                 onChange={(e) => setScope(e.target.value)}
-                className="w-full rounded-2xl border border-foreground/10 bg-background/50 px-4 py-3 text-xs md:text-sm text-foreground transition-colors focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden"
+                className="w-full rounded-2xl border border-foreground/10 bg-background/50 px-4 py-3 text-xs text-foreground transition-colors focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden md:text-sm"
               >
                 <option value="monorepo">All Monorepo</option>
                 <option value="apps/shop">apps/shop</option>
@@ -141,7 +143,7 @@ export function RoadmapFeedback() {
           <div className="space-y-2">
             <label
               htmlFor="feature-rationale"
-              className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground"
+              className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
             >
               Architectural Rationale & Trade-offs
             </label>
@@ -152,7 +154,7 @@ export function RoadmapFeedback() {
               value={rationale}
               onChange={(e) => setRationale(e.target.value)}
               placeholder="Describe the motivation, architectural trade-offs, anticipated constraints, and expected engineering ROI..."
-              className="w-full resize-none rounded-2xl border border-foreground/10 bg-background/50 p-4 text-xs md:text-sm text-foreground transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden"
+              className="w-full resize-none rounded-2xl border border-foreground/10 bg-background/50 p-4 text-xs text-foreground transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden md:text-sm"
             />
           </div>
 
@@ -173,7 +175,9 @@ export function RoadmapFeedback() {
               className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-foreground px-6 py-2.5 text-xs font-medium tracking-wide text-background shadow-xs transition-opacity hover:opacity-90 focus:ring-2 focus:ring-foreground/20 focus:outline-hidden disabled:opacity-50"
             >
               <Send className="size-3.5" />
-              <span>{isSubmitting ? "Transmitting..." : "Submit Proposal"}</span>
+              <span>
+                {isSubmitting ? "Transmitting..." : "Submit Proposal"}
+              </span>
             </button>
           </div>
         </form>

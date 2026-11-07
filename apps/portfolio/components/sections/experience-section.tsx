@@ -1,7 +1,15 @@
 import { Container } from "@workspace/ui/components/layouts"
-import { experienceList as fallbackExperienceList, educationList, certifications as fallbackCertifications } from "@/data"
+import {
+  experienceList as fallbackExperienceList,
+  educationList,
+  certifications as fallbackCertifications,
+} from "@/data"
 import { ArrowUpRight, Award, GraduationCap } from "lucide-react"
-import type { ExperienceItem, EducationItem, CertificationItem } from "@/lib/queries"
+import type {
+  ExperienceItem,
+  EducationItem,
+  CertificationItem,
+} from "@/lib/queries"
 
 interface ExperienceSectionProps {
   experiences?: ExperienceItem[]
@@ -27,7 +35,8 @@ export function ExperienceSection({
             </h2>
           </div>
           <p className="max-w-md font-mono text-xs leading-relaxed text-muted-foreground">
-            Demonstrated engineering leadership spanning production SaaS platforms, distributed systems, and modern component architectures.
+            Demonstrated engineering leadership spanning production SaaS
+            platforms, distributed systems, and modern component architectures.
           </p>
         </div>
 
@@ -59,7 +68,9 @@ export function ExperienceSection({
                       {exp.role}
                     </h4>
                     <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
-                      <span className="text-foreground/80 font-medium">{exp.company}</span>
+                      <span className="font-medium text-foreground/80">
+                        {exp.company}
+                      </span>
                       {exp.type && (
                         <>
                           <span>•</span>
@@ -70,7 +81,7 @@ export function ExperienceSection({
                   </div>
 
                   <div className="space-y-4 lg:col-span-5">
-                    <p className="text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
+                    <p className="text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
                       {exp.description}
                     </p>
 
@@ -134,8 +145,10 @@ export function ExperienceSection({
                   key={cert.id}
                   className="flex items-center justify-between rounded-xl border border-foreground/8 bg-foreground/[0.01] p-3 text-xs transition-colors hover:border-foreground/20"
                 >
-                  <span className="font-light text-foreground/90">{cert.title}</span>
-                  <ArrowUpRight className="size-3 text-muted-foreground shrink-0 ml-2" />
+                  <span className="font-light text-foreground/90">
+                    {cert.title}
+                  </span>
+                  <ArrowUpRight className="ml-2 size-3 shrink-0 text-muted-foreground" />
                 </div>
               ))}
             </div>

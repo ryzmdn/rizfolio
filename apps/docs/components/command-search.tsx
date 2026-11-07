@@ -296,7 +296,9 @@ export function CommandSearch() {
         >
           {results.length === 0 ? (
             <div className="py-16 text-center text-muted-foreground">
-              <p className="font-serif text-lg font-light text-foreground">Tidak ditemukan hasil</p>
+              <p className="font-serif text-lg font-light text-foreground">
+                Tidak ditemukan hasil
+              </p>
               <p className="mt-1 font-mono text-xs">
                 Tidak ada entri yang cocok dengan &quot;{query}&quot;.
               </p>
@@ -344,7 +346,7 @@ export function CommandSearch() {
                             {item.title}
                           </span>
                           {item.badge && (
-                            <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
+                            <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.5 font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                               {item.badge}
                             </span>
                           )}
@@ -395,7 +397,9 @@ export function CommandSearch() {
               <span className="ml-0.5">close</span>
             </span>
           </div>
-          <span className="font-mono text-[10px] tracking-wider uppercase text-muted-foreground">[ COMMAND // DOCS ]</span>
+          <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+            [ COMMAND // DOCS ]
+          </span>
         </div>
       </div>
     </div>

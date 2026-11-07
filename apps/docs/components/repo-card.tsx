@@ -58,7 +58,7 @@ export function RepoCard({
       <div className="space-y-3.5">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+            <span className="font-mono text-[10px] tracking-widest text-muted-foreground/60 uppercase">
               [ ARCHIVE // {slug} ]
             </span>
             <div className="flex items-center gap-2">
@@ -71,13 +71,13 @@ export function RepoCard({
               </Link>
             </div>
           </div>
-          <span className="shrink-0 rounded-full border border-foreground/10 bg-foreground/5 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+          <span className="shrink-0 rounded-full border border-foreground/10 bg-foreground/5 px-2.5 py-0.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
             {categoryInfo.label}
           </span>
         </div>
 
         {description && (
-          <p className="line-clamp-2 text-xs font-light leading-relaxed text-muted-foreground">
+          <p className="line-clamp-2 text-xs leading-relaxed font-light text-muted-foreground">
             {description}
           </p>
         )}
@@ -133,7 +133,7 @@ export function RepoCard({
             <Link
               href={`/repo/${slug}`}
               aria-label={`Browse code in ${name}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1 text-[11px] uppercase tracking-wider text-foreground transition-hover-lift hover:border-foreground/30 hover:bg-foreground hover:text-background"
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1 text-[11px] tracking-wider text-foreground uppercase transition-hover-lift hover:border-foreground/30 hover:bg-foreground hover:text-background"
             >
               <Code2 className="size-3" />
               <span>Blueprint</span>

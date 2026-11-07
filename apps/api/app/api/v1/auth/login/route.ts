@@ -64,7 +64,10 @@ export const POST = createApiHandler(
       }
 
       const envPasswordHash = await hashPassword(ownerEnvPassword)
-      const isPasswordValid = await verifyPassword(body.password, envPasswordHash)
+      const isPasswordValid = await verifyPassword(
+        body.password,
+        envPasswordHash
+      )
 
       if (!isPasswordValid) {
         throw new UnauthorizedError("Invalid email or password.")

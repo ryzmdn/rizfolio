@@ -43,7 +43,7 @@ export default async function TransactionsPage({
     >
       <div className="space-y-8">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl transition-all hover:border-foreground/25 hover:shadow-lg">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl transition-all hover:border-foreground/25 hover:shadow-lg sm:p-7">
             <div className="flex items-center justify-between">
               <span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
                 Total Events
@@ -59,7 +59,7 @@ export default async function TransactionsPage({
             </div>
           </div>
 
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl transition-all hover:border-foreground/25 hover:shadow-lg">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl transition-all hover:border-foreground/25 hover:shadow-lg sm:p-7">
             <div className="flex items-center justify-between">
               <span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
                 Success Rate
@@ -78,7 +78,7 @@ export default async function TransactionsPage({
             </div>
           </div>
 
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl transition-all hover:border-foreground/25 hover:shadow-lg">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl transition-all hover:border-foreground/25 hover:shadow-lg sm:p-7">
             <div className="flex items-center justify-between">
               <span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
                 Commerce Volume
@@ -94,7 +94,7 @@ export default async function TransactionsPage({
             </div>
           </div>
 
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl transition-all hover:border-foreground/25 hover:shadow-lg">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl transition-all hover:border-foreground/25 hover:shadow-lg sm:p-7">
             <div className="flex items-center justify-between">
               <span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
                 Domains Tracked
@@ -114,7 +114,7 @@ export default async function TransactionsPage({
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 rounded-3xl border border-foreground/8 bg-card/40 p-4 sm:p-5 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 rounded-3xl border border-foreground/8 bg-card/40 p-4 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-5">
           <form
             className="flex flex-1 flex-wrap items-center gap-2.5"
             method="GET"
@@ -158,7 +158,7 @@ export default async function TransactionsPage({
 
             <button
               type="submit"
-              className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-foreground bg-foreground px-4 text-xs font-mono text-background transition-all hover:bg-foreground/90"
+              className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-foreground bg-foreground px-4 font-mono text-xs text-background transition-all hover:bg-foreground/90"
             >
               <Filter className="size-3" />
               <span>Filter</span>
@@ -167,7 +167,7 @@ export default async function TransactionsPage({
             {hasActiveFilters && (
               <Link
                 href="/transactions"
-                className="inline-flex h-9 items-center gap-1.5 rounded-full border border-foreground/10 bg-background/60 px-3.5 text-xs font-mono text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="inline-flex h-9 items-center gap-1.5 rounded-full border border-foreground/10 bg-background/60 px-3.5 font-mono text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
               >
                 <RotateCcw className="size-3" />
                 <span>Reset</span>

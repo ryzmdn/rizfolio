@@ -97,47 +97,59 @@ export default async function DocsPage({
       />
       <div className="flex flex-col gap-8 border-b border-foreground/8 pb-12 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 text-[11px] font-mono tracking-widest text-muted-foreground uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase backdrop-blur-md">
             <BookOpen className="size-3 text-foreground" />
-            <span>VOLUME 05 // ARCHITECTURAL BLUEPRINTS & OPEN SOURCE ARCHIVES</span>
+            <span>
+              VOLUME 05 // ARCHITECTURAL BLUEPRINTS & OPEN SOURCE ARCHIVES
+            </span>
           </div>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-foreground">
-            Architectural Blueprints <span className="font-sans italic text-muted-foreground/80">&</span> Open Archives
+          <h1 className="font-serif text-4xl font-light tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            Architectural Blueprints{" "}
+            <span className="font-sans text-muted-foreground/80 italic">&</span>{" "}
+            Open Archives
           </h1>
-          <p className="text-base sm:text-lg font-light leading-relaxed text-muted-foreground">
+          <p className="text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
             Dokumentasi teknis, repositori sumber terbuka, eksperimen mini, dan
             arsip kode akademik. Telusuri struktur kode, benchmark arsitektur,
             dan unduh secara bebas.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 sm:gap-6 rounded-3xl border border-foreground/8 bg-card/40 p-5 sm:p-6 font-mono text-xs backdrop-blur-xl shadow-xs">
+        <div className="flex flex-wrap items-center gap-4 rounded-3xl border border-foreground/8 bg-card/40 p-5 font-mono text-xs shadow-xs backdrop-blur-xl sm:gap-6 sm:p-6">
           <div className="flex flex-col">
-            <span className="font-serif text-2xl sm:text-3xl font-light text-foreground tabular-nums">
+            <span className="font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.total}
             </span>
-            <span className="text-[10px] tracking-wider uppercase text-muted-foreground">Repositories</span>
+            <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
+              Repositories
+            </span>
           </div>
           <div className="h-8 w-px bg-foreground/10" />
           <div className="flex flex-col">
-            <span className="font-serif text-2xl sm:text-3xl font-light text-foreground tabular-nums">
+            <span className="font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.assignments}
             </span>
-            <span className="text-[10px] tracking-wider uppercase text-muted-foreground">Coursework</span>
+            <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
+              Coursework
+            </span>
           </div>
           <div className="h-8 w-px bg-foreground/10" />
           <div className="flex flex-col">
-            <span className="font-serif text-2xl sm:text-3xl font-light text-foreground tabular-nums">
+            <span className="font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.openSource}
             </span>
-            <span className="text-[10px] tracking-wider uppercase text-muted-foreground">Open Source</span>
+            <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
+              Open Source
+            </span>
           </div>
           <div className="h-8 w-px bg-foreground/10" />
           <div className="flex flex-col">
-            <span className="font-serif text-2xl sm:text-3xl font-light text-foreground tabular-nums">
+            <span className="font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.totalStars}
             </span>
-            <span className="text-[10px] tracking-wider uppercase text-muted-foreground">Stars</span>
+            <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
+              Stars
+            </span>
           </div>
         </div>
       </div>
@@ -146,7 +158,9 @@ export default async function DocsPage({
 
       {hasActiveFilters && (
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">Filter aktif:</span>
+          <span className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
+            Filter aktif:
+          </span>
 
           {params.search && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 font-mono text-xs text-foreground backdrop-blur-sm">

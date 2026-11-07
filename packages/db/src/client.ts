@@ -25,10 +25,10 @@ const rawConnectionString = process.env.DATABASE_URL
 
 export const isDbConfigured = Boolean(
   rawConnectionString &&
-    rawConnectionString.trim() !== "" &&
-    !rawConnectionString.includes("postgres_build_placeholder") &&
-    !rawConnectionString.includes("[PASSWORD]") &&
-    !rawConnectionString.includes("[HOST]")
+  rawConnectionString.trim() !== "" &&
+  !rawConnectionString.includes("postgres_build_placeholder") &&
+  !rawConnectionString.includes("[PASSWORD]") &&
+  !rawConnectionString.includes("[HOST]")
 )
 
 if (!rawConnectionString || rawConnectionString.trim() === "") {

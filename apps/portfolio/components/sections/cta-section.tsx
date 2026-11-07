@@ -23,8 +23,10 @@ export function CtaSection() {
             <h2 className="text-3xl font-light tracking-[-0.03em] text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
               Initiate an architectural engagement.
             </h2>
-            <p className="max-w-2xl text-base font-light leading-relaxed text-muted-foreground sm:text-lg">
-              Available for strategic system design, high-concurrency architecture advisory, and dedicated enterprise engineering contracts.
+            <p className="max-w-2xl text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
+              Available for strategic system design, high-concurrency
+              architecture advisory, and dedicated enterprise engineering
+              contracts.
             </p>
           </div>
 
@@ -40,7 +42,7 @@ export function CtaSection() {
                 </span>
                 <a
                   href={`mailto:${item.email}`}
-                  className="group flex items-center gap-2 text-sm font-mono text-foreground hover:underline"
+                  className="group flex items-center gap-2 font-mono text-sm text-foreground hover:underline"
                 >
                   <span>{item.email}</span>
                   <ArrowUpRight className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

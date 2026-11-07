@@ -195,7 +195,9 @@ export function AppHeader() {
           </nav>
 
           <div className="mt-5 flex items-center justify-between border-t border-foreground/8 pt-4">
-            <span className="text-xs font-mono text-muted-foreground uppercase">Social Channels</span>
+            <span className="font-mono text-xs text-muted-foreground uppercase">
+              Social Channels
+            </span>
             <div className="flex items-center gap-x-2">
               <a
                 href="https://github.com/ryzmdn"

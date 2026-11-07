@@ -147,7 +147,10 @@ async function fetchCmsDashboardSummary(): Promise<DashboardSummaryData> {
         changelogsTotal: row?.changelogs_total ?? 0,
         changelogsPublished: row?.changelogs_published ?? 0,
       },
-      recentTransactions: recentTrxResult.length > 0 ? recentTrxResult : fallbackSummary.recentTransactions,
+      recentTransactions:
+        recentTrxResult.length > 0
+          ? recentTrxResult
+          : fallbackSummary.recentTransactions,
     }
   } catch (error) {
     console.warn(

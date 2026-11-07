@@ -48,8 +48,8 @@ export default function NotFound() {
           </h1>
           <p className="font-mono text-xs leading-relaxed text-muted-foreground">
             Halaman atau entitas administrasi yang Anda tuju tidak terdaftar
-            atau telah dipindahkan dalam ekosistem CMS. Silakan pilih modul resmi
-            di bawah:
+            atau telah dipindahkan dalam ekosistem CMS. Silakan pilih modul
+            resmi di bawah:
           </p>
         </div>
 

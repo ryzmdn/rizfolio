@@ -139,7 +139,7 @@ export function CommandSearch() {
       onClick={handleClose}
     >
       <div
-        className="w-full max-w-2xl animate-in overflow-hidden rounded-3xl border border-foreground/10 bg-card/95 shadow-2xl backdrop-blur-2xl ring-1 ring-foreground/5 duration-200 zoom-in-95"
+        className="w-full max-w-2xl animate-in overflow-hidden rounded-3xl border border-foreground/10 bg-card/95 shadow-2xl ring-1 ring-foreground/5 backdrop-blur-2xl duration-200 zoom-in-95"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 border-b border-foreground/8 px-5 py-4">
@@ -180,7 +180,7 @@ export function CommandSearch() {
             <div className="space-y-4">
               {matchedReleases.length > 0 && (
                 <div>
-                  <div className="px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <div className="px-3 py-1 font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
                     Releases & Version Logs
                   </div>
                   <div className="mt-1 space-y-1">
@@ -259,7 +259,7 @@ export function CommandSearch() {
 
               {matchedRoadmap.length > 0 && (
                 <div>
-                  <div className="px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <div className="px-3 py-1 font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
                     Roadmap & Milestones
                   </div>
                   <div className="mt-1 space-y-1">
@@ -291,7 +291,7 @@ export function CommandSearch() {
                             <div className="flex items-center gap-2">
                               <span
                                 className={cn(
-                                  "rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider",
+                                  "rounded-full border px-2 py-0.5 font-mono text-[10px] tracking-wider uppercase",
                                   isSelected
                                     ? "border-background/20 bg-background/10 text-background"
                                     : "border-foreground/10 bg-foreground/[0.03] text-muted-foreground"

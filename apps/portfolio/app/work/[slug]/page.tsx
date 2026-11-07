@@ -136,9 +136,7 @@ export default async function CaseStudyDetailPage({
                   {study.year}
                 </span>
               )}
-              {study.clientName && (
-                <span>• {study.clientName}</span>
-              )}
+              {study.clientName && <span>• {study.clientName}</span>}
               {study.viewsCount !== undefined && study.viewsCount > 0 && (
                 <span className="inline-flex items-center gap-1">
                   <Eye className="size-3 text-muted-foreground" />
@@ -151,7 +149,7 @@ export default async function CaseStudyDetailPage({
               {study.title}
             </h1>
 
-            <p className="max-w-3xl text-base font-light leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="max-w-3xl text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
               {study.summary}
             </p>
 

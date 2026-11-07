@@ -10,7 +10,7 @@ export function ReadmeViewer({ content }: { content: string }) {
   const readingTimeMinutes = Math.max(1, Math.ceil(words / 200))
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 backdrop-blur-xl shadow-xs">
+    <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 shadow-xs backdrop-blur-xl">
       <div className="flex items-center justify-between border-b border-foreground/8 bg-foreground/[0.02] px-5 py-3 text-xs text-muted-foreground">
         <div className="flex items-center gap-2.5">
           <BookOpen className="size-4 text-foreground/80" />

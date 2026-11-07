@@ -100,7 +100,7 @@ export function FilterBar({
             value={searchValue}
             placeholder="SEARCH BLUEPRINTS, TOPICS, OR MODULES..."
             onChange={(e) => setSearchValue(e.target.value)}
-            className="w-full rounded-full border border-foreground/10 bg-foreground/3 py-2 pr-9 pl-9 font-mono text-xs uppercase text-foreground placeholder:text-muted-foreground/50 focus:border-foreground/30 focus:outline-hidden"
+            className="w-full rounded-full border border-foreground/10 bg-foreground/3 py-2 pr-9 pl-9 font-mono text-xs text-foreground uppercase placeholder:text-muted-foreground/50 focus:border-foreground/30 focus:outline-hidden"
           />
           {searchValue && (
             <button
@@ -155,7 +155,7 @@ export function FilterBar({
             <button
               type="button"
               onClick={handleResetAll}
-              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 text-xs uppercase tracking-wider text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 text-xs tracking-wider text-muted-foreground uppercase transition-all hover:border-foreground/30 hover:text-foreground"
             >
               <RotateCcw className="size-3" />
               <span>Reset</span>
@@ -173,7 +173,7 @@ export function FilterBar({
               type="button"
               onClick={() => updateQuery({ category: cat.value })}
               className={cn(
-                "rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200",
+                "rounded-full px-4 py-1.5 font-mono text-xs tracking-wider uppercase transition-all duration-200",
                 isActive
                   ? "bg-foreground font-semibold text-background shadow-xs"
                   : "border border-foreground/10 bg-foreground/3 text-muted-foreground hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"

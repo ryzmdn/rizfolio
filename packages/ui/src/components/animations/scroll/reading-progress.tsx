@@ -12,34 +12,39 @@ export interface ReadingProgressProps {
 export function ReadingProgress({ className }: ReadingProgressProps) {
   const barRef = React.useRef<HTMLDivElement>(null)
 
-  useGSAP(() => {
-    const bar = barRef.current
-    if (!bar) return
+  useGSAP(
+    () => {
+      const bar = barRef.current
+      if (!bar) return
 
-    gsap.set(bar, { scaleX: 0, transformOrigin: "left" })
+      gsap.set(bar, { scaleX: 0, transformOrigin: "left" })
 
-    gsap.to(bar, {
-      scaleX: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.2,
-      },
-    })
-  }, { scope: barRef })
+      gsap.to(bar, {
+        scaleX: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.2,
+        },
+      })
+    },
+    { scope: barRef }
+  )
 
   return (
     <div
       aria-hidden="true"
-      className="fixed top-0 left-0 right-0 z-50 h-[2px] bg-transparent pointer-events-none"
+      className="pointer-events-none fixed top-0 right-0 left-0 z-50 h-[2px] bg-transparent"
     >
       <div
         ref={barRef}
-        className={cn("h-full w-full bg-foreground/80 will-change-transform", className)}
+        className={cn(
+          "h-full w-full bg-foreground/80 will-change-transform",
+          className
+        )}
       />
     </div>
   )
 }
-

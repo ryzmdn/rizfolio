@@ -108,9 +108,7 @@ export const ALLOWED_IMAGE_MIME_TYPES = [
   "image/svg+xml",
 ] as const
 
-export const ALLOWED_DOCUMENT_MIME_TYPES = [
-  "application/pdf",
-] as const
+export const ALLOWED_DOCUMENT_MIME_TYPES = ["application/pdf"] as const
 
 export const ALLOWED_MEDIA_EXTENSIONS = [
   "jpg",

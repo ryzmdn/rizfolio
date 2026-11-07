@@ -71,7 +71,7 @@ export function BlogHeader() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
-          ? "border-b border-foreground/8 bg-background/85 backdrop-blur-2xl shadow-xs"
+          ? "border-b border-foreground/8 bg-background/85 shadow-xs backdrop-blur-2xl"
           : "border-b border-transparent bg-transparent"
       )}
     >
@@ -86,11 +86,11 @@ export function BlogHeader() {
               <span className="font-serif text-base font-light tracking-tight text-foreground transition-opacity group-hover:opacity-75 sm:text-lg">
                 The Monograph
               </span>
-              <span className="rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+              <span className="rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
                 PUB.04
               </span>
             </div>
-            <span className="hidden font-mono text-[9px] uppercase tracking-widest text-muted-foreground/70 sm:inline">
+            <span className="hidden font-mono text-[9px] tracking-widest text-muted-foreground/70 uppercase sm:inline">
               Systems Architecture & Craft
             </span>
           </div>
@@ -104,7 +104,7 @@ export function BlogHeader() {
             <Link
               key={item.label}
               href={item.href}
-              className="rounded-full px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:bg-foreground/5 hover:text-foreground"
+              className="rounded-full px-3.5 py-1.5 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-all duration-200 hover:bg-foreground/5 hover:text-foreground"
             >
               {item.label}
             </Link>
@@ -116,11 +116,11 @@ export function BlogHeader() {
             type="button"
             onClick={() => setSearchOpen(true)}
             aria-label="Search articles (Cmd+K or /)"
-            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 font-mono text-xs uppercase text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 font-mono text-xs text-muted-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
           >
             <Search className="size-3.5 text-foreground/50" />
             <span className="hidden lg:inline">Search</span>
-            <kbd className="hidden rounded-full border border-foreground/10 bg-background/90 px-1.5 py-0.2 font-mono text-[9px] text-foreground/70 sm:inline-block">
+            <kbd className="py-0.2 hidden rounded-full border border-foreground/10 bg-background/90 px-1.5 font-mono text-[9px] text-foreground/70 sm:inline-block">
               ⌘K
             </kbd>
           </button>
@@ -141,7 +141,7 @@ export function BlogHeader() {
             href={portfolioUrl}
             target="_blank"
             rel="noreferrer"
-            className="hidden items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-1.5 font-mono text-xs uppercase tracking-wider text-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-1.5 font-mono text-xs tracking-wider text-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background sm:inline-flex"
           >
             <span>Portfolio</span>
             <ArrowUpRight className="size-3" />
@@ -176,7 +176,7 @@ export function BlogHeader() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setTimeout(() => setMobileOpen(false), 50)}
-                className="flex items-center justify-between rounded-xl px-3 py-2.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+                className="flex items-center justify-between rounded-xl px-3 py-2.5 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:bg-foreground/5 hover:text-foreground"
               >
                 <span>{item.label}</span>
                 <ArrowUpRight className="size-3 text-muted-foreground/50" />

@@ -56,14 +56,14 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
-      <span className="mr-1 text-[10px] uppercase tracking-widest text-muted-foreground/60">
+      <span className="mr-1 text-[10px] tracking-widest text-muted-foreground/60 uppercase">
         Share:
       </span>
 
       <button
         type="button"
         onClick={handleCopyLink}
-        className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
+        className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 tracking-wider text-muted-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
       >
         {copied ? (
           <>
@@ -82,7 +82,7 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
         href={twitterShareUrl}
         target="_blank"
         rel="noreferrer"
-        className="rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
+        className="rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 tracking-wider text-muted-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
       >
         X / Twitter
       </a>
@@ -91,7 +91,7 @@ export function ShareToolbar({ title, url }: ShareToolbarProps) {
         href={linkedInShareUrl}
         target="_blank"
         rel="noreferrer"
-        className="rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
+        className="rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1.5 tracking-wider text-muted-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
       >
         LinkedIn
       </a>

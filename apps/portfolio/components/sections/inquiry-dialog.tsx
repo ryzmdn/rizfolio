@@ -144,7 +144,9 @@ export function InquiryDialog() {
       >
         <MessageSquareCode className="size-3.5" aria-hidden="true" />
         <span>Initiate Proposal Submission</span>
-        <span className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+        <span className="transition-transform duration-300 group-hover:translate-x-1">
+          &rarr;
+        </span>
       </button>
 
       {isOpen && (
@@ -178,7 +180,8 @@ export function InquiryDialog() {
                     id="inquiry-dialog-desc"
                     className="font-mono text-[11px] text-muted-foreground"
                   >
-                    Direct inquiry channel for enterprise advisory & system contracts.
+                    Direct inquiry channel for enterprise advisory & system
+                    contracts.
                   </p>
                 </div>
               </div>
@@ -200,7 +203,7 @@ export function InquiryDialog() {
                 <h4 className="text-base font-medium text-foreground">
                   Inquiry Dispatched Successfully
                 </h4>
-                <p className="mx-auto max-w-md text-xs font-light leading-relaxed text-muted-foreground">
+                <p className="mx-auto max-w-md text-xs leading-relaxed font-light text-muted-foreground">
                   {successMessage}
                 </p>
                 <div className="pt-4">
@@ -239,7 +242,8 @@ export function InquiryDialog() {
                       htmlFor="inquiry-email"
                       className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
                     >
-                      Email Address <span className="text-foreground/40">*</span>
+                      Email Address{" "}
+                      <span className="text-foreground/40">*</span>
                     </label>
                     <input
                       id="inquiry-email"
@@ -347,7 +351,10 @@ export function InquiryDialog() {
 
                 {error && (
                   <div className="flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs font-medium text-rose-400">
-                    <AlertCircle className="size-4 shrink-0" aria-hidden="true" />
+                    <AlertCircle
+                      className="size-4 shrink-0"
+                      aria-hidden="true"
+                    />
                     <span>{error}</span>
                   </div>
                 )}

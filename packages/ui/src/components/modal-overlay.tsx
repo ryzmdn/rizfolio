@@ -55,7 +55,7 @@ export function ModalOverlay({
     <div
       role="presentation"
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-md animate-in fade-in duration-300"
+      className="fixed inset-0 z-50 flex animate-in items-center justify-center bg-background/80 p-4 backdrop-blur-md duration-300 fade-in"
     >
       <div
         ref={dialogRef}
@@ -63,7 +63,7 @@ export function ModalOverlay({
         aria-modal="true"
         onClick={(e) => e.stopPropagation()}
         className={cn(
-          "relative max-h-[90vh] w-full overflow-y-auto rounded-3xl border border-foreground/10 bg-card/95 p-6 shadow-2xl backdrop-blur-2xl ring-1 ring-foreground/5 animate-in zoom-in-95 duration-300 ease-luxury sm:p-8",
+          "relative max-h-[90vh] w-full animate-in overflow-y-auto rounded-3xl border border-foreground/10 bg-card/95 p-6 shadow-2xl ring-1 ring-foreground/5 backdrop-blur-2xl duration-300 ease-luxury zoom-in-95 sm:p-8",
           maxWidthClasses[maxWidth],
           className
         )}
@@ -72,15 +72,15 @@ export function ModalOverlay({
           type="button"
           onClick={onClose}
           aria-label="Close dialog"
-          className="absolute right-6 top-6 rounded-full border border-foreground/10 p-2 text-muted-foreground transition-transform duration-300 ease-luxury hover:rotate-90 hover:bg-foreground/10 hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+          className="absolute top-6 right-6 rounded-full border border-foreground/10 p-2 text-muted-foreground transition-transform duration-300 ease-luxury outline-none hover:rotate-90 hover:bg-foreground/10 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
         >
           <X className="size-4" />
         </button>
 
         {(title || description) && (
-          <div className="mb-6 border-b border-foreground/8 pb-4 pr-10">
+          <div className="mb-6 border-b border-foreground/8 pr-10 pb-4">
             {title && (
-              <h2 className="font-serif text-lg md:text-xl font-medium tracking-tight text-foreground">
+              <h2 className="font-serif text-lg font-medium tracking-tight text-foreground md:text-xl">
                 {title}
               </h2>
             )}
@@ -97,4 +97,3 @@ export function ModalOverlay({
     </div>
   )
 }
-

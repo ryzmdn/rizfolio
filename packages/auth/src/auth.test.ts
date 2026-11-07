@@ -116,7 +116,10 @@ describe("Cryptographic JWT Session Integrity", () => {
   })
 
   it("should embed and verify tokenVersion in JWT payload", async () => {
-    const token = await createSessionToken({ ...payload, tokenVersion: 3 }, "24h")
+    const token = await createSessionToken(
+      { ...payload, tokenVersion: 3 },
+      "24h"
+    )
     const verified = await verifySessionToken(token)
     expect(verified).not.toBeNull()
     expect(verified?.tokenVersion).toBe(3)

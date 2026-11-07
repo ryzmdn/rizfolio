@@ -32,7 +32,7 @@ export function DocsFooter() {
   return (
     <Footer
       id="docs-footer"
-      className="w-full border-t border-foreground/8 bg-card/20 px-6 py-20 sm:px-8 lg:px-12 backdrop-blur-sm"
+      className="w-full border-t border-foreground/8 bg-card/20 px-6 py-20 backdrop-blur-sm sm:px-8 lg:px-12"
     >
       <div className="mx-auto max-w-7xl space-y-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 lg:gap-16">
@@ -57,7 +57,7 @@ export function DocsFooter() {
               </div>
             </div>
 
-            <p className="max-w-md text-sm font-light leading-relaxed text-muted-foreground">
+            <p className="max-w-md text-sm leading-relaxed font-light text-muted-foreground">
               Documenting technical repositories, university coursework, and
               algorithmic experiments. Exploring distributed systems in Go,
               low-level memory allocators in C, and design token ergonomics in
@@ -166,7 +166,8 @@ export function DocsFooter() {
 
         <div className="flex flex-col items-start justify-between gap-y-4 border-t border-foreground/8 pt-8 font-mono text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>
-            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js 16, React 19, Shiki & Tailwind CSS.
+            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js
+            16, React 19, Shiki & Tailwind CSS.
           </p>
 
           <button

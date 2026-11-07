@@ -47,7 +47,8 @@ interface BioLinkCardProps {
 
 export function BioLinkCard({ link, index }: BioLinkCardProps) {
   const IconComponent = iconMap[link.icon] || Globe
-  const indexStr = index !== undefined ? String(index + 1).padStart(2, "0") : null
+  const indexStr =
+    index !== undefined ? String(index + 1).padStart(2, "0") : null
 
   function handleClick() {
     trackLinkClickAction(link.id)
@@ -93,7 +94,10 @@ export function BioLinkCard({ link, index }: BioLinkCardProps) {
       </div>
 
       <div className="ml-3 flex size-7 shrink-0 items-center justify-center rounded-full border border-transparent text-muted-foreground transition-all duration-300 ease-luxury group-hover:border-foreground/20 group-hover:text-foreground">
-        <ArrowUpRight className="size-3.5 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+        <ArrowUpRight
+          className="size-3.5 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          aria-hidden="true"
+        />
       </div>
     </a>
   )

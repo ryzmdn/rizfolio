@@ -117,7 +117,11 @@ export async function createProduct(values: CreateProductInput) {
     amount: 0,
     currency: created.currency,
     metadata: { catalogPrice: created.price },
-    payloadAfter: { slug: created.slug, title: created.title, price: created.price },
+    payloadAfter: {
+      slug: created.slug,
+      title: created.title,
+      price: created.price,
+    },
   })
   dispatchBackgroundRevalidation({ app: "shop", path: "/" })
   revalidatePath("/shop")

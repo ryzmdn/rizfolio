@@ -105,7 +105,7 @@ export function FileTreeBrowser({
     : files
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 backdrop-blur-xl shadow-xs">
+    <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 shadow-xs backdrop-blur-xl">
       <div className="flex flex-col gap-3 border-b border-foreground/8 bg-foreground/[0.02] px-5 py-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
           <Link
@@ -122,7 +122,9 @@ export function FileTreeBrowser({
               <span key={segmentPath} className="flex items-center gap-2">
                 <span className="text-foreground/20">/</span>
                 {isLast ? (
-                  <span className="font-semibold text-foreground">{segment}</span>
+                  <span className="font-semibold text-foreground">
+                    {segment}
+                  </span>
                 ) : (
                   <Link
                     href={`/repo/${slug}?path=${encodeURIComponent(segmentPath)}`}

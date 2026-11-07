@@ -97,7 +97,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
 
   return (
     <nav aria-label="Table of contents" className={cn("space-y-4", className)}>
-      <div className="rounded-2xl border border-foreground/10 bg-card/60 p-4 lg:hidden backdrop-blur-md">
+      <div className="rounded-2xl border border-foreground/10 bg-card/60 p-4 backdrop-blur-md lg:hidden">
         <button
           type="button"
           onClick={() => setMobileExpanded((prev) => !prev)}
@@ -128,9 +128,9 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
                   href={`#${item.id}`}
                   onClick={(e) => handleHeadingClick(e, item.id)}
                   className={cn(
-                    "block py-0.5 transition-colors font-mono",
+                    "block py-0.5 font-mono transition-colors",
                     activeId === item.id
-                      ? "text-foreground font-semibold"
+                      ? "font-semibold text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -161,7 +161,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
                 href={`#${item.id}`}
                 onClick={(e) => handleHeadingClick(e, item.id)}
                 className={cn(
-                  "block py-1 leading-snug transition-colors font-mono text-xs",
+                  "block py-1 font-mono text-xs leading-snug transition-colors",
                   activeId === item.id
                     ? "-ml-2.5 border-l-2 border-foreground pl-2.5 font-medium text-foreground"
                     : "text-muted-foreground hover:text-foreground"

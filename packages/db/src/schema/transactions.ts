@@ -29,7 +29,9 @@ export const masterTransactions = pgTable(
     actorId: uuid("actor_id").references(() => users.id, {
       onDelete: "set null",
     }),
-    actorType: varchar("actor_type", { length: 50 }).notNull().default("SYSTEM"),
+    actorType: varchar("actor_type", { length: 50 })
+      .notNull()
+      .default("SYSTEM"),
 
     entityType: varchar("entity_type", { length: 100 }).notNull(),
     entityId: varchar("entity_id", { length: 255 }).notNull(),
@@ -40,7 +42,9 @@ export const masterTransactions = pgTable(
     productId: uuid("product_id").references(() => products.id, {
       onDelete: "set null",
     }),
-    postId: uuid("post_id").references(() => posts.id, { onDelete: "set null" }),
+    postId: uuid("post_id").references(() => posts.id, {
+      onDelete: "set null",
+    }),
     repoId: uuid("repo_id").references(() => repositories.id, {
       onDelete: "set null",
     }),

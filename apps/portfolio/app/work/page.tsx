@@ -70,8 +70,10 @@ export default async function WorkIndexPage() {
             <h1 className="text-4xl font-light tracking-tight text-foreground sm:text-6xl md:text-7xl">
               Selected Works & Systems.
             </h1>
-            <p className="max-w-2xl text-base font-light leading-relaxed text-muted-foreground">
-              Every system reflects an uncompromising engineering approach: decoupling monolithic dependencies, optimizing database transaction budgets, and delivering sub-second edge execution.
+            <p className="max-w-2xl text-base leading-relaxed font-light text-muted-foreground">
+              Every system reflects an uncompromising engineering approach:
+              decoupling monolithic dependencies, optimizing database
+              transaction budgets, and delivering sub-second edge execution.
             </p>
 
             <div className="flex flex-wrap items-center gap-2 pt-4">
@@ -109,7 +111,7 @@ export default async function WorkIndexPage() {
                       sizes="(max-width: 768px) 100vw, 550px"
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                     />
-                    <div className="absolute right-3.5 top-3.5 flex size-9 items-center justify-center rounded-full border border-foreground/15 bg-background/85 text-foreground backdrop-blur-md transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                    <div className="absolute top-3.5 right-3.5 flex size-9 items-center justify-center rounded-full border border-foreground/15 bg-background/85 text-foreground backdrop-blur-md transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                       <ArrowUpRight className="size-4" />
                     </div>
                   </div>
@@ -125,7 +127,7 @@ export default async function WorkIndexPage() {
                     </h2>
 
                     {item.summary && (
-                      <p className="line-clamp-2 text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
+                      <p className="line-clamp-2 text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
                         {item.summary}
                       </p>
                     )}
@@ -172,8 +174,9 @@ export default async function WorkIndexPage() {
             <h3 className="text-2xl font-light tracking-tight text-foreground sm:text-4xl">
               Initiate an Architectural Engagement
             </h3>
-            <p className="mx-auto mt-3 max-w-lg text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
-              Available for technical advisory, distributed systems engineering, and dedicated platform contracts.
+            <p className="mx-auto mt-3 max-w-lg text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
+              Available for technical advisory, distributed systems engineering,
+              and dedicated platform contracts.
             </p>
             <div className="mt-8 flex justify-center">
               <Link

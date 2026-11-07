@@ -151,9 +151,7 @@ export async function createStripeCheckoutSessionAction(
   ): number {
     const ref = productPriceMap.get(productId)
     if (!ref) return 0
-    return licenseType === "EXTENDED"
-      ? Math.round(ref.price * 1.75)
-      : ref.price
+    return licenseType === "EXTENDED" ? Math.round(ref.price * 1.75) : ref.price
   }
 
   let discountPercent = 0
@@ -279,7 +277,8 @@ export async function createStripeCheckoutSessionAction(
     if (process.env.NODE_ENV === "production") {
       return {
         success: false,
-        error: "Stripe payment gateway is not configured for production orders.",
+        error:
+          "Stripe payment gateway is not configured for production orders.",
       }
     }
 

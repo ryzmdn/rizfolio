@@ -171,7 +171,7 @@ export function CommentsSection({
       <div className="flex flex-col gap-4 pb-8 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+            <span className="font-mono text-[10px] tracking-widest text-muted-foreground/60 uppercase">
               [ DISCOURSE // PEER ARCHIVES ]
             </span>
           </div>
@@ -179,11 +179,12 @@ export function CommentsSection({
             Discussion & Commentary
           </h2>
           <p className="text-xs font-light text-muted-foreground">
-            Join the architectural discourse. Technical critiques and perspectives are welcomed.
+            Join the architectural discourse. Technical critiques and
+            perspectives are welcomed.
           </p>
         </div>
 
-        <span className="self-start rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 font-mono text-xs uppercase text-muted-foreground sm:self-auto">
+        <span className="self-start rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 font-mono text-xs text-muted-foreground uppercase sm:self-auto">
           {comments.length} {comments.length === 1 ? "Dispatch" : "Dispatches"}
         </span>
       </div>
@@ -219,13 +220,13 @@ export function CommentsSection({
         onSubmit={handleMainSubmit}
         className="mb-12 space-y-4 rounded-3xl border border-foreground/10 bg-foreground/[0.02] p-6 backdrop-blur-xl sm:p-8"
       >
-        <span className="font-mono text-xs uppercase tracking-widest text-foreground">
+        <span className="font-mono text-xs tracking-widest text-foreground uppercase">
           Submit Commentary
         </span>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+            <label className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
               Your Name
             </label>
             <input
@@ -240,7 +241,7 @@ export function CommentsSection({
           </div>
 
           <div className="space-y-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+            <label className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
               Email Address
             </label>
             <input
@@ -256,7 +257,7 @@ export function CommentsSection({
         </div>
 
         <div className="space-y-1.5">
-          <label className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+          <label className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
             Commentary
           </label>
           <textarea
@@ -277,7 +278,7 @@ export function CommentsSection({
           <button
             type="submit"
             disabled={isPending || !content.trim() || !authorName.trim()}
-            className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 font-mono text-xs uppercase tracking-wider text-background transition-all hover:opacity-90 active:scale-95 disabled:opacity-40"
+            className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 font-mono text-xs tracking-wider text-background uppercase transition-all hover:opacity-90 active:scale-95 disabled:opacity-40"
           >
             {isPending ? (
               <Loader2 className="size-3.5 animate-spin" />
@@ -290,13 +291,13 @@ export function CommentsSection({
       </form>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-16 font-mono text-xs uppercase tracking-wider text-muted-foreground">
+        <div className="flex items-center justify-center py-16 font-mono text-xs tracking-wider text-muted-foreground uppercase">
           <Loader2 className="mr-2 size-4 animate-spin" />
           Synchronizing discussion ledger...
         </div>
       ) : rootComments.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-foreground/15 bg-foreground/2 p-12 text-center">
-          <MessageSquare className="size-8 text-muted-foreground/30 stroke-[1.25]" />
+          <MessageSquare className="size-8 stroke-[1.25] text-muted-foreground/30" />
           <h4 className="mt-3 font-serif text-sm font-light text-foreground">
             No peer commentary registered
           </h4>
@@ -337,10 +338,12 @@ export function CommentsSection({
                         onClick={() =>
                           setReplyingTo(isReplyingThis ? null : root)
                         }
-                        className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
+                        className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase hover:text-foreground"
                       >
                         <CornerDownRight className="size-3" />
-                        <span>{isReplyingThis ? "Cancel Response" : "Respond"}</span>
+                        <span>
+                          {isReplyingThis ? "Cancel Response" : "Respond"}
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -352,7 +355,7 @@ export function CommentsSection({
                     className="mt-4 space-y-3 rounded-2xl border border-foreground/10 bg-foreground/5 p-4"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-foreground">
+                      <span className="font-mono text-[11px] tracking-wider text-foreground uppercase">
                         Responding to @{root.authorName}
                       </span>
                       <button
@@ -401,14 +404,16 @@ export function CommentsSection({
                         disabled={
                           isPending || !replyContent.trim() || !replyName.trim()
                         }
-                        className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-1.5 font-mono text-xs uppercase tracking-wider text-background hover:opacity-90 disabled:opacity-40"
+                        className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-1.5 font-mono text-xs tracking-wider text-background uppercase hover:opacity-90 disabled:opacity-40"
                       >
                         {isPending ? (
                           <Loader2 className="size-3 animate-spin" />
                         ) : (
                           <Send className="size-3" />
                         )}
-                        <span>{isPending ? "Dispatching..." : "Post Response"}</span>
+                        <span>
+                          {isPending ? "Dispatching..." : "Post Response"}
+                        </span>
                       </button>
                     </div>
                   </form>

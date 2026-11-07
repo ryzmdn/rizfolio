@@ -52,7 +52,7 @@ export function ShopHeader() {
                   key={link.label}
                   href={link.href}
                   className={cn(
-                    "rounded-full px-3 py-1 font-mono text-[11px] tracking-wider transition-colors uppercase",
+                    "rounded-full px-3 py-1 font-mono text-[11px] tracking-wider uppercase transition-colors",
                     isActive
                       ? "bg-foreground text-background"
                       : "text-muted-foreground hover:text-foreground"

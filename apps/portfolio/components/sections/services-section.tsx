@@ -2,14 +2,20 @@ import { Container } from "@workspace/ui/components/layouts"
 import { services as fallbackServices, engineeringProcess } from "@/data"
 import { CheckCircle2, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { ScrollReveal, StaggerContainer, StaggerItem } from "@workspace/ui/components/animations"
+import {
+  ScrollReveal,
+  StaggerContainer,
+  StaggerItem,
+} from "@workspace/ui/components/animations"
 import type { ServiceItem } from "@/lib/queries"
 
 interface ServicesSectionProps {
   services?: ServiceItem[]
 }
 
-export function ServicesSection({ services: propServices }: ServicesSectionProps) {
+export function ServicesSection({
+  services: propServices,
+}: ServicesSectionProps) {
   const items =
     propServices && propServices.length > 0 ? propServices : fallbackServices
 
@@ -27,7 +33,8 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
               </h2>
             </div>
             <p className="max-w-md font-mono text-xs leading-relaxed text-muted-foreground">
-              Strict engineering standards governing state atomicity, sub-second latency, and deterministic reliability.
+              Strict engineering standards governing state atomicity, sub-second
+              latency, and deterministic reliability.
             </p>
           </div>
         </ScrollReveal>
@@ -36,7 +43,7 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
           {items.map((service, index) => (
             <StaggerItem
               key={service.title}
-              className="group py-10 transition-colors-luxury hover:bg-foreground/[0.015] sm:py-12 px-4 rounded-2xl"
+              className="group rounded-2xl px-4 py-10 transition-colors-luxury hover:bg-foreground/[0.015] sm:py-12"
             >
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
                 <div className="flex items-start justify-between lg:col-span-3">
@@ -54,7 +61,7 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
                   <h3 className="text-2xl font-medium tracking-tight text-foreground transition-colors-luxury group-hover:text-foreground/80 sm:text-3xl">
                     {service.title}
                   </h3>
-                  <p className="text-sm font-light leading-relaxed text-muted-foreground">
+                  <p className="text-sm leading-relaxed font-light text-muted-foreground">
                     {service.description}
                   </p>
                 </div>
@@ -82,13 +89,13 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
         </StaggerContainer>
 
         <ScrollReveal variant="scale" delay={0.1}>
-          <div className="space-y-8 rounded-3xl border border-foreground/10 bg-foreground/[0.01] p-8 sm:p-12 transition-hover-lift">
+          <div className="space-y-8 rounded-3xl border border-foreground/10 bg-foreground/[0.01] p-8 transition-hover-lift sm:p-12">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="space-y-1">
                 <span className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
                   ENGINEERING LIFECYCLE
                 </span>
-                <h4 className="text-xl font-medium text-foreground tracking-tight sm:text-2xl">
+                <h4 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">
                   The Deterministic Execution Protocol
                 </h4>
               </div>
@@ -103,14 +110,17 @@ export function ServicesSection({ services: propServices }: ServicesSectionProps
 
             <div className="grid grid-cols-1 gap-6 pt-4 sm:grid-cols-2 lg:grid-cols-4">
               {engineeringProcess.map((phase) => (
-                <div key={phase.dateTime} className="space-y-2 border-t border-foreground/8 pt-4 transition-hover-lift">
+                <div
+                  key={phase.dateTime}
+                  className="space-y-2 border-t border-foreground/8 pt-4 transition-hover-lift"
+                >
                   <span className="font-mono text-xs font-semibold text-foreground/40">
                     {phase.date}
                   </span>
                   <p className="text-sm font-medium text-foreground">
                     {phase.name}
                   </p>
-                  <p className="text-xs font-light leading-relaxed text-muted-foreground">
+                  <p className="text-xs leading-relaxed font-light text-muted-foreground">
                     {phase.description}
                   </p>
                 </div>

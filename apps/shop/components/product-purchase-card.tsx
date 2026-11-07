@@ -71,7 +71,9 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
             {format(currentPrice)}
           </span>
           <span className="font-mono text-xs text-muted-foreground uppercase">
-            {selectedLicense === "EXTENDED" ? "Extended License" : "Standard License"}
+            {selectedLicense === "EXTENDED"
+              ? "Extended License"
+              : "Standard License"}
           </span>
         </div>
         <p className="text-xs font-light text-muted-foreground">
@@ -133,7 +135,8 @@ export function ProductPurchaseCard({ product }: ProductPurchaseCardProps) {
         <div className="flex items-center justify-between text-muted-foreground">
           <span>STACK</span>
           <span className="text-foreground">
-            {product.techStack?.[0] || "Next.js 16"} + {product.techStack?.[1] || "React 19"}
+            {product.techStack?.[0] || "Next.js 16"} +{" "}
+            {product.techStack?.[1] || "React 19"}
           </span>
         </div>
         <div className="flex items-center justify-between text-muted-foreground">

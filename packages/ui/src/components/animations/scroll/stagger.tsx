@@ -60,7 +60,10 @@ export function StaggerContainer({
         }
       )
     },
-    { scope: containerRef, dependencies: [stagger, duration, distance, itemSelector, once] }
+    {
+      scope: containerRef,
+      dependencies: [stagger, duration, distance, itemSelector, once],
+    }
   )
 
   return (
@@ -74,11 +77,17 @@ export interface StaggerItemProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }
 
-export function StaggerItem({ className, children, ...props }: StaggerItemProps) {
+export function StaggerItem({
+  className,
+  children,
+  ...props
+}: StaggerItemProps) {
   return (
-    <div className={cn("stagger-item will-change-transform", className)} {...props}>
+    <div
+      className={cn("stagger-item will-change-transform", className)}
+      {...props}
+    >
       {children}
     </div>
   )
 }
-

@@ -6,7 +6,11 @@ import { profile } from "@workspace/db/schema"
 import { unstable_cache } from "next/cache"
 import { getDynamicBioLinks } from "@/lib/queries"
 import { BioLinkCard } from "@/components/bio-link-card"
-import { StaggerContainer, StaggerItem, ScrollReveal } from "@workspace/ui/components/animations"
+import {
+  StaggerContainer,
+  StaggerItem,
+  ScrollReveal,
+} from "@workspace/ui/components/animations"
 
 export const revalidate = 60
 
@@ -53,7 +57,8 @@ export default async function LinkBioPage() {
     (profileData?.socialLinks as Record<string, string> | null) || {}
   const name = profileData?.fullName || "Rizky Ramadhan"
   const headline =
-    profileData?.headline || "Lead Software Architect & Systems Engineering Consultant"
+    profileData?.headline ||
+    "Lead Software Architect & Systems Engineering Consultant"
   const bio =
     profileData?.bio ||
     "Architecting high-throughput distributed applications, resilient commerce infrastructure, and timeless minimal design systems across the modern web."
@@ -91,7 +96,7 @@ export default async function LinkBioPage() {
                   fill
                   priority
                   sizes="112px"
-                  className="size-full object-cover grayscale contrast-125 transition-all duration-700 ease-luxury group-hover:grayscale-0 group-hover:scale-105"
+                  className="size-full object-cover contrast-125 grayscale transition-all duration-700 ease-luxury group-hover:scale-105 group-hover:grayscale-0"
                 />
               </div>
 
@@ -118,7 +123,7 @@ export default async function LinkBioPage() {
               </span>
             </div>
 
-            <p className="text-xs font-light leading-relaxed text-muted-foreground sm:text-sm">
+            <p className="text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
               {bio}
             </p>
           </div>
@@ -164,7 +169,7 @@ export default async function LinkBioPage() {
                   className="group inline-flex items-center gap-1 transition-colors-luxury hover:text-foreground"
                 >
                   <span>{channel.name}</span>
-                  <ArrowUpRight className="size-2.5 opacity-40 transition-transform duration-300 ease-luxury group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                  <ArrowUpRight className="size-2.5 opacity-40 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
                 </a>
               ))}
             </div>
@@ -176,7 +181,7 @@ export default async function LinkBioPage() {
               >
                 <Mail className="size-3.5" />
                 <span>Inquire via Encrypted Email</span>
-                <ArrowUpRight className="size-3 transition-transform duration-300 ease-luxury group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <ArrowUpRight className="size-3 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
           </div>
@@ -184,7 +189,8 @@ export default async function LinkBioPage() {
 
         <footer className="border-t border-foreground/6 pt-6 text-center font-mono text-[10px] tracking-widest text-muted-foreground/60 uppercase">
           <p>
-            Rizfolio Architecture &bull; Jakarta (UTC+7) &bull; {new Date().getFullYear()}
+            Rizfolio Architecture &bull; Jakarta (UTC+7) &bull;{" "}
+            {new Date().getFullYear()}
           </p>
         </footer>
       </div>

@@ -208,7 +208,9 @@ export async function getAllChangelogItems() {
 
 export async function getChangelogItems(changelogId: string) {
   if (!isDbConfigured) {
-    return fallbackCmsChangelogItems.filter((i) => i.changelogId === changelogId)
+    return fallbackCmsChangelogItems.filter(
+      (i) => i.changelogId === changelogId
+    )
   }
   try {
     const rows = await db
@@ -225,7 +227,9 @@ export async function getChangelogItems(changelogId: string) {
       "[CMS Changelog] Database query fallback:",
       error instanceof Error ? error.message : String(error)
     )
-    return fallbackCmsChangelogItems.filter((i) => i.changelogId === changelogId)
+    return fallbackCmsChangelogItems.filter(
+      (i) => i.changelogId === changelogId
+    )
   }
 }
 
@@ -235,7 +239,10 @@ export async function createChangelogItem(values: CreateChangelogItemInput) {
 
   if (isDbConfigured) {
     try {
-      const [res] = await db.insert(changelogItems).values(validated).returning()
+      const [res] = await db
+        .insert(changelogItems)
+        .values(validated)
+        .returning()
       created = res
     } catch (err) {
       console.warn(

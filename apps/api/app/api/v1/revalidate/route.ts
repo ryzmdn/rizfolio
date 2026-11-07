@@ -32,7 +32,11 @@ export const POST = createApiHandler(
     const validSecret =
       process.env.REVALIDATION_SECRET_TOKEN || process.env.API_MASTER_KEY
 
-    if (!validSecret || !body.secret || !safeCompareTokens(body.secret, validSecret)) {
+    if (
+      !validSecret ||
+      !body.secret ||
+      !safeCompareTokens(body.secret, validSecret)
+    ) {
       throw new UnauthorizedError(
         "Invalid or missing revalidation secret token."
       )

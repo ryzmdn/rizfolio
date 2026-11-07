@@ -95,7 +95,7 @@ export function FilterBar({
   }
 
   return (
-    <div className="space-y-5 rounded-3xl border border-foreground/8 bg-card/40 p-5 sm:p-6 shadow-xs backdrop-blur-xl transition-colors">
+    <div className="space-y-5 rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl transition-colors sm:p-6">
       <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1">
           <Search className="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -125,9 +125,7 @@ export function FilterBar({
         <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground sm:justify-end">
           <div className="font-mono text-xs">
             Showing{" "}
-            <span className="font-medium text-foreground">
-              {matchedCount}
-            </span>{" "}
+            <span className="font-medium text-foreground">{matchedCount}</span>{" "}
             of {totalCount} releases
           </div>
 

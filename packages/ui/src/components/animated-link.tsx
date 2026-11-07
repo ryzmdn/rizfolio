@@ -5,14 +5,15 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@workspace/ui/lib/utils"
 
 const animatedLinkVariants = cva(
-  "group inline-flex items-center gap-1 text-sm font-medium transition-colors-luxury cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 rounded-xs",
+  "group inline-flex cursor-pointer items-center gap-1 rounded-xs text-sm font-medium transition-colors-luxury outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
   {
     variants: {
       variant: {
-        underline: "link-underline-slide text-foreground hover:text-foreground/80",
+        underline:
+          "link-underline-slide text-foreground hover:text-foreground/80",
         arrow: "text-foreground hover:text-foreground/80",
         external: "text-foreground hover:text-foreground/80",
-        fade: "text-muted-foreground hover:text-foreground transition-opacity-luxury",
+        fade: "text-muted-foreground transition-opacity-luxury hover:text-foreground",
         pill: "rounded-full border border-foreground/10 bg-card/60 px-3.5 py-1 text-xs text-muted-foreground backdrop-blur-xs transition-hover-lift hover:border-foreground/30 hover:bg-foreground/[0.04] hover:text-foreground",
       },
     },
@@ -23,7 +24,8 @@ const animatedLinkVariants = cva(
 )
 
 export interface AnimatedLinkProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps>,
+  extends
+    Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps>,
     LinkProps,
     VariantProps<typeof animatedLinkVariants> {
   children: React.ReactNode
@@ -46,12 +48,18 @@ export function AnimatedLink({
         <ArrowRight className="size-3.5 transition-transform duration-300 ease-luxury group-hover:translate-x-1" />
       )}
       {(variant === "external" || isExternal) && variant !== "arrow" && (
-        <ArrowUpRight className="size-3.5 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5 opacity-70 group-hover:opacity-100" />
+        <ArrowUpRight className="size-3.5 opacity-70 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
       )}
     </>
   )
 
-  if (isExternal || typeof href === "string" && (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:"))) {
+  if (
+    isExternal ||
+    (typeof href === "string" &&
+      (href.startsWith("http://") ||
+        href.startsWith("https://") ||
+        href.startsWith("mailto:")))
+  ) {
     return (
       <a
         href={href as string}
@@ -75,4 +83,3 @@ export function AnimatedLink({
     </Link>
   )
 }
-

@@ -20,11 +20,11 @@ export function CmsPageShell({
           <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase backdrop-blur-md">
             <span>[ MISSION CONTROL // 06 ]</span>
           </div>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-foreground">
+          <h1 className="font-serif text-3xl font-light tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             {title}
           </h1>
           {description && (
-            <p className="max-w-3xl text-sm sm:text-base font-light leading-relaxed text-muted-foreground">
+            <p className="max-w-3xl text-sm leading-relaxed font-light text-muted-foreground sm:text-base">
               {description}
             </p>
           )}

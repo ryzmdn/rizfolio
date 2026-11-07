@@ -80,20 +80,22 @@ export function BlogFooter() {
                 />
               </div>
               <div>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+                <span className="font-mono text-[10px] tracking-widest text-muted-foreground/60 uppercase">
                   [ THE MONOGRAPH // ARCHIVES ]
                 </span>
                 <p className="font-serif text-base font-light text-foreground">
                   Rizky Ramadhan
                 </p>
-                <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                <p className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
                   Multidisciplinary Digital Builder
                 </p>
               </div>
             </div>
 
-            <p className="max-w-sm text-xs font-light leading-relaxed text-muted-foreground">
-              Documenting systems architecture, design token ergonomics, high-throughput database modeling, and lessons learned shipping production software.
+            <p className="max-w-sm text-xs leading-relaxed font-light text-muted-foreground">
+              Documenting systems architecture, design token ergonomics,
+              high-throughput database modeling, and lessons learned shipping
+              production software.
             </p>
 
             <div className="flex items-center gap-2 pt-1">
@@ -157,7 +159,7 @@ export function BlogFooter() {
           </div>
 
           <div className="space-y-4 md:col-span-3">
-            <p className="font-mono text-xs uppercase tracking-widest text-foreground">
+            <p className="font-mono text-xs tracking-widest text-foreground uppercase">
               Topics & Domains
             </p>
             <ul className="space-y-2.5 font-mono text-xs">
@@ -175,11 +177,12 @@ export function BlogFooter() {
           </div>
 
           <div className="space-y-4 md:col-span-4">
-            <p className="font-mono text-xs uppercase tracking-widest text-foreground">
+            <p className="font-mono text-xs tracking-widest text-foreground uppercase">
               Monograph Dispatch
             </p>
-            <p className="text-xs font-light leading-relaxed text-muted-foreground">
-              Receive concise technical notes whenever new case studies or architectural perspectives are published. No marketing spam.
+            <p className="text-xs leading-relaxed font-light text-muted-foreground">
+              Receive concise technical notes whenever new case studies or
+              architectural perspectives are published. No marketing spam.
             </p>
 
             {feedbackMessage && isSuccess ? (
@@ -197,20 +200,22 @@ export function BlogFooter() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="NAME@DOMAIN.COM"
-                    className="min-w-0 flex-1 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 font-mono text-xs uppercase text-foreground placeholder:text-muted-foreground/50 focus:border-foreground/30 focus:outline-hidden disabled:opacity-60"
+                    className="min-w-0 flex-1 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 font-mono text-xs text-foreground uppercase placeholder:text-muted-foreground/50 focus:border-foreground/30 focus:outline-hidden disabled:opacity-60"
                   />
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     aria-label="Subscribe to updates"
-                    className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full bg-foreground px-5 py-2 font-mono text-xs uppercase tracking-wider text-background transition-opacity hover:opacity-85 disabled:opacity-50"
+                    className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full bg-foreground px-5 py-2 font-mono text-xs tracking-wider text-background uppercase transition-opacity hover:opacity-85 disabled:opacity-50"
                   >
                     <span>{isSubmitting ? "..." : "Join"}</span>
                     <Send className="size-3" />
                   </button>
                 </div>
                 {feedbackMessage && !isSuccess && (
-                  <p className="font-mono text-xs text-destructive">{feedbackMessage}</p>
+                  <p className="font-mono text-xs text-destructive">
+                    {feedbackMessage}
+                  </p>
                 )}
               </form>
             )}
@@ -219,13 +224,14 @@ export function BlogFooter() {
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-foreground/8 pt-8 font-mono text-[11px] text-muted-foreground sm:flex-row">
           <p>
-            &copy; {new Date().getFullYear()} Rizky Ramadhan. The Monograph Series. All rights reserved.
+            &copy; {new Date().getFullYear()} Rizky Ramadhan. The Monograph
+            Series. All rights reserved.
           </p>
 
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-1.5 uppercase tracking-wider transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background"
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-1.5 tracking-wider uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background"
           >
             <span>Back to top</span>
             <ArrowUp className="size-3" />

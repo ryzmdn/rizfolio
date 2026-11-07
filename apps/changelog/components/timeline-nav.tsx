@@ -107,7 +107,7 @@ export function TimelineNav({ releases }: TimelineNavProps) {
             <Milestone className="size-3.5" />
             <span>Product Roadmap</span>
           </div>
-          <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-1.5 py-0.2 text-[9px] text-muted-foreground">
+          <span className="py-0.2 rounded-full border border-foreground/10 bg-foreground/[0.04] px-1.5 text-[9px] text-muted-foreground">
             Upcoming
           </span>
         </Link>

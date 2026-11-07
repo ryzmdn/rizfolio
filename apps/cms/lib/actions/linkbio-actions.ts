@@ -64,7 +64,10 @@ export async function getBioLinksAdmin(): Promise<BioLink[]> {
     return fallbackBioLinks
   }
   try {
-    const rows = await db.select().from(bioLinks).orderBy(asc(bioLinks.displayOrder))
+    const rows = await db
+      .select()
+      .from(bioLinks)
+      .orderBy(asc(bioLinks.displayOrder))
     return rows.length > 0 ? rows : fallbackBioLinks
   } catch (error) {
     console.warn(
@@ -80,7 +83,10 @@ export async function getBioLinkStats(): Promise<BioLinkStats> {
     return {
       total: fallbackBioLinks.length,
       active: fallbackBioLinks.filter((l) => l.isActive).length,
-      totalClicks: fallbackBioLinks.reduce((acc, curr) => acc + (curr.clickCount || 0), 0),
+      totalClicks: fallbackBioLinks.reduce(
+        (acc, curr) => acc + (curr.clickCount || 0),
+        0
+      ),
     }
   }
 
@@ -98,7 +104,10 @@ export async function getBioLinkStats(): Promise<BioLinkStats> {
     return {
       total: fallbackBioLinks.length,
       active: fallbackBioLinks.filter((l) => l.isActive).length,
-      totalClicks: fallbackBioLinks.reduce((acc, curr) => acc + (curr.clickCount || 0), 0),
+      totalClicks: fallbackBioLinks.reduce(
+        (acc, curr) => acc + (curr.clickCount || 0),
+        0
+      ),
     }
   }
 }
@@ -205,10 +214,16 @@ export async function updateBioLinkAction(
         id,
         title: input.title ?? match?.title ?? "Bio Link",
         url: input.url ?? match?.url ?? "https://ryzmdn.me",
-        description: input.description !== undefined ? input.description : (match?.description ?? null),
+        description:
+          input.description !== undefined
+            ? input.description
+            : (match?.description ?? null),
         icon: input.icon ?? match?.icon ?? "Globe",
         badge: input.badge !== undefined ? input.badge : (match?.badge ?? null),
-        badgeColor: input.badgeColor !== undefined ? input.badgeColor : (match?.badgeColor ?? null),
+        badgeColor:
+          input.badgeColor !== undefined
+            ? input.badgeColor
+            : (match?.badgeColor ?? null),
         category: input.category ?? match?.category ?? "GENERAL",
         isActive: input.isActive ?? match?.isActive ?? true,
         displayOrder: input.displayOrder ?? match?.displayOrder ?? 0,
@@ -296,8 +311,7 @@ export async function toggleBioLinkStatusAction(
   } catch (error) {
     return {
       success: false,
-      error:
-        error instanceof Error ? error.message : "Failed to toggle status",
+      error: error instanceof Error ? error.message : "Failed to toggle status",
     }
   }
 }

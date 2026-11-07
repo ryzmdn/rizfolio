@@ -28,7 +28,7 @@ export function DocsHeader() {
   return (
     <Header
       id="docs-header"
-      className="sticky top-0 z-40 w-full border-b border-foreground/8 bg-background/85 backdrop-blur-2xl shadow-xs"
+      className="sticky top-0 z-40 w-full border-b border-foreground/8 bg-background/85 shadow-xs backdrop-blur-2xl"
     >
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6 lg:px-10">
         <div className="flex items-center gap-3">
@@ -42,11 +42,11 @@ export function DocsHeader() {
                 <span className="font-serif text-base font-light tracking-tight text-foreground transition-opacity group-hover:opacity-75 sm:text-lg">
                   Blueprint Archive
                 </span>
-                <span className="rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+                <span className="rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
                   DOCS.05
                 </span>
               </div>
-              <span className="hidden font-mono text-[9px] uppercase tracking-widest text-muted-foreground/70 sm:inline">
+              <span className="hidden font-mono text-[9px] tracking-widest text-muted-foreground/70 uppercase sm:inline">
                 Open Source & Code Archives
               </span>
             </div>
@@ -64,7 +64,7 @@ export function DocsHeader() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-all duration-200",
+                  "rounded-full px-4 py-1.5 font-mono text-xs tracking-wider uppercase transition-all duration-200",
                   isActive
                     ? "bg-foreground font-semibold text-background shadow-xs"
                     : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
@@ -81,11 +81,11 @@ export function DocsHeader() {
             type="button"
             onClick={openSearch}
             aria-label="Search repositories and code"
-            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-3.5 py-1.5 font-mono text-xs uppercase text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-3.5 py-1.5 font-mono text-xs text-muted-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
           >
             <Search className="size-3.5 text-foreground/50" />
             <span className="hidden sm:inline">Search</span>
-            <kbd className="hidden rounded-full border border-foreground/10 bg-background/90 px-1.5 py-0.2 font-mono text-[9px] text-foreground/70 md:inline-flex">
+            <kbd className="py-0.2 hidden rounded-full border border-foreground/10 bg-background/90 px-1.5 font-mono text-[9px] text-foreground/70 md:inline-flex">
               ⌘K
             </kbd>
           </button>
@@ -100,15 +100,13 @@ export function DocsHeader() {
             <GitHub className="size-3.5" />
           </a>
 
-          <ThemeToggle
-            className="size-8 rounded-full border border-foreground/10 text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
-          />
+          <ThemeToggle className="size-8 rounded-full border border-foreground/10 text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground" />
 
           <a
             href={portfolioUrl}
             target="_blank"
             rel="noreferrer"
-            className="hidden items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-1.5 font-mono text-xs uppercase tracking-wider text-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background lg:inline-flex"
+            className="hidden items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-1.5 font-mono text-xs tracking-wider text-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background lg:inline-flex"
           >
             <ArrowLeft className="size-3" />
             <span>Portfolio</span>
@@ -132,7 +130,7 @@ export function DocsHeader() {
 
       {mobileOpen && (
         <div className="border-b border-foreground/8 bg-background/95 p-5 shadow-2xl backdrop-blur-2xl md:hidden">
-          <nav className="flex flex-col gap-2 font-mono text-xs uppercase tracking-wider">
+          <nav className="flex flex-col gap-2 font-mono text-xs tracking-wider uppercase">
             {NAV_LINKS.map((link) => {
               const isActive =
                 link.href === "/"

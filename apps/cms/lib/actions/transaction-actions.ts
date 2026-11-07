@@ -159,8 +159,13 @@ export async function getMasterTransactions(
     ])
 
     return {
-      items: (items.length > 0 ? items : fallbackCmsTransactions) as unknown as MasterTransaction[],
-      total: items.length > 0 ? (countResult[0]?.count || 0) : fallbackCmsTransactions.length,
+      items: (items.length > 0
+        ? items
+        : fallbackCmsTransactions) as unknown as MasterTransaction[],
+      total:
+        items.length > 0
+          ? countResult[0]?.count || 0
+          : fallbackCmsTransactions.length,
     }
   } catch (error) {
     console.warn(
@@ -226,7 +231,8 @@ export async function getMasterTransactionStats() {
       completed: total > 0 ? completed : fallbackCmsTransactions.length,
       successRate: total > 0 ? Math.round((completed / total) * 100) : 100,
       commerceVolume: total > 0 ? commerceVolume : 349000,
-      recentItems: recentItems.length > 0 ? recentItems : fallbackCmsTransactions,
+      recentItems:
+        recentItems.length > 0 ? recentItems : fallbackCmsTransactions,
     }
   } catch (error) {
     console.warn(

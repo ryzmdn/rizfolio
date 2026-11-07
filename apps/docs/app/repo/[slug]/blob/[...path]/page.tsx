@@ -159,7 +159,7 @@ export default async function FileViewPage({
                 ? `/repo/${slug}?path=${encodeURIComponent(parentPath)}`
                 : `/repo/${slug}`
             }
-            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 text-xs font-mono text-foreground transition-all hover:bg-foreground hover:text-background"
+            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 font-mono text-xs text-foreground transition-all hover:bg-foreground hover:text-background"
             title={`Back to ${parentName}`}
           >
             <ArrowLeft className="size-3.5" />
@@ -171,7 +171,7 @@ export default async function FileViewPage({
 
           <Link
             href="/"
-            className="text-xs uppercase tracking-wider transition-colors hover:text-foreground"
+            className="text-xs tracking-wider uppercase transition-colors hover:text-foreground"
           >
             Repositories
           </Link>

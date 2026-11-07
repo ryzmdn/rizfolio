@@ -90,7 +90,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
           type="button"
           onClick={() => setMobileExpanded((prev) => !prev)}
           aria-expanded={mobileExpanded}
-          className="flex w-full items-center justify-between rounded-2xl border border-foreground/10 bg-foreground/3 px-4 py-3 font-mono text-xs uppercase tracking-wider text-foreground"
+          className="flex w-full items-center justify-between rounded-2xl border border-foreground/10 bg-foreground/3 px-4 py-3 font-mono text-xs tracking-wider text-foreground uppercase"
         >
           <span className="flex items-center gap-2">
             <ListCollapse className="size-3.5 text-muted-foreground" />
@@ -128,7 +128,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
       </div>
 
       <div className="hidden space-y-4 lg:block">
-        <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+        <p className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
           <ListCollapse className="size-3.5" />
           <span>[ CONTENTS ]</span>
         </p>

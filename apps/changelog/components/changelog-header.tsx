@@ -61,7 +61,7 @@ export function ChangelogHeader() {
               <span className="font-mono text-xs font-semibold tracking-tight text-foreground">
                 [ CHANGELOG // 07 ]
               </span>
-              <span className="inline-flex items-center rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.2 font-mono text-[10px] text-muted-foreground">
+              <span className="py-0.2 inline-flex items-center rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 font-mono text-[10px] text-muted-foreground">
                 v1.3.0
               </span>
             </div>
@@ -107,7 +107,7 @@ export function ChangelogHeader() {
           >
             <Search className="size-3.5 transition-colors" />
             <span className="hidden sm:inline">Search updates...</span>
-            <kbd className="hidden rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.2 font-mono text-[10px] text-muted-foreground group-hover:text-background sm:inline-block">
+            <kbd className="py-0.2 hidden rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 font-mono text-[10px] text-muted-foreground group-hover:text-background sm:inline-block">
               ⌘K
             </kbd>
           </button>

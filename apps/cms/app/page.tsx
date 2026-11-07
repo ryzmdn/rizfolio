@@ -123,7 +123,7 @@ export default async function OverviewDashboard() {
                 <Link
                   key={item.title}
                   href={item.href}
-                  className="group flex flex-col justify-between rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl transition-hover-lift hover:border-foreground/30 hover:shadow-2xl"
+                  className="group flex flex-col justify-between rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl transition-hover-lift hover:border-foreground/30 hover:shadow-2xl sm:p-7"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
@@ -135,7 +135,7 @@ export default async function OverviewDashboard() {
                   </div>
 
                   <div className="mt-8 space-y-2">
-                    <div className="font-serif text-3xl sm:text-4xl font-light tracking-tight text-foreground tabular-nums">
+                    <div className="font-serif text-3xl font-light tracking-tight text-foreground tabular-nums sm:text-4xl">
                       <CountUp value={item.value} />
                     </div>
                     <div className="font-mono text-xs text-muted-foreground">
@@ -149,7 +149,7 @@ export default async function OverviewDashboard() {
         </section>
 
         <section className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-          <div className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl lg:col-span-7">
+          <div className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl sm:p-7 lg:col-span-7">
             <div className="flex items-center justify-between border-b border-foreground/8 pb-4">
               <h2 className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                 Aksi Cepat & Navigasi Modul
@@ -189,7 +189,7 @@ export default async function OverviewDashboard() {
             </div>
           </div>
 
-          <div className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-7 backdrop-blur-xl lg:col-span-5">
+          <div className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl sm:p-7 lg:col-span-5">
             <div className="flex items-center justify-between border-b border-foreground/8 pb-4">
               <div className="flex items-center gap-2">
                 <Server className="size-4 text-foreground" />
@@ -275,10 +275,10 @@ export default async function OverviewDashboard() {
           </div>
         </section>
 
-        <section className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 sm:p-8 backdrop-blur-xl">
+        <section className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl sm:p-8">
           <div className="flex flex-col gap-3 border-b border-foreground/8 pb-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
-              <h2 className="font-serif text-xl sm:text-2xl font-light tracking-tight text-foreground">
+              <h2 className="font-serif text-xl font-light tracking-tight text-foreground sm:text-2xl">
                 Recent Master Transactions
               </h2>
               <p className="font-sans text-xs font-light text-muted-foreground">
@@ -304,7 +304,7 @@ export default async function OverviewDashboard() {
               recentTransactions.map((trx) => (
                 <div
                   key={trx.id}
-                  className="group flex flex-col gap-3 py-4 transition-colors hover:bg-foreground/[0.02] sm:flex-row sm:items-center sm:justify-between sm:px-3 rounded-2xl"
+                  className="group flex flex-col gap-3 rounded-2xl py-4 transition-colors hover:bg-foreground/[0.02] sm:flex-row sm:items-center sm:justify-between sm:px-3"
                 >
                   <div className="flex items-start gap-3.5">
                     <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[11px] font-medium text-foreground">

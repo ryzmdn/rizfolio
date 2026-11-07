@@ -143,14 +143,16 @@ export default async function CategoriesIndexPage() {
       </div>
 
       <div className="max-w-3xl space-y-4 border-b border-foreground/8 pb-10">
-        <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 text-[11px] font-mono tracking-widest text-muted-foreground uppercase backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase backdrop-blur-md">
           <BookOpen className="size-3 text-foreground" />
           <span>TAXONOMY // CURRICULUM ARCHIVE</span>
         </div>
-        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-foreground">
-          Mata Kuliah <span className="font-sans italic text-muted-foreground/80">&</span> Taksonomi
+        <h1 className="font-serif text-4xl font-light tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+          Mata Kuliah{" "}
+          <span className="font-sans text-muted-foreground/80 italic">&</span>{" "}
+          Taksonomi
         </h1>
-        <p className="text-base sm:text-lg font-light leading-relaxed text-muted-foreground">
+        <p className="text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
           Struktur klasifikasi komprehensif memetakan repositori kode sumber ke
           dalam domain utama, kurikulum akademik berdasarkan semester, serta
           indeks teknologi yang digunakan.
@@ -198,7 +200,7 @@ export default async function CategoriesIndexPage() {
                     </p>
                   </div>
 
-                  <p className="text-xs font-light leading-relaxed text-muted-foreground">
+                  <p className="text-xs leading-relaxed font-light text-muted-foreground">
                     {domain.description}
                   </p>
                 </div>
@@ -298,7 +300,7 @@ export default async function CategoriesIndexPage() {
                 className="group inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.02] px-4 py-2 font-mono text-xs text-foreground transition-all hover:border-foreground hover:bg-foreground hover:text-background"
               >
                 <span>{tech.name}</span>
-                <span className="rounded-full bg-foreground/10 px-1.5 py-0.2 font-mono text-[10px] text-muted-foreground tabular-nums group-hover:bg-background/20 group-hover:text-background">
+                <span className="py-0.2 rounded-full bg-foreground/10 px-1.5 font-mono text-[10px] text-muted-foreground tabular-nums group-hover:bg-background/20 group-hover:text-background">
                   {tech.count}
                 </span>
               </Link>

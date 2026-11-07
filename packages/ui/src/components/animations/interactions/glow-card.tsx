@@ -45,4 +45,3 @@ export function GlowCard({ className, children, ...props }: GlowCardProps) {
     </div>
   )
 }
-

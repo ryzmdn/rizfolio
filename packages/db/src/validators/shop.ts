@@ -25,4 +25,3 @@ export const selectCouponSchema = createSelectSchema(coupons)
 
 export const insertProductReviewSchema = createInsertSchema(productReviews)
 export const selectProductReviewSchema = createSelectSchema(productReviews)
-

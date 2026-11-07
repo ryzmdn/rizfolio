@@ -11,4 +11,3 @@ export default async function DashboardCatchAllPage({
   const targetPath = slug && slug.length > 0 ? `/${slug.join("/")}` : "/"
   redirect(targetPath)
 }
-

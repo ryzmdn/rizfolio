@@ -1,6 +1,10 @@
 import Image from "next/image"
 import { Container } from "@workspace/ui/components/layouts"
-import { ScrollReveal, StaggerContainer, StaggerItem } from "@workspace/ui/components/animations"
+import {
+  ScrollReveal,
+  StaggerContainer,
+  StaggerItem,
+} from "@workspace/ui/components/animations"
 import { testimonials as fallbackTestimonials } from "@/data"
 import type { TestimonialItem } from "@/lib/queries"
 
@@ -30,7 +34,8 @@ export function TestimonialsSection({
               </h2>
             </div>
             <p className="max-w-md font-mono text-xs leading-relaxed text-muted-foreground">
-              Direct feedback from engineering leads, product founders, and distributed collaborators.
+              Direct feedback from engineering leads, product founders, and
+              distributed collaborators.
             </p>
           </div>
         </ScrollReveal>
@@ -38,8 +43,8 @@ export function TestimonialsSection({
         <StaggerContainer className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
           {items.map((item, idx) => (
             <StaggerItem key={idx}>
-              <div className="group flex h-full flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.01] p-8 sm:p-10 transition-hover-lift hover:border-foreground/25 hover:shadow-xl">
-                <blockquote className="font-serif text-lg font-light leading-relaxed text-foreground/90 sm:text-xl">
+              <div className="group flex h-full flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.01] p-8 transition-hover-lift hover:border-foreground/25 hover:shadow-xl sm:p-10">
+                <blockquote className="font-serif text-lg leading-relaxed font-light text-foreground/90 sm:text-xl">
                   &ldquo;{item.content}&rdquo;
                 </blockquote>
 
@@ -50,11 +55,11 @@ export function TestimonialsSection({
                       alt={item.name}
                       fill
                       sizes="44px"
-                      className="object-cover grayscale contrast-125 transition-all duration-500 ease-luxury group-hover:grayscale-0 group-hover:scale-105"
+                      className="object-cover contrast-125 grayscale transition-all duration-500 ease-luxury group-hover:scale-105 group-hover:grayscale-0"
                     />
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-sm font-medium text-foreground tracking-tight">
+                    <p className="text-sm font-medium tracking-tight text-foreground">
                       {item.name}
                     </p>
                     <p className="font-mono text-xs text-muted-foreground">

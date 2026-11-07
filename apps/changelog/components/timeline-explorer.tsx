@@ -100,10 +100,12 @@ export function TimelineExplorer({
         </div>
 
         <div className="max-w-3xl space-y-4">
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-foreground">
-            System Logs <span className="font-sans italic text-muted-foreground/80">&</span> Architectural Evolution
+          <h1 className="font-serif text-4xl font-light tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            System Logs{" "}
+            <span className="font-sans text-muted-foreground/80 italic">&</span>{" "}
+            Architectural Evolution
           </h1>
-          <p className="font-sans text-base sm:text-lg font-light leading-relaxed text-muted-foreground">
+          <p className="font-sans text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
             Kronologi terbuka mencatat evolusi arsitektur sistem, delivery fitur
             baru, benchmark performa, dan pembaruan infrastruktur di seluruh
             ekosistem monorepo Rizfolio.
@@ -111,12 +113,12 @@ export function TimelineExplorer({
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 sm:p-6 shadow-xs backdrop-blur-xl">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
             <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase">
               <GitCommit className="size-3.5 text-foreground" />
               <span>Total Releases</span>
             </div>
-            <div className="mt-3 font-serif text-2xl sm:text-3xl font-light text-foreground tabular-nums">
+            <div className="mt-3 font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.totalReleases}
             </div>
             <div className="mt-1 font-mono text-[10px] text-muted-foreground">
@@ -124,12 +126,12 @@ export function TimelineExplorer({
             </div>
           </div>
 
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 sm:p-6 shadow-xs backdrop-blur-xl">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
             <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase">
               <CheckCircle2 className="size-3.5 text-foreground" />
               <span>Milestones</span>
             </div>
-            <div className="mt-3 font-serif text-2xl sm:text-3xl font-light text-foreground tabular-nums">
+            <div className="mt-3 font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.shippedMilestones}
             </div>
             <div className="mt-1 font-mono text-[10px] text-muted-foreground">
@@ -137,12 +139,12 @@ export function TimelineExplorer({
             </div>
           </div>
 
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 sm:p-6 shadow-xs backdrop-blur-xl">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
             <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase">
               <Box className="size-3.5 text-foreground" />
               <span>Packages</span>
             </div>
-            <div className="mt-3 font-serif text-2xl sm:text-3xl font-light text-foreground tabular-nums">
+            <div className="mt-3 font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.appsCount}
             </div>
             <div className="mt-1 font-mono text-[10px] text-muted-foreground">
@@ -150,12 +152,12 @@ export function TimelineExplorer({
             </div>
           </div>
 
-          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 sm:p-6 shadow-xs backdrop-blur-xl">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
             <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase">
               <Tag className="size-3.5 text-foreground" />
               <span>Active Version</span>
             </div>
-            <div className="mt-3 font-serif text-2xl sm:text-3xl font-light text-foreground tabular-nums">
+            <div className="mt-3 font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.currentVersion}
             </div>
             <div className="mt-1 font-mono text-[10px] text-muted-foreground">

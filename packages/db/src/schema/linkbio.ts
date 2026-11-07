@@ -21,7 +21,9 @@ export const bioLinks = pgTable(
     badgeColor: varchar("badge_color", { length: 100 }).default(
       "bg-primary/10 text-primary border-primary/20"
     ),
-    category: varchar("category", { length: 50 }).notNull().default("ECOSYSTEM"),
+    category: varchar("category", { length: 50 })
+      .notNull()
+      .default("ECOSYSTEM"),
     isActive: boolean("is_active").notNull().default(true),
     displayOrder: integer("display_order").notNull().default(0),
     clickCount: integer("click_count").notNull().default(0),

@@ -55,11 +55,15 @@ export async function getInquiriesAdmin(filter?: {
       const rows = await query
         .where(and(...conditions))
         .orderBy(desc(inquiries.createdAt))
-      return rows.length > 0 ? rows : (fallbackCmsInquiries as unknown as Inquiry[])
+      return rows.length > 0
+        ? rows
+        : (fallbackCmsInquiries as unknown as Inquiry[])
     }
 
     const rows = await query.orderBy(desc(inquiries.createdAt))
-    return rows.length > 0 ? rows : (fallbackCmsInquiries as unknown as Inquiry[])
+    return rows.length > 0
+      ? rows
+      : (fallbackCmsInquiries as unknown as Inquiry[])
   } catch (error) {
     console.warn(
       "[CMS Inbox] Database inquiries fallback:",

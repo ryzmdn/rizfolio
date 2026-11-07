@@ -123,20 +123,18 @@ export function RepoHeader({
               {categoryInfo.label.toLowerCase()}
             </Link>
             <span className="text-foreground/20">/</span>
-            <span className="font-semibold text-foreground">
-              {slug}
-            </span>
-            <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+            <span className="font-semibold text-foreground">{slug}</span>
+            <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 text-[10px] tracking-wider text-muted-foreground uppercase">
               {categoryInfo.label}
             </span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-foreground">
+          <h1 className="font-serif text-3xl font-light tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             {name}
           </h1>
 
           {description && (
-            <p className="max-w-3xl text-base font-light leading-relaxed text-muted-foreground">
+            <p className="max-w-3xl text-base leading-relaxed font-light text-muted-foreground">
               {description}
             </p>
           )}
@@ -211,7 +209,7 @@ export function RepoHeader({
           >
             <Star className={cn("size-3.5", hasStarred && "fill-current")} />
             <span>{hasStarred ? "Starred" : "Star"}</span>
-            <span className="ml-1 rounded-full bg-foreground/10 px-1.5 py-0.2 text-[10px] tabular-nums">
+            <span className="py-0.2 ml-1 rounded-full bg-foreground/10 px-1.5 text-[10px] tabular-nums">
               {stars}
             </span>
           </button>

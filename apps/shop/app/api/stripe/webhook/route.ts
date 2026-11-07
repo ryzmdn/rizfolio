@@ -59,12 +59,7 @@ export async function POST(request: NextRequest) {
   let event: Stripe.Event
 
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      webhookSecret,
-      300
-    )
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret, 300)
   } catch (err) {
     return new NextResponse("Webhook signature verification failed", {
       status: 400,
@@ -101,7 +96,10 @@ export async function POST(request: NextRequest) {
 
           if (dbOrder) {
             if (dbOrder.status === "COMPLETED") {
-              return NextResponse.json({ received: true, alreadyProcessed: true })
+              return NextResponse.json({
+                received: true,
+                alreadyProcessed: true,
+              })
             }
 
             await db
