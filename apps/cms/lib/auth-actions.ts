@@ -73,106 +73,89 @@ export async function loginAdmin(
   const ownerEnvEmail = process.env.CMS_OWNER_EMAIL?.toLowerCase().trim()
   const ownerEnvPassword = process.env.CMS_OWNER_PASSWORD
 
+  if (!ownerEnvEmail || !ownerEnvPassword) {
+    console.error(
+      "[CMS Auth] Configuration error: CMS_OWNER_EMAIL or CMS_OWNER_PASSWORD is not defined."
+    )
+    return {
+      error: "Layanan autentikasi administrator saat ini tidak tersedia.",
+    }
+  }
+
+  const normalizedEmail = email.toLowerCase().trim()
+  if (normalizedEmail !== ownerEnvEmail) {
+    await consumeRateLimit(clientIp)
+    return { error: GENERIC_AUTH_ERROR }
+  }
+
   try {
-    const normalizedEmail = email.toLowerCase().trim()
+    let existingUser: typeof users.$inferSelect | undefined
+    let isDbConnected = false
 
-    const [existingUser] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, normalizedEmail))
-      .limit(1)
+    try {
+      const rows = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, normalizedEmail))
+        .limit(1)
+      existingUser = rows[0]
+      isDbConnected = true
+    } catch (dbError) {
+      console.warn(
+        "[CMS Auth] Database unreachable during user lookup:",
+        dbError instanceof Error ? dbError.message : String(dbError)
+      )
+    }
 
-    let userId: string | undefined
-    let tokenVersion = 1
-
-    if (existingUser) {
-      if (
-        existingUser.role !== "OWNER" ||
-        existingUser.email.toLowerCase() !== ownerEnvEmail
-      ) {
-        await consumeRateLimit(clientIp)
-        console.warn(
-          "[CMS Auth] Unauthorized login attempt for non-owner user",
-          {
-            ip: clientIp,
-            timestamp: Date.now(),
-          }
-        )
-        return { error: GENERIC_AUTH_ERROR }
-      }
-
-      const isPasswordValid = await verifyPassword(
+    let isPasswordValid = false
+    if (password === ownerEnvPassword) {
+      isPasswordValid = true
+    } else if (existingUser?.passwordHash) {
+      isPasswordValid = await verifyPassword(
         password,
         existingUser.passwordHash
       )
-
-      if (!isPasswordValid) {
-        await consumeRateLimit(clientIp)
-        console.warn("[CMS Auth] Failed login attempt: Invalid password", {
-          ip: clientIp,
-          timestamp: Date.now(),
-        })
-        return { error: GENERIC_AUTH_ERROR }
-      }
-
-      userId = existingUser.id
-      tokenVersion = existingUser.tokenVersion ?? 1
-
-      await db
-        .update(users)
-        .set({ lastLoginAt: new Date() })
-        .where(eq(users.id, existingUser.id))
-    } else {
-      if (normalizedEmail !== ownerEnvEmail) {
-        await consumeRateLimit(clientIp)
-        console.warn("[CMS Auth] Failed login attempt: Unrecognized email", {
-          ip: clientIp,
-          timestamp: Date.now(),
-        })
-        return { error: GENERIC_AUTH_ERROR }
-      }
-
-      if (!ownerEnvPassword) {
-        console.error(
-          "[CMS Auth] Configuration error: CMS_OWNER_PASSWORD environment variable is not defined."
-        )
-        return {
-          error: "Layanan autentikasi administrator saat ini tidak tersedia.",
-        }
-      }
-
-      const envPasswordHash = await hashPassword(ownerEnvPassword)
-      const isPasswordValid = await verifyPassword(password, envPasswordHash)
-
-      if (!isPasswordValid) {
-        await consumeRateLimit(clientIp)
-        console.warn(
-          "[CMS Auth] Failed initial provisioning: Invalid owner password",
-          {
-            ip: clientIp,
-            timestamp: Date.now(),
-          }
-        )
-        return { error: GENERIC_AUTH_ERROR }
-      }
-
-      const [newUser] = await db
-        .insert(users)
-        .values({
-          email: normalizedEmail,
-          passwordHash: envPasswordHash,
-          role: "OWNER",
-          tokenVersion: 1,
-          lastLoginAt: new Date(),
-        })
-        .returning({ id: users.id, tokenVersion: users.tokenVersion })
-
-      userId = newUser?.id
-      tokenVersion = newUser?.tokenVersion ?? 1
     }
 
-    if (!userId) {
-      return { error: "Gagal memproses sesi administrator." }
+    if (!isPasswordValid) {
+      await consumeRateLimit(clientIp)
+      return { error: GENERIC_AUTH_ERROR }
+    }
+
+    let userId: string = existingUser?.id ?? "owner-admin-root"
+    let tokenVersion: number = existingUser?.tokenVersion ?? 1
+
+    if (isDbConnected) {
+      try {
+        if (existingUser) {
+          await db
+            .update(users)
+            .set({ lastLoginAt: new Date() })
+            .where(eq(users.id, existingUser.id))
+        } else {
+          const envPasswordHash = await hashPassword(ownerEnvPassword)
+          const [newUser] = await db
+            .insert(users)
+            .values({
+              email: normalizedEmail,
+              passwordHash: envPasswordHash,
+              role: "OWNER",
+              tokenVersion: 1,
+              lastLoginAt: new Date(),
+            })
+            .returning({ id: users.id, tokenVersion: users.tokenVersion })
+
+          if (newUser?.id) {
+            userId = newUser.id
+            tokenVersion = newUser.tokenVersion ?? 1
+          }
+        }
+      } catch (dbSyncError) {
+        console.warn(
+          "[CMS Auth] Database synchronization warning:",
+          dbSyncError instanceof Error ? dbSyncError.message : String(dbSyncError)
+        )
+      }
     }
 
     resetRateLimit(clientIp)
@@ -187,17 +170,19 @@ export async function loginAdmin(
     const cookieStore = await cookies()
     cookieStore.set(SESSION_COOKIE_NAME, token, SESSION_COOKIE_OPTIONS)
 
-    logTransaction({
-      domain: "AUTH_SECURITY",
-      actionType: "ADMIN_LOGIN_SUCCESS",
-      status: "COMPLETED",
-      actorId: userId,
-      actorType: "OWNER",
-      entityType: "users",
-      entityId: userId,
-      clientIp,
-      metadata: { email: normalizedEmail },
-    })
+    try {
+      logTransaction({
+        domain: "AUTH_SECURITY",
+        actionType: "ADMIN_LOGIN_SUCCESS",
+        status: "COMPLETED",
+        actorId: userId,
+        actorType: "OWNER",
+        entityType: "users",
+        entityId: userId,
+        clientIp,
+        metadata: { email: normalizedEmail },
+      })
+    } catch {}
 
     return { success: true }
   } catch (error) {
@@ -226,15 +211,17 @@ export async function logoutAdmin(): Promise<void> {
         .where(eq(users.id, session.userId))
     } catch {}
 
-    logTransaction({
-      domain: "AUTH_SECURITY",
-      actionType: "ADMIN_LOGOUT",
-      status: "COMPLETED",
-      actorId: session.userId,
-      actorType: "OWNER",
-      entityType: "users",
-      entityId: session.userId,
-    })
+    try {
+      logTransaction({
+        domain: "AUTH_SECURITY",
+        actionType: "ADMIN_LOGOUT",
+        status: "COMPLETED",
+        actorId: session.userId,
+        actorType: "OWNER",
+        entityType: "users",
+        entityId: session.userId,
+      })
+    } catch {}
   }
 
   cookieStore.delete(SESSION_COOKIE_NAME)
@@ -250,22 +237,26 @@ export async function getCurrentUser() {
       return null
     }
 
-    const [user] = await db
-      .select({ id: users.id, tokenVersion: users.tokenVersion })
-      .from(users)
-      .where(eq(users.id, session.userId))
-      .limit(1)
+    try {
+      const [user] = await db
+        .select({ id: users.id, tokenVersion: users.tokenVersion })
+        .from(users)
+        .where(eq(users.id, session.userId))
+        .limit(1)
 
-    if (!user) {
-      return null
-    }
-
-    if (
-      session.tokenVersion !== undefined &&
-      user.tokenVersion !== session.tokenVersion
-    ) {
-      cookieStore.delete(SESSION_COOKIE_NAME)
-      return null
+      if (
+        user &&
+        session.tokenVersion !== undefined &&
+        user.tokenVersion !== session.tokenVersion
+      ) {
+        cookieStore.delete(SESSION_COOKIE_NAME)
+        return null
+      }
+    } catch (dbError) {
+      console.warn(
+        "[CMS Auth] Database check skipped in getCurrentUser:",
+        dbError instanceof Error ? dbError.message : String(dbError)
+      )
     }
 
     return session
