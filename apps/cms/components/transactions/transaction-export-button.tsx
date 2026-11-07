@@ -84,11 +84,11 @@ export function TransactionExportButton({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         disabled={transactions.length === 0}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
+        className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-background/60 px-3.5 py-1.5 font-mono text-xs text-foreground transition-all hover:bg-foreground hover:text-background disabled:opacity-50"
       >
-        <Download className="h-3.5 w-3.5 text-primary" />
+        <Download className="size-3.5 text-muted-foreground" />
         <span>Ekspor Data Audit</span>
-        <ChevronDown className="h-3 w-3 text-muted-foreground" />
+        <ChevronDown className="size-3 text-muted-foreground" />
       </button>
 
       {isOpen && (
@@ -97,21 +97,21 @@ export function TransactionExportButton({
             className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 z-50 mt-1 w-44 rounded-xl border border-border bg-card p-1 shadow-lg">
+          <div className="absolute right-0 z-50 mt-1.5 w-48 rounded-2xl border border-foreground/10 bg-card/95 p-1.5 shadow-2xl backdrop-blur-xl">
             <button
               type="button"
               onClick={exportAsCsv}
-              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-foreground transition-colors hover:bg-muted"
+              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 font-mono text-xs text-foreground transition-colors hover:bg-foreground/[0.04]"
             >
-              <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-500" />
+              <FileSpreadsheet className="size-3.5 text-muted-foreground" />
               <span>Format CSV (.csv)</span>
             </button>
             <button
               type="button"
               onClick={exportAsJson}
-              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs text-foreground transition-colors hover:bg-muted"
+              className="flex w-full items-center gap-2 rounded-xl px-3 py-2 font-mono text-xs text-foreground transition-colors hover:bg-foreground/[0.04]"
             >
-              <FileCode className="h-3.5 w-3.5 text-blue-500" />
+              <FileCode className="size-3.5 text-muted-foreground" />
               <span>Format JSON (.json)</span>
             </button>
           </div>
