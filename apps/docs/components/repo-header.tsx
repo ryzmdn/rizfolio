@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { useState } from "react"
 import { Badge } from "@workspace/ui/components/badge"
-import { buttonVariants } from "@workspace/ui/components/button"
 import {
   Star,
   ExternalLink,
@@ -98,7 +97,6 @@ export function RepoHeader({
     setDownloads((prev) => prev + 1)
     await incrementRepoDownload(slug)
 
-    // Trigger download
     const zipUrl = `${baseRepoUrl}/archive/refs/heads/main.zip`
     const a = document.createElement("a")
     a.href = zipUrl
@@ -110,57 +108,49 @@ export function RepoHeader({
   }
 
   return (
-    <div className="space-y-5 border-b border-border/70 pb-8">
-      {/* Top Breadcrumbs & Actions Row */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="space-y-3">
-          {/* Breadcrumb Path */}
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+    <div className="space-y-6 border-b border-foreground/8 pb-10">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted-foreground">
             <Link href="/" className="transition-colors hover:text-foreground">
               docs
             </Link>
-            <span>/</span>
+            <span className="text-foreground/20">/</span>
             <Link
               href={`/?category=${category}`}
               className="transition-colors hover:text-foreground"
             >
               {categoryInfo.label.toLowerCase()}
             </Link>
-            <span>/</span>
-            <span className="font-mono font-medium text-foreground">
+            <span className="text-foreground/20">/</span>
+            <span className="font-semibold text-foreground">
               {slug}
             </span>
-            <Badge
-              variant={categoryInfo.variant}
-              className="ml-1 text-[10px] font-normal"
-            >
+            <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
               {categoryInfo.label}
-            </Badge>
+            </span>
           </div>
 
-          {/* Repository Title */}
-          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-foreground">
             {name}
           </h1>
 
-          {/* Description */}
           {description && (
-            <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+            <p className="max-w-3xl text-base font-light leading-relaxed text-muted-foreground">
               {description}
             </p>
           )}
 
-          {/* Metadata Badges Row */}
           <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-muted-foreground">
-            <span className="inline-flex items-center gap-1 font-mono text-[11px]">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[11px] text-foreground/80">
               <GitBranch className="size-3 text-muted-foreground" />
               <span>main</span>
             </span>
 
             {license && (
               <>
-                <span>•</span>
-                <span className="inline-flex items-center gap-1 font-mono text-[11px]">
+                <span className="text-foreground/20">•</span>
+                <span className="inline-flex items-center gap-1.5 font-mono text-[11px]">
                   <Shield className="size-3 text-muted-foreground" />
                   <span>{license}</span>
                 </span>
@@ -169,39 +159,37 @@ export function RepoHeader({
 
             {courseName && (
               <>
-                <span>•</span>
-                <span className="font-mono text-[11px] text-foreground/80">
+                <span className="text-foreground/20">•</span>
+                <span className="font-mono text-[11px] text-foreground/90">
                   {courseName}
                   {semester && ` (${semester})`}
                 </span>
               </>
             )}
 
-            {/* Counters */}
-            <span>•</span>
-            <span className="inline-flex items-center gap-1">
-              <Star className="size-3" />
-              <span className="font-mono tabular-nums">{stars}</span>
+            <span className="text-foreground/20">•</span>
+            <span className="inline-flex items-center gap-1.5 font-mono text-[11px]">
+              <Star className="size-3 text-muted-foreground" />
+              <span className="tabular-nums">{stars}</span>
             </span>
-            <span>•</span>
-            <span className="inline-flex items-center gap-1">
-              <Download className="size-3" />
-              <span className="font-mono tabular-nums">{downloads}</span>
+            <span className="text-foreground/20">•</span>
+            <span className="inline-flex items-center gap-1.5 font-mono text-[11px]">
+              <Download className="size-3 text-muted-foreground" />
+              <span className="tabular-nums">{downloads}</span>
             </span>
-            <span>•</span>
-            <span className="inline-flex items-center gap-1">
-              <Eye className="size-3" />
-              <span className="font-mono tabular-nums">{viewsCount}</span>
+            <span className="text-foreground/20">•</span>
+            <span className="inline-flex items-center gap-1.5 font-mono text-[11px]">
+              <Eye className="size-3 text-muted-foreground" />
+              <span className="tabular-nums">{viewsCount}</span>
             </span>
           </div>
 
-          {/* Tech Stack Pills */}
           {techStack && techStack.length > 0 && (
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
               {techStack.map((tech) => (
                 <span
                   key={tech}
-                  className="rounded-md border border-border/70 bg-muted/40 px-2 py-0.5 font-mono text-[10px] text-foreground/90"
+                  className="rounded-full border border-foreground/10 bg-foreground/[0.02] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground"
                 >
                   {tech}
                 </span>
@@ -210,84 +198,79 @@ export function RepoHeader({
           )}
         </div>
 
-        {/* Action Buttons Toolbar */}
         <div className="flex flex-wrap items-center gap-2">
-          {/* Star Button */}
           <button
             type="button"
             onClick={handleStar}
-            className={buttonVariants({
-              variant: hasStarred ? "default" : "outline",
-              size: "sm",
-            })}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 font-mono text-xs transition-all",
+              hasStarred
+                ? "border-foreground bg-foreground text-background"
+                : "border-foreground/15 bg-background text-foreground hover:bg-muted"
+            )}
           >
-            <Star className="mr-1.5 size-3.5" />
+            <Star className={cn("size-3.5", hasStarred && "fill-current")} />
             <span>{hasStarred ? "Starred" : "Star"}</span>
-            <span className="py-0.2 ml-1.5 rounded-full bg-background/20 px-1.5 font-mono text-[10px] tabular-nums">
+            <span className="ml-1 rounded-full bg-foreground/10 px-1.5 py-0.2 text-[10px] tabular-nums">
               {stars}
             </span>
           </button>
 
-          {/* Clone Popover Trigger */}
           <button
             type="button"
             onClick={() => setShowCloneModal((p) => !p)}
-            className={buttonVariants({ variant: "outline", size: "sm" })}
+            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-background px-4 py-2 font-mono text-xs text-foreground transition-all hover:bg-muted"
           >
-            <Terminal className="mr-1.5 size-3.5" />
+            <Terminal className="size-3.5" />
             <span>Clone</span>
           </button>
 
-          {/* Download ZIP */}
           <button
             type="button"
             onClick={handleDownloadZip}
             aria-label="Download repository archive"
-            className={buttonVariants({ variant: "outline", size: "sm" })}
+            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-background px-4 py-2 font-mono text-xs text-foreground transition-all hover:bg-muted"
           >
-            <Download className="mr-1.5 size-3.5" />
+            <Download className="size-3.5" />
             <span>ZIP</span>
           </button>
 
-          {/* GitHub External */}
           {baseRepoUrl && (
             <a
               href={baseRepoUrl}
               target="_blank"
               rel="noreferrer"
               aria-label="View on GitHub"
-              className={buttonVariants({ variant: "outline", size: "sm" })}
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-background px-4 py-2 font-mono text-xs text-foreground transition-all hover:bg-muted"
             >
-              <GitHub className="mr-1.5 size-3.5" />
+              <GitHub className="size-3.5" />
               <span>GitHub</span>
             </a>
           )}
 
-          {/* Live Demo External */}
           {demoUrl && (
             <a
               href={demoUrl}
               target="_blank"
               rel="noreferrer"
-              className={buttonVariants({ variant: "outline", size: "sm" })}
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-background px-4 py-2 font-mono text-xs text-foreground transition-all hover:bg-muted"
             >
-              <ExternalLink className="mr-1.5 size-3.5" />
+              <ExternalLink className="size-3.5" />
               <span>Demo</span>
             </a>
           )}
         </div>
       </div>
 
-      {/* Clone Command Modal Popover */}
       {showCloneModal && (
-        <div className="relative space-y-3 rounded-2xl border border-border bg-card p-4 shadow-lg">
+        <div className="relative space-y-3 rounded-3xl border border-foreground/10 bg-card/90 p-5 shadow-2xl backdrop-blur-xl">
           <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1 border-b border-transparent">
+            <div className="flex items-center gap-1 rounded-full border border-foreground/10 bg-foreground/[0.03] p-1">
               <button
                 type="button"
                 onClick={() => setCloneProtocol("https")}
                 className={cn(
-                  "rounded-md px-2.5 py-1 font-mono text-xs transition-colors",
+                  "rounded-full px-3 py-1 font-mono text-xs transition-colors",
                   cloneProtocol === "https"
                     ? "bg-foreground font-medium text-background"
                     : "text-muted-foreground hover:text-foreground"
@@ -299,7 +282,7 @@ export function RepoHeader({
                 type="button"
                 onClick={() => setCloneProtocol("ssh")}
                 className={cn(
-                  "rounded-md px-2.5 py-1 font-mono text-xs transition-colors",
+                  "rounded-full px-3 py-1 font-mono text-xs transition-colors",
                   cloneProtocol === "ssh"
                     ? "bg-foreground font-medium text-background"
                     : "text-muted-foreground hover:text-foreground"
@@ -312,23 +295,23 @@ export function RepoHeader({
             <button
               type="button"
               onClick={() => setShowCloneModal(false)}
-              className="rounded p-1 text-muted-foreground hover:text-foreground"
+              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <X className="size-3.5" />
             </button>
           </div>
 
-          <div className="flex items-center justify-between rounded-xl border border-border bg-muted/50 px-3 py-2 font-mono text-xs text-foreground">
+          <div className="flex items-center justify-between rounded-2xl border border-foreground/10 bg-foreground/[0.03] px-4 py-2.5 font-mono text-xs text-foreground">
             <span className="truncate select-all">{currentCloneCommand}</span>
             <button
               type="button"
               onClick={handleCopyClone}
-              className="ml-3 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="ml-3 inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
               {copiedClone ? (
                 <>
                   <Check className="size-3 text-emerald-500" />
-                  <span>Copied</span>
+                  <span className="text-foreground">Copied</span>
                 </>
               ) : (
                 <>
@@ -338,7 +321,7 @@ export function RepoHeader({
               )}
             </button>
           </div>
-          <p className="text-[11px] text-muted-foreground">
+          <p className="font-mono text-[11px] text-muted-foreground">
             Gunakan Git CLI untuk mengkloning repositori ini secara lokal ke
             perangkat Anda.
           </p>

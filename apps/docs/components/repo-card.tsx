@@ -54,52 +54,49 @@ export function RepoCard({
   }
 
   return (
-    <div className="group relative flex flex-col justify-between rounded-2xl border border-border/70 bg-card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-foreground/30 hover:shadow-sm">
-      <div className="space-y-3">
-        {/* Header: Title, Icon, and Category Badge */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <FolderGit2 className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
-            <Link
-              href={`/repo/${slug}`}
-              className="text-base font-semibold tracking-tight text-foreground underline-offset-4 hover:underline"
-            >
-              {name}
-            </Link>
+    <div className="group relative flex flex-col justify-between rounded-3xl border border-foreground/8 bg-foreground/[0.015] p-6 transition-all duration-300 hover:border-foreground/25 hover:bg-foreground/[0.03] hover:shadow-xl">
+      <div className="space-y-3.5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+              [ ARCHIVE // {slug} ]
+            </span>
+            <div className="flex items-center gap-2">
+              <FolderGit2 className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
+              <Link
+                href={`/repo/${slug}`}
+                className="font-serif text-lg font-light tracking-tight text-foreground transition-colors group-hover:text-muted-foreground"
+              >
+                {name}
+              </Link>
+            </div>
           </div>
-          <Badge
-            variant={categoryInfo.variant}
-            className="shrink-0 text-[10px] font-normal"
-          >
+          <span className="shrink-0 rounded-full border border-foreground/10 bg-foreground/5 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
             {categoryInfo.label}
-          </Badge>
+          </span>
         </div>
 
-        {/* Description */}
         {description && (
-          <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+          <p className="line-clamp-2 text-xs font-light leading-relaxed text-muted-foreground">
             {description}
           </p>
         )}
 
-        {/* Academic Course and Semester */}
         {courseName && (
-          <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground/70">
             <span>{courseName}</span>
             {semester && <span>• {semester}</span>}
           </div>
         )}
       </div>
 
-      {/* Footer Info: Tech Stack and Actions/Stats */}
-      <div className="mt-5 space-y-3 border-t border-border/40 pt-3">
-        {/* Tech Stack Pills */}
+      <div className="mt-6 space-y-3.5 border-t border-foreground/8 pt-4">
         {techStack && techStack.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1">
+          <div className="flex flex-wrap items-center gap-1.5">
             {techStack.map((tech) => (
               <span
                 key={tech}
-                className="rounded-md border border-border/60 bg-muted/40 px-1.5 py-0.5 font-mono text-[10px] text-foreground/80"
+                className="rounded-full border border-foreground/10 bg-foreground/5 px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground"
               >
                 {tech}
               </span>
@@ -107,48 +104,39 @@ export function RepoCard({
           </div>
         )}
 
-        {/* Stats and Quick Links */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          {/* Quick Metrics */}
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
+          <div className="flex items-center gap-3 text-[11px]">
             <span
               className="inline-flex items-center gap-1"
               title={`${starsCount} stars`}
             >
-              <Star className="size-3 text-muted-foreground" />
-              <span className="font-mono text-[11px] tabular-nums">
-                {starsCount}
-              </span>
+              <Star className="size-3 text-muted-foreground/60" />
+              <span className="tabular-nums">{starsCount}</span>
             </span>
             <span
               className="inline-flex items-center gap-1"
               title={`${downloadsCount} downloads`}
             >
-              <Download className="size-3 text-muted-foreground" />
-              <span className="font-mono text-[11px] tabular-nums">
-                {downloadsCount}
-              </span>
+              <Download className="size-3 text-muted-foreground/60" />
+              <span className="tabular-nums">{downloadsCount}</span>
             </span>
             <span
               className="inline-flex items-center gap-1"
               title={`${viewsCount} views`}
             >
-              <Eye className="size-3 text-muted-foreground" />
-              <span className="font-mono text-[11px] tabular-nums">
-                {viewsCount}
-              </span>
+              <Eye className="size-3 text-muted-foreground/60" />
+              <span className="tabular-nums">{viewsCount}</span>
             </span>
           </div>
 
-          {/* Action Links */}
           <div className="flex items-center gap-2">
             <Link
               href={`/repo/${slug}`}
               aria-label={`Browse code in ${name}`}
-              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-muted"
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/3 px-3 py-1 text-[11px] uppercase tracking-wider text-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
             >
               <Code2 className="size-3" />
-              <span>Browse</span>
+              <span>Blueprint</span>
             </Link>
 
             {githubUrl && (
@@ -157,9 +145,9 @@ export function RepoCard({
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`GitHub repository for ${name}`}
-                className="inline-flex items-center rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex size-7 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
               >
-                <GitHub className="size-3.5" />
+                <GitHub className="size-3" />
               </a>
             )}
 
@@ -169,9 +157,9 @@ export function RepoCard({
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`Live demo for ${name}`}
-                className="inline-flex items-center rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex size-7 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
               >
-                <ExternalLink className="size-3.5" />
+                <ExternalLink className="size-3" />
               </a>
             )}
           </div>
