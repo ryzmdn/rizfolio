@@ -54,6 +54,8 @@
     "./postcss.config": "./postcss.config.mjs",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
+    "./components/animated-icons": "./src/components/animated-icons/index.ts",
+    "./components/animated-icons/*": "./src/components/animated-icons/*.tsx",
     "./components/mdx": "./src/components/mdx/index.ts",
     "./components/mdx/*": "./src/components/mdx/*.tsx",
     "./mdx-components": "./src/components/mdx/index.ts",

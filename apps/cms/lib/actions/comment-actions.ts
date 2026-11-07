@@ -1,6 +1,15 @@
 "use server"
 
-import { db, eq, desc, or, and, ilike, inArray } from "@workspace/db"
+import {
+  db,
+  eq,
+  desc,
+  or,
+  and,
+  ilike,
+  inArray,
+  isDbConfigured,
+} from "@workspace/db"
 import { postComments, posts } from "@workspace/db/schema"
 import { revalidatePath } from "next/cache"
 import { getCurrentUser } from "../auth-actions"
@@ -40,6 +49,9 @@ export interface CommentStats {
 export async function getCommentsAdmin(
   filter: CommentFilterParams = {}
 ): Promise<AdminCommentItem[]> {
+  if (!isDbConfigured) {
+    return []
+  }
   try {
     const conditions = []
 
@@ -94,8 +106,8 @@ export async function getCommentsAdmin(
 
     return (await query) as AdminCommentItem[]
   } catch (error) {
-    console.error(
-      "[CMS Comments] Failed to fetch comments:",
+    console.warn(
+      "[CMS Comments] Database query fallback:",
       error instanceof Error ? error.message : error
     )
     return []
@@ -103,6 +115,9 @@ export async function getCommentsAdmin(
 }
 
 export async function getCommentStats(): Promise<CommentStats> {
+  if (!isDbConfigured) {
+    return { total: 0, pending: 0, approved: 0, spam: 0, rejected: 0 }
+  }
   try {
     const rows = await db
       .select({ status: postComments.status })

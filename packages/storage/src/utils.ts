@@ -99,3 +99,126 @@ export function formatFileSize(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
 }
+
+export const ALLOWED_IMAGE_MIME_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/svg+xml",
+] as const
+
+export const ALLOWED_DOCUMENT_MIME_TYPES = ["application/pdf"] as const
+
+export const ALLOWED_MEDIA_EXTENSIONS = [
+  "jpg",
+  "jpeg",
+  "png",
+  "webp",
+  "gif",
+  "svg",
+  "pdf",
+] as const
+
+export const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024
+export const MAX_DOCUMENT_SIZE_BYTES = 20 * 1024 * 1024
+
+export interface MediaValidationResult {
+  valid: boolean
+  error?: string
+  sanitizedName?: string
+  extension?: string
+  mimeType?: string
+}
+
+export function validateMediaUpload(file: {
+  name: string
+  size: number
+  type?: string
+}): MediaValidationResult {
+  if (!file || !file.name || file.size <= 0) {
+    return { valid: false, error: "Berkas tidak valid atau kosong." }
+  }
+
+  const dotIndex = file.name.lastIndexOf(".")
+  if (dotIndex === -1) {
+    return {
+      valid: false,
+      error: "Berkas harus memiliki ekstensi yang valid.",
+    }
+  }
+
+  const extension = file.name.substring(dotIndex + 1).toLowerCase()
+  const rawMime = (file.type || "").toLowerCase().trim()
+
+  const blockedExtensions = [
+    "exe",
+    "sh",
+    "bat",
+    "cmd",
+    "com",
+    "pif",
+    "scr",
+    "vbs",
+    "js",
+    "mjs",
+    "html",
+    "htm",
+    "php",
+    "py",
+    "rb",
+    "jar",
+    "wasm",
+  ]
+  if (blockedExtensions.includes(extension)) {
+    return {
+      valid: false,
+      error: "Format berkas executable atau script berbahaya tidak diizinkan.",
+    }
+  }
+
+  const isImage =
+    (ALLOWED_IMAGE_MIME_TYPES as readonly string[]).includes(rawMime) ||
+    ["jpg", "jpeg", "png", "webp", "gif", "svg"].includes(extension)
+
+  const isDocument =
+    (ALLOWED_DOCUMENT_MIME_TYPES as readonly string[]).includes(rawMime) ||
+    extension === "pdf"
+
+  if (!isImage && !isDocument) {
+    return {
+      valid: false,
+      error:
+        "Format berkas tidak diizinkan. Hanya gambar (JPEG, PNG, WebP, GIF, SVG) dan PDF yang didukung.",
+    }
+  }
+
+  if (isImage && file.size > MAX_IMAGE_SIZE_BYTES) {
+    return {
+      valid: false,
+      error: "Ukuran berkas gambar melebihi batas maksimal 5MB.",
+    }
+  }
+
+  if (isDocument && file.size > MAX_DOCUMENT_SIZE_BYTES) {
+    return {
+      valid: false,
+      error: "Ukuran berkas dokumen melebihi batas maksimal 20MB.",
+    }
+  }
+
+  const sanitizedName = sanitizeFileName(file.name)
+  const mimeType = isDocument
+    ? "application/pdf"
+    : rawMime ||
+      (extension === "svg"
+        ? "image/svg+xml"
+        : `image/${extension === "jpg" ? "jpeg" : extension}`)
+
+  return {
+    valid: true,
+    sanitizedName,
+    extension,
+    mimeType,
+  }
+}

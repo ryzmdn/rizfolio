@@ -1,18 +1,10 @@
 import {
   HeroSection,
   StatementSection,
-  AboutSection,
-  NowSection,
-  PrinciplesSection,
-  ProcessSection,
-  ServicesSection,
   CaseStudiesSection,
-  EducationSection,
+  ServicesSection,
   ExperienceSection,
-  CapabilitiesSection,
-  OpenSourceSection,
   TestimonialsSection,
-  CertificationsSection,
   CtaSection,
 } from "@/components/sections"
 import { getPortfolioPageData } from "@/lib/queries"
@@ -52,19 +44,15 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
       />
       <HeroSection data={profile} />
-      <StatementSection />
-      <AboutSection data={profile} />
-      <NowSection />
-      <PrinciplesSection />
-      <ProcessSection />
-      <ServicesSection services={services} />
+      <StatementSection data={profile} />
       <CaseStudiesSection caseStudies={caseStudies} />
-      <EducationSection education={education} />
-      <ExperienceSection experiences={experiences} />
-      <CapabilitiesSection />
-      <OpenSourceSection />
+      <ServicesSection services={services} />
+      <ExperienceSection
+        experiences={experiences}
+        education={education}
+        certifications={certifications}
+      />
       <TestimonialsSection testimonials={testimonials} />
-      <CertificationsSection certifications={certifications} />
       <CtaSection />
     </>
   )

@@ -1,6 +1,6 @@
 "use server"
 
-import { db, sql } from "@workspace/db"
+import { db, sql, isDbConfigured } from "@workspace/db"
 import { listFiles } from "@workspace/storage"
 
 export interface ServiceHealthStatus {
@@ -54,25 +54,37 @@ export async function runSystemHealthDiagnostics(): Promise<SystemHealthReport> 
     latencyMs: 0,
   }
 
-  try {
-    await db.execute(sql`SELECT 1`)
-    const latency = Date.now() - t0Db
+  if (!isDbConfigured) {
     dbStatus = {
       name: "PostgreSQL Database",
-      status: latency < 1000 ? "healthy" : "degraded",
-      latencyMs: latency,
-      message: "Koneksi pool aktif dan query SELECT 1 berhasil dieksekusi.",
+      status: "degraded",
+      latencyMs: 0,
+      message: "Database unconfigured (running in local offline mode).",
       details: {
-        pool: "Active",
+        pool: "Offline Fallback",
       },
     }
-  } catch (err: unknown) {
-    dbStatus = {
-      name: "PostgreSQL Database",
-      status: "down",
-      latencyMs: Date.now() - t0Db,
-      message:
-        err instanceof Error ? err.message : "Gagal terhubung ke database.",
+  } else {
+    try {
+      await db.execute(sql`SELECT 1`)
+      const latency = Date.now() - t0Db
+      dbStatus = {
+        name: "PostgreSQL Database",
+        status: latency < 1000 ? "healthy" : "degraded",
+        latencyMs: latency,
+        message: "Koneksi pool aktif dan query SELECT 1 berhasil dieksekusi.",
+        details: {
+          pool: "Active",
+        },
+      }
+    } catch (err: unknown) {
+      dbStatus = {
+        name: "PostgreSQL Database",
+        status: "down",
+        latencyMs: Date.now() - t0Db,
+        message:
+          err instanceof Error ? err.message : "Gagal terhubung ke database.",
+      }
     }
   }
 

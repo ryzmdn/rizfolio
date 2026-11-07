@@ -64,47 +64,47 @@ export function BlogFooter() {
   return (
     <Footer
       id="blog-footer"
-      className="w-full border-t border-border/50 bg-muted/20"
+      className="w-full border-t border-foreground/8 bg-background"
     >
-      <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 lg:gap-16">
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-12 lg:gap-16">
           <div className="space-y-5 md:col-span-5">
-            <div className="flex items-center gap-x-3">
-              <div className="relative size-10 overflow-hidden rounded-full ring-1 ring-border/60">
+            <div className="flex items-center gap-3.5">
+              <div className="relative size-11 overflow-hidden rounded-full border border-foreground/15 bg-foreground/5">
                 <Image
                   src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
                   alt="Rizky Ramadhan"
                   fill
-                  sizes="40px"
+                  sizes="44px"
                   className="object-cover"
                 />
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <span className="font-mono text-[10px] tracking-widest text-muted-foreground/60 uppercase">
+                  [ THE MONOGRAPH // ARCHIVES ]
+                </span>
+                <p className="font-serif text-base font-light text-foreground">
                   Rizky Ramadhan
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
                   Multidisciplinary Digital Builder
                 </p>
               </div>
             </div>
 
-            <p className="text-xs/relaxed text-muted-foreground">
+            <p className="max-w-sm text-xs leading-relaxed font-light text-muted-foreground">
               Documenting systems architecture, design token ergonomics,
               high-throughput database modeling, and lessons learned shipping
               production software.
             </p>
 
-            <div className="flex items-center gap-x-2 pt-2">
+            <div className="flex items-center gap-2 pt-1">
               <a
                 href="https://github.com/ryzmdn"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="GitHub Profile"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-8 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
               >
                 <GitHub className="size-3.5" />
               </a>
@@ -113,10 +113,7 @@ export function BlogFooter() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="LinkedIn Profile"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-8 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
               >
                 <LinkedIn className="size-3.5" />
               </a>
@@ -125,10 +122,7 @@ export function BlogFooter() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Behance Profile"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-8 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
               >
                 <Behance className="size-3.5" />
               </a>
@@ -137,10 +131,7 @@ export function BlogFooter() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Dribbble Profile"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-8 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
               >
                 <Dribbble className="size-3.5" />
               </a>
@@ -149,37 +140,34 @@ export function BlogFooter() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="RSS Feed"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon-sm" }),
-                  "text-muted-foreground hover:text-foreground"
-                )}
+                className="flex size-8 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
               >
                 <Rss className="size-3.5" />
               </a>
             </div>
 
-            <div className="flex items-center gap-x-3 pt-1">
+            <div className="pt-1 font-mono text-xs">
               <a
                 href={portfolioUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs font-medium text-foreground underline underline-offset-2 hover:text-muted-foreground"
+                className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
               >
-                Main Portfolio
+                Return to Portfolio Ecosystem [ -&gt; ]
               </a>
             </div>
           </div>
 
-          <div className="space-y-3 md:col-span-3">
-            <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
+          <div className="space-y-4 md:col-span-3">
+            <p className="font-mono text-xs tracking-widest text-foreground uppercase">
               Topics & Domains
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5 font-mono text-xs">
               {footerLinks.map((cat) => (
                 <li key={cat.name}>
                   <Link
                     href={cat.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {cat.name}
                   </Link>
@@ -188,62 +176,62 @@ export function BlogFooter() {
             </ul>
           </div>
 
-          <div className="space-y-3 md:col-span-4">
-            <p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
-              Stay Informed
+          <div className="space-y-4 md:col-span-4">
+            <p className="font-mono text-xs tracking-widest text-foreground uppercase">
+              Monograph Dispatch
             </p>
-            <p className="text-xs/relaxed text-muted-foreground">
+            <p className="text-xs leading-relaxed font-light text-muted-foreground">
               Receive concise technical notes whenever new case studies or
-              architectural perspectives are published. No spam.
+              architectural perspectives are published. No marketing spam.
             </p>
 
             {feedbackMessage && isSuccess ? (
-              <div className="flex items-center gap-x-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5 text-xs text-foreground">
+              <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 font-mono text-xs text-foreground">
                 <Check className="size-4 shrink-0 text-emerald-500" />
                 <span>{feedbackMessage}</span>
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="space-y-2">
-                <div className="flex gap-x-2">
+                <div className="flex gap-2">
                   <input
                     type="email"
                     required
                     disabled={isSubmitting}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@domain.com"
-                    className="min-w-0 flex-1 rounded-md border border-border/70 bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:outline-hidden disabled:opacity-60"
+                    placeholder="NAME@DOMAIN.COM"
+                    className="min-w-0 flex-1 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-2 font-mono text-xs text-foreground uppercase placeholder:text-muted-foreground/50 focus:border-foreground/30 focus:outline-hidden disabled:opacity-60"
                   />
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     aria-label="Subscribe to updates"
-                    className={cn(
-                      "inline-flex shrink-0 cursor-pointer items-center gap-x-1.5 rounded-md bg-foreground px-3.5 py-2 text-xs font-semibold text-background transition-opacity hover:opacity-80 disabled:opacity-50"
-                    )}
+                    className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full bg-foreground px-5 py-2 font-mono text-xs tracking-wider text-background uppercase transition-opacity hover:opacity-85 disabled:opacity-50"
                   >
-                    <span>{isSubmitting ? "Subscribing..." : "Join"}</span>
+                    <span>{isSubmitting ? "..." : "Join"}</span>
                     <Send className="size-3" />
                   </button>
                 </div>
                 {feedbackMessage && !isSuccess && (
-                  <p className="text-xs text-destructive">{feedbackMessage}</p>
+                  <p className="font-mono text-xs text-destructive">
+                    {feedbackMessage}
+                  </p>
                 )}
               </form>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col items-start justify-between gap-y-4 border-t border-border/40 pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-foreground/8 pt-8 font-mono text-[11px] text-muted-foreground sm:flex-row">
           <p>
-            &copy; {new Date().getFullYear()} Rizky Ramadhan. Built with Next.js
-            16, React 19 & Tailwind CSS.
+            &copy; {new Date().getFullYear()} Rizky Ramadhan. The Monograph
+            Series. All rights reserved.
           </p>
 
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="inline-flex items-center gap-x-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/3 px-4 py-1.5 tracking-wider uppercase transition-all duration-200 hover:border-foreground/30 hover:bg-foreground hover:text-background"
           >
             <span>Back to top</span>
             <ArrowUp className="size-3" />

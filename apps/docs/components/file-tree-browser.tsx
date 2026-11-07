@@ -98,7 +98,6 @@ export function FileTreeBrowser({
   const hasParent = parentPathParts.length > 0
   const backPath = parentPathParts.slice(0, -1).join("/")
 
-  // Local filter for files in the current directory
   const displayedFiles = filterQuery.trim()
     ? files.filter((f) =>
         f.filename.toLowerCase().includes(filterQuery.toLowerCase().trim())
@@ -106,11 +105,9 @@ export function FileTreeBrowser({
     : files
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs">
-      {/* Header bar: Breadcrumb path & In-directory search */}
-      <div className="flex flex-col gap-3 border-b border-border/80 bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        {/* Breadcrumbs for directory tree */}
-        <div className="flex flex-wrap items-center gap-1.5 font-mono">
+    <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 shadow-xs backdrop-blur-xl">
+      <div className="flex flex-col gap-3 border-b border-foreground/8 bg-foreground/[0.02] px-5 py-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
           <Link
             href={`/repo/${slug}`}
             className="text-foreground transition-colors hover:underline"
@@ -122,10 +119,12 @@ export function FileTreeBrowser({
             const segmentPath = parentPathParts.slice(0, idx + 1).join("/")
             const isLast = idx === parentPathParts.length - 1
             return (
-              <span key={segmentPath} className="flex items-center gap-1.5">
-                <span>/</span>
+              <span key={segmentPath} className="flex items-center gap-2">
+                <span className="text-foreground/20">/</span>
                 {isLast ? (
-                  <span className="font-medium text-foreground">{segment}</span>
+                  <span className="font-semibold text-foreground">
+                    {segment}
+                  </span>
                 ) : (
                   <Link
                     href={`/repo/${slug}?path=${encodeURIComponent(segmentPath)}`}
@@ -139,37 +138,34 @@ export function FileTreeBrowser({
           })}
         </div>
 
-        {/* Filter input & total items counter */}
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Search className="absolute top-1/2 left-2 size-3 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute top-1/2 left-3 size-3 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
               placeholder="Cari file..."
-              className="w-32 rounded-lg border border-border/70 bg-background py-1 pr-6 pl-6 text-[11px] text-foreground transition-all placeholder:text-muted-foreground focus:w-44 focus:border-foreground/40 focus:outline-hidden"
+              className="w-36 rounded-full border border-foreground/10 bg-background/60 py-1 pr-7 pl-8 font-mono text-[11px] text-foreground transition-all placeholder:text-muted-foreground focus:w-48 focus:border-foreground/30 focus:outline-hidden"
             />
             {filterQuery && (
               <button
                 type="button"
                 onClick={() => setFilterQuery("")}
-                className="absolute top-1/2 right-1.5 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3" />
               </button>
             )}
           </div>
 
-          <span className="shrink-0 font-mono text-[11px] tabular-nums">
+          <span className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
             {displayedFiles.length} item{displayedFiles.length !== 1 ? "s" : ""}
           </span>
         </div>
       </div>
 
-      {/* File List */}
-      <div className="divide-y divide-border/40 text-xs">
-        {/* Parent Directory Link */}
+      <div className="divide-y divide-foreground/5 text-xs">
         {hasParent && (
           <Link
             href={
@@ -177,23 +173,21 @@ export function FileTreeBrowser({
                 ? `/repo/${slug}?path=${encodeURIComponent(backPath)}`
                 : `/repo/${slug}`
             }
-            className="flex items-center gap-2.5 px-4 py-2.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+            className="flex items-center gap-3 px-5 py-3 text-muted-foreground transition-colors hover:bg-foreground/[0.02] hover:text-foreground"
           >
             <CornerLeftUp className="size-3.5" />
             <span className="font-mono text-[11px]">.. (direktori induk)</span>
           </Link>
         )}
 
-        {/* Empty Directory State */}
         {displayedFiles.length === 0 && (
-          <div className="px-4 py-8 text-center text-muted-foreground">
+          <div className="px-5 py-12 text-center font-mono text-xs text-muted-foreground">
             {filterQuery
               ? `Tidak ada file yang cocok dengan "${filterQuery}".`
               : "Direktori kosong atau belum ada berkas."}
           </div>
         )}
 
-        {/* File / Folder Rows */}
         {displayedFiles.map((file) => {
           const fileHref = file.isDirectory
             ? `/repo/${slug}?path=${encodeURIComponent(file.path)}`
@@ -203,11 +197,11 @@ export function FileTreeBrowser({
             <Link
               key={file.id}
               href={fileHref}
-              className="group flex items-center justify-between px-4 py-2.5 transition-colors hover:bg-muted/50"
+              className="group flex items-center justify-between px-5 py-3 transition-colors hover:bg-foreground/[0.02]"
             >
-              <div className="flex min-w-0 items-center gap-2.5">
+              <div className="flex min-w-0 items-center gap-3">
                 {getFileIcon(file.filename, file.isDirectory)}
-                <span className="truncate font-mono text-[11px] text-foreground/90 underline-offset-2 group-hover:text-foreground group-hover:underline">
+                <span className="truncate font-mono text-[11px] text-foreground/90 underline-offset-4 group-hover:text-foreground group-hover:underline">
                   {file.filename}
                 </span>
               </div>

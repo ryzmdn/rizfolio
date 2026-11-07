@@ -28,9 +28,10 @@ export function CheckoutForm() {
   const [customerName, setCustomerName] = useState("")
   const [customerEmail, setCustomerEmail] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("stripe")
-  const [agreeTerms, setAgreeTerms] = useState(true)
+  const [agreeTerms, setAgreeTerms] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  const isDev = process.env.NODE_ENV !== "production"
   const paymentOptions = [
     {
       id: "stripe",
@@ -40,14 +41,18 @@ export function CheckoutForm() {
       badges: ["Visa / MC", "Apple Pay", "Google Pay", "E-Money"],
       icon: CreditCard,
     },
-    {
-      id: "sandbox",
-      title: "Instant Sandbox Order (Developer Test Mode)",
-      description:
-        "Direct immediate order provisioning for testing without real card entry.",
-      badges: ["Instant Access", "Test Mode"],
-      icon: Terminal,
-    },
+    ...(isDev
+      ? [
+          {
+            id: "sandbox",
+            title: "Instant Sandbox Order (Developer Test Mode)",
+            description:
+              "Direct immediate order provisioning for testing without real card entry.",
+            badges: ["Instant Access", "Test Mode"],
+            icon: Terminal,
+          },
+        ]
+      : []),
   ]
 
   function handleSubmit(e: React.FormEvent) {
@@ -189,10 +194,14 @@ export function CheckoutForm() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-foreground">
+            <label
+              htmlFor="customer-name"
+              className="text-xs font-medium text-foreground"
+            >
               Full Name
             </label>
             <input
+              id="customer-name"
               type="text"
               required
               value={customerName}
@@ -203,10 +212,14 @@ export function CheckoutForm() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-foreground">
+            <label
+              htmlFor="customer-email"
+              className="text-xs font-medium text-foreground"
+            >
               Delivery Email Address
             </label>
             <input
+              id="customer-email"
               type="email"
               required
               value={customerEmail}
@@ -218,27 +231,37 @@ export function CheckoutForm() {
         </div>
       </div>
 
-      {/* 3. Payment Method Selection */}
       <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold text-foreground">
+          <h2
+            id="payment-methods-heading"
+            className="text-base font-semibold text-foreground"
+          >
             2. Payment Method
           </h2>
           <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-            <ShieldCheck className="size-3.5 text-muted-foreground" />
+            <ShieldCheck
+              className="size-3.5 text-muted-foreground"
+              aria-hidden="true"
+            />
             <span>Stripe Encrypted</span>
           </span>
         </div>
 
-        <div className="space-y-2.5">
+        <fieldset
+          role="radiogroup"
+          aria-labelledby="payment-methods-heading"
+          className="m-0 space-y-2.5 border-0 p-0"
+        >
+          <legend className="sr-only">Select Payment Method</legend>
           {paymentOptions.map((opt) => {
             const isSelected = paymentMethod === opt.id
             const Icon = opt.icon
 
             return (
-              <div
+              <label
                 key={opt.id}
-                onClick={() => setPaymentMethod(opt.id)}
+                htmlFor={`payment-${opt.id}`}
                 className={cn(
                   "flex cursor-pointer items-start gap-3.5 rounded-md border p-3.5 transition-colors select-none",
                   isSelected
@@ -246,8 +269,17 @@ export function CheckoutForm() {
                     : "border-border/60 bg-muted/10 hover:border-border hover:bg-muted/20"
                 )}
               >
+                <input
+                  type="radio"
+                  id={`payment-${opt.id}`}
+                  name="paymentMethod"
+                  value={opt.id}
+                  checked={isSelected}
+                  onChange={() => setPaymentMethod(opt.id)}
+                  className="sr-only"
+                />
                 <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md border border-border/80 bg-background text-foreground">
-                  <Icon className="size-4" />
+                  <Icon className="size-4" aria-hidden="true" />
                 </div>
 
                 <div className="flex-1 space-y-1">
@@ -256,6 +288,7 @@ export function CheckoutForm() {
                       {opt.title}
                     </span>
                     <div
+                      aria-hidden="true"
                       className={cn(
                         "size-3.5 rounded-full border transition-colors",
                         isSelected
@@ -280,16 +313,19 @@ export function CheckoutForm() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </label>
             )
           })}
-        </div>
+        </fieldset>
       </div>
 
-      {/* 4. Terms and Submit */}
       <div className="space-y-4 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
-        <label className="flex cursor-pointer items-start gap-3 select-none">
+        <label
+          htmlFor="terms-agreement"
+          className="flex cursor-pointer items-start gap-3 select-none"
+        >
           <input
+            id="terms-agreement"
             type="checkbox"
             checked={agreeTerms}
             onChange={(e) => setAgreeTerms(e.target.checked)}

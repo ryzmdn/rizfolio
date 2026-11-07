@@ -98,9 +98,11 @@ export function CommandSearch() {
   const handleSelect = useCallback(
     (url: string) => {
       handleClose()
-      startTransition(() => {
-        router.push(url)
-      })
+      setTimeout(() => {
+        startTransition(() => {
+          router.push(url)
+        })
+      }, 50)
     },
     [handleClose, router]
   )
@@ -133,14 +135,14 @@ export function CommandSearch() {
       role="dialog"
       aria-modal="true"
       aria-label="Search release notes and roadmap"
-      className="fixed inset-0 z-50 flex animate-in items-start justify-center bg-background/80 p-4 pt-16 backdrop-blur-sm duration-150 fade-in sm:pt-24"
+      className="fixed inset-0 z-50 flex animate-in items-start justify-center bg-background/80 p-4 pt-16 backdrop-blur-md duration-200 fade-in sm:pt-24"
       onClick={handleClose}
     >
       <div
-        className="w-full max-w-2xl animate-in overflow-hidden rounded-2xl border border-border/90 bg-card shadow-2xl ring-1 ring-border/50 duration-150 zoom-in-95"
+        className="w-full max-w-2xl animate-in overflow-hidden rounded-3xl border border-foreground/10 bg-card/95 shadow-2xl ring-1 ring-foreground/5 backdrop-blur-2xl duration-200 zoom-in-95"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3 border-b border-border/80 px-4 py-3">
+        <div className="flex items-center gap-3 border-b border-foreground/8 px-5 py-4">
           <Search className="size-4 shrink-0 text-muted-foreground" />
           <input
             type="text"
@@ -149,39 +151,39 @@ export function CommandSearch() {
               setQuery(e.target.value)
               setSelectedIndex(0)
             }}
-            placeholder="Search releases, features, bug fixes, or roadmap..."
+            placeholder="Search releases, milestones, architectural commits..."
             autoFocus
-            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden"
+            className="w-full bg-transparent text-sm font-medium text-foreground placeholder:text-muted-foreground/60 focus:outline-hidden"
           />
           {query ? (
             <button
               type="button"
               onClick={() => setQuery("")}
               aria-label="Clear query"
-              className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
             >
-              <X className="size-4" />
+              <X className="size-3.5" />
             </button>
           ) : (
-            <kbd className="hidden rounded border border-border/80 bg-muted/60 px-2 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
+            <kbd className="hidden rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
               ESC
             </kbd>
           )}
         </div>
 
-        <div className="max-h-[60vh] overflow-y-auto p-2">
+        <div className="max-h-[60vh] overflow-y-auto p-3">
           {allItems.length === 0 ? (
-            <div className="py-12 text-center text-xs text-muted-foreground">
-              No releases or roadmap milestones found matching your search.
+            <div className="py-12 text-center font-mono text-xs text-muted-foreground">
+              [ NO MATCHING RELEASES OR ARCHITECTURAL MILESTONES FOUND ]
             </div>
           ) : (
             <div className="space-y-4">
               {matchedReleases.length > 0 && (
                 <div>
-                  <div className="px-3 py-1.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                  <div className="px-3 py-1 font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
                     Releases & Version Logs
                   </div>
-                  <div className="space-y-1">
+                  <div className="mt-1 space-y-1">
                     {matchedReleases.map((rel) => {
                       const itemIndex = allItems.findIndex(
                         (it) => it.tag === rel.version
@@ -196,32 +198,58 @@ export function CommandSearch() {
                             handleSelect(`/release/${rel.version}`)
                           }
                           className={cn(
-                            "flex w-full items-start gap-3 rounded-xl p-3 text-left transition-all",
+                            "flex w-full items-start gap-3 rounded-2xl p-3 text-left transition-all",
                             isSelected
-                              ? "bg-foreground/10 text-foreground"
-                              : "text-foreground hover:bg-muted/50"
+                              ? "bg-foreground text-background"
+                              : "text-foreground hover:bg-foreground/[0.04]"
                           )}
                         >
-                          <GitCommit className="mt-0.5 size-4 shrink-0 text-foreground" />
-                          <div className="min-w-0 flex-1 space-y-1">
+                          <GitCommit
+                            className={cn(
+                              "mt-0.5 size-4 shrink-0",
+                              isSelected ? "text-background" : "text-foreground"
+                            )}
+                          />
+                          <div className="min-w-0 flex-1 space-y-0.5">
                             <div className="flex items-center gap-2">
-                              <span className="font-mono text-xs font-bold">
+                              <span className="font-mono text-xs font-semibold">
                                 {rel.version}
                               </span>
-                              <span className="text-xs text-muted-foreground">
+                              <span
+                                className={cn(
+                                  "font-mono text-[11px]",
+                                  isSelected
+                                    ? "text-background/70"
+                                    : "text-muted-foreground"
+                                )}
+                              >
                                 {rel.releaseDate}
                               </span>
                             </div>
-                            <p className="truncate text-xs font-medium text-foreground">
+                            <p className="truncate text-xs font-medium">
                               {rel.title}
                             </p>
                             {rel.summary && (
-                              <p className="line-clamp-1 text-[11px] text-muted-foreground">
+                              <p
+                                className={cn(
+                                  "line-clamp-1 text-[11px]",
+                                  isSelected
+                                    ? "text-background/70"
+                                    : "text-muted-foreground"
+                                )}
+                              >
                                 {rel.summary}
                               </p>
                             )}
                           </div>
-                          <ArrowRight className="mt-1 size-3.5 shrink-0 text-muted-foreground" />
+                          <ArrowRight
+                            className={cn(
+                              "mt-1 size-3.5 shrink-0",
+                              isSelected
+                                ? "text-background/80"
+                                : "text-muted-foreground"
+                            )}
+                          />
                         </button>
                       )
                     })}
@@ -231,10 +259,10 @@ export function CommandSearch() {
 
               {matchedRoadmap.length > 0 && (
                 <div>
-                  <div className="px-3 py-1.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                  <div className="px-3 py-1 font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
                     Roadmap & Milestones
                   </div>
-                  <div className="space-y-1">
+                  <div className="mt-1 space-y-1">
                     {matchedRoadmap.map((rm) => {
                       const itemIndex = allItems.findIndex(
                         (it) => it.title === rm.title
@@ -247,30 +275,63 @@ export function CommandSearch() {
                           type="button"
                           onClick={() => handleSelect("/roadmap")}
                           className={cn(
-                            "flex w-full items-start gap-3 rounded-xl p-3 text-left transition-all",
+                            "flex w-full items-start gap-3 rounded-2xl p-3 text-left transition-all",
                             isSelected
-                              ? "bg-foreground/10 text-foreground"
-                              : "text-foreground hover:bg-muted/50"
+                              ? "bg-foreground text-background"
+                              : "text-foreground hover:bg-foreground/[0.04]"
                           )}
                         >
-                          <Milestone className="mt-0.5 size-4 shrink-0 text-foreground" />
-                          <div className="min-w-0 flex-1 space-y-1">
+                          <Milestone
+                            className={cn(
+                              "mt-0.5 size-4 shrink-0",
+                              isSelected ? "text-background" : "text-foreground"
+                            )}
+                          />
+                          <div className="min-w-0 flex-1 space-y-0.5">
                             <div className="flex items-center gap-2">
-                              <span className="rounded-md border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px] font-semibold text-muted-foreground">
+                              <span
+                                className={cn(
+                                  "rounded-full border px-2 py-0.5 font-mono text-[10px] tracking-wider uppercase",
+                                  isSelected
+                                    ? "border-background/20 bg-background/10 text-background"
+                                    : "border-foreground/10 bg-foreground/[0.03] text-muted-foreground"
+                                )}
+                              >
                                 {rm.stage}
                               </span>
-                              <span className="font-mono text-[11px] text-muted-foreground">
+                              <span
+                                className={cn(
+                                  "font-mono text-[11px]",
+                                  isSelected
+                                    ? "text-background/70"
+                                    : "text-muted-foreground"
+                                )}
+                              >
                                 {rm.quarter}
                               </span>
                             </div>
-                            <p className="truncate text-xs font-medium text-foreground">
+                            <p className="truncate text-xs font-medium">
                               {rm.title}
                             </p>
-                            <p className="line-clamp-1 text-[11px] text-muted-foreground">
+                            <p
+                              className={cn(
+                                "line-clamp-1 text-[11px]",
+                                selectedIndex === itemIndex
+                                  ? "text-background/70"
+                                  : "text-muted-foreground"
+                              )}
+                            >
                               {rm.description}
                             </p>
                           </div>
-                          <ArrowRight className="mt-1 size-3.5 shrink-0 text-muted-foreground" />
+                          <ArrowRight
+                            className={cn(
+                              "mt-1 size-3.5 shrink-0",
+                              isSelected
+                                ? "text-background/80"
+                                : "text-muted-foreground"
+                            )}
+                          />
                         </button>
                       )
                     })}
@@ -281,20 +342,20 @@ export function CommandSearch() {
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-border/80 bg-muted/30 px-4 py-2 text-[11px] text-muted-foreground">
+        <div className="flex items-center justify-between border-t border-foreground/8 bg-foreground/[0.02] px-5 py-3 font-mono text-[11px] text-muted-foreground">
           <div className="flex items-center gap-2">
-            <span>Navigation:</span>
-            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">
-              UP
+            <span>Navigate:</span>
+            <kbd className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2 py-0.5 text-[10px]">
+              ↑
             </kbd>
-            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">
-              DOWN
+            <kbd className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2 py-0.5 text-[10px]">
+              ↓
             </kbd>
-            <kbd className="rounded border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[10px]">
-              ENTER
+            <kbd className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2 py-0.5 text-[10px]">
+              ↵
             </kbd>
           </div>
-          <span>Press ESC to dismiss</span>
+          <span>[ ESC TO CLOSE ]</span>
         </div>
       </div>
     </div>

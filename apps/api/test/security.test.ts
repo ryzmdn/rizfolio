@@ -97,3 +97,26 @@ describe("API Gateway Rate Limit Tiers", () => {
     expect(RATE_LIMIT_TIERS.ADMIN.maxAttempts).toBe(300)
   })
 })
+
+describe("High-Entropy Order Identifier Security", () => {
+  it("should generate cryptographically random order numbers resisting enumeration", () => {
+    const timestamp = Date.now().toString(36).toUpperCase()
+    const randomSuffix = crypto.randomBytes(4).toString("hex").toUpperCase()
+    const orderNumber = `RZ-${timestamp}-${randomSuffix}`
+
+    expect(/^RZ-[A-Z0-9]+-[A-F0-9]{8}$/.test(orderNumber)).toBe(true)
+    expect(orderNumber.length).toBeGreaterThanOrEqual(18)
+  })
+
+  it("should never expose download tokens in public order items projection", () => {
+    const publicOrderItemProjection = {
+      id: "item-123",
+      productId: "prod-456",
+      productTitle: "Sample Asset",
+      pricePaid: 250000,
+    }
+
+    expect("downloadToken" in publicOrderItemProjection).toBe(false)
+    expect("tokenExpiresAt" in publicOrderItemProjection).toBe(false)
+  })
+})

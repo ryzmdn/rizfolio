@@ -93,22 +93,22 @@ const categoryConfig: Record<
   FEATURE: {
     label: "Features & Additions",
     icon: Sparkles,
-    className: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+    className: "text-foreground bg-foreground/5 border-foreground/15",
   },
   IMPROVEMENT: {
     label: "Improvements & Optimizations",
     icon: Zap,
-    className: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+    className: "text-foreground bg-foreground/5 border-foreground/15",
   },
   FIX: {
     label: "Bug Fixes & Patches",
     icon: Wrench,
-    className: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+    className: "text-foreground bg-foreground/5 border-foreground/15",
   },
   BREAKING: {
     label: "Breaking Changes",
     icon: AlertCircle,
-    className: "text-rose-500 bg-rose-500/10 border-rose-500/20",
+    className: "text-destructive bg-destructive/10 border-destructive/20",
   },
 }
 
@@ -194,41 +194,43 @@ export default async function ReleaseDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
-      <Container className="max-w-4xl py-10 sm:py-16">
-        <nav
-          aria-label="Breadcrumbs"
-          className="mb-8 flex flex-wrap items-center gap-2 text-xs text-muted-foreground"
-        >
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+      <Container className="max-w-4xl space-y-12 py-10 sm:py-16">
+        <div>
+          <nav
+            aria-label="Breadcrumbs"
+            className="inline-flex flex-wrap items-center gap-2 rounded-full border border-foreground/10 bg-card/60 px-4 py-1.5 font-mono text-xs text-muted-foreground backdrop-blur-xs"
           >
-            <ArrowLeft className="size-3.5" />
-            <span>All Updates</span>
-          </Link>
-          <ChevronRight className="size-3 text-muted-foreground/60" />
-          <span>Releases</span>
-          <ChevronRight className="size-3 text-muted-foreground/60" />
-          <span className="font-mono font-semibold text-foreground">
-            {release.version}
-          </span>
-        </nav>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+            >
+              <ArrowLeft className="size-3.5" />
+              <span>All Logs</span>
+            </Link>
+            <ChevronRight className="size-3 text-muted-foreground/40" />
+            <span>Releases</span>
+            <ChevronRight className="size-3 text-muted-foreground/40" />
+            <span className="font-semibold text-foreground">
+              {release.version}
+            </span>
+          </nav>
+        </div>
 
-        <header className="space-y-6 rounded-2xl border border-border/80 bg-card/60 p-6 shadow-xs backdrop-blur-xs sm:p-8">
+        <header className="space-y-8 rounded-3xl border border-foreground/8 bg-card/40 p-6 shadow-xs backdrop-blur-xl md:p-10">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="rounded-lg bg-foreground px-3 py-1 font-mono text-xs font-bold text-background shadow-xs">
+              <span className="rounded-full bg-foreground px-4 py-1 font-mono text-xs font-semibold text-background shadow-xs">
                 {release.version}
               </span>
 
               {!adjacent.newer && (
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                  <span className="size-1.5 rounded-full bg-emerald-500" />
-                  Latest Release
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                  <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
+                  Latest Production
                 </span>
               )}
 
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
                 <Calendar className="size-3.5" />
                 <time dateTime={release.createdAt}>{release.releaseDate}</time>
               </div>
@@ -241,12 +243,12 @@ export default async function ReleaseDetailPage({
             />
           </div>
 
-          <div className="space-y-3 border-t border-border/60 pt-6">
-            <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+          <div className="space-y-4 border-t border-foreground/8 pt-8">
+            <h1 className="font-serif text-3xl font-medium tracking-tight text-foreground sm:text-5xl">
               {release.title}
             </h1>
             {release.summary && (
-              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+              <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
                 {release.summary}
               </p>
             )}
@@ -254,14 +256,14 @@ export default async function ReleaseDetailPage({
 
           {release.scope && release.scope.length > 0 && (
             <div className="flex flex-wrap items-center gap-2 pt-2">
-              <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
+              <span className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
                 <Layers className="size-3.5" />
-                Affected Packages:
+                Impacted Packages:
               </span>
               {release.scope.map((sc) => (
                 <span
                   key={sc}
-                  className="rounded-lg border border-border/70 bg-muted/30 px-2.5 py-0.5 font-mono text-xs text-foreground/80"
+                  className="rounded-full border border-foreground/10 bg-foreground/[0.02] px-3 py-0.5 font-mono text-xs text-foreground/80"
                 >
                   {sc}
                 </span>
@@ -270,17 +272,17 @@ export default async function ReleaseDetailPage({
           )}
 
           {release.metrics && release.metrics.length > 0 && (
-            <div className="grid grid-cols-2 gap-3 border-t border-border/60 pt-6 sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 border-t border-foreground/8 pt-6 sm:grid-cols-3">
               {release.metrics.map((metric) => (
                 <div
                   key={metric.label}
-                  className="rounded-xl border border-border/60 bg-background/60 p-3.5"
+                  className="rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-4"
                 >
-                  <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
                     <Gauge className="size-3.5 text-muted-foreground" />
                     <span>{metric.label}</span>
                   </div>
-                  <div className="mt-1.5 font-mono text-base font-bold text-foreground">
+                  <div className="mt-2 font-mono text-lg font-semibold text-foreground">
                     {metric.value}
                   </div>
                 </div>
@@ -289,7 +291,7 @@ export default async function ReleaseDetailPage({
           )}
         </header>
 
-        <main className="mt-10 space-y-10">
+        <main className="space-y-8">
           {orderedCategories.map((categoryKey) => {
             const config = categoryConfig[categoryKey] || {
               label: categoryKey,
@@ -302,24 +304,25 @@ export default async function ReleaseDetailPage({
             return (
               <section
                 key={categoryKey}
-                className="space-y-4 rounded-2xl border border-border/80 bg-card/40 p-6 backdrop-blur-xs sm:p-8"
+                className="space-y-6 rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl md:p-8"
               >
-                <div className="flex items-center justify-between border-b border-border/60 pb-3">
-                  <div className="flex items-center gap-2.5">
+                <div className="flex items-center justify-between border-b border-foreground/8 pb-4">
+                  <div className="flex items-center gap-3">
                     <div
                       className={cn(
-                        "flex size-7 items-center justify-center rounded-lg border",
+                        "flex size-8 items-center justify-center rounded-xl border",
                         config.className
                       )}
                     >
-                      <Icon className="size-3.5" />
+                      <Icon className="size-4" />
                     </div>
-                    <h2 className="text-base font-bold tracking-tight text-foreground sm:text-lg">
+                    <h2 className="font-serif text-lg font-medium tracking-tight text-foreground sm:text-xl">
                       {config.label}
                     </h2>
                   </div>
-                  <span className="rounded-md border border-border/70 bg-muted/40 px-2 py-0.5 font-mono text-xs text-muted-foreground">
-                    {items.length} {items.length === 1 ? "item" : "items"}
+
+                  <span className="rounded-full border border-foreground/10 bg-card/60 px-2.5 py-0.5 font-mono text-xs text-muted-foreground">
+                    {items.length} {items.length === 1 ? "entry" : "entries"}
                   </span>
                 </div>
 
@@ -327,15 +330,15 @@ export default async function ReleaseDetailPage({
                   {items.map((item) => (
                     <li
                       key={item.id}
-                      className="group flex items-start gap-3 rounded-xl p-2 transition-colors hover:bg-muted/40"
+                      className="group flex items-start gap-3.5 rounded-2xl p-3 transition-colors hover:bg-foreground/[0.02]"
                     >
                       <div className="mt-2 size-1.5 shrink-0 rounded-full bg-foreground" />
                       <div className="min-w-0 flex-1 space-y-1">
-                        <p className="text-xs leading-relaxed text-foreground sm:text-sm">
+                        <p className="text-xs leading-relaxed text-foreground md:text-sm">
                           {item.description}
                         </p>
                         {item.scope && (
-                          <span className="inline-block rounded-md border border-border/50 bg-muted/50 px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
+                          <span className="inline-block rounded-full border border-foreground/10 bg-foreground/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
                             {item.scope}
                           </span>
                         )}
@@ -348,18 +351,18 @@ export default async function ReleaseDetailPage({
           })}
         </main>
 
-        <footer className="mt-12 border-t border-border/80 pt-8">
+        <footer className="border-t border-foreground/8 pt-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {adjacent.older ? (
               <Link
                 href={`/release/${adjacent.older.version}`}
-                className="group flex flex-col rounded-2xl border border-border/80 bg-card/60 p-4 transition-all hover:border-foreground/30 hover:bg-card"
+                className="group flex flex-col rounded-3xl border border-foreground/8 bg-card/40 p-6 backdrop-blur-xl transition-all hover:border-foreground/20 hover:bg-card/70"
               >
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-0.5" />
-                  <span>Previous Release</span>
+                <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                  <ArrowLeft className="size-3.5 transition-transform group-hover:-translate-x-1" />
+                  <span>PREVIOUS RELEASE</span>
                 </div>
-                <div className="mt-2 font-mono text-sm font-bold text-foreground">
+                <div className="mt-3 font-mono text-base font-semibold text-foreground">
                   {adjacent.older.version}
                 </div>
                 <div className="mt-1 line-clamp-1 text-xs text-muted-foreground">
@@ -367,21 +370,21 @@ export default async function ReleaseDetailPage({
                 </div>
               </Link>
             ) : (
-              <div className="rounded-2xl border border-dashed border-border/50 p-4 text-center text-xs text-muted-foreground">
-                Initial Monorepo Release
+              <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-foreground/10 p-6 text-center font-mono text-xs text-muted-foreground">
+                [ INITIAL MONOREPO RELEASE ]
               </div>
             )}
 
             {adjacent.newer ? (
               <Link
                 href={`/release/${adjacent.newer.version}`}
-                className="group flex flex-col items-end rounded-2xl border border-border/80 bg-card/60 p-4 text-right transition-all hover:border-foreground/30 hover:bg-card"
+                className="group flex flex-col items-end rounded-3xl border border-foreground/8 bg-card/40 p-6 text-right backdrop-blur-xl transition-all hover:border-foreground/20 hover:bg-card/70"
               >
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <span>Next Release</span>
-                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                  <span>NEXT RELEASE</span>
+                  <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
                 </div>
-                <div className="mt-2 font-mono text-sm font-bold text-foreground">
+                <div className="mt-3 font-mono text-base font-semibold text-foreground">
                   {adjacent.newer.version}
                 </div>
                 <div className="mt-1 line-clamp-1 text-xs text-muted-foreground">
@@ -389,8 +392,8 @@ export default async function ReleaseDetailPage({
                 </div>
               </Link>
             ) : (
-              <div className="rounded-2xl border border-dashed border-border/50 p-4 text-center text-xs text-muted-foreground">
-                Latest Production Release
+              <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-foreground/10 p-6 text-center font-mono text-xs text-muted-foreground">
+                [ LATEST PRODUCTION RELEASE ]
               </div>
             )}
           </div>

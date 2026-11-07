@@ -90,7 +90,6 @@ export default async function RepoDetailPage({
     notFound()
   }
 
-  // Increment view on server render asynchronously
   incrementRepoView(slug).catch((err: unknown) => {
     console.error(
       "[Docs Detail Page] Failed to increment repo view:",
@@ -126,8 +125,7 @@ export default async function RepoDetailPage({
   ])
 
   return (
-    <Container className="space-y-10 py-10">
-      {/* JSON-LD Structured Data for Google Rich Snippets */}
+    <Container className="space-y-12 py-16 sm:py-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -137,7 +135,6 @@ export default async function RepoDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      {/* Repository Header */}
       <RepoHeader
         slug={repo.slug}
         name={repo.name}
@@ -154,11 +151,10 @@ export default async function RepoDetailPage({
         license={repo.license}
       />
 
-      {/* Quick Jump Anchor Tabs */}
-      <div className="flex items-center gap-2 border-b border-border/70 pb-3 text-xs">
+      <div className="flex items-center gap-2 border-b border-foreground/8 pb-4 text-xs">
         <a
           href="#files"
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-medium text-foreground transition-colors hover:bg-muted"
+          className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-4 py-2 font-mono text-xs font-medium text-foreground transition-all hover:bg-foreground hover:text-background"
         >
           <Code2 className="size-3.5" />
           <span>Files ({files.length})</span>
@@ -167,7 +163,7 @@ export default async function RepoDetailPage({
         {repo.readmeContent && (
           <a
             href="#readme"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 font-medium text-foreground transition-colors hover:bg-muted"
+            className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-4 py-2 font-mono text-xs font-medium text-foreground transition-all hover:bg-foreground hover:text-background"
           >
             <BookOpen className="size-3.5" />
             <span>README Documentation</span>
@@ -175,26 +171,28 @@ export default async function RepoDetailPage({
         )}
       </div>
 
-      {/* File Tree Browser Section */}
-      <section id="files" className="scroll-mt-24 space-y-3">
+      <section id="files" className="scroll-mt-24 space-y-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-            <Code2 className="size-4" />
-            <h2>Source Code & File Hierarchy</h2>
+          <div className="flex items-center gap-2 text-foreground">
+            <Code2 className="size-4 text-muted-foreground" />
+            <h2 className="font-serif text-xl font-light tracking-tight sm:text-2xl">
+              Source Code & File Hierarchy
+            </h2>
           </div>
-          <span className="font-mono text-xs text-muted-foreground">
+          <span className="rounded-full border border-foreground/10 bg-foreground/[0.02] px-3 py-1 font-mono text-[11px] text-muted-foreground">
             Branch: main
           </span>
         </div>
         <FileTreeBrowser slug={repo.slug} files={files} currentPath={path} />
       </section>
 
-      {/* README.md Viewer Section with Table of Contents */}
       {repo.readmeContent && (
-        <section id="readme" className="scroll-mt-24 space-y-3 pt-6">
-          <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-            <BookOpen className="size-4" />
-            <h2>Repository Overview & Architecture</h2>
+        <section id="readme" className="scroll-mt-24 space-y-4 pt-8">
+          <div className="flex items-center gap-2 text-foreground">
+            <BookOpen className="size-4 text-muted-foreground" />
+            <h2 className="font-serif text-xl font-light tracking-tight sm:text-2xl">
+              Repository Overview & Architecture
+            </h2>
           </div>
           <ReadmeViewer content={repo.readmeContent} />
         </section>

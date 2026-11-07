@@ -24,16 +24,14 @@ function extractHeadings(markdown: string): TocItem[] {
   for (const line of lines) {
     const match = line.match(/^(#{2,3})\s+(.+)$/)
     if (match) {
-      const level = match[1]!.length // 2 for ##, 3 for ###
+      const level = match[1]!.length
       const rawText = match[2]!.trim()
-      // Remove inline markdown formatting
       const cleanText = rawText
         .replace(/`([^`]+)`/g, "$1")
         .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
         .replace(/\*\*([^*]+)\*\*/g, "$1")
         .replace(/\*([^*]+)\*/g, "$1")
 
-      // Standard slug id
       const id = cleanText
         .toLowerCase()
         .replace(/[^\w\s-]/g, "")
@@ -98,13 +96,12 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
   }
 
   return (
-    <nav aria-label="Table of contents" className={cn("space-y-3", className)}>
-      {/* Mobile Collapsible View */}
-      <div className="rounded-xl border border-border/70 bg-card/60 p-4 lg:hidden">
+    <nav aria-label="Table of contents" className={cn("space-y-4", className)}>
+      <div className="rounded-2xl border border-foreground/10 bg-card/60 p-4 backdrop-blur-md lg:hidden">
         <button
           type="button"
           onClick={() => setMobileExpanded((prev) => !prev)}
-          className="flex w-full items-center justify-between text-xs font-medium text-foreground"
+          className="flex w-full items-center justify-between font-mono text-xs text-foreground"
         >
           <span className="flex items-center gap-x-2">
             <ListCollapse className="size-3.5 text-muted-foreground" />
@@ -119,7 +116,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
         </button>
 
         {mobileExpanded && (
-          <ul className="mt-3 space-y-2 border-t border-border/40 pt-3 text-xs">
+          <ul className="mt-3 space-y-2 border-t border-foreground/8 pt-3 text-xs">
             {headings.map((item) => (
               <li
                 key={item.id}
@@ -131,9 +128,9 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
                   href={`#${item.id}`}
                   onClick={(e) => handleHeadingClick(e, item.id)}
                   className={cn(
-                    "block py-0.5 transition-colors",
+                    "block py-0.5 font-mono transition-colors",
                     activeId === item.id
-                      ? "font-medium text-primary"
+                      ? "font-semibold text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -145,14 +142,13 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
         )}
       </div>
 
-      {/* Desktop Sticky View */}
       <div className="hidden space-y-3 lg:block">
-        <p className="flex items-center gap-x-2 text-xs font-medium tracking-wider text-muted-foreground uppercase">
+        <p className="flex items-center gap-x-2 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
           <ListCollapse className="size-3.5" />
           <span>Table of Contents</span>
         </p>
 
-        <ul className="space-y-1.5 text-xs">
+        <ul className="space-y-2 text-xs">
           {headings.map((item) => (
             <li
               key={item.id}
@@ -165,9 +161,9 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
                 href={`#${item.id}`}
                 onClick={(e) => handleHeadingClick(e, item.id)}
                 className={cn(
-                  "block py-1 leading-snug transition-colors",
+                  "block py-1 font-mono text-xs leading-snug transition-colors",
                   activeId === item.id
-                    ? "-ml-2 border-l-2 border-primary pl-2 font-medium text-foreground"
+                    ? "-ml-2.5 border-l-2 border-foreground pl-2.5 font-medium text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >

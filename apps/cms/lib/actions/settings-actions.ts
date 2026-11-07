@@ -1,7 +1,8 @@
 "use server"
 
-import { db, eq } from "@workspace/db"
+import { db, eq, isDbConfigured } from "@workspace/db"
 import { siteSettings, users, profile } from "@workspace/db/schema"
+import { insertProfileSchema, insertSiteSettingSchema } from "@workspace/db"
 import { revalidatePath } from "next/cache"
 import { verifyPassword, hashPassword } from "@workspace/auth"
 import { getCurrentUser } from "../auth-actions"
@@ -36,23 +37,30 @@ export async function getCmsUserProfile(): Promise<CmsUserProfile | null> {
     let avatarUrl: string | undefined
     let fullName = "Rizky Ramadhan"
 
-    const [userRecord] = await db
-      .select({ avatarUrl: users.avatarUrl })
-      .from(users)
-      .where(eq(users.id, session.userId))
-      .limit(1)
+    try {
+      const [userRecord] = await db
+        .select({ avatarUrl: users.avatarUrl })
+        .from(users)
+        .where(eq(users.id, session.userId))
+        .limit(1)
 
-    if (userRecord?.avatarUrl) {
-      avatarUrl = userRecord.avatarUrl
-    }
+      if (userRecord?.avatarUrl) {
+        avatarUrl = userRecord.avatarUrl
+      }
 
-    const [profileRecord] = await db
-      .select({ fullName: profile.fullName })
-      .from(profile)
-      .limit(1)
+      const [profileRecord] = await db
+        .select({ fullName: profile.fullName })
+        .from(profile)
+        .limit(1)
 
-    if (profileRecord?.fullName) {
-      fullName = profileRecord.fullName
+      if (profileRecord?.fullName) {
+        fullName = profileRecord.fullName
+      }
+    } catch (dbError) {
+      console.warn(
+        "[CMS Settings] Profile database query skipped:",
+        dbError instanceof Error ? dbError.message : String(dbError)
+      )
     }
 
     return {
@@ -72,6 +80,9 @@ export async function getCmsUserProfile(): Promise<CmsUserProfile | null> {
 }
 
 export async function getSiteSettings(key = "general") {
+  if (!isDbConfigured) {
+    return null
+  }
   try {
     const [settings] = await db
       .select()
@@ -80,7 +91,7 @@ export async function getSiteSettings(key = "general") {
       .limit(1)
     return settings || null
   } catch (error) {
-    console.error(
+    console.warn(
       "[CMS Settings] Failed to fetch settings:",
       error instanceof Error ? error.message : error
     )
@@ -93,15 +104,32 @@ export async function updateSiteSettings(
   valueJson: unknown,
   description?: string
 ) {
-  const existing = await getSiteSettings(key)
-  if (existing) {
-    await db
-      .update(siteSettings)
-      .set({ valueJson, description, updatedAt: new Date() })
+  const validated = insertSiteSettingSchema.parse({
+    key,
+    valueJson,
+    description,
+  })
+
+  await db.transaction(async (tx) => {
+    const [existing] = await tx
+      .select({ key: siteSettings.key })
+      .from(siteSettings)
       .where(eq(siteSettings.key, key))
-  } else {
-    await db.insert(siteSettings).values({ key, valueJson, description })
-  }
+      .limit(1)
+
+    if (existing) {
+      await tx
+        .update(siteSettings)
+        .set({
+          valueJson: validated.valueJson,
+          description: validated.description,
+          updatedAt: new Date(),
+        })
+        .where(eq(siteSettings.key, key))
+    } else {
+      await tx.insert(siteSettings).values(validated)
+    }
+  })
 
   logTransaction({
     domain: "SYSTEM",
@@ -201,8 +229,7 @@ export async function updateProfileSettingsAction(
       }
     }
 
-    const [existing] = await db.select().from(profile).limit(1)
-    const profileValues = {
+    const profileValues = insertProfileSchema.parse({
       fullName: input.fullName.trim(),
       headline: input.headline.trim(),
       bio: input.bio.trim(),
@@ -210,23 +237,36 @@ export async function updateProfileSettingsAction(
       resumeUrl: input.resumeUrl?.trim() || null,
       socialLinks: input.socialLinks || {},
       updatedAt: new Date(),
-    }
+    })
 
-    if (existing) {
-      await db
-        .update(profile)
-        .set(profileValues)
-        .where(eq(profile.id, existing.id))
-    } else {
-      await db.insert(profile).values(profileValues)
-    }
+    let targetEntityId = "profile-singleton"
 
-    if (input.avatarUrl !== undefined && session.userId) {
-      await db
-        .update(users)
-        .set({ avatarUrl: input.avatarUrl.trim() || null })
-        .where(eq(users.id, session.userId))
-    }
+    await db.transaction(async (tx) => {
+      const [existing] = await tx.select().from(profile).limit(1)
+
+      if (existing) {
+        targetEntityId = existing.id
+        await tx
+          .update(profile)
+          .set(profileValues)
+          .where(eq(profile.id, existing.id))
+      } else {
+        const [inserted] = await tx
+          .insert(profile)
+          .values(profileValues)
+          .returning()
+        if (inserted) {
+          targetEntityId = inserted.id
+        }
+      }
+
+      if (input.avatarUrl !== undefined && session.userId) {
+        await tx
+          .update(users)
+          .set({ avatarUrl: input.avatarUrl.trim() || null })
+          .where(eq(users.id, session.userId))
+      }
+    })
 
     logTransaction({
       domain: "PORTFOLIO",
@@ -235,7 +275,7 @@ export async function updateProfileSettingsAction(
       actorId: session.userId,
       actorType: "OWNER",
       entityType: "profile",
-      entityId: existing?.id || "profile-singleton",
+      entityId: targetEntityId,
       payloadAfter: profileValues,
     })
 

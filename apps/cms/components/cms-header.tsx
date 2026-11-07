@@ -22,21 +22,20 @@ export function CmsHeader({
   const pathSegments = pathname.split("/").filter(Boolean)
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border/80 bg-background/85 px-4 backdrop-blur-md transition-colors sm:px-6 md:px-8">
-      <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-foreground/8 bg-background/80 px-5 backdrop-blur-xl transition-colors sm:px-8 md:px-10">
+      <div className="flex items-center gap-3.5">
         <button
           type="button"
           onClick={onOpenMobileMenu}
           aria-label="Open mobile menu"
-          className="inline-flex rounded-lg border border-border/80 bg-muted/40 p-2 text-muted-foreground transition-all hover:bg-muted hover:text-foreground focus:outline-hidden md:hidden"
+          className="inline-flex rounded-full border border-foreground/10 bg-foreground/[0.03] p-2 text-muted-foreground transition-all hover:bg-foreground hover:text-background md:hidden"
         >
           <Menu className="size-4" />
         </button>
 
-        {/* Dynamic Breadcrumbs */}
         <nav
           aria-label="Breadcrumbs"
-          className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground"
+          className="flex items-center gap-2 font-mono text-xs text-muted-foreground"
         >
           <Link
             href="/"
@@ -48,18 +47,18 @@ export function CmsHeader({
           </Link>
 
           {pathSegments.length === 0 ? (
-            <>
-              <ChevronRight className="size-3 text-muted-foreground/50" />
+            <span className="flex items-center gap-2">
+              <ChevronRight className="size-3 text-foreground/20" />
               <span className="font-semibold text-foreground">overview</span>
-            </>
+            </span>
           ) : (
             pathSegments.map((segment, index) => {
               const isLast = index === pathSegments.length - 1
               const href = `/${pathSegments.slice(0, index + 1).join("/")}`
 
               return (
-                <span key={segment} className="flex items-center gap-1.5">
-                  <ChevronRight className="size-3 text-muted-foreground/50" />
+                <span key={segment} className="flex items-center gap-2">
+                  <ChevronRight className="size-3 text-foreground/20" />
                   {isLast ? (
                     <span className="font-semibold text-foreground">
                       {segment}
@@ -79,19 +78,18 @@ export function CmsHeader({
         </nav>
       </div>
 
-      {/* Header Actions */}
-      <div className="flex items-center gap-2 sm:gap-2.5">
+      <div className="flex items-center gap-2 sm:gap-3">
         <button
           type="button"
           onClick={onOpenCommandPalette}
-          className="group inline-flex items-center gap-2 rounded-lg border border-border/80 bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
+          className="group inline-flex items-center gap-2.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1.5 font-mono text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background focus:outline-hidden"
           title="Search CMS navigation & actions (Ctrl+K or Cmd+K)"
           aria-label="Open command palette"
         >
-          <Search className="size-3.5 transition-colors group-hover:text-foreground" />
+          <Search className="size-3.5 transition-colors" />
           <span className="hidden lg:inline">Search actions...</span>
-          <kbd className="hidden rounded border border-border/80 bg-background/80 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground group-hover:border-foreground/20 sm:inline-block">
-            Ctrl K
+          <kbd className="py-0.2 hidden rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 font-mono text-[10px] text-muted-foreground group-hover:text-background sm:inline-block">
+            ⌘K
           </kbd>
         </button>
 
@@ -104,7 +102,7 @@ export function CmsHeader({
           target="_blank"
           rel="noreferrer"
           aria-label="Open live portfolio website in new tab"
-          className="group inline-flex items-center gap-1.5 rounded-lg border border-border/80 bg-muted/40 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:border-foreground/30 hover:bg-muted/80 hover:text-foreground focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
+          className="group inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1.5 font-mono text-xs text-muted-foreground transition-all hover:border-foreground/30 hover:bg-foreground hover:text-background"
         >
           <span className="hidden sm:inline">Live Site</span>
           <ExternalLink className="size-3.5 opacity-70 transition-transform group-hover:translate-x-0.5" />

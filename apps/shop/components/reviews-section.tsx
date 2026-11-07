@@ -24,11 +24,13 @@ export function ReviewsSection({
   const [isPending, startTransition] = useTransition()
 
   const [formName, setFormName] = useState("")
+  const [formEmail, setFormEmail] = useState("")
   const [formRole, setFormRole] = useState("")
   const [formRating, setFormRating] = useState(5)
   const [formContent, setFormContent] = useState("")
   const [formError, setFormError] = useState<string | null>(null)
   const [formSuccess, setFormSuccess] = useState(false)
+  const [successMessage, setSuccessMessage] = useState("")
 
   function handleSubmitReview(e: React.FormEvent) {
     e.preventDefault()
@@ -51,19 +53,28 @@ export function ReviewsSection({
         authorRole: formRole.trim() || "Verified Developer",
         rating: formRating,
         content: formContent.trim(),
+        customerEmail: formEmail.trim() || undefined,
       })
 
-      if (result.success && result.review) {
-        setReviews((prev) => [result.review!, ...prev])
+      if (result.success) {
+        if (result.status === "APPROVED" && result.review) {
+          setReviews((prev) => [result.review!, ...prev])
+        }
+        setSuccessMessage(
+          result.status === "APPROVED"
+            ? "Review published successfully. Thank you for your feedback."
+            : "Review submitted for moderation. Thank you for your feedback."
+        )
         setFormSuccess(true)
         setFormName("")
+        setFormEmail("")
         setFormRole("")
         setFormContent("")
         setFormRating(5)
         setTimeout(() => {
           setFormSuccess(false)
           setIsFormOpen(false)
-        }, 1500)
+        }, 2000)
       } else {
         setFormError(result.error || "Failed to submit review.")
       }
@@ -165,13 +176,11 @@ export function ReviewsSection({
           {formSuccess ? (
             <div className="flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 p-4 text-xs font-medium text-emerald-600 dark:text-emerald-400">
               <CheckCircle2 className="size-4" />
-              <span>
-                Review submitted successfully. Thank you for your feedback.
-              </span>
+              <span>{successMessage}</span>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-foreground">
                     Your Name
@@ -188,13 +197,26 @@ export function ReviewsSection({
 
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-foreground">
-                    Role / Position (Optional)
+                    Role (Optional)
                   </label>
                   <input
                     type="text"
                     value={formRole}
                     onChange={(e) => setFormRole(e.target.value)}
-                    placeholder="e.g. Senior Frontend Architect"
+                    placeholder="e.g. Senior Architect"
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-xs placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring focus:outline-hidden"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-foreground">
+                    Order Email (Optional)
+                  </label>
+                  <input
+                    type="email"
+                    value={formEmail}
+                    onChange={(e) => setFormEmail(e.target.value)}
+                    placeholder="Verify buyer badge"
                     className="w-full rounded-md border border-border bg-background px-3 py-2 text-xs placeholder:text-muted-foreground focus:border-ring focus:ring-1 focus:ring-ring focus:outline-hidden"
                   />
                 </div>

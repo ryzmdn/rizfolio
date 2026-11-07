@@ -14,7 +14,7 @@ import {
   Maximize2,
   Minimize2,
 } from "lucide-react"
-import { Badge } from "@workspace/ui/components/badge"
+import { cn } from "@workspace/ui/lib/utils"
 import type { MasterTransaction } from "@workspace/db"
 
 interface TransactionDetailDrawerProps {
@@ -100,21 +100,22 @@ export function TransactionDetailDrawer({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-xs transition-opacity"
+      className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-md transition-opacity"
     >
       <div
-        className={`flex h-full flex-col border-l border-border bg-card shadow-2xl transition-all duration-300 ${
+        className={cn(
+          "flex h-full flex-col border-l border-foreground/10 bg-card/95 shadow-2xl backdrop-blur-2xl transition-all duration-300",
           isExpanded ? "w-full max-w-5xl" : "w-full max-w-2xl"
-        }`}
+        )}
       >
-        <div className="flex items-center justify-between border-b border-border p-5">
-          <div className="flex items-center gap-2.5 overflow-hidden">
-            <Activity className="h-5 w-5 shrink-0 text-primary" />
+        <div className="flex items-center justify-between border-b border-foreground/8 p-6">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <Activity className="size-5 shrink-0 text-foreground" />
             <div className="overflow-hidden">
-              <h3 className="truncate font-mono text-sm font-bold text-foreground">
+              <h3 className="truncate font-mono text-sm font-semibold text-foreground">
                 {transaction.trxNumber}
               </h3>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="font-mono text-[11px] text-muted-foreground">
                 Audit Trail Record ID: {transaction.id}
               </p>
             </div>
@@ -124,60 +125,55 @@ export function TransactionDetailDrawer({
             <button
               type="button"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="rounded p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/[0.05] hover:text-foreground"
               title={isExpanded ? "Perkecil panel" : "Perbesar panel"}
             >
               {isExpanded ? (
-                <Minimize2 className="h-4 w-4" />
+                <Minimize2 className="size-4" />
               ) : (
-                <Maximize2 className="h-4 w-4" />
+                <Maximize2 className="size-4" />
               )}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="rounded p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-foreground/[0.05] hover:text-foreground"
             >
-              <X className="h-4 w-4" />
+              <X className="size-4" />
             </button>
           </div>
         </div>
 
-        <div className="flex-1 space-y-6 overflow-y-auto p-5">
-          <div className="grid grid-cols-2 gap-3 rounded-xl border border-border/70 bg-muted/20 p-4 sm:grid-cols-4">
+        <div className="flex-1 space-y-6 overflow-y-auto p-6">
+          <div className="grid grid-cols-2 gap-3.5 rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5 sm:grid-cols-4">
             <div className="space-y-1">
-              <span className="text-[11px] text-muted-foreground">Domain</span>
-              <p className="text-xs font-semibold text-foreground">
+              <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                Domain
+              </span>
+              <p className="font-mono text-xs font-semibold text-foreground">
                 {transaction.domain}
               </p>
             </div>
             <div className="space-y-1">
-              <span className="text-[11px] text-muted-foreground">
+              <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                 Aksi Sistem
               </span>
-              <p className="text-xs font-semibold text-foreground">
+              <p className="font-serif text-xs font-medium text-foreground">
                 {transaction.actionType}
               </p>
             </div>
             <div className="space-y-1">
-              <span className="text-[11px] text-muted-foreground">Status</span>
+              <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                Status
+              </span>
               <div>
-                <Badge
-                  variant={
-                    transaction.status === "COMPLETED"
-                      ? "default"
-                      : transaction.status === "FAILED"
-                        ? "destructive"
-                        : "outline"
-                  }
-                  className="text-[10px]"
-                >
+                <span className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 font-mono text-[10px] text-foreground">
                   {transaction.status}
-                </Badge>
+                </span>
               </div>
             </div>
             <div className="space-y-1">
-              <span className="text-[11px] text-muted-foreground">
+              <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                 Nilai Transaksi
               </span>
               <p className="font-mono text-xs font-semibold text-foreground">
@@ -188,15 +184,15 @@ export function TransactionDetailDrawer({
             </div>
           </div>
 
-          <div className="space-y-3 rounded-xl border border-border/70 bg-card p-4 text-xs">
-            <h4 className="text-[11px] font-semibold tracking-wider text-foreground text-muted-foreground uppercase">
+          <div className="space-y-3.5 rounded-2xl border border-foreground/8 bg-foreground/[0.02] p-5 text-xs">
+            <h4 className="font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
               Metadata Konteks & Keamanan
             </h4>
-            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Shield className="h-3.5 w-3.5 shrink-0 text-primary" />
+                <Shield className="size-3.5 shrink-0 text-foreground" />
                 <span>Aktor:</span>
-                <strong className="text-foreground">
+                <strong className="font-mono font-normal text-foreground">
                   {transaction.actorType}{" "}
                   {transaction.actorId
                     ? `(${transaction.actorId.substring(0, 10)}...)`
@@ -204,16 +200,16 @@ export function TransactionDetailDrawer({
                 </strong>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Layers className="h-3.5 w-3.5 shrink-0 text-primary" />
+                <Layers className="size-3.5 shrink-0 text-foreground" />
                 <span>Entitas:</span>
-                <strong className="font-mono text-foreground">
+                <strong className="font-mono font-normal text-foreground">
                   {transaction.entityType}: {transaction.entityId}
                 </strong>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Clock className="h-3.5 w-3.5 shrink-0 text-primary" />
+                <Clock className="size-3.5 shrink-0 text-foreground" />
                 <span>Waktu Catat:</span>
-                <strong className="text-foreground">
+                <strong className="font-mono font-normal text-foreground">
                   {new Date(transaction.createdAt).toLocaleString("id-ID", {
                     dateStyle: "medium",
                     timeStyle: "medium",
@@ -221,9 +217,9 @@ export function TransactionDetailDrawer({
                 </strong>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Network className="h-3.5 w-3.5 shrink-0 text-primary" />
+                <Network className="size-3.5 shrink-0 text-foreground" />
                 <span>Client IP:</span>
-                <strong className="font-mono text-foreground">
+                <strong className="font-mono font-normal text-foreground">
                   {transaction.clientIp || "Internal Cluster / Localhost"}
                 </strong>
               </div>
@@ -231,7 +227,7 @@ export function TransactionDetailDrawer({
 
             {transaction.userAgent && (
               <div className="flex items-start gap-2 pt-1 text-muted-foreground">
-                <Laptop className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                <Laptop className="mt-0.5 size-3.5 shrink-0 text-foreground" />
                 <span className="shrink-0">User Agent:</span>
                 <span className="truncate font-mono text-[11px] text-foreground">
                   {transaction.userAgent}
@@ -249,50 +245,54 @@ export function TransactionDetailDrawer({
             )}
           </div>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between border-b border-border pb-2">
-              <div className="flex items-center gap-1">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between border-b border-foreground/8 pb-3">
+              <div className="flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] p-1">
                 <button
                   type="button"
                   onClick={() => setActiveTab("diff")}
-                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  className={cn(
+                    "rounded-full px-3 py-1 font-mono text-xs transition-colors",
                     activeTab === "diff"
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
+                      ? "bg-foreground font-medium text-background"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
                   Audit Diff
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab("after")}
-                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  className={cn(
+                    "rounded-full px-3 py-1 font-mono text-xs transition-colors",
                     activeTab === "after"
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
+                      ? "bg-foreground font-medium text-background"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
                   Payload After
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab("before")}
-                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  className={cn(
+                    "rounded-full px-3 py-1 font-mono text-xs transition-colors",
                     activeTab === "before"
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
+                      ? "bg-foreground font-medium text-background"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
                   Payload Before
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab("metadata")}
-                  className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                  className={cn(
+                    "rounded-full px-3 py-1 font-mono text-xs transition-colors",
                     activeTab === "metadata"
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
+                      ? "bg-foreground font-medium text-background"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
                   Metadata JSON
                 </button>
@@ -312,16 +312,16 @@ export function TransactionDetailDrawer({
                     activeTab
                   )
                 }
-                className="inline-flex items-center gap-1 rounded bg-muted px-2 py-1 text-[11px] font-medium text-foreground hover:bg-muted/80"
+                className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-background/60 px-3 py-1 font-mono text-xs text-foreground transition-all hover:bg-foreground hover:text-background"
               >
                 {copiedKey === activeTab ? (
                   <>
-                    <Check className="h-3 w-3 text-emerald-500" />
+                    <Check className="size-3 text-emerald-500" />
                     <span>Tersalin</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="h-3 w-3" />
+                    <Copy className="size-3" />
                     <span>Salin JSON</span>
                   </>
                 )}
@@ -331,58 +331,57 @@ export function TransactionDetailDrawer({
             {activeTab === "diff" && (
               <div className="space-y-2">
                 {diffEntries.length === 0 ? (
-                  <div className="rounded-lg border border-border bg-muted/20 p-6 text-center text-xs text-muted-foreground">
+                  <div className="rounded-2xl border border-dashed border-foreground/15 p-8 text-center font-mono text-xs text-muted-foreground">
                     Tidak ada perubahan data payload pada rekaman audit ini.
                   </div>
                 ) : (
-                  <div className="divide-y divide-border/60 overflow-hidden rounded-xl border border-border bg-card">
+                  <div className="divide-y divide-foreground/5 overflow-hidden rounded-2xl border border-foreground/8 bg-foreground/[0.01]">
                     {diffEntries.map((entry) => (
                       <div
                         key={entry.key}
-                        className={`p-3 font-mono text-xs transition-colors ${
-                          entry.status === "added"
-                            ? "bg-emerald-500/5 dark:bg-emerald-500/10"
-                            : entry.status === "removed"
-                              ? "bg-destructive/5 dark:bg-destructive/10"
-                              : entry.status === "modified"
-                                ? "bg-amber-500/5 dark:bg-amber-500/10"
-                                : ""
-                        }`}
+                        className={cn(
+                          "p-4 font-mono text-xs transition-colors",
+                          entry.status === "added" && "bg-emerald-500/[0.04]",
+                          entry.status === "removed" && "bg-destructive/[0.04]",
+                          entry.status === "modified" && "bg-amber-500/[0.04]"
+                        )}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-foreground">
+                          <span className="font-semibold text-foreground">
                             {entry.key}
                           </span>
                           <span
-                            className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase ${
-                              entry.status === "added"
-                                ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-                                : entry.status === "removed"
-                                  ? "bg-destructive/20 text-destructive"
-                                  : entry.status === "modified"
-                                    ? "bg-amber-500/20 text-amber-600 dark:text-amber-400"
-                                    : "bg-muted text-muted-foreground"
-                            }`}
+                            className={cn(
+                              "rounded-full px-2 py-0.5 font-mono text-[9px] tracking-wider uppercase",
+                              entry.status === "added" &&
+                                "border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+                              entry.status === "removed" &&
+                                "border border-destructive/20 bg-destructive/10 text-destructive",
+                              entry.status === "modified" &&
+                                "border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400",
+                              entry.status === "unchanged" &&
+                                "border border-foreground/10 bg-foreground/[0.02] text-muted-foreground"
+                            )}
                           >
                             {entry.status}
                           </span>
                         </div>
 
                         {entry.status === "modified" && (
-                          <div className="mt-2 grid grid-cols-1 gap-2 border-t border-border/40 pt-1 sm:grid-cols-2">
+                          <div className="mt-3 grid grid-cols-1 gap-2.5 border-t border-foreground/5 pt-2 sm:grid-cols-2">
                             <div>
-                              <span className="mb-0.5 block text-[10px] text-muted-foreground">
+                              <span className="mb-1 block font-mono text-[10px] text-muted-foreground uppercase">
                                 Sebelum:
                               </span>
-                              <pre className="overflow-x-auto rounded bg-muted/40 p-2 text-[11px] text-destructive">
+                              <pre className="overflow-x-auto rounded-xl border border-foreground/8 bg-background/50 p-3 font-mono text-[11px] text-destructive">
                                 {JSON.stringify(entry.beforeValue, null, 2)}
                               </pre>
                             </div>
                             <div>
-                              <span className="mb-0.5 block text-[10px] text-muted-foreground">
+                              <span className="mb-1 block font-mono text-[10px] text-muted-foreground uppercase">
                                 Sesudah:
                               </span>
-                              <pre className="overflow-x-auto rounded bg-muted/40 p-2 text-[11px] text-emerald-600 dark:text-emerald-400">
+                              <pre className="overflow-x-auto rounded-xl border border-foreground/8 bg-background/50 p-3 font-mono text-[11px] text-emerald-600 dark:text-emerald-400">
                                 {JSON.stringify(entry.afterValue, null, 2)}
                               </pre>
                             </div>
@@ -390,23 +389,23 @@ export function TransactionDetailDrawer({
                         )}
 
                         {entry.status === "added" && (
-                          <div className="mt-2 pt-1">
-                            <pre className="overflow-x-auto rounded bg-muted/40 p-2 text-[11px] text-emerald-600 dark:text-emerald-400">
+                          <div className="mt-2.5 pt-1">
+                            <pre className="overflow-x-auto rounded-xl border border-foreground/8 bg-background/50 p-3 font-mono text-[11px] text-emerald-600 dark:text-emerald-400">
                               {JSON.stringify(entry.afterValue, null, 2)}
                             </pre>
                           </div>
                         )}
 
                         {entry.status === "removed" && (
-                          <div className="mt-2 pt-1">
-                            <pre className="overflow-x-auto rounded bg-muted/40 p-2 text-[11px] text-destructive">
+                          <div className="mt-2.5 pt-1">
+                            <pre className="overflow-x-auto rounded-xl border border-foreground/8 bg-background/50 p-3 font-mono text-[11px] text-destructive">
                               {JSON.stringify(entry.beforeValue, null, 2)}
                             </pre>
                           </div>
                         )}
 
                         {entry.status === "unchanged" && (
-                          <div className="mt-1 text-[11px] text-muted-foreground">
+                          <div className="mt-1.5 font-mono text-[11px] text-muted-foreground">
                             {JSON.stringify(entry.afterValue)}
                           </div>
                         )}
@@ -418,19 +417,19 @@ export function TransactionDetailDrawer({
             )}
 
             {activeTab === "after" && (
-              <pre className="max-h-96 overflow-auto rounded-xl border border-border bg-muted/30 p-4 font-mono text-[11px] text-foreground">
+              <pre className="max-h-96 overflow-auto rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-5 font-mono text-[11px] text-foreground">
                 {JSON.stringify(transaction.payloadAfter, null, 2) || "{}"}
               </pre>
             )}
 
             {activeTab === "before" && (
-              <pre className="max-h-96 overflow-auto rounded-xl border border-border bg-muted/30 p-4 font-mono text-[11px] text-foreground">
+              <pre className="max-h-96 overflow-auto rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-5 font-mono text-[11px] text-foreground">
                 {JSON.stringify(transaction.payloadBefore, null, 2) || "{}"}
               </pre>
             )}
 
             {activeTab === "metadata" && (
-              <pre className="max-h-96 overflow-auto rounded-xl border border-border bg-muted/30 p-4 font-mono text-[11px] text-foreground">
+              <pre className="max-h-96 overflow-auto rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-5 font-mono text-[11px] text-foreground">
                 {JSON.stringify(transaction.metadata, null, 2) || "{}"}
               </pre>
             )}

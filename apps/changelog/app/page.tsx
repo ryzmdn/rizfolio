@@ -71,9 +71,9 @@ export default async function ChangelogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-      <Container className="max-w-6xl space-y-8 py-10 sm:py-16">
-        <SubscribeCard />
+      <Container className="max-w-6xl space-y-16 py-10 sm:py-16">
         <TimelineExplorer initialReleases={releases} stats={stats} />
+        <SubscribeCard />
       </Container>
     </>
   )

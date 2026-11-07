@@ -38,7 +38,7 @@ export function NavLink({
             "group-hover/swap:-translate-y-full": supportsHover,
           })}
         >
-          {first}
+          <span>{first}</span>
           {Boolean(longWord?.length) && (
             <span className="invisible h-0">{longWord}</span>
           )}
@@ -48,7 +48,7 @@ export function NavLink({
             "group-hover/swap:-translate-y-full": supportsHover,
           })}
         >
-          {last}
+          <span>{last}</span>
         </span>
       </Link>
     </div>

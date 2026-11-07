@@ -133,6 +133,7 @@ export async function seedShop() {
       await db.insert(orderItems).values({
         orderId: order.id,
         productId: p1.id,
+        productTitle: p1.title,
         pricePaid: 249000,
         downloadToken: "sample-dev-token-turborepo-2026",
         tokenExpiresAt: expiresAt,

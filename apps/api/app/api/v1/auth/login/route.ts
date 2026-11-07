@@ -30,6 +30,7 @@ export const POST = createApiHandler(
 
     let userId: string | undefined
     let userRole = "OWNER"
+    let tokenVersion = 1
 
     if (existingUser) {
       if (ownerEnvEmail && existingUser.email.toLowerCase() !== ownerEnvEmail) {
@@ -47,6 +48,7 @@ export const POST = createApiHandler(
 
       userId = existingUser.id
       userRole = existingUser.role
+      tokenVersion = existingUser.tokenVersion ?? 1
 
       await db
         .update(users)
@@ -57,17 +59,27 @@ export const POST = createApiHandler(
         throw new UnauthorizedError("Invalid email or password.")
       }
 
-      if (!ownerEnvPassword || body.password !== ownerEnvPassword) {
+      if (!ownerEnvPassword) {
         throw new UnauthorizedError("Invalid email or password.")
       }
 
-      const passwordHash = await hashPassword(ownerEnvPassword)
+      const envPasswordHash = await hashPassword(ownerEnvPassword)
+      const isPasswordValid = await verifyPassword(
+        body.password,
+        envPasswordHash
+      )
+
+      if (!isPasswordValid) {
+        throw new UnauthorizedError("Invalid email or password.")
+      }
+
       const [newUser] = await db
         .insert(users)
         .values({
           email: normalizedEmail,
-          passwordHash,
+          passwordHash: envPasswordHash,
           role: "OWNER",
+          tokenVersion: 1,
           lastLoginAt: new Date(),
         })
         .returning()
@@ -78,12 +90,14 @@ export const POST = createApiHandler(
 
       userId = newUser.id
       userRole = newUser.role
+      tokenVersion = newUser.tokenVersion ?? 1
     }
 
     const token = await createSessionToken({
       userId: userId!,
       email: normalizedEmail,
       role: userRole,
+      tokenVersion,
     })
 
     const response = apiSuccess({

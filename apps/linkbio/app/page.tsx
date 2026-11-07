@@ -1,54 +1,26 @@
 import Image from "next/image"
-import {
-  GitHub,
-  LinkedIn,
-  Behance,
-  Dribbble,
-  Twitter,
-  Instagram,
-} from "@workspace/ui/constants/icons"
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
-import { Mail } from "lucide-react"
+import { Mail, ArrowUpRight, Sparkles } from "lucide-react"
 import { db } from "@workspace/db"
 import { profile } from "@workspace/db/schema"
 import { unstable_cache } from "next/cache"
-
 import { getDynamicBioLinks } from "@/lib/queries"
 import { BioLinkCard } from "@/components/bio-link-card"
+import {
+  StaggerContainer,
+  StaggerItem,
+  ScrollReveal,
+} from "@workspace/ui/components/animations"
 
 export const revalidate = 60
 
-const SOCIAL_LINKS = [
-  {
-    name: "GitHub",
-    href: "https://github.com/ryzmdn",
-    icon: GitHub,
-  },
-  {
-    name: "LinkedIn",
-    href: "https://linkedin.com/in/ryzmdn",
-    icon: LinkedIn,
-  },
-  {
-    name: "Behance",
-    href: "https://behance.net/ryzmdn",
-    icon: Behance,
-  },
-  {
-    name: "Dribbble",
-    href: "https://dribbble.com/ryzmdn",
-    icon: Dribbble,
-  },
-  {
-    name: "Twitter",
-    href: "https://twitter.com/ryzmdn",
-    icon: Twitter,
-  },
-  {
-    name: "Instagram",
-    href: "https://instagram.com/ryzmdn",
-    icon: Instagram,
-  },
+const SOCIAL_CHANNELS = [
+  { name: "GITHUB", href: "https://github.com/ryzmdn" },
+  { name: "LINKEDIN", href: "https://linkedin.com/in/ryzmdn" },
+  { name: "BEHANCE", href: "https://behance.net/ryzmdn" },
+  { name: "DRIBBBLE", href: "https://dribbble.com/ryzmdn" },
+  { name: "X (TWITTER)", href: "https://twitter.com/ryzmdn" },
+  { name: "INSTAGRAM", href: "https://instagram.com/ryzmdn" },
 ]
 
 const getBioProfile = unstable_cache(
@@ -85,109 +57,139 @@ export default async function LinkBioPage() {
     (profileData?.socialLinks as Record<string, string> | null) || {}
   const name = profileData?.fullName || "Rizky Ramadhan"
   const headline =
-    profileData?.headline || "Software Engineer & System Architect"
+    profileData?.headline ||
+    "Lead Software Architect & Systems Engineering Consultant"
   const bio =
     profileData?.bio ||
-    "Building scalable web applications, open-source development tools, and performant design systems across the modern web ecosystem."
+    "Architecting high-throughput distributed applications, resilient commerce infrastructure, and timeless minimal design systems across the modern web."
   const avatarUrl =
     socialLinks?.avatarUrl ||
     "https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
+
+  const contactEmail =
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contact@rizkyramadhan.dev"
 
   return (
     <main
       id="main-content"
       tabIndex={-1}
-      className="min-h-screen bg-background px-4 py-10 outline-none sm:px-6"
+      className="flex min-h-screen flex-col justify-between bg-background px-5 py-12 outline-none sm:px-6 sm:py-20"
     >
-      <div className="mx-auto max-w-xl space-y-8">
-        <div className="relative h-44 w-full overflow-hidden rounded-2xl border border-border/80 bg-linear-to-tr from-muted via-card to-secondary shadow-xs sm:h-52">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
-          <div className="absolute top-4 right-4 z-10">
+      <div className="mx-auto w-full max-w-lg space-y-12">
+        <ScrollReveal variant="fade">
+          <div className="flex items-center justify-between border-b border-foreground/6 pb-5">
+            <div className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+              <Sparkles className="size-3 text-foreground" />
+              <span>DIGITAL MONOLITH v2.4</span>
+            </div>
             <ThemeToggle />
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="relative -mt-16 px-2 sm:-mt-20 sm:px-4">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="relative size-24 shrink-0 overflow-hidden rounded-full bg-card shadow-lg ring-4 ring-background sm:size-28">
-              <Image
-                src={avatarUrl}
-                alt={name}
-                fill
-                priority
-                sizes="(max-width: 640px) 96px, 112px"
-                className="object-cover"
-              />
+        <ScrollReveal variant="slide-up" delay={0.05}>
+          <div className="space-y-6 text-center sm:text-left">
+            <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center">
+              <div className="group relative size-24 shrink-0 overflow-hidden rounded-2xl border border-foreground/15 bg-foreground/5 shadow-2xl transition-hover-lift sm:size-28">
+                <Image
+                  src={avatarUrl}
+                  alt={name}
+                  fill
+                  priority
+                  sizes="112px"
+                  className="size-full object-cover contrast-125 grayscale transition-all duration-700 ease-luxury group-hover:scale-105 group-hover:grayscale-0"
+                />
+              </div>
+
+              <div className="space-y-1.5 text-center sm:text-left">
+                <span className="font-mono text-[10px] tracking-[0.25em] text-muted-foreground uppercase">
+                  EXECUTIVE IDENTITY
+                </span>
+                <h1 className="text-2xl font-light tracking-tight text-foreground sm:text-3xl">
+                  {name}
+                </h1>
+                <p className="font-mono text-xs text-muted-foreground">
+                  {headline}
+                </p>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <a
-                href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contact@rizkyramadhan.dev"}`}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-opacity hover:opacity-90"
-              >
-                <Mail className="size-3.5" />
-                <span>Contact Email</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-4 space-y-1.5">
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                {name}
-              </h1>
-              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-500">
-                <span className="size-1.5 animate-pulse rounded-full bg-emerald-500" />
-                Available
+            <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.02] px-3.5 py-1 text-xs transition-hover-lift">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+              </span>
+              <span className="font-mono text-[10px] tracking-wider text-foreground/80 uppercase">
+                Available for Advisory &amp; High-Impact Contracts
               </span>
             </div>
-            <p className="text-sm font-medium text-muted-foreground">
-              {headline}
-            </p>
-            <p className="pt-1 text-xs leading-relaxed text-muted-foreground/90">
+
+            <p className="text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
               {bio}
             </p>
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="flex items-center justify-center gap-2 rounded-2xl border border-border/70 bg-card/60 p-2.5 backdrop-blur-xs">
-          {SOCIAL_LINKS.map((soc) => {
-            const Icon = soc.icon
-            return (
-              <a
-                key={soc.name}
-                href={soc.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={soc.name}
-                className="flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                <Icon className="size-4" />
-              </a>
-            )
-          })}
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-bold tracking-wider text-muted-foreground uppercase">
-              Monorepo Ecosystem &amp; Resources
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-foreground/6 pb-3">
+            <span className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+              [ 01 / ECOSYSTEM DIRECTORY ]
             </span>
-            <span className="font-mono text-[11px] text-muted-foreground/60">
-              {dynamicLinks.length} Active Links
+            <span className="font-mono text-[10px] text-muted-foreground/60 uppercase">
+              {dynamicLinks.length} NODES
             </span>
           </div>
 
-          <div className="space-y-2.5">
-            {dynamicLinks.map((link) => (
-              <BioLinkCard key={link.id} link={link} />
+          <StaggerContainer className="space-y-3">
+            {dynamicLinks.map((link, idx) => (
+              <StaggerItem key={link.id}>
+                <BioLinkCard link={link} index={idx} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
 
-        <footer className="pt-6 pb-12 text-center">
-          <p className="font-mono text-[11px] text-muted-foreground/70">
-            Powered by Rizfolio Dynamic Architecture &bull;{" "}
+        <ScrollReveal variant="slide-up" delay={0.1}>
+          <div className="space-y-4 border-t border-foreground/6 pt-8">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+                [ 02 / DIRECT CHANNELS ]
+              </span>
+              <span className="font-mono text-[10px] text-muted-foreground/60 uppercase">
+                GLOBAL REACH
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 font-mono text-[11px] tracking-wider text-muted-foreground">
+              {SOCIAL_CHANNELS.map((channel) => (
+                <a
+                  key={channel.name}
+                  href={channel.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-1 transition-colors-luxury hover:text-foreground"
+                >
+                  <span>{channel.name}</span>
+                  <ArrowUpRight className="size-2.5 opacity-40 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
+                </a>
+              ))}
+            </div>
+
+            <div className="pt-2">
+              <a
+                href={`mailto:${contactEmail}`}
+                className="group flex w-full items-center justify-center gap-2 rounded-full border border-foreground/15 bg-foreground/[0.02] py-3.5 font-mono text-xs tracking-widest text-foreground uppercase transition-hover-lift hover:border-foreground/40 hover:bg-foreground hover:text-background"
+              >
+                <Mail className="size-3.5" />
+                <span>Inquire via Encrypted Email</span>
+                <ArrowUpRight className="size-3 transition-transform duration-300 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        <footer className="border-t border-foreground/6 pt-6 text-center font-mono text-[10px] tracking-widest text-muted-foreground/60 uppercase">
+          <p>
+            Rizfolio Architecture &bull; Jakarta (UTC+7) &bull;{" "}
             {new Date().getFullYear()}
           </p>
         </footer>

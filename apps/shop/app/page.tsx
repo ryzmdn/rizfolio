@@ -1,6 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ShieldCheck, FileCode, Users, Package } from "lucide-react"
+import {
+  ShieldCheck,
+  FileCode,
+  Users,
+  Package,
+  ArrowDownRight,
+} from "lucide-react"
 import { Container } from "@workspace/ui/components/layouts/container"
 import { getActiveProducts } from "@/lib/queries"
 import { FilterBar } from "@/components/filter-bar"
@@ -66,19 +72,19 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
       description: "Strict TypeScript with zero runtime type errors",
     },
     {
-      value: "6+",
-      label: "Curated Architectures",
-      description: "Monorepos, design systems, and backend pools",
+      value: "06+",
+      label: "Curated Systems",
+      description: "Monorepos, design systems, and backend engines",
     },
     {
-      value: "4.9/5.0",
-      label: "Verified Rating",
-      description: "Feedback from working software engineers",
+      value: "5.0/5.0",
+      label: "Architect Rating",
+      description: "Feedback from verified engineering teams",
     },
     {
       value: "Instant",
-      label: "Digital Fulfillment",
-      description: "Immediate zip access and license provisioning",
+      label: "Digital Delivery",
+      description: "Immediate repository access and license provisioning",
     },
   ]
 
@@ -87,19 +93,19 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
       icon: ShieldCheck,
       title: "Enterprise Architecture",
       description:
-        "Built strictly on Next.js 16, React 19 Server Components, and Turborepo with zero legacy code or technical debt.",
+        "Built strictly with Next.js 16, React 19 Server Components, and Turborepo with zero legacy code or technical debt.",
     },
     {
       icon: FileCode,
-      title: "Full Commercial Ownership",
+      title: "Perpetual Commercial Rights",
       description:
         "Standard and Extended commercial licenses with full unminified source code, lifetime revisions, and clear rights.",
     },
     {
       icon: Users,
-      title: "Senior Engineering Advisory",
+      title: "Lead Engineering Advisory",
       description:
-        "Direct email engineering support and dedicated 1-on-1 architecture review sessions on Google Meet.",
+        "Direct email architecture support and dedicated 1-on-1 system review sessions for mission-critical builds.",
     },
   ]
 
@@ -145,58 +151,52 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }}
       />
-      <div className="space-y-14 pt-8 pb-20 sm:space-y-16">
-        <section className="space-y-10">
-          <Container>
-            <div className="mx-auto max-w-3xl space-y-5 text-center">
-              <div className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-muted/30 px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                <span>Curated Software & Engineering Assets</span>
+      <div className="space-y-24 pt-16 pb-24 sm:space-y-32">
+        <section className="space-y-16">
+          <Container className="space-y-8">
+            <div className="flex flex-col gap-6 border-b border-foreground/6 pb-8 md:flex-row md:items-end md:justify-between">
+              <div className="space-y-3">
+                <span className="font-mono text-xs tracking-[0.25em] text-muted-foreground uppercase">
+                  [ DIGITAL BOUTIQUE & ARCHITECTURAL ASSETS ]
+                </span>
+                <h1 className="text-4xl font-light tracking-tight text-foreground sm:text-6xl md:text-7xl">
+                  Software systems engineered with{" "}
+                  <span className="font-serif text-foreground/80 italic">
+                    timeless precision
+                  </span>
+                  .
+                </h1>
               </div>
 
-              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl sm:leading-tight lg:text-5xl">
-                Digital Tools & Engineering Starter Kits
-              </h1>
-
-              <p className="mx-auto max-w-2xl text-xs leading-relaxed text-muted-foreground sm:text-sm">
-                Production-tested monorepo architectures, Tailwind CSS v4 design
-                systems, and specialized senior engineering consultation
-                sessions engineered to accelerate real-world digital builds.
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
-                <a
-                  href="#catalog"
-                  className="inline-flex items-center gap-1.5 rounded-md bg-foreground px-4 py-2 text-xs font-semibold text-background transition-colors hover:bg-foreground/90"
-                >
-                  <span>Explore Catalog</span>
-                </a>
-
-                <a
-                  href="#faq"
-                  className="inline-flex items-center gap-1.5 rounded-md border border-border/70 bg-background px-4 py-2 text-xs font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/60"
-                >
-                  <span>View Licensing FAQ</span>
-                </a>
-              </div>
+              <a
+                href="#catalog"
+                className="group inline-flex shrink-0 items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
+              >
+                <span>Explore Catalog</span>
+                <ArrowDownRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
+              </a>
             </div>
+
+            <p className="max-w-3xl text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
+              Production-hardened monorepo infrastructures, Tailwind CSS v4
+              design systems, and specialized senior engineering advisory
+              designed to accelerate high-stakes digital ventures.
+            </p>
           </Container>
 
           <Container>
-            <div className="grid grid-cols-2 divide-y divide-border/60 border-y border-border/60 py-6 sm:grid-cols-4 sm:divide-x sm:divide-y-0 sm:py-8">
+            <div className="grid grid-cols-2 gap-8 border-y border-foreground/6 py-8 sm:grid-cols-4 sm:gap-12">
               {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="flex flex-col p-4 text-center sm:text-left"
-                >
-                  <span className="font-mono text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                <div key={stat.label} className="space-y-1">
+                  <span className="font-mono text-3xl font-light tracking-tight text-foreground sm:text-4xl">
                     {stat.value}
                   </span>
-                  <span className="mt-1 text-xs font-semibold text-foreground">
+                  <p className="font-mono text-xs font-medium tracking-tight text-foreground">
                     {stat.label}
-                  </span>
-                  <span className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                  </p>
+                  <p className="text-[11px] leading-snug font-light text-muted-foreground">
                     {stat.description}
-                  </span>
+                  </p>
                 </div>
               ))}
             </div>
@@ -205,23 +205,25 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
 
         <section>
           <Container>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3 lg:gap-12">
               {pillars.map((pillar) => {
                 const Icon = pillar.icon
                 return (
                   <div
                     key={pillar.title}
-                    className="flex flex-col gap-3 rounded-lg border border-border/60 bg-card/40 p-5 transition-colors hover:border-foreground/30"
+                    className="flex flex-col justify-between rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-8 transition-colors hover:border-foreground/25 sm:p-10"
                   >
-                    <div className="flex size-8 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-foreground">
-                      <Icon className="size-4" />
+                    <div className="space-y-4">
+                      <div className="flex size-9 items-center justify-center rounded-xl border border-foreground/15 bg-foreground/[0.02] text-foreground">
+                        <Icon className="size-4 stroke-[1.5]" />
+                      </div>
+                      <h2 className="text-lg font-medium tracking-tight text-foreground">
+                        {pillar.title}
+                      </h2>
+                      <p className="text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
+                        {pillar.description}
+                      </p>
                     </div>
-                    <h2 className="text-xs font-semibold text-foreground sm:text-sm">
-                      {pillar.title}
-                    </h2>
-                    <p className="text-xs leading-relaxed text-muted-foreground">
-                      {pillar.description}
-                    </p>
                   </div>
                 )
               })}
@@ -229,43 +231,45 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
           </Container>
         </section>
 
-        <section id="catalog" className="scroll-mt-20 space-y-6">
-          <Container className="space-y-5">
-            <div className="flex flex-col gap-1 border-b border-border/50 pb-4 sm:flex-row sm:items-end sm:justify-between">
+        <section id="catalog" className="scroll-mt-24 space-y-10">
+          <Container className="space-y-8">
+            <div className="flex flex-col gap-2 border-b border-foreground/6 pb-6 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
-                  Storefront Catalog
+                <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                  ACTIVE INVENTORY
+                </span>
+                <h2 className="text-2xl font-light tracking-tight text-foreground sm:text-3xl">
+                  Architectural Catalog
                 </h2>
-                <p className="text-xs text-muted-foreground">
-                  Filter by architecture category, search by tech stack, and
-                  sort by pricing or reviews.
-                </p>
               </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Showing {products.length} Verified Systems
+              </p>
             </div>
 
             <FilterBar totalCount={products.length} />
 
             {products.length === 0 ? (
-              <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border/80 bg-muted/10 p-8 py-16 text-center">
-                <div className="flex size-12 items-center justify-center rounded-md border border-border/70 bg-muted/30 text-muted-foreground">
-                  <Package className="size-6" />
+              <div className="flex flex-col items-center justify-center rounded-3xl border border-foreground/10 bg-foreground/[0.01] p-12 py-24 text-center">
+                <div className="flex size-14 items-center justify-center rounded-2xl border border-foreground/15 bg-foreground/[0.02] text-muted-foreground">
+                  <Package className="size-6 stroke-[1.25]" />
                 </div>
-                <h3 className="mt-3 text-sm font-semibold text-foreground">
-                  No products found
+                <h3 className="mt-4 text-base font-medium text-foreground">
+                  No architectures matched your parameters
                 </h3>
-                <p className="mt-1 max-w-sm text-xs leading-relaxed text-muted-foreground">
+                <p className="mt-1 max-w-sm text-xs font-light text-muted-foreground">
                   No software architectures or consultation packages matched
-                  your current search query or filter selection.
+                  your current filter criteria.
                 </p>
                 <Link
                   href="/"
-                  className="mt-5 inline-flex items-center gap-1.5 rounded-md bg-foreground px-4 py-2 text-xs font-medium text-background transition-colors hover:bg-foreground/90"
+                  className="mt-6 inline-flex items-center rounded-full bg-foreground px-6 py-2.5 font-mono text-xs tracking-wider text-background uppercase transition-opacity hover:opacity-90"
                 >
-                  <span>Reset all filters</span>
+                  <span>Reset Filters</span>
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10">
                 {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -274,7 +278,10 @@ export default async function ShopHomePage({ searchParams }: ShopPageProps) {
           </Container>
         </section>
 
-        <section id="faq" className="scroll-mt-20">
+        <section
+          id="faq"
+          className="scroll-mt-24 border-t border-foreground/6 pt-16"
+        >
           <Container>
             <StoreFaq />
           </Container>

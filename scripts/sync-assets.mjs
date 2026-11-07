@@ -99,12 +99,23 @@ export function syncSharedAssets(options = {}) {
       const destDir = path.dirname(destFile)
 
       if (!fs.existsSync(destDir)) {
-        fs.mkdirSync(destDir, { recursive: true })
+        try {
+          fs.mkdirSync(destDir, { recursive: true })
+        } catch {}
       }
 
       if (shouldCopy(srcFile, destFile)) {
-        fs.copyFileSync(srcFile, destFile)
-        copiedCount++
+        try {
+          fs.copyFileSync(srcFile, destFile)
+          copiedCount++
+        } catch (copyError) {
+          if (!silent) {
+            console.warn(
+              `[assets-sync] Skipped copying ${relPath} to ${appName}:`,
+              copyError instanceof Error ? copyError.message : String(copyError)
+            )
+          }
+        }
       }
 
       currentFiles.push(relPath)
@@ -114,17 +125,37 @@ export function syncSharedAssets(options = {}) {
       if (!sourceFiles.includes(prevRelPath)) {
         const obsoleteFile = path.join(publicDir, prevRelPath)
         if (fs.existsSync(obsoleteFile)) {
-          fs.unlinkSync(obsoleteFile)
-          removedCount++
+          try {
+            fs.unlinkSync(obsoleteFile)
+            removedCount++
+          } catch {}
         }
       }
     }
 
-    fs.writeFileSync(
-      manifestPath,
-      JSON.stringify(currentFiles, null, 2),
-      "utf-8"
-    )
+    const nextManifestContent = JSON.stringify(currentFiles, null, 2)
+    let shouldWriteManifest = true
+    if (fs.existsSync(manifestPath)) {
+      try {
+        const existingContent = fs.readFileSync(manifestPath, "utf-8")
+        if (existingContent.trim() === nextManifestContent.trim()) {
+          shouldWriteManifest = false
+        }
+      } catch {}
+    }
+
+    if (shouldWriteManifest) {
+      try {
+        fs.writeFileSync(manifestPath, nextManifestContent, "utf-8")
+      } catch (writeError) {
+        if (!silent) {
+          console.warn(
+            `[assets-sync] Skipped updating manifest for ${appName}:`,
+            writeError instanceof Error ? writeError.message : String(writeError)
+          )
+        }
+      }
+    }
   }
 
   if (!silent) {

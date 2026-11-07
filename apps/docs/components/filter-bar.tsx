@@ -92,32 +92,29 @@ export function FilterBar({
 
   return (
     <div className="space-y-4">
-      {/* Top Controls: Search Input, Course Selector, and Sort Dropdown */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        {/* Search input with debounce */}
         <div className="relative max-w-md flex-1">
-          <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-3.5 -translate-y-1/2 text-muted-foreground/60" />
           <input
             type="text"
             value={searchValue}
-            placeholder="Cari repositori, topik, atau mata kuliah..."
+            placeholder="SEARCH BLUEPRINTS, TOPICS, OR MODULES..."
             onChange={(e) => setSearchValue(e.target.value)}
-            className="w-full rounded-xl border border-border bg-background py-2 pr-9 pl-9 text-xs text-foreground transition-colors placeholder:text-muted-foreground focus:border-foreground/40 focus:outline-hidden"
+            className="w-full rounded-full border border-foreground/10 bg-foreground/3 py-2 pr-9 pl-9 font-mono text-xs text-foreground uppercase placeholder:text-muted-foreground/50 focus:border-foreground/30 focus:outline-hidden"
           />
           {searchValue && (
             <button
               type="button"
               onClick={() => setSearchValue("")}
               aria-label="Clear search"
-              className="absolute top-1/2 right-2.5 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
               <X className="size-3.5" />
             </button>
           )}
         </div>
 
-        {/* Course and Sort Selectors */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs uppercase">
           {courses.length > 0 && (
             <div className="relative">
               <select
@@ -125,10 +122,10 @@ export function FilterBar({
                 onChange={(e) =>
                   updateQuery({ course: e.target.value || null })
                 }
-                aria-label="Filter berdasarkan mata kuliah"
-                className="cursor-pointer appearance-none rounded-xl border border-border bg-background py-2 pr-8 pl-3 text-xs text-foreground transition-colors focus:border-foreground/40 focus:outline-hidden"
+                aria-label="Filter by coursework curriculum"
+                className="cursor-pointer appearance-none rounded-full border border-foreground/10 bg-foreground/3 py-2 pr-8 pl-4 text-xs text-foreground transition-colors focus:border-foreground/30 focus:outline-hidden"
               >
-                <option value="">Semua Mata Kuliah</option>
+                <option value="">All Academic Topics</option>
                 {courses.map((c) => (
                   <option key={c.name} value={c.name}>
                     {c.name} ({c.count})
@@ -138,13 +135,12 @@ export function FilterBar({
             </div>
           )}
 
-          {/* Sort Selector */}
           <div className="relative flex items-center">
             <select
               value={currentSort}
               onChange={(e) => updateQuery({ sort: e.target.value })}
-              aria-label="Urutkan repositori"
-              className="cursor-pointer appearance-none rounded-xl border border-border bg-background py-2 pr-8 pl-3 text-xs text-foreground transition-colors focus:border-foreground/40 focus:outline-hidden"
+              aria-label="Sort repositories"
+              className="cursor-pointer appearance-none rounded-full border border-foreground/10 bg-foreground/3 py-2 pr-8 pl-4 text-xs text-foreground transition-colors focus:border-foreground/30 focus:outline-hidden"
             >
               {SORT_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -152,15 +148,14 @@ export function FilterBar({
                 </option>
               ))}
             </select>
-            <ArrowUpDown className="pointer-events-none absolute right-2.5 size-3.5 text-muted-foreground" />
+            <ArrowUpDown className="pointer-events-none absolute right-3 size-3 text-muted-foreground" />
           </div>
 
-          {/* Clear Filters Button */}
           {hasActiveFilters && (
             <button
               type="button"
               onClick={handleResetAll}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-border/80 bg-muted/30 px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 text-xs tracking-wider text-muted-foreground uppercase transition-all hover:border-foreground/30 hover:text-foreground"
             >
               <RotateCcw className="size-3" />
               <span>Reset</span>
@@ -169,8 +164,7 @@ export function FilterBar({
         </div>
       </div>
 
-      {/* Category Pills Bar */}
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-border/40 pb-3">
+      <div className="flex flex-wrap items-center gap-2 border-b border-foreground/8 pb-4">
         {CATEGORIES.map((cat) => {
           const isActive = currentCategory === cat.value
           return (
@@ -179,10 +173,10 @@ export function FilterBar({
               type="button"
               onClick={() => updateQuery({ category: cat.value })}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
+                "rounded-full px-4 py-1.5 font-mono text-xs tracking-wider uppercase transition-all duration-200",
                 isActive
-                  ? "bg-foreground text-background"
-                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
+                  ? "bg-foreground font-semibold text-background shadow-xs"
+                  : "border border-foreground/10 bg-foreground/3 text-muted-foreground hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground"
               )}
             >
               {cat.label}

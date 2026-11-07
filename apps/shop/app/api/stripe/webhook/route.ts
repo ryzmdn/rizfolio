@@ -25,49 +25,45 @@ export async function POST(request: NextRequest) {
   const signature = request.headers.get("stripe-signature")
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
-  if (signature) {
-    const parts = signature.split(",")
-    let timestamp = ""
-    for (const part of parts) {
-      const [key, val] = part.split("=")
-      if (key === "t" && val) timestamp = val
+  if (!webhookSecret || !signature || !stripe) {
+    return new NextResponse("Webhook verification credentials missing", {
+      status: 400,
+    })
+  }
+
+  const parts = signature.split(",")
+  let timestamp = ""
+  for (const part of parts) {
+    const [key, val] = part.split("=")
+    if (key === "t" && val) timestamp = val
+  }
+  if (timestamp) {
+    const timestampSec = Number(timestamp)
+    const currentSec = Math.floor(Date.now() / 1000)
+    if (isNaN(timestampSec) || Math.abs(currentSec - timestampSec) > 300) {
+      return new NextResponse("Webhook signature timestamp expired", {
+        status: 400,
+      })
     }
-    if (timestamp) {
-      const timestampSec = Number(timestamp)
-      const currentSec = Math.floor(Date.now() / 1000)
-      if (isNaN(timestampSec) || Math.abs(currentSec - timestampSec) > 300) {
-        return new NextResponse("Webhook signature timestamp expired", {
-          status: 400,
-        })
-      }
-    }
+  }
+
+  if (
+    process.env.NODE_ENV === "production" &&
+    (!webhookSecret || !signature || !stripe)
+  ) {
+    return new NextResponse("Stripe signature is required in production", {
+      status: 400,
+    })
   }
 
   let event: Stripe.Event
 
-  if (webhookSecret && signature && stripe) {
-    try {
-      event = stripe.webhooks.constructEvent(
-        body,
-        signature,
-        webhookSecret,
-        300
-      )
-    } catch (err) {
-      console.error(
-        "Stripe webhook signature verification failed:",
-        err instanceof Error ? err.message : err
-      )
-      return new NextResponse("Webhook signature verification failed", {
-        status: 400,
-      })
-    }
-  } else {
-    try {
-      event = JSON.parse(body) as Stripe.Event
-    } catch {
-      return new NextResponse("Invalid webhook payload format", { status: 400 })
-    }
+  try {
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret, 300)
+  } catch (err) {
+    return new NextResponse("Webhook signature verification failed", {
+      status: 400,
+    })
   }
 
   try {
@@ -99,6 +95,13 @@ export async function POST(request: NextRequest) {
           const dbOrder = matchedOrders[0]
 
           if (dbOrder) {
+            if (dbOrder.status === "COMPLETED") {
+              return NextResponse.json({
+                received: true,
+                alreadyProcessed: true,
+              })
+            }
+
             await db
               .update(orders)
               .set({
@@ -144,7 +147,7 @@ export async function POST(request: NextRequest) {
                 price: item.pricePaid,
                 quantity: 1,
                 downloadToken: assignedToken,
-                downloadUrl: `${shopBaseUrl}/order/${orderNumber}?token=${assignedToken}`,
+                downloadUrl: `${shopBaseUrl}/download/${assignedToken}`,
               })
             }
 
@@ -219,19 +222,27 @@ export async function POST(request: NextRequest) {
 
         if (orderNumber) {
           try {
-            await db
-              .update(orders)
-              .set({
-                status: "FAILED",
-                updatedAt: new Date(),
-              })
+            const matched = await db
+              .select({ status: orders.status })
+              .from(orders)
               .where(eq(orders.orderNumber, orderNumber))
+              .limit(1)
+
+            if (matched[0] && matched[0].status !== "COMPLETED") {
+              await db
+                .update(orders)
+                .set({
+                  status: "FAILED",
+                  updatedAt: new Date(),
+                })
+                .where(eq(orders.orderNumber, orderNumber))
+            }
           } catch {}
 
           const memoryOrder = fallbackOrders.find(
             (o) => o.orderNumber === orderNumber
           )
-          if (memoryOrder) {
+          if (memoryOrder && memoryOrder.status !== "COMPLETED") {
             memoryOrder.status = "FAILED"
           }
         }

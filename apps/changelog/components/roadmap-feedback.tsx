@@ -51,49 +51,58 @@ export function RoadmapFeedback() {
   }
 
   return (
-    <section className="rounded-2xl border border-border/80 bg-card/60 p-6 shadow-xs backdrop-blur-xs sm:p-8">
-      <div className="flex items-center gap-3">
-        <div className="flex size-9 items-center justify-center rounded-xl bg-foreground text-background shadow-xs">
-          <MessageSquarePlus className="size-4" />
+    <section className="relative overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 p-6 shadow-xs backdrop-blur-xl transition-colors md:p-10">
+      <div className="flex flex-col gap-4 border-b border-foreground/8 pb-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3.5">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-foreground text-background shadow-xs">
+            <MessageSquarePlus className="size-4" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                [ RFC // OPEN MILESTONES ]
+              </span>
+            </div>
+            <h2 className="font-serif text-lg font-medium tracking-tight text-foreground md:text-xl">
+              Propose an Architectural Milestone
+            </h2>
+          </div>
         </div>
-        <div>
-          <h2 className="text-base font-bold tracking-tight text-foreground sm:text-lg">
-            Propose a Feature or Architecture Milestone
-          </h2>
-          <p className="text-xs text-muted-foreground">
-            Have an enhancement idea or architectural improvement in mind?
-            Submit your proposal directly.
-          </p>
-        </div>
+        <p className="max-w-md text-xs leading-relaxed text-muted-foreground">
+          Suggest a system architecture optimization, core package capability,
+          or cross-cutting engineering enhancement for upcoming quarters.
+        </p>
       </div>
 
       {isSubmitted ? (
-        <div className="mt-6 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-5 text-center">
-          <CheckCircle2 className="mx-auto size-7 text-emerald-500" />
-          <h3 className="mt-2 text-sm font-bold text-foreground">
-            Suggestion Received
+        <div className="mt-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center">
+          <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+            <CheckCircle2 className="size-6" />
+          </div>
+          <h3 className="mt-3 font-serif text-base font-medium text-foreground">
+            Proposal Successfully Logged
           </h3>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Thank you for your proposal. It has been recorded for review in
-            future engineering cycles.
+          <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
+            Thank you for your submission. Your proposal has been indexed in the
+            engineering review register for upcoming evaluation cycles.
           </p>
           <button
             type="button"
             onClick={handleReset}
-            className="mt-4 rounded-xl border border-border bg-card px-3.5 py-1.5 text-xs font-semibold text-foreground transition-all hover:bg-muted focus:ring-2 focus:ring-primary/20 focus:outline-hidden"
+            className="mt-6 inline-flex cursor-pointer items-center justify-center rounded-full border border-foreground/15 bg-background px-5 py-2 text-xs font-medium text-foreground transition-all hover:bg-foreground hover:text-background focus:ring-2 focus:ring-foreground/20 focus:outline-hidden"
           >
-            Submit Another Suggestion
+            Submit Another Proposal
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="space-y-1.5 sm:col-span-2">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <div className="space-y-2 sm:col-span-2">
               <label
                 htmlFor="feature-title"
-                className="text-xs font-semibold text-foreground"
+                className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
               >
-                Feature or Milestone Title
+                Milestone Title
               </label>
               <input
                 id="feature-title"
@@ -102,14 +111,14 @@ export function RoadmapFeedback() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Distributed WebSocket state synchronization"
-                className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
+                className="w-full rounded-2xl border border-foreground/10 bg-background/50 px-4 py-3 text-xs text-foreground transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden md:text-sm"
               />
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <label
                 htmlFor="feature-scope"
-                className="text-xs font-semibold text-foreground"
+                className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
               >
                 Target Scope
               </label>
@@ -117,7 +126,7 @@ export function RoadmapFeedback() {
                 id="feature-scope"
                 value={scope}
                 onChange={(e) => setScope(e.target.value)}
-                className="w-full rounded-xl border border-border/70 bg-background/80 px-3.5 py-2.5 text-xs text-foreground transition-all focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
+                className="w-full rounded-2xl border border-foreground/10 bg-background/50 px-4 py-3 text-xs text-foreground transition-colors focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden md:text-sm"
               >
                 <option value="monorepo">All Monorepo</option>
                 <option value="apps/shop">apps/shop</option>
@@ -131,39 +140,44 @@ export function RoadmapFeedback() {
             </div>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <label
               htmlFor="feature-rationale"
-              className="text-xs font-semibold text-foreground"
+              className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase"
             >
-              Use Case & Technical Rationale
+              Architectural Rationale & Trade-offs
             </label>
             <textarea
               id="feature-rationale"
               required
-              rows={3}
+              rows={4}
               value={rationale}
               onChange={(e) => setRationale(e.target.value)}
-              placeholder="Describe the motivation, architectural trade-offs, and expected benefits..."
-              className="w-full rounded-xl border border-border/70 bg-background/80 p-3.5 text-xs text-foreground transition-all placeholder:text-muted-foreground focus:border-foreground/30 focus:ring-2 focus:ring-primary/20 focus:outline-hidden sm:text-sm"
+              placeholder="Describe the motivation, architectural trade-offs, anticipated constraints, and expected engineering ROI..."
+              className="w-full resize-none rounded-2xl border border-foreground/10 bg-background/50 p-4 text-xs text-foreground transition-colors placeholder:text-muted-foreground/60 focus:border-foreground/30 focus:bg-background focus:ring-2 focus:ring-foreground/10 focus:outline-hidden md:text-sm"
             />
           </div>
 
           {errorMessage && (
-            <div className="flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
+            <div className="flex items-center gap-2.5 rounded-2xl border border-destructive/20 bg-destructive/5 p-4 text-xs text-destructive">
               <AlertCircle className="size-4 shrink-0" />
               <span>{errorMessage}</span>
             </div>
           )}
 
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between border-t border-foreground/8 pt-4">
+            <span className="font-mono text-[11px] text-muted-foreground">
+              [ SECURE RECORDING // DIRECT TO LEDGER ]
+            </span>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-foreground px-4 py-2 text-xs font-semibold text-background shadow-xs transition-opacity hover:opacity-90 focus:ring-2 focus:ring-primary/30 focus:outline-hidden disabled:opacity-50"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-foreground px-6 py-2.5 text-xs font-medium tracking-wide text-background shadow-xs transition-opacity hover:opacity-90 focus:ring-2 focus:ring-foreground/20 focus:outline-hidden disabled:opacity-50"
             >
               <Send className="size-3.5" />
-              <span>{isSubmitting ? "Submitting..." : "Submit Proposal"}</span>
+              <span>
+                {isSubmitting ? "Transmitting..." : "Submit Proposal"}
+              </span>
             </button>
           </div>
         </form>

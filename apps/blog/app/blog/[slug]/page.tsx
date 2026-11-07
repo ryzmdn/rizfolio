@@ -164,22 +164,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <ReadingProgressBar />
       <ViewTracker postId={post.id} />
 
-      <article className="w-full pt-10 pb-24 sm:pt-16 sm:pb-32">
-        <Container className="max-w-5xl">
+      <article className="w-full pt-12 pb-24 sm:pt-16 sm:pb-36">
+        <Container className="max-w-6xl">
           <nav
             aria-label="Breadcrumb"
-            className="mb-8 flex items-center gap-1.5 text-xs text-muted-foreground"
+            className="mb-8 flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase"
           >
             <Link
               href="/"
-              className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              <ArrowLeft className="size-3.5" />
-              <span>Articles</span>
+              <ArrowLeft className="size-3" />
+              <span>Monographs</span>
             </Link>
             {primaryCategory && (
               <>
-                <ChevronRight className="size-3 text-muted-foreground/40" />
+                <span className="text-foreground/20">/</span>
                 <Link
                   href={`/?category=${primaryCategory.slug}`}
                   className="transition-colors hover:text-foreground"
@@ -188,66 +188,66 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </Link>
               </>
             )}
-            <ChevronRight className="size-3 text-muted-foreground/40" />
-            <span className="max-w-[200px] truncate font-medium text-foreground sm:max-w-xs">
-              {post.title}
+            <span className="text-foreground/20">/</span>
+            <span className="max-w-[200px] truncate text-foreground sm:max-w-xs">
+              {post.slug}
             </span>
           </nav>
 
-          <header className="mb-10 space-y-6 border-b border-border/40 pb-10">
-            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          <header className="mb-12 space-y-6 border-b border-foreground/8 pb-12">
+            <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs text-muted-foreground uppercase">
               {primaryCategory && (
                 <Link
                   href={`/?category=${primaryCategory.slug}`}
-                  className="font-medium text-foreground transition-colors hover:text-muted-foreground"
+                  className="rounded-full border border-foreground/10 bg-foreground/5 px-3 py-0.5 text-foreground transition-colors hover:border-foreground/30"
                 >
                   {primaryCategory.name}
                 </Link>
               )}
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1.5">
                 <Calendar className="size-3.5" />
-                {formattedDate}
+                <span>{formattedDate}</span>
               </span>
-              <span className="text-border">·</span>
-              <span className="flex items-center gap-1">
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
                 <Clock className="size-3.5" />
-                {post.readingTime} min read
+                <span>{post.readingTime} min read</span>
               </span>
               {post.viewsCount !== undefined && post.viewsCount > 0 && (
                 <>
-                  <span className="text-border">·</span>
-                  <span className="flex items-center gap-1">
+                  <span>•</span>
+                  <span className="flex items-center gap-1.5">
                     <Eye className="size-3.5" />
-                    {post.viewsCount} views
+                    <span>{post.viewsCount} views</span>
                   </span>
                 </>
               )}
             </div>
 
-            <h1 className="text-3xl leading-tight font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+            <h1 className="font-serif text-3xl leading-[1.12] font-light tracking-tight text-foreground sm:text-5xl md:text-6xl">
               {post.title}
             </h1>
 
-            <p className="text-base/relaxed text-muted-foreground sm:text-lg/relaxed">
+            <p className="max-w-3xl text-base leading-relaxed font-light text-muted-foreground sm:text-lg md:text-xl">
               {post.excerpt}
             </p>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-              <div className="flex items-center gap-3">
-                <div className="relative size-9 overflow-hidden rounded-full ring-1 ring-border/60">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-foreground/8 pt-6">
+              <div className="flex items-center gap-3.5">
+                <div className="relative size-10 overflow-hidden rounded-full border border-foreground/15 bg-foreground/5">
                   <Image
                     src="https://res.cloudinary.com/dhaonb1vn/image/upload/v1783196888/WhatsApp_Image_2026-07-05_at_03.27.41_hz9vld.jpg"
                     alt="Rizky Ramadhan"
                     fill
-                    sizes="36px"
+                    sizes="40px"
                     className="object-cover"
                   />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-foreground">
+                  <p className="font-serif text-sm font-light text-foreground">
                     Rizky Ramadhan
                   </p>
-                  <p className="text-[11px] text-muted-foreground">
+                  <p className="font-mono text-[10px] tracking-wider text-muted-foreground/70 uppercase">
                     Multidisciplinary Digital Builder
                   </p>
                 </div>
@@ -258,14 +258,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
 
           {post.coverImageUrl && (
-            <div className="mb-12 overflow-hidden border border-border/40 bg-muted">
-              <div className="relative aspect-video w-full">
+            <div className="mb-14 overflow-hidden rounded-3xl border border-foreground/10 bg-muted">
+              <div className="relative aspect-[16/9] w-full">
                 <Image
                   src={post.coverImageUrl}
                   alt={post.title}
                   fill
                   priority
-                  sizes="(max-width: 1024px) 100vw, 800px"
+                  sizes="(max-width: 1200px) 100vw, 1100px"
                   className="object-cover"
                 />
               </div>
@@ -276,23 +276,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <TableOfContents content={post.contentMd} />
           </div>
 
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
-            <div className="space-y-10 lg:col-span-8">
-              <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
+            <div className="space-y-12 lg:col-span-8 lg:max-w-[700px]">
+              <div className="prose prose-zinc dark:prose-invert prose-headings:font-serif prose-headings:font-light prose-p:text-[1.125rem] prose-p:leading-[1.8] prose-p:font-light prose-p:text-foreground/90 max-w-none">
                 <MarkdownRenderer content={post.contentMd} />
               </div>
 
               {post.tags.length > 0 && (
-                <div className="border-t border-border/40 pt-6">
+                <div className="border-t border-foreground/8 pt-8">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-medium text-muted-foreground">
-                      Topics:
+                    <span className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
+                      Index Tags:
                     </span>
                     {post.tags.map((t) => (
                       <Link
                         key={t.id}
                         href={`/?tag=${t.slug}`}
-                        className="rounded-md border border-border/50 bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                        className="rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 font-mono text-xs text-muted-foreground uppercase transition-all duration-200 hover:border-foreground/30 hover:text-foreground"
                       >
                         #{t.name}
                       </Link>
@@ -301,7 +301,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </div>
               )}
 
-              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/40 pt-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-foreground/8 pt-8">
                 <PostReactions postId={post.id} initialCount={reactionCount} />
                 <ShareToolbar title={post.title} url={postUrl} />
               </div>
@@ -314,40 +314,57 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
 
             <aside className="hidden lg:col-span-4 lg:block">
-              <div className="sticky top-28">
+              <div className="sticky top-28 space-y-6">
                 <TableOfContents content={post.contentMd} />
               </div>
             </aside>
           </div>
 
           {otherRelated.length > 0 && (
-            <div className="mt-20 border-t border-border/40 pt-14">
-              <h2 className="mb-6 text-base font-semibold text-foreground">
-                More Articles
-              </h2>
+            <div className="mt-24 border-t border-foreground/8 pt-16">
+              <div className="mb-8 flex items-center justify-between">
+                <div>
+                  <span className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+                    [ COMPLEMENTARY ARCHIVES ]
+                  </span>
+                  <h2 className="font-serif text-2xl font-light tracking-tight text-foreground sm:text-3xl">
+                    More Engineering Monographs
+                  </h2>
+                </div>
+                <Link
+                  href="/"
+                  className="font-mono text-xs tracking-wider text-muted-foreground uppercase hover:text-foreground"
+                >
+                  View All Archives [ -&gt; ]
+                </Link>
+              </div>
 
-              <div className="grid grid-cols-1 gap-px border border-border/40 bg-border/40 sm:grid-cols-3">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
                 {otherRelated.map((rel) => (
                   <Link
                     key={rel.id}
                     href={`/blog/${rel.slug}`}
-                    className="group flex flex-col bg-background p-5 transition-colors hover:bg-muted/20"
+                    className="group flex flex-col justify-between rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-6 transition-all duration-300 hover:border-foreground/25 hover:bg-foreground/[0.03]"
                   >
-                    <div className="mb-3 text-xs text-muted-foreground">
-                      <span>{rel.readingTime} min read</span>
-                      {rel.categories[0] && (
-                        <>
-                          <span className="mx-1.5 text-border">·</span>
-                          <span>{rel.categories[0].name}</span>
-                        </>
-                      )}
+                    <div>
+                      <div className="mb-3 flex items-center gap-2 font-mono text-[11px] text-muted-foreground uppercase">
+                        <span>{rel.readingTime} min</span>
+                        {rel.categories[0] && (
+                          <>
+                            <span>•</span>
+                            <span className="text-foreground">
+                              {rel.categories[0].name}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      <h3 className="font-serif text-base leading-snug font-light tracking-tight text-foreground transition-colors group-hover:text-muted-foreground">
+                        {rel.title}
+                      </h3>
+                      <p className="mt-2 line-clamp-2 text-xs leading-relaxed font-light text-muted-foreground">
+                        {rel.excerpt}
+                      </p>
                     </div>
-                    <h3 className="text-sm leading-snug font-medium text-foreground transition-colors group-hover:text-muted-foreground">
-                      {rel.title}
-                    </h3>
-                    <p className="mt-2 line-clamp-2 text-xs/relaxed text-muted-foreground">
-                      {rel.excerpt}
-                    </p>
                   </Link>
                 ))}
               </div>

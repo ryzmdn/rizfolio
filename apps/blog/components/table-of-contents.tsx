@@ -90,7 +90,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
           type="button"
           onClick={() => setMobileExpanded((prev) => !prev)}
           aria-expanded={mobileExpanded}
-          className="flex w-full items-center justify-between rounded-md border border-border/50 bg-muted/20 px-4 py-3 text-xs font-medium text-foreground"
+          className="flex w-full items-center justify-between rounded-2xl border border-foreground/10 bg-foreground/3 px-4 py-3 font-mono text-xs tracking-wider text-foreground uppercase"
         >
           <span className="flex items-center gap-2">
             <ListCollapse className="size-3.5 text-muted-foreground" />
@@ -105,7 +105,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
         </button>
 
         {mobileExpanded && (
-          <ul className="mt-1 space-y-1 rounded-md border border-border/50 bg-muted/10 p-3">
+          <ul className="mt-2 space-y-1.5 rounded-2xl border border-foreground/10 bg-card/90 p-4 backdrop-blur-xl">
             {headings.map((item) => (
               <li key={item.id} className={item.level === 3 ? "pl-3" : ""}>
                 <a
@@ -128,12 +128,12 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
       </div>
 
       <div className="hidden space-y-4 lg:block">
-        <p className="flex items-center gap-2 text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
+        <p className="flex items-center gap-2 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
           <ListCollapse className="size-3.5" />
-          <span>On this page</span>
+          <span>[ CONTENTS ]</span>
         </p>
 
-        <ul className="space-y-1.5">
+        <ul className="space-y-2 border-l border-foreground/10 pl-3">
           {headings.map((item) => (
             <li key={item.id} className={item.level === 3 ? "pl-3" : ""}>
               <a
@@ -142,7 +142,7 @@ export function TableOfContents({ content, className }: TableOfContentsProps) {
                 className={cn(
                   "block py-0.5 text-xs leading-snug transition-colors",
                   activeId === item.id
-                    ? "-ml-2 border-l-2 border-foreground pl-2 font-medium text-foreground"
+                    ? "-ml-[13px] border-l-2 border-foreground pl-2.5 font-medium text-foreground"
                     : "text-muted-foreground hover:text-foreground",
                   item.level === 3 && "text-[11px]"
                 )}

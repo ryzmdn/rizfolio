@@ -459,17 +459,17 @@ export const API_ENDPOINTS_CATALOG: EndpointDefinition[] = [
     id: "portfolio-case-study-views-post",
     tag: "Portfolio",
     method: "POST",
-    path: "/api/v1/portfolio/case-studies/{slug}/views",
+    path: "/api/v1/portfolio/case-studies/{id}/views",
     summary: "Track case study view with IP deduplication",
     description:
       "Records an anonymous time-series view event and increments case study total views counter.",
     access: "Rate-Limited",
     parameters: [
       {
-        name: "slug",
+        name: "id",
         in: "path",
         required: true,
-        description: "Case study slug identifier",
+        description: "Case study ID or slug identifier",
         type: "string",
         example: "enterprise-cloud-migration",
       },

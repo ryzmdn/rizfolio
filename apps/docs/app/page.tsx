@@ -86,7 +86,7 @@ export default async function DocsPage({
   }
 
   return (
-    <Container className="space-y-10 py-12">
+    <Container className="space-y-12 py-16 sm:py-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
@@ -95,65 +95,75 @@ export default async function DocsPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Hero Section */}
-      <div className="flex flex-col gap-6 border-b border-border/70 pb-8 sm:flex-row sm:items-end sm:justify-between">
-        <div className="max-w-2xl space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1 text-xs text-muted-foreground">
-            <BookOpen className="size-3.5" />
-            <span>Open Source & Documentation Explorer</span>
+      <div className="flex flex-col gap-8 border-b border-foreground/8 pb-12 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-3xl space-y-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase backdrop-blur-md">
+            <BookOpen className="size-3 text-foreground" />
+            <span>
+              VOLUME 05 // ARCHITECTURAL BLUEPRINTS & OPEN SOURCE ARCHIVES
+            </span>
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Documentation & Code
+          <h1 className="font-serif text-4xl font-light tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            Architectural Blueprints{" "}
+            <span className="font-sans text-muted-foreground/80 italic">&</span>{" "}
+            Open Archives
           </h1>
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
             Dokumentasi teknis, repositori sumber terbuka, eksperimen mini, dan
             arsip kode akademik. Telusuri struktur kode, benchmark arsitektur,
             dan unduh secara bebas.
           </p>
         </div>
 
-        {/* Quick Stat Counters */}
-        <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-border/70 bg-card/60 p-3 font-mono text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-4 rounded-3xl border border-foreground/8 bg-card/40 p-5 font-mono text-xs shadow-xs backdrop-blur-xl sm:gap-6 sm:p-6">
           <div className="flex flex-col">
-            <span className="text-base font-semibold text-foreground tabular-nums">
+            <span className="font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.total}
             </span>
-            <span className="text-[11px]">Repositories</span>
+            <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
+              Repositories
+            </span>
           </div>
-          <div className="h-6 w-px bg-border/80" />
+          <div className="h-8 w-px bg-foreground/10" />
           <div className="flex flex-col">
-            <span className="text-base font-semibold text-foreground tabular-nums">
+            <span className="font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.assignments}
             </span>
-            <span className="text-[11px]">Tugas Kuliah</span>
+            <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
+              Coursework
+            </span>
           </div>
-          <div className="h-6 w-px bg-border/80" />
+          <div className="h-8 w-px bg-foreground/10" />
           <div className="flex flex-col">
-            <span className="text-base font-semibold text-foreground tabular-nums">
+            <span className="font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.openSource}
             </span>
-            <span className="text-[11px]">Open Source</span>
+            <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
+              Open Source
+            </span>
           </div>
-          <div className="h-6 w-px bg-border/80" />
+          <div className="h-8 w-px bg-foreground/10" />
           <div className="flex flex-col">
-            <span className="text-base font-semibold text-foreground tabular-nums">
+            <span className="font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.totalStars}
             </span>
-            <span className="text-[11px]">Stars</span>
+            <span className="text-[10px] tracking-wider text-muted-foreground uppercase">
+              Stars
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Filter and Sorting Controls */}
       <FilterBar courses={courses} />
 
-      {/* Active Filter Chips Summary */}
       {hasActiveFilters && (
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-muted-foreground">Filter aktif:</span>
+          <span className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
+            Filter aktif:
+          </span>
 
           {params.search && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/60 px-2 py-0.5 text-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 font-mono text-xs text-foreground backdrop-blur-sm">
               <span>Pencarian: &quot;{params.search}&quot;</span>
               <Link
                 href={`/?${new URLSearchParams({
@@ -161,7 +171,7 @@ export default async function DocsPage({
                   ...(params.course ? { course: params.course } : {}),
                   ...(params.sort ? { sort: params.sort } : {}),
                 }).toString()}`}
-                className="ml-1 text-muted-foreground hover:text-foreground"
+                className="ml-0.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3" />
               </Link>
@@ -169,7 +179,7 @@ export default async function DocsPage({
           )}
 
           {params.category && params.category !== "ALL" && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/60 px-2 py-0.5 text-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 font-mono text-xs text-foreground backdrop-blur-sm">
               <span>
                 Kategori: {CATEGORY_NAMES[params.category] || params.category}
               </span>
@@ -179,7 +189,7 @@ export default async function DocsPage({
                   ...(params.course ? { course: params.course } : {}),
                   ...(params.sort ? { sort: params.sort } : {}),
                 }).toString()}`}
-                className="ml-1 text-muted-foreground hover:text-foreground"
+                className="ml-0.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3" />
               </Link>
@@ -187,7 +197,7 @@ export default async function DocsPage({
           )}
 
           {params.course && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/60 px-2 py-0.5 text-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 font-mono text-xs text-foreground backdrop-blur-sm">
               <span>Mata Kuliah: {params.course}</span>
               <Link
                 href={`/?${new URLSearchParams({
@@ -195,7 +205,7 @@ export default async function DocsPage({
                   ...(params.category ? { category: params.category } : {}),
                   ...(params.sort ? { sort: params.sort } : {}),
                 }).toString()}`}
-                className="ml-1 text-muted-foreground hover:text-foreground"
+                className="ml-0.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3" />
               </Link>
@@ -203,7 +213,7 @@ export default async function DocsPage({
           )}
 
           {params.sort && params.sort !== "latest" && (
-            <span className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/60 px-2 py-0.5 text-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 font-mono text-xs text-foreground backdrop-blur-sm">
               <span>Urutan: {SORT_NAMES[params.sort] || params.sort}</span>
               <Link
                 href={`/?${new URLSearchParams({
@@ -211,7 +221,7 @@ export default async function DocsPage({
                   ...(params.category ? { category: params.category } : {}),
                   ...(params.course ? { course: params.course } : {}),
                 }).toString()}`}
-                className="ml-1 text-muted-foreground hover:text-foreground"
+                className="ml-0.5 text-muted-foreground hover:text-foreground"
               >
                 <X className="size-3" />
               </Link>
@@ -220,7 +230,7 @@ export default async function DocsPage({
 
           <Link
             href="/"
-            className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/10 px-3 py-1 font-mono text-xs text-muted-foreground transition-all hover:bg-foreground hover:text-background"
           >
             <RotateCcw className="size-3" />
             <span>Reset Semua</span>
@@ -228,17 +238,16 @@ export default async function DocsPage({
         </div>
       )}
 
-      {/* Repositories Grid or Empty State */}
       {repos.length === 0 ? (
-        <div className="flex flex-col items-center justify-center space-y-4 rounded-2xl border border-dashed border-border/80 bg-card/40 p-12 text-center">
-          <div className="flex size-12 items-center justify-center rounded-xl border border-border bg-muted/40 text-muted-foreground">
+        <div className="flex flex-col items-center justify-center space-y-4 rounded-3xl border border-dashed border-foreground/15 bg-card/30 p-16 text-center backdrop-blur-sm">
+          <div className="flex size-14 items-center justify-center rounded-2xl border border-foreground/10 bg-foreground/[0.03] text-muted-foreground">
             <FolderGit2 className="size-6" />
           </div>
-          <div className="space-y-1">
-            <p className="text-sm font-semibold text-foreground">
+          <div className="space-y-1.5">
+            <p className="font-serif text-xl font-light text-foreground">
               Tidak ada repositori yang cocok
             </p>
-            <p className="max-w-sm text-xs text-muted-foreground">
+            <p className="max-w-sm font-sans text-xs font-light text-muted-foreground">
               Tidak ditemukan repositori atau berkas yang cocok dengan filter
               atau kata kunci pencarian Anda.
             </p>
@@ -246,7 +255,7 @@ export default async function DocsPage({
           {hasActiveFilters && (
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+              className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-foreground px-4 py-2 font-mono text-xs text-background transition-all hover:bg-foreground/90"
             >
               <RotateCcw className="size-3" />
               <span>Reset Filter & Tampilkan Semua</span>
@@ -254,7 +263,7 @@ export default async function DocsPage({
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {repos.map((repo) => (
             <RepoCard
               key={repo.id}

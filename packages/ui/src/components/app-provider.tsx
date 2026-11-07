@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import "../lib/dom-resilience"
 import {
   ThemeProvider,
   SmoothScrollProvider,
@@ -24,7 +25,7 @@ export interface AppProviderProps {
 export function AppProvider({
   children,
   disableSmoothScroll = false,
-  disableAnimations = true,
+  disableAnimations = false,
   disableCookieConsent = false,
 }: AppProviderProps) {
   const animatedContent = disableAnimations ? (

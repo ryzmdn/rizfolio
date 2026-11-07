@@ -176,30 +176,32 @@ export function CodeViewer({
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs">
-      <div className="flex flex-col gap-3 border-b border-border/80 bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap items-center gap-2">
+    <div className="overflow-hidden rounded-3xl border border-foreground/8 bg-card/40 shadow-xs backdrop-blur-xl">
+      <div className="flex flex-col gap-3 border-b border-foreground/8 bg-foreground/[0.02] px-5 py-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2.5">
           <FileCode className="size-4 text-foreground/80" />
           <span className="font-mono font-semibold text-foreground">
             {filename}
           </span>
-          <Badge variant="outline" className="text-[10px] font-normal">
+          <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
             {language}
-          </Badge>
-          <span>•</span>
-          <span className="font-mono tabular-nums">{lineCount} lines</span>
+          </span>
+          <span className="text-foreground/20">•</span>
+          <span className="font-mono text-[11px] tabular-nums">
+            {lineCount} lines
+          </span>
           {sizeBytes ? (
             <>
-              <span>•</span>
-              <span className="font-mono tabular-nums">
+              <span className="text-foreground/20">•</span>
+              <span className="font-mono text-[11px] tabular-nums">
                 {formatBytes(sizeBytes)}
               </span>
             </>
           ) : null}
           {highlightRange ? (
             <>
-              <span>•</span>
-              <span className="font-mono font-medium text-primary">
+              <span className="text-foreground/20">•</span>
+              <span className="font-mono text-[11px] font-medium text-foreground">
                 {highlightRange.start === highlightRange.end
                   ? `Line ${highlightRange.start}`
                   : `Lines ${highlightRange.start}-${highlightRange.end}`}
@@ -214,10 +216,10 @@ export function CodeViewer({
             onClick={() => setLineWrap((p) => !p)}
             title={lineWrap ? "Disable line wrap" : "Enable line wrap"}
             className={cn(
-              "inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs transition-colors",
+              "inline-flex items-center gap-1 rounded-full border px-3 py-1 font-mono text-xs transition-colors",
               lineWrap
-                ? "border-foreground/30 bg-muted text-foreground"
-                : "border-border bg-background text-muted-foreground hover:text-foreground"
+                ? "border-foreground bg-foreground text-background"
+                : "border-foreground/10 bg-background/60 text-muted-foreground hover:text-foreground"
             )}
           >
             <WrapText className="size-3" />
@@ -229,10 +231,10 @@ export function CodeViewer({
             onClick={() => setRawMode((p) => !p)}
             title={rawMode ? "Show highlighted code" : "Show raw plain text"}
             className={cn(
-              "inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs transition-colors",
+              "inline-flex items-center gap-1 rounded-full border px-3 py-1 font-mono text-xs transition-colors",
               rawMode
-                ? "border-foreground/30 bg-muted text-foreground"
-                : "border-border bg-background text-muted-foreground hover:text-foreground"
+                ? "border-foreground bg-foreground text-background"
+                : "border-foreground/10 bg-background/60 text-muted-foreground hover:text-foreground"
             )}
           >
             <FileText className="size-3" />
@@ -243,7 +245,7 @@ export function CodeViewer({
             type="button"
             onClick={handleCopyPermalink}
             title="Copy permalink with line anchor"
-            className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             {copiedLink ? (
               <>
@@ -262,7 +264,7 @@ export function CodeViewer({
             type="button"
             onClick={handleCopy}
             title="Copy file contents"
-            className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             {copied ? (
               <>
@@ -281,7 +283,7 @@ export function CodeViewer({
             type="button"
             onClick={handleDownload}
             aria-label="Download raw file"
-            className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1 rounded-full border border-foreground/10 bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             <Download className="size-3" />
             <span>Download</span>
@@ -289,10 +291,10 @@ export function CodeViewer({
         </div>
       </div>
 
-      <div className="flex bg-background/50 font-mono text-xs">
+      <div className="flex bg-background/30 font-mono text-xs">
         <div
           aria-hidden="true"
-          className="border-r border-border/60 bg-muted/15 py-4 text-right font-mono text-[11px] text-muted-foreground/50 select-none"
+          className="border-r border-foreground/8 bg-foreground/[0.015] py-4 text-right font-mono text-[11px] text-muted-foreground/40 select-none"
         >
           {lines.map((_, i) => {
             const lineNum = i + 1
@@ -308,9 +310,9 @@ export function CodeViewer({
                 href={`#L${lineNum}`}
                 onClick={(e) => handleLineClick(e, lineNum)}
                 className={cn(
-                  "block h-[22px] px-3.5 leading-[22px] transition-colors hover:text-foreground",
+                  "block h-[22px] px-4 leading-[22px] transition-colors hover:text-foreground",
                   isHighlighted &&
-                    "border-r-2 border-primary bg-primary/15 font-bold text-primary"
+                    "border-r-2 border-foreground bg-foreground/10 font-bold text-foreground"
                 )}
               >
                 {lineNum}
@@ -334,10 +336,10 @@ export function CodeViewer({
               {highlightRange ? (
                 <style>{`
                   .code-viewer-shiki .line:nth-child(n+${highlightRange.start}):nth-child(-n+${highlightRange.end}) {
-                    background-color: var(--primary-muted, rgba(14, 165, 233, 0.12));
+                    background-color: rgba(255, 255, 255, 0.08);
                     display: inline-block;
                     width: 100%;
-                    border-radius: 2px;
+                    border-radius: 4px;
                   }
                 `}</style>
               ) : null}

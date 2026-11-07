@@ -36,8 +36,6 @@ export const GET = createApiHandler(
         productId: orderItems.productId,
         productTitle: products.title,
         pricePaid: orderItems.pricePaid,
-        downloadToken: orderItems.downloadToken,
-        tokenExpiresAt: orderItems.tokenExpiresAt,
       })
       .from(orderItems)
       .innerJoin(products, eq(orderItems.productId, products.id))

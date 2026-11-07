@@ -16,19 +16,30 @@ import {
 import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
 
 const navItems = [
-  { href: "/", label: "Overview" },
-  { href: "/#journey", label: "Journey" },
-  { href: "/#case-studies", label: "Case Studies" },
+  { href: "/#case-studies", label: "Works" },
+  { href: "/#manifesto", label: "Manifesto" },
   { href: "/#capabilities", label: "Capabilities" },
-  { href: "/#solutions", label: "Solutions" },
+  { href: "/#archive", label: "Archive" },
+  { href: "/#testimonials", label: "Endorsements" },
+  { href: "/#call-to-action", label: "Inquiry" },
 ]
 
 export function AppHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const [timeData, setTimeData] = useState<{
     time: string
     ampm: string
   } | null>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40)
+    }
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   useEffect(() => {
     const formatter = new Intl.DateTimeFormat("en-US", {
@@ -65,9 +76,16 @@ export function AppHeader() {
   return (
     <Header
       id="header"
-      className="absolute top-0 left-1/2 z-50 w-full max-w-4xl -translate-x-1/2 px-4 sm:px-6"
+      className="fixed top-0 left-1/2 z-50 w-full max-w-6xl -translate-x-1/2 px-4 transition-all duration-500 ease-luxury sm:px-6 lg:px-8"
     >
-      <div className="flex h-20 w-full items-center justify-between">
+      <div
+        className={cn(
+          "mx-auto flex w-full items-center justify-between transition-all duration-500 ease-luxury",
+          isScrolled
+            ? "mt-3 h-14 rounded-full border border-foreground/10 bg-background/80 px-6 shadow-xl backdrop-blur-xl"
+            : "mt-0 h-20 border-transparent bg-transparent px-2"
+        )}
+      >
         <div className="flex items-center gap-x-2.5 text-sm">
           <div
             className="flex min-w-[5.5rem] items-center font-medium text-foreground tabular-nums"
@@ -96,6 +114,24 @@ export function AppHeader() {
 
         <div className="flex items-center gap-x-1.5 sm:gap-x-2">
           <div className="hidden items-center gap-x-2.5 sm:flex">
+            <a
+              href="https://github.com/ryzmdn"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub Profile"
+              className={buttonVariants({ variant: "ghost", size: "icon-sm" })}
+            >
+              <GitHub className="size-4" />
+            </a>
+            <a
+              href="https://linkedin.com/in/ryzmdn"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn Profile"
+              className={buttonVariants({ variant: "ghost", size: "icon-sm" })}
+            >
+              <LinkedIn className="size-4" />
+            </a>
             <a
               href="https://behance.net/ryzmdn"
               target="_blank"
@@ -143,14 +179,14 @@ export function AppHeader() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="relative z-50 mt-2 w-full animate-in rounded-2xl border border-border/70 bg-background/95 p-5 shadow-2xl backdrop-blur-xl duration-200 fade-in slide-in-from-top-3 md:hidden">
+        <div className="relative z-50 mt-2 w-full animate-in rounded-3xl border border-foreground/10 bg-card/95 p-6 shadow-2xl backdrop-blur-2xl duration-300 zoom-in-95 md:hidden">
           <nav className="flex flex-col space-y-3.5">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                onClick={() => setTimeout(() => setIsMobileMenuOpen(false), 50)}
+                className="flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-medium text-foreground transition-colors-luxury hover:bg-foreground/[0.04]"
               >
                 <span>{item.label}</span>
                 <span className="text-xs text-muted-foreground/60">&rarr;</span>
@@ -158,8 +194,10 @@ export function AppHeader() {
             ))}
           </nav>
 
-          <div className="mt-5 flex items-center justify-between border-t border-border/50 pt-4">
-            <span className="text-xs text-muted-foreground">Social Links</span>
+          <div className="mt-5 flex items-center justify-between border-t border-foreground/8 pt-4">
+            <span className="font-mono text-xs text-muted-foreground uppercase">
+              Social Channels
+            </span>
             <div className="flex items-center gap-x-2">
               <a
                 href="https://github.com/ryzmdn"

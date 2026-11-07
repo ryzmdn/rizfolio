@@ -14,7 +14,7 @@ import {
   ShieldCheck,
   Terminal,
 } from "lucide-react"
-import { formatPrice, formatRawPrice } from "../lib/utils"
+import { formatRawPrice } from "../lib/utils"
 import type { DigitalOrder } from "../lib/queries"
 
 interface OrderFulfillmentHubProps {
@@ -35,27 +35,27 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
   }
 
   return (
-    <div className="space-y-10">
-      <div className="flex flex-col items-center justify-center rounded-lg border border-border/70 bg-card/40 p-6 text-center sm:p-10">
-        <div className="flex size-12 items-center justify-center rounded-md border border-border/60 bg-muted/40 text-foreground">
-          <CheckCircle2 className="size-6" />
+    <div className="space-y-12">
+      <div className="flex flex-col items-center justify-center rounded-3xl border border-foreground/15 bg-foreground/[0.02] p-8 text-center sm:p-14">
+        <div className="flex size-14 items-center justify-center rounded-2xl border border-foreground/15 bg-foreground/[0.03] text-foreground">
+          <CheckCircle2 className="size-6 stroke-[1.5]" />
         </div>
-        <span className="mt-3 font-mono text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
-          Order Verified & Completed
+        <span className="mt-4 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+          ORDER CRYPTOGRAPHICALLY VERIFIED
         </span>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          Order Fulfillment Hub
+        <h1 className="mt-2 text-2xl font-light tracking-tight text-foreground sm:text-4xl">
+          Order Fulfillment &amp; License Provisioning
         </h1>
-        <p className="mt-2 max-w-md text-xs leading-relaxed text-muted-foreground sm:text-sm">
-          Thank you for your purchase, {order.customerName}. Your permanent
+        <p className="mt-3 max-w-md text-xs leading-relaxed font-light text-muted-foreground sm:text-sm">
+          Thank you for your acquisition, {order.customerName}. Your permanent
           access tokens and commercial software licenses are provisioned below.
         </p>
 
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
-          <span className="rounded-md border border-border/70 bg-background px-3 py-1 font-mono text-xs font-bold text-foreground">
-            Order: {order.orderNumber}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <span className="rounded-full border border-foreground/15 bg-background px-4 py-1 font-mono text-xs text-foreground">
+            ORDER #{order.orderNumber}
           </span>
-          <span className="rounded-md border border-border/70 bg-background px-3 py-1 text-xs text-muted-foreground">
+          <span className="rounded-full border border-foreground/15 bg-background px-4 py-1 font-mono text-xs text-muted-foreground">
             {new Date(order.createdAt).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
@@ -66,16 +66,16 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
       </div>
 
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold tracking-tight text-foreground">
-            Purchased Assets & Licenses ({order.items.length})
+        <div className="flex items-center justify-between border-b border-foreground/6 pb-4">
+          <h2 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+            PURCHASED ARCHITECTURES &amp; LICENSES ({order.items.length})
           </h2>
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-foreground/15 px-3.5 py-1 font-mono text-[11px] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
           >
-            <Printer className="size-3.5" />
+            <Printer className="size-3" />
             <span>Print Receipt</span>
           </button>
         </div>
@@ -90,38 +90,37 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
             return (
               <div
                 key={item.productId + index}
-                className="space-y-5 rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6"
+                className="space-y-6 rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-6 sm:p-8"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-mono text-[10px] font-semibold text-foreground">
+                    <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                      <span className="rounded-full border border-foreground/15 bg-background px-2.5 py-0.5 text-[10px] text-foreground uppercase">
                         {item.licenseType}
                       </span>
-                      <span className="text-xs text-muted-foreground">
-                        Item {index + 1}
-                      </span>
+                      <span>•</span>
+                      <span>ITEM 0{index + 1}</span>
                     </div>
-                    <h3 className="text-base font-bold text-foreground sm:text-lg">
+                    <h3 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">
                       {item.productTitle}
                     </h3>
                   </div>
 
-                  <div className="font-mono text-sm font-bold text-foreground sm:text-base">
+                  <div className="font-mono text-lg font-light text-foreground sm:text-xl">
                     {formatRawPrice(item.pricePaid, order.currency)}
                   </div>
                 </div>
 
                 {isService ? (
-                  <div className="flex flex-col gap-4 rounded-md border border-border/60 bg-muted/20 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-4 rounded-2xl border border-foreground/10 bg-foreground/[0.02] p-5 sm:flex-row sm:items-center sm:justify-between">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+                      <div className="flex items-center gap-2 font-mono text-xs text-foreground uppercase">
                         <Calendar className="size-4 text-muted-foreground" />
-                        <span>Book Your 1-on-1 Consultation Slot</span>
+                        <span>Book Your 1-on-1 Advisory Session</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        Select a convenient time slot on Google Meet for your
-                        dedicated engineering session.
+                      <p className="text-xs font-light text-muted-foreground">
+                        Select an available calendar slot on Google Meet for
+                        your dedicated systems review.
                       </p>
                     </div>
 
@@ -129,47 +128,45 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                       href="https://calendar.google.com"
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-foreground px-5 py-2.5 font-mono text-xs tracking-wider text-background uppercase shadow-md transition-all hover:scale-[1.02]"
                     >
                       <span>Schedule Meeting</span>
                       <ArrowRight className="size-3.5" />
                     </a>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-4 rounded-md border border-border/60 bg-muted/20 p-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="space-y-1">
-                      <span className="font-mono text-xs font-semibold text-foreground">
+                  <div className="flex flex-col gap-4 rounded-2xl border border-foreground/10 bg-foreground/[0.02] p-5 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="space-y-1 font-mono">
+                      <span className="text-xs font-medium text-foreground">
                         {item.fileName || "digital-source-archive.zip"}
                       </span>
                       <p className="text-[11px] text-muted-foreground">
-                        Full unminified source code archive with lifetime
+                        Full unminified repository source archive with lifetime
                         revision access.
                       </p>
                     </div>
 
                     <a
                       href={downloadUrl}
-                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+                      className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-foreground px-5 py-2.5 font-mono text-xs tracking-wider text-background uppercase shadow-md transition-all hover:scale-[1.02]"
                     >
                       <Download className="size-3.5" />
-                      <span>Download ZIP Package</span>
+                      <span>Download Archive</span>
                     </a>
                   </div>
                 )}
 
                 {item.licenseKey && (
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-medium text-foreground">
-                        Perpetual License Certificate Key
-                      </span>
-                      <span className="text-[11px] text-muted-foreground">
-                        Commercial usage authorized
+                    <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
+                      <span>PERPETUAL LICENSE CERTIFICATE KEY</span>
+                      <span className="text-[10px] uppercase">
+                        COMMERCIAL USE AUTHORIZED
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between gap-3 rounded-md border border-border/80 bg-background px-3.5 py-2.5">
-                      <code className="font-mono text-xs font-bold text-foreground sm:text-sm">
+                    <div className="flex items-center justify-between gap-3 rounded-2xl border border-foreground/15 bg-background p-3 sm:p-4">
+                      <code className="font-mono text-xs text-foreground sm:text-sm">
                         {item.licenseKey}
                       </code>
 
@@ -177,17 +174,17 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                         type="button"
                         onClick={() => handleCopyLicense(item.licenseKey!)}
                         aria-label="Copy license key"
-                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-border px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-foreground/15 px-3 py-1 font-mono text-xs text-foreground transition-colors hover:border-foreground/40"
                       >
                         {copiedKey === item.licenseKey ? (
                           <>
-                            <Check className="size-3 text-emerald-500" />
-                            <span className="text-emerald-500">Copied</span>
+                            <Check className="size-3 text-emerald-400" />
+                            <span className="text-emerald-400">Copied</span>
                           </>
                         ) : (
                           <>
                             <Copy className="size-3" />
-                            <span>Copy Key</span>
+                            <span>Copy</span>
                           </>
                         )}
                       </button>
@@ -196,18 +193,18 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
                 )}
 
                 {!isService && (
-                  <div className="space-y-2 rounded-md border border-border/60 bg-muted/20 p-4 text-xs">
-                    <div className="flex items-center gap-2 font-semibold text-foreground">
+                  <div className="space-y-2 rounded-2xl border border-foreground/8 bg-foreground/[0.015] p-4 font-mono text-xs">
+                    <div className="flex items-center gap-2 tracking-wider text-foreground uppercase">
                       <Terminal className="size-3.5 text-muted-foreground" />
-                      <span>Quick Start Instructions</span>
+                      <span>Quick Extraction Instructions</span>
                     </div>
-                    <div className="space-y-1 font-mono text-[11px] text-muted-foreground">
+                    <div className="space-y-1 text-[11px] text-muted-foreground">
                       <p>
                         1. Extract archive: unzip{" "}
                         {item.fileName || "archive.zip"} -d ./project
                       </p>
                       <p>2. Install dependencies: pnpm install</p>
-                      <p>3. Start development server: pnpm dev</p>
+                      <p>3. Start development: pnpm dev</p>
                     </div>
                   </div>
                 )}
@@ -217,61 +214,55 @@ export function OrderFulfillmentHub({ order }: OrderFulfillmentHubProps) {
         </div>
       </div>
 
-      <div className="rounded-lg border border-border/70 bg-card/40 p-5 sm:p-6">
-        <h3 className="text-sm font-bold text-foreground">
-          Invoice & Payment Receipt
+      <div className="rounded-3xl border border-foreground/10 bg-foreground/[0.015] p-6 sm:p-8">
+        <h3 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+          RECEIPT &amp; TRANSACTION BREAKDOWN
         </h3>
 
-        <div className="mt-4 divide-y divide-border/50 text-xs">
-          <div className="flex items-center justify-between py-2 text-muted-foreground">
-            <span>Customer Name</span>
-            <span className="font-medium text-foreground">
-              {order.customerName}
-            </span>
+        <div className="mt-4 divide-y divide-foreground/6 font-mono text-xs">
+          <div className="flex items-center justify-between py-2.5 text-muted-foreground">
+            <span>Customer</span>
+            <span className="text-foreground">{order.customerName}</span>
           </div>
 
-          <div className="flex items-center justify-between py-2 text-muted-foreground">
-            <span>Customer Email</span>
-            <span className="font-mono text-foreground">
-              {order.customerEmail}
-            </span>
+          <div className="flex items-center justify-between py-2.5 text-muted-foreground">
+            <span>Email</span>
+            <span className="text-foreground">{order.customerEmail}</span>
           </div>
 
-          <div className="flex items-center justify-between py-2 text-muted-foreground">
-            <span>Payment Method</span>
-            <span className="font-medium text-foreground">
-              {order.paymentMethod}
-            </span>
+          <div className="flex items-center justify-between py-2.5 text-muted-foreground">
+            <span>Payment Provider</span>
+            <span className="text-foreground">{order.paymentMethod}</span>
           </div>
 
-          <div className="flex items-center justify-between py-2 text-muted-foreground">
-            <span>Payment Status</span>
-            <span className="inline-flex items-center gap-1 rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-medium text-foreground">
-              <ShieldCheck className="size-3 text-muted-foreground" />
+          <div className="flex items-center justify-between py-2.5 text-muted-foreground">
+            <span>Status</span>
+            <span className="inline-flex items-center gap-1 text-emerald-400">
+              <ShieldCheck className="size-3" />
               <span>{order.status}</span>
             </span>
           </div>
 
-          <div className="flex items-center justify-between pt-3 text-sm font-bold text-foreground">
-            <span>Total Paid</span>
-            <span className="font-mono text-base">
+          <div className="flex items-center justify-between pt-3 text-sm text-foreground">
+            <span>Total Captured</span>
+            <span className="text-base font-semibold">
               {formatRawPrice(order.totalAmount, order.currency)}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 sm:flex-row">
+      <div className="flex flex-col items-center justify-between gap-4 border-t border-foreground/6 pt-8 sm:flex-row">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+          className="inline-flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase transition-colors hover:text-foreground"
         >
           <Layers className="size-3.5" />
-          <span>Explore More Software Packages</span>
+          <span>Explore More Architectures</span>
         </Link>
 
-        <p className="text-[11px] text-muted-foreground">
-          Need technical assistance? Reach us at support@rizkyramadhan.dev
+        <p className="font-mono text-[11px] text-muted-foreground">
+          Need assistance? Contact support@rizkyramadhan.dev
         </p>
       </div>
     </div>

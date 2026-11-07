@@ -98,7 +98,7 @@ export function CurrencySelector() {
                   aria-selected={isSelected}
                   onClick={() => {
                     setCurrency(cur.code)
-                    setIsOpen(false)
+                    setTimeout(() => setIsOpen(false), 50)
                   }}
                   className={cn(
                     "flex w-full cursor-pointer items-center justify-between rounded-sm px-2.5 py-1.5 text-left text-xs transition-colors",

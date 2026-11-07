@@ -22,6 +22,7 @@ import {
   Link2,
   MessageSquare,
 } from "lucide-react"
+import { cn } from "@workspace/ui/lib/utils"
 
 interface CommandItem {
   id: string
@@ -273,7 +274,9 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
     if (item.isExternal) {
       window.open(item.href, "_blank", "noopener,noreferrer")
     } else {
-      router.push(item.href)
+      setTimeout(() => {
+        router.push(item.href)
+      }, 50)
     }
   }
 
@@ -314,12 +317,12 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
       onKeyDown={handleKeyDown}
     >
       <div
-        className="fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-background/80 backdrop-blur-md transition-opacity"
         onClick={handleClose}
       />
 
-      <div className="relative z-50 flex w-full max-w-xl animate-in flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl duration-150 fade-in-0 zoom-in-95">
-        <div className="flex items-center gap-3 border-b border-border/80 px-4 py-3">
+      <div className="relative z-50 flex w-full max-w-xl animate-in flex-col overflow-hidden rounded-3xl border border-foreground/10 bg-card/95 shadow-2xl backdrop-blur-2xl duration-150 fade-in-0 zoom-in-95">
+        <div className="flex items-center gap-3 border-b border-foreground/8 px-5 py-4">
           <Search className="size-4 shrink-0 text-muted-foreground" />
           <input
             ref={inputRef}
@@ -330,7 +333,7 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
               setRawIndex(0)
             }}
             placeholder="Cari navigasi, aksi cepat, atau ekosistem monorepo..."
-            className="flex-1 bg-transparent text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
+            className="flex-1 bg-transparent font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-hidden"
           />
           {query && (
             <button
@@ -339,19 +342,19 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
                 setQuery("")
                 setRawIndex(0)
               }}
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
             >
               <X className="size-3.5" />
             </button>
           )}
-          <kbd className="hidden rounded border border-border/80 bg-muted/40 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
+          <kbd className="hidden rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
             Esc
           </kbd>
         </div>
 
         <div ref={listRef} className="max-h-80 overflow-y-auto p-2">
           {filteredItems.length === 0 ? (
-            <div className="py-8 text-center text-xs text-muted-foreground">
+            <div className="py-12 text-center font-mono text-xs text-muted-foreground">
               Tidak ada hasil yang cocok dengan &quot;{query}&quot;.
             </div>
           ) : (
@@ -366,48 +369,40 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
                     type="button"
                     onClick={() => handleSelect(item)}
                     onMouseEnter={() => setRawIndex(index)}
-                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs transition-colors ${
+                    className={cn(
+                      "flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left font-mono text-xs transition-colors",
                       isSelected
-                        ? "bg-primary text-primary-foreground"
-                        : "text-foreground hover:bg-muted/50"
-                    }`}
+                        ? "bg-foreground/[0.06] text-foreground"
+                        : "text-muted-foreground hover:bg-foreground/[0.03] hover:text-foreground"
+                    )}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3.5">
                       <div
-                        className={`flex size-7 shrink-0 items-center justify-center rounded-md border ${
+                        className={cn(
+                          "flex size-8 shrink-0 items-center justify-center rounded-xl border",
                           isSelected
-                            ? "border-primary-foreground/30 bg-primary-foreground/15 text-primary-foreground"
-                            : "border-border/80 bg-muted/40 text-muted-foreground"
-                        }`}
+                            ? "border-foreground/20 bg-background text-foreground"
+                            : "border-foreground/10 bg-foreground/[0.02] text-muted-foreground"
+                        )}
                       >
                         <Icon className="size-3.5" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-medium">{item.title}</span>
-                        <span
-                          className={`text-[11px] ${
-                            isSelected
-                              ? "text-primary-foreground/80"
-                              : "text-muted-foreground"
-                          }`}
-                        >
+                        <span className="font-serif text-sm font-normal text-foreground">
+                          {item.title}
+                        </span>
+                        <span className="font-sans text-[11px] font-light text-muted-foreground">
                           {item.description}
                         </span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span
-                        className={`rounded px-1.5 py-0.5 font-mono text-[10px] uppercase ${
-                          isSelected
-                            ? "bg-primary-foreground/20 text-primary-foreground"
-                            : "bg-muted text-muted-foreground"
-                        }`}
-                      >
+                      <span className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-2 py-0.5 font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                         {item.category}
                       </span>
                       {isSelected && (
-                        <CornerDownLeft className="size-3 text-primary-foreground" />
+                        <CornerDownLeft className="size-3 text-foreground" />
                       )}
                     </div>
                   </button>
@@ -417,19 +412,19 @@ export function CmsCommandPalette({ isOpen, onClose }: CmsCommandPaletteProps) {
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-border/80 bg-muted/20 px-4 py-2 text-[11px] text-muted-foreground">
+        <div className="flex items-center justify-between border-t border-foreground/8 bg-foreground/[0.02] px-5 py-2.5 font-mono text-[11px] text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>Pilih dengan panah</span>
-            <kbd className="rounded border border-border/80 bg-background px-1 text-[10px]">
+            <kbd className="rounded border border-foreground/10 bg-background px-1 text-[10px]">
               ↑
             </kbd>
-            <kbd className="rounded border border-border/80 bg-background px-1 text-[10px]">
+            <kbd className="rounded border border-foreground/10 bg-background px-1 text-[10px]">
               ↓
             </kbd>
           </div>
           <div className="flex items-center gap-1.5">
             <span>Buka</span>
-            <kbd className="rounded border border-border/80 bg-background px-1 text-[10px]">
+            <kbd className="rounded border border-foreground/10 bg-background px-1 text-[10px]">
               Enter
             </kbd>
           </div>

@@ -92,73 +92,75 @@ export function TimelineExplorer({
   }
 
   return (
-    <div className="space-y-10 sm:space-y-12">
-      <header className="space-y-6">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-muted/30 px-3 py-1 text-xs text-muted-foreground">
+    <div className="space-y-12 sm:space-y-16">
+      <header className="space-y-8">
+        <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.03] px-3.5 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase backdrop-blur-md">
           <GitBranch className="size-3.5 text-foreground" />
-          <span>Engineering Architecture & Dev Log</span>
+          <span>[ VOLUME 07 // SYSTEM LOGS & ARCHITECTURAL EVOLUTION ]</span>
         </div>
 
-        <div className="max-w-3xl space-y-3">
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
-            Changelog & Releases
+        <div className="max-w-3xl space-y-4">
+          <h1 className="font-serif text-4xl font-light tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            System Logs{" "}
+            <span className="font-sans text-muted-foreground/80 italic">&</span>{" "}
+            Architectural Evolution
           </h1>
-          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            An open chronological log tracking architectural iterations, new
-            feature deliveries, performance tunings, and infrastructure updates
-            across the monorepo ecosystem.
+          <p className="font-sans text-base leading-relaxed font-light text-muted-foreground sm:text-lg">
+            Kronologi terbuka mencatat evolusi arsitektur sistem, delivery fitur
+            baru, benchmark performa, dan pembaruan infrastruktur di seluruh
+            ekosistem monorepo Rizfolio.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs">
-            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
+            <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase">
               <GitCommit className="size-3.5 text-foreground" />
               <span>Total Releases</span>
             </div>
-            <div className="mt-2 font-mono text-2xl font-bold text-foreground">
+            <div className="mt-3 font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.totalReleases}
             </div>
-            <div className="mt-1 text-[11px] text-muted-foreground">
+            <div className="mt-1 font-mono text-[10px] text-muted-foreground">
               Semantic releases
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs">
-            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <CheckCircle2 className="size-3.5 text-emerald-500" />
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
+            <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase">
+              <CheckCircle2 className="size-3.5 text-foreground" />
               <span>Milestones</span>
             </div>
-            <div className="mt-2 font-mono text-2xl font-bold text-foreground">
+            <div className="mt-3 font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.shippedMilestones}
             </div>
-            <div className="mt-1 text-[11px] text-muted-foreground">
+            <div className="mt-1 font-mono text-[10px] text-muted-foreground">
               Shipped enhancements
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs">
-            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <Box className="size-3.5 text-blue-500" />
-              <span>Apps Maintained</span>
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
+            <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase">
+              <Box className="size-3.5 text-foreground" />
+              <span>Packages</span>
             </div>
-            <div className="mt-2 font-mono text-2xl font-bold text-foreground">
+            <div className="mt-3 font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.appsCount}
             </div>
-            <div className="mt-1 text-[11px] text-muted-foreground">
+            <div className="mt-1 font-mono text-[10px] text-muted-foreground">
               Monorepo packages
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border/80 bg-card/60 p-4 shadow-xs backdrop-blur-xs">
-            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-              <Tag className="size-3.5 text-amber-500" />
+          <div className="rounded-3xl border border-foreground/8 bg-card/40 p-5 shadow-xs backdrop-blur-xl sm:p-6">
+            <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground uppercase">
+              <Tag className="size-3.5 text-foreground" />
               <span>Active Version</span>
             </div>
-            <div className="mt-2 font-mono text-2xl font-bold text-foreground">
+            <div className="mt-3 font-serif text-2xl font-light text-foreground tabular-nums sm:text-3xl">
               {stats.currentVersion}
             </div>
-            <div className="mt-1 text-[11px] text-muted-foreground">
+            <div className="mt-1 font-mono text-[10px] text-muted-foreground">
               Production deployment
             </div>
           </div>
@@ -175,12 +177,12 @@ export function TimelineExplorer({
       <div className="relative flex items-start gap-8">
         <div className="min-w-0 flex-1">
           {filteredReleases.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-border/80 bg-card/30 p-12 text-center">
+            <div className="rounded-3xl border border-dashed border-foreground/15 bg-card/30 p-16 text-center">
               <SearchX className="mx-auto size-8 text-muted-foreground" />
-              <h3 className="mt-3 text-sm font-semibold text-foreground">
+              <h3 className="mt-3 font-serif text-lg font-light text-foreground">
                 No matching releases found
               </h3>
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="mt-1 font-mono text-xs text-muted-foreground">
                 No release updates or items matched your active search or filter
                 criteria.
               </p>
@@ -188,7 +190,7 @@ export function TimelineExplorer({
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-foreground transition-all hover:bg-muted"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-foreground bg-foreground px-4 py-2 font-mono text-xs font-medium text-background transition-all hover:bg-foreground/90"
                 >
                   <RotateCcw className="size-3" />
                   <span>Reset All Filters</span>
@@ -196,8 +198,8 @@ export function TimelineExplorer({
               )}
             </div>
           ) : (
-            <div className="relative space-y-8 pl-6 sm:pl-8">
-              <div className="absolute top-4 bottom-4 left-[9px] w-px bg-border/80 sm:left-[11px]" />
+            <div className="relative space-y-10 pl-6 sm:pl-8">
+              <div className="absolute top-6 bottom-6 left-[11px] w-px bg-foreground/10 sm:left-[15px]" />
 
               {filteredReleases.map((release, idx) => (
                 <div key={release.id} className="relative">

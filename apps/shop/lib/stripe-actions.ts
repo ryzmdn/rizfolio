@@ -1,6 +1,14 @@
 "use server"
 
-import { db, orders, orderItems, masterTransactions, eq } from "@workspace/db"
+import {
+  db,
+  orders,
+  orderItems,
+  masterTransactions,
+  products,
+  eq,
+  inArray,
+} from "@workspace/db"
 import { randomBytes } from "crypto"
 import { stripe, isStripeConfigured } from "./stripe"
 import {
@@ -10,6 +18,7 @@ import {
   DEFAULT_CURRENCY,
 } from "./currencies"
 import { fallbackOrders, getPromoCoupon, type DigitalOrder } from "./queries"
+import { fallbackProducts } from "@/data"
 import type { OrderItemInput } from "./actions"
 
 export interface StripeCheckoutInput {
@@ -29,8 +38,9 @@ export interface StripeCheckoutResult {
 }
 
 function generateOrderNumber(): string {
-  const digits = Math.floor(100000 + Math.random() * 900000)
-  return `RZ-${digits}`
+  const timestamp = Date.now().toString(36).toUpperCase()
+  const randomSuffix = randomBytes(4).toString("hex").toUpperCase()
+  return `RZ-${timestamp}-${randomSuffix}`
 }
 
 function generateDownloadToken(): string {
@@ -70,11 +80,78 @@ export async function createStripeCheckoutSessionAction(
     }
   }
 
+  if (
+    process.env.NODE_ENV === "production" &&
+    (!isStripeConfigured() || !stripe)
+  ) {
+    return {
+      success: false,
+      error: "Stripe payment gateway is required in production.",
+    }
+  }
+
   if (!input.items || input.items.length === 0) {
     return {
       success: false,
       error: "Cannot process checkout with an empty cart.",
     }
+  }
+
+  const itemProductIds = input.items.map((it) => it.productId)
+  const productPriceMap = new Map<
+    string,
+    { price: number; title: string; slug: string }
+  >()
+
+  try {
+    const dbProds = await db
+      .select({
+        id: products.id,
+        price: products.price,
+        title: products.title,
+        slug: products.slug,
+        isActive: products.isActive,
+      })
+      .from(products)
+      .where(inArray(products.id, itemProductIds))
+
+    for (const p of dbProds) {
+      if (p.isActive) {
+        productPriceMap.set(p.id, {
+          price: p.price,
+          title: p.title,
+          slug: p.slug,
+        })
+      }
+    }
+  } catch {}
+
+  for (const fallback of fallbackProducts) {
+    if (!productPriceMap.has(fallback.id)) {
+      productPriceMap.set(fallback.id, {
+        price: fallback.price,
+        title: fallback.title,
+        slug: fallback.slug,
+      })
+    }
+  }
+
+  for (const it of input.items) {
+    if (!productPriceMap.has(it.productId)) {
+      return {
+        success: false,
+        error: `Product '${it.productTitle || it.productId}' is currently unavailable.`,
+      }
+    }
+  }
+
+  function getCanonicalItemPriceIdr(
+    productId: string,
+    licenseType: string
+  ): number {
+    const ref = productPriceMap.get(productId)
+    if (!ref) return 0
+    return licenseType === "EXTENDED" ? Math.round(ref.price * 1.75) : ref.price
   }
 
   let discountPercent = 0
@@ -85,7 +162,10 @@ export async function createStripeCheckoutSessionAction(
     }
   }
 
-  const rawSubtotalIdr = input.items.reduce((acc, it) => acc + it.pricePaid, 0)
+  const rawSubtotalIdr = input.items.reduce(
+    (acc, it) => acc + getCanonicalItemPriceIdr(it.productId, it.licenseType),
+    0
+  )
   const discountAmountIdr = Math.round((rawSubtotalIdr * discountPercent) / 100)
   const finalTotalIdr = Math.max(0, rawSubtotalIdr - discountAmountIdr)
 
@@ -95,16 +175,22 @@ export async function createStripeCheckoutSessionAction(
   const expiryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
   const populatedItems = input.items.map((it) => {
-    const itemPriceInCurrency = convertFromIdr(it.pricePaid, selectedCurrency)
+    const canonicalIdr = getCanonicalItemPriceIdr(it.productId, it.licenseType)
+    const itemPriceInCurrency = convertFromIdr(canonicalIdr, selectedCurrency)
+    const ref = productPriceMap.get(it.productId)
+
     return {
       productId: it.productId,
-      productTitle: it.productTitle,
-      productSlug: it.productSlug,
+      productTitle: ref?.title || it.productTitle,
+      productSlug: ref?.slug || it.productSlug,
       licenseType: it.licenseType,
       pricePaid: itemPriceInCurrency,
       downloadToken: generateDownloadToken(),
-      licenseKey: generateLicenseKey(it.productSlug, it.licenseType),
-      fileName: it.fileName || `${it.productSlug}-source.zip`,
+      licenseKey: generateLicenseKey(
+        ref?.slug || it.productSlug,
+        it.licenseType
+      ),
+      fileName: it.fileName || `${ref?.slug || it.productSlug}-source.zip`,
       fileSizeBytes: it.fileSizeBytes || 2048576,
     }
   })
@@ -135,6 +221,7 @@ export async function createStripeCheckoutSessionAction(
         await db.insert(orderItems).values({
           orderId: insertedOrder.id,
           productId: it.productId,
+          productTitle: it.productTitle,
           pricePaid: Math.round(it.pricePaid),
           downloadToken: it.downloadToken,
           tokenExpiresAt: expiryDate,
@@ -187,6 +274,14 @@ export async function createStripeCheckoutSessionAction(
   fallbackOrders.unshift(digitalOrder)
 
   if (!isStripeConfigured() || !stripe) {
+    if (process.env.NODE_ENV === "production") {
+      return {
+        success: false,
+        error:
+          "Stripe payment gateway is not configured for production orders.",
+      }
+    }
+
     return {
       success: true,
       orderNumber,
@@ -201,7 +296,11 @@ export async function createStripeCheckoutSessionAction(
 
   try {
     const lineItems = input.items.map((it) => {
-      const itemPriceInCurrency = convertFromIdr(it.pricePaid, selectedCurrency)
+      const canonicalIdr = getCanonicalItemPriceIdr(
+        it.productId,
+        it.licenseType
+      )
+      const itemPriceInCurrency = convertFromIdr(canonicalIdr, selectedCurrency)
       const discountedItemPrice =
         discountPercent > 0
           ? Math.max(0, itemPriceInCurrency * (1 - discountPercent / 100))
@@ -211,13 +310,14 @@ export async function createStripeCheckoutSessionAction(
         discountedItemPrice,
         selectedCurrency
       )
+      const ref = productPriceMap.get(it.productId)
 
       return {
         price_data: {
           currency: selectedCurrency.toLowerCase(),
           product_data: {
-            name: it.productTitle,
-            description: `License: ${it.licenseType} (${it.productSlug})`,
+            name: ref?.title || it.productTitle,
+            description: `License: ${it.licenseType} (${ref?.slug || it.productSlug})`,
           },
           unit_amount: Math.max(unitAmount, 1),
         },

@@ -2,14 +2,15 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { validateOwnerSession, SESSION_COOKIE_NAME } from "@workspace/auth"
 
-function buildCmsCsp(nonce: string): string {
+function buildCmsCsp(nonce?: string): string {
+  const isDev = process.env.NODE_ENV !== "production"
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    `script-src 'self' 'unsafe-eval' 'unsafe-inline' https: ${isDev ? "http:" : ""}`.trim(),
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: res.cloudinary.com images.unsplash.com *.supabase.co",
     "font-src 'self' data:",
-    "connect-src 'self' *.supabase.co",
+    `connect-src 'self' *.supabase.co ${isDev ? "ws: http: https:" : ""}`.trim(),
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
@@ -51,21 +52,14 @@ export async function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64")
 
   if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method)) {
+    const host = request.headers.get("host")
     const origin = request.headers.get("origin")
+    const referer = request.headers.get("referer")
+    let requestHost: string | null = null
+
     if (origin) {
       try {
-        const host = request.headers.get("host")
-        const originHost = new URL(origin).host
-        if (originHost !== host && process.env.NODE_ENV === "production") {
-          const forbiddenResponse = NextResponse.json(
-            {
-              error: "Forbidden",
-              message: "Cross-site request blocked by CMS origin security.",
-            },
-            { status: 403 }
-          )
-          return applySecurityHeaders(forbiddenResponse, nonce)
-        }
+        requestHost = new URL(origin).host
       } catch {
         const badOriginResponse = NextResponse.json(
           {
@@ -76,6 +70,35 @@ export async function middleware(request: NextRequest) {
         )
         return applySecurityHeaders(badOriginResponse, nonce)
       }
+    } else if (referer) {
+      try {
+        requestHost = new URL(referer).host
+      } catch {
+        const badRefererResponse = NextResponse.json(
+          {
+            error: "Bad Request",
+            message: "Malformed referer header.",
+          },
+          { status: 400 }
+        )
+        return applySecurityHeaders(badRefererResponse, nonce)
+      }
+    }
+
+    if (
+      requestHost &&
+      host &&
+      requestHost !== host &&
+      process.env.NODE_ENV === "production"
+    ) {
+      const forbiddenResponse = NextResponse.json(
+        {
+          error: "Forbidden",
+          message: "Cross-site request blocked by CMS origin security.",
+        },
+        { status: 403 }
+      )
+      return applySecurityHeaders(forbiddenResponse, nonce)
     }
   }
 

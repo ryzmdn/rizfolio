@@ -11,7 +11,6 @@ import {
   ArrowRight,
   CornerDownLeft,
 } from "lucide-react"
-import { Badge } from "@workspace/ui/components/badge"
 import { cn } from "@workspace/ui/lib/utils"
 
 interface SearchRepo {
@@ -224,7 +223,9 @@ export function CommandSearch() {
   const handleSelect = useCallback(
     (href: string) => {
       closeSearch()
-      router.push(href)
+      setTimeout(() => {
+        router.push(href)
+      }, 50)
     },
     [router, closeSearch]
   )
@@ -249,14 +250,14 @@ export function CommandSearch() {
       role="dialog"
       aria-modal="true"
       aria-label="Command search"
-      className="fixed inset-0 z-50 flex items-start justify-center bg-background/80 p-4 pt-16 backdrop-blur-sm sm:pt-24"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-background/80 p-4 pt-16 backdrop-blur-md sm:pt-24"
       onClick={closeSearch}
     >
       <div
-        className="relative flex max-h-[80vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl transition-all"
+        className="relative flex max-h-[80vh] w-full max-w-xl flex-col overflow-hidden rounded-3xl border border-foreground/10 bg-card/95 shadow-2xl backdrop-blur-2xl transition-all"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center border-b border-border/80 px-4 py-3.5">
+        <div className="flex items-center border-b border-foreground/8 px-5 py-4">
           <Search className="size-4 shrink-0 text-muted-foreground" />
           <input
             ref={inputRef}
@@ -267,8 +268,8 @@ export function CommandSearch() {
               setSelectedIndex(0)
             }}
             onKeyDown={handleInputKeyDown}
-            placeholder="Search repositories, courses, files, or technologies..."
-            className="ml-3 flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden"
+            placeholder="Cari repositori, topik, berkas, atau teknologi..."
+            className="ml-3.5 flex-1 bg-transparent font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden"
           />
           {query ? (
             <button
@@ -278,12 +279,12 @@ export function CommandSearch() {
                 setSelectedIndex(0)
               }}
               aria-label="Clear query"
-              className="rounded p-1 text-muted-foreground hover:text-foreground"
+              className="rounded-full p-1 text-muted-foreground hover:text-foreground"
             >
               <X className="size-3.5" />
             </button>
           ) : (
-            <kbd className="hidden rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
+            <kbd className="hidden rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline-block">
               ESC
             </kbd>
           )}
@@ -294,11 +295,12 @@ export function CommandSearch() {
           className="flex-1 divide-y divide-transparent overflow-y-auto p-2 text-xs"
         >
           {results.length === 0 ? (
-            <div className="py-12 text-center text-muted-foreground">
-              <p className="font-medium text-foreground">No matches found</p>
-              <p className="mt-1 text-xs">
-                No repositories, topics, or code files matched &quot;{query}
-                &quot;.
+            <div className="py-16 text-center text-muted-foreground">
+              <p className="font-serif text-lg font-light text-foreground">
+                Tidak ditemukan hasil
+              </p>
+              <p className="mt-1 font-mono text-xs">
+                Tidak ada entri yang cocok dengan &quot;{query}&quot;.
               </p>
             </div>
           ) : (
@@ -312,19 +314,19 @@ export function CommandSearch() {
                     onClick={() => handleSelect(item.href)}
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={cn(
-                      "flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-left transition-colors",
+                      "flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left transition-colors",
                       isSelected
-                        ? "bg-muted text-foreground"
-                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                        ? "bg-foreground/[0.06] text-foreground"
+                        : "text-muted-foreground hover:bg-foreground/[0.03] hover:text-foreground"
                     )}
                   >
                     <div className="flex min-w-0 items-center gap-3">
                       <div
                         className={cn(
-                          "flex size-7 shrink-0 items-center justify-center rounded-lg border",
+                          "flex size-8 shrink-0 items-center justify-center rounded-xl border",
                           isSelected
                             ? "border-foreground/20 bg-background text-foreground"
-                            : "border-border/60 bg-muted/30 text-muted-foreground"
+                            : "border-foreground/10 bg-foreground/[0.02] text-muted-foreground"
                         )}
                       >
                         {item.type === "repo" && (
@@ -340,20 +342,17 @@ export function CommandSearch() {
 
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="truncate font-medium text-foreground">
+                          <span className="truncate font-mono font-medium text-foreground">
                             {item.title}
                           </span>
                           {item.badge && (
-                            <Badge
-                              variant="outline"
-                              className="shrink-0 text-[10px] font-normal"
-                            >
+                            <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-2 py-0.5 font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                               {item.badge}
-                            </Badge>
+                            </span>
                           )}
                         </div>
                         {item.subtitle && (
-                          <p className="truncate text-[11px] text-muted-foreground">
+                          <p className="truncate font-mono text-[11px] text-muted-foreground">
                             {item.subtitle}
                           </p>
                         )}
@@ -374,31 +373,33 @@ export function CommandSearch() {
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-border/70 bg-muted/30 px-4 py-2 text-[11px] text-muted-foreground">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between border-t border-foreground/8 bg-foreground/[0.02] px-5 py-2.5 text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-3 font-mono">
             <span className="inline-flex items-center gap-1">
-              <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[9px]">
+              <kbd className="rounded border border-foreground/10 bg-background px-1 py-0.5 text-[9px]">
                 ↑
               </kbd>
-              <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[9px]">
+              <kbd className="rounded border border-foreground/10 bg-background px-1 py-0.5 text-[9px]">
                 ↓
               </kbd>
-              <span>navigate</span>
+              <span className="ml-0.5">navigate</span>
             </span>
             <span className="inline-flex items-center gap-1">
-              <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[9px]">
+              <kbd className="rounded border border-foreground/10 bg-background px-1 py-0.5 text-[9px]">
                 ↵
               </kbd>
-              <span>select</span>
+              <span className="ml-0.5">select</span>
             </span>
             <span className="inline-flex items-center gap-1">
-              <kbd className="rounded border border-border bg-background px-1 py-0.5 font-mono text-[9px]">
+              <kbd className="rounded border border-foreground/10 bg-background px-1 py-0.5 text-[9px]">
                 esc
               </kbd>
-              <span>close</span>
+              <span className="ml-0.5">close</span>
             </span>
           </div>
-          <span className="font-mono text-[10px]">Rizfolio Docs Explorer</span>
+          <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+            [ COMMAND // DOCS ]
+          </span>
         </div>
       </div>
     </div>
